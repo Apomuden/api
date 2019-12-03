@@ -52,6 +52,7 @@ class CreateUsersTable extends Migration
             $table->date('appointment_date')->nullable();
             $table->string('ssnit_no')->unique()->nullable();
             $table->string('tin')->unique()->nullable();
+            $table->decimal('basic',2)->default(0);
             $table->unsignedInteger('bank_id')->nullable();
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('restrict');
             $table->unsignedBigInteger('bank_branch_id')->nullable();
