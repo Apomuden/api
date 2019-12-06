@@ -2,63 +2,47 @@
 
 namespace App\Http\Controllers\Setups;
 
-use App\Hospital;
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Resources\HospitalResource;
+use App\Models\Hospital;
+use App\Repositories\HospitalEloquent;
 use Illuminate\Http\Request;
 
 class HospitalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    protected $repository;
+
+    public function __construct(Hospital $hospital)
+    {
+        $this->repository= new HospitalEloquent($hospital);
+    }
+
     public function index()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Hospital  $hospital
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Hospital $hospital)
+
+    public function show()
+    {
+       return  ApiResponse::withOk('Hospital Found',new HospitalResource($this->repository->first()));
+    }
+
+    public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Hospital  $hospital
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Hospital $hospital)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Hospital  $hospital
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Hospital $hospital)
+    public function destroy($id)
     {
         //
     }

@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Validation\Rules\In;
 
-class CreateAccreditationsTable extends Migration
+class CreateFoldersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +13,12 @@ class CreateAccreditationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('accreditations', function (Blueprint $table) {
+        Schema::create('folders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('reg_body')->index();
-            $table->string('reg_no')->index();
-            $table->date('reg_date')->index();
-            $table->string('tin')->index();
-            $table->date('expiry_date')->index();
+            $table->string('folder_no')->unique();
+            $table->string('rack_no')->nullable();
+            $table->enum('folder_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL');
+            $table->enum('status',['ACTIVE','INACTIVE','NULLIFIED'])->default('ACTIVE');
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateAccreditationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accreditations');
+        Schema::dropIfExists('patient_folders');
     }
 }

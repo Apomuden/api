@@ -3,8 +3,9 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\Rules\In;
 
-class CreateUserTitlesTable extends Migration
+class CreateAccreditationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +14,13 @@ class CreateUserTitlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_titles', function (Blueprint $table) {
+        Schema::create('accreditations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+            $table->string('reg_body')->index();
+            $table->string('reg_no')->index();
+            $table->date('reg_date')->index();
+            $table->string('tin')->index();
+            $table->date('expiry_date')->index();
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class CreateUserTitlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_titles');
+        Schema::dropIfExists('accreditations');
     }
 }

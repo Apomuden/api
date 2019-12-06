@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Helpers;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use  Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class ApiResponse{
@@ -26,12 +27,13 @@ class ApiResponse{
         return response()->json($response,HttpResponse::HTTP_OK,$http_response_header);
     }
 
+
     static function withNotFound($message=null,$http_response_header=[]){
         return response()->json(['errorCode'=>'002','response'=>'Resource not found','data'=>$message],HttpResponse::HTTP_NOT_FOUND,$http_response_header);
     }
 
     static function withException(\Exception $e,$data=NULL,$http_response_header=[]){
-        \Log::error($e->getMessage());
+        Log::error($e->getMessage());
         return response()->json(['errorCode'=>'003','response'=>'Error','data'=>$data],HttpResponse::HTTP_INTERNAL_SERVER_ERROR,$http_response_header);
     }
 
