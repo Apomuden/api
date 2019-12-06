@@ -5,18 +5,18 @@ namespace App\Models;
 use App\Http\Traits\ActiveTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Region extends Model
+class Country extends Model
 {
     use ActiveTrait;
     protected $guarded = [];
 
-    public function country()
+    public function regions()
     {
-        return $this->belongsTo(Country::class);
+        return $this->hasMany(Region::class);
     }
 
     public function users()
     {
-        return $this->hasMany(User::class,'origin_region_id');
+        return $this->hasMany(Country::class,'origin_country_id');
     }
 }

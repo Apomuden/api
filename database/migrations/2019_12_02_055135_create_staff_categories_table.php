@@ -14,7 +14,7 @@ class CreateStaffCategoriesTable extends Migration
     public function up()
     {
         Schema::create('staff_categories', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('name')->unique();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();

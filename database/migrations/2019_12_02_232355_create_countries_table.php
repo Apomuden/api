@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmployementTypesTable extends Migration
+class CreateCountriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,13 @@ class CreateEmployementTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employment_types', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->unsignedInteger('validity_days')->default(0);
+            $table->string('country_name')->unique();
+            $table->string('country_code')->unique();
+            $table->string('call_code');
+            $table->string('currency');
+            $table->string('alternate_currency')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
@@ -29,6 +32,8 @@ class CreateEmployementTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employement_types');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('countries');
+        Schema::enableForeignKeyConstraints();
     }
 }

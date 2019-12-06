@@ -13,6 +13,7 @@ class CreateRegionsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('regions', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('region_name');

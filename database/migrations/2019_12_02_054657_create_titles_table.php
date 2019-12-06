@@ -28,6 +28,8 @@ class CreateTitlesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_titles');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('titles');
+        Schema::enableForeignKeyConstraints();
     }
 }

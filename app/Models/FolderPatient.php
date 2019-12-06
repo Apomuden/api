@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class FolderPatient extends Model
 {
-    //
+    protected $guarded = [];
 }

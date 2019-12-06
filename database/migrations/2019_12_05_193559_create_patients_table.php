@@ -31,7 +31,7 @@ class CreatePatientsTable extends Migration
             $table->unsignedInteger('educational_level_id')->nullable();
             $table->foreign('educational_level_id')->references('id')->on('educational_levels')->onDelete('restrict');
             $table->mediumText('residence')->nullable();
-            $table->unsignedInteger('active_cell')->nullable();
+            $table->unsignedBigInteger('active_cell')->nullable();
             $table->string('email')->nullable();
             $table->string('emerg_fullname');
             $table->string('emerg_phone');

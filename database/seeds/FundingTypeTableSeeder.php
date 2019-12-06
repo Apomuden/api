@@ -2,6 +2,7 @@
 
 use App\Models\FundingType;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class FundingTypeTableSeeder extends Seeder
 {

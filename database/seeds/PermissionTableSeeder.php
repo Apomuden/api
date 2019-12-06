@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
-
+use Illuminate\Support\Facades\Route;
 class PermissionTableSeeder extends Seeder
 {
     /**
@@ -15,6 +15,7 @@ class PermissionTableSeeder extends Seeder
     {
         $permission_ids = []; // an empty array of stored permission IDs
         // iterate though all routes
+
         $routes=Route::getRoutes()->getRoutes();
         foreach ($routes as $key => $route)
         {

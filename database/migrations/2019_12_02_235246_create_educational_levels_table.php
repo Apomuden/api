@@ -16,7 +16,7 @@ class CreateEducationalLevelsTable extends Migration
         Schema::create('educational_levels', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->enum('status',['ACTIVE','INACTIVE'])->default();
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
     }
@@ -28,6 +28,8 @@ class CreateEducationalLevelsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('educational_levels');
+        Schema::enableForeignKeyConstraints();
     }
 }

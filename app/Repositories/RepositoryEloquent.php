@@ -18,16 +18,19 @@ class RepositoryEloquent implements IRepository{
    }
 
    // create a new record in the database
-   public function create(array $data)
+   public function store(array $data)
    {
-       return $this->model->create($data);
+       return $this->model->forceCreate($data);
    }
 
    // update record in the database
    public function update(array $data, $id)
    {
+       $this->model->unguard();
        $record = $this->model->find($id);
-       return $record->update($data);
+       $record= $record->update($data);
+       $this->model->reguard();
+       return $record;
    }
 
    // remove record from the database

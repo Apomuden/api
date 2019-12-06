@@ -12,4 +12,11 @@ class HospitalEloquent extends RepositoryEloquent implements IHospitalRepository
     {
        return $this->model->first();
     }
+
+    public function update(array $data){
+        $this->model->unguard();
+        $record=$this->model->firstOrFail()->update();
+        $this->model->reguard();
+        return $record;
+    }
 }

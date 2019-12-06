@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Department extends Model
 {
+    protected $guarded = [];
     public function head()
     {
         return $this->belongsTo(User::class,'head_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

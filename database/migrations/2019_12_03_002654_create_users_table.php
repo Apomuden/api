@@ -25,8 +25,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender',['MALE','FEMALE']);
             $table->unsignedInteger('religion_id')->nullable();
             $table->foreign('religion_id')->references('id')->on('religions')->onDelete('restrict');
-            $table->unsignedBigInteger('profession_id')->nullable();
-            $table->foreign('profession_id')->references('id')->on('professions')->onDelete('restrict');
+
             $table->unsignedInteger('educational_level_id')->nullable();
             $table->foreign('educational_level_id')->references('id')->on('educational_levels')->onDelete('restrict');
             $table->mediumText('residence');
@@ -35,24 +34,24 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('origin_region_id')->nullable();
             $table->foreign('origin_region_id')->references('id')->on('regions')->onDelete('restrict');
             $table->enum('marital',['SINGLE','MARRIED','DIVORCED','WIDOW','WIDOWER','OTHER']);
-            $table->unsignedInteger('active_cell');
-            $table->unsignedInteger('alternate_cell')->nullable();
-            $table->unsignedInteger('email')->nullable();
-            $table->string('emerg_fullname');
-            $table->string('emerg_phone1');
+            $table->unsignedBigInteger('active_cell');
+            $table->unsignedBigInteger('alternate_cell')->nullable();
+            $table->string('email')->nullable()->unique();
+            $table->string('emerg_fullname')->nullable();
+            $table->string('emerg_phone1')->nullable();
             $table->string('emerg_phone2')->nullable();
-            $table->unsignedInteger('emerg_relation_id');
+            $table->unsignedInteger('emerg_relation_id')->nullable();
             $table->foreign('emerg_relation_id')->references('id')->on('relationships')->onDelete('restrict');
             $table->unsignedInteger('department_id');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
-            $table->unsignedInteger('employment_type_id');
-            $table->foreign('employment_type_id')->references('id')->on('employment_types')->onDelete('restrict');
+            $table->unsignedInteger('staff_type_id');
+            $table->foreign('staff_type_id')->references('id')->on('staff_types')->onDelete('restrict');
             $table->boolean('expires')->default(true);
             $table->date('expiry_date')->nullable()->index();
             $table->unsignedBigInteger('profession_id');
             $table->foreign('profession_id')->references('id')->on('professions')->onDelete('restrict');
-            $table->string('user_name')->nullable()->unique();
-            $table->string('passsword');
+            $table->string('username')->unique();
+            $table->string('password');
             $table->enum('status',['ACTIVE','INACTIVE','SUSPENDED','LOCKED','RECOVERY_MODE','DISMISSED'])->default('ACTIVE');
             $table->date('appointment_date')->nullable();
             $table->string('ssnit_no')->unique()->nullable();
@@ -62,7 +61,7 @@ class CreateUsersTable extends Migration
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('restrict');
             $table->unsignedBigInteger('bank_branch_id')->nullable();
             $table->foreign('bank_branch_id')->references('id')->on('bank_branches')->onDelete('restrict');
-            $table->string('bank_acct_no');
+            $table->string('bank_acct_no')->nullable();
             $table->unsignedInteger('staff_category_id')->nullable();
             $table->foreign('staff_category_id')->references('id')->on('staff_categories')->onDelete('restrict');
             $table->string('prof_body')->nullable();
@@ -81,6 +80,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
+        Schema::enableForeignKeyConstraints();
     }
 }

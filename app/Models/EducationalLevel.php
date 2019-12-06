@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class EducationalLevel extends Model
 {
-    //
+    protected $guarded = [];
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

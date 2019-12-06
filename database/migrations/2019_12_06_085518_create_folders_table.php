@@ -30,6 +30,8 @@ class CreateFoldersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('patient_folders');
+        Schema::disableForeignKeyConstraints();
+        Schema::dropIfExists('folders');
+        Schema::enableForeignKeyConstraints();
     }
 }

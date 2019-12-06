@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class CountriesTableSeeder extends Seeder
 {
@@ -12,7 +13,7 @@ class CountriesTableSeeder extends Seeder
      */
     public function run()
     {
-
+        Schema::disableForeignKeyConstraints();
         DB::statement('truncate table countries');
 
         $sql = "INSERT INTO `countries` (`id`, `country_name`, `country_code`, `call_code`, `currency`, `status`, `created_at`, `updated_at`) VALUES
@@ -265,5 +266,6 @@ class CountriesTableSeeder extends Seeder
         (247, 'Zimbabwe', 'ZW', '+263', 'ZWL', 'ACTIVE', '2019-05-01 20:34:26', '2019-05-01 20:34:26');";
 
         DB::statement($sql);
+        Schema::enableForeignKeyConstraints();
     }
 }

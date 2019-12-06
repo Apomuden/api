@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class StaffCategory extends Model
 {
-    //
+    protected $guarded = [];
 }

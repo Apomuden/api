@@ -17,7 +17,6 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->uuid('head_id')->nullable();
-            $table->foreign('head_id')->references('id')->on('users')->onDelete('restrict');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
