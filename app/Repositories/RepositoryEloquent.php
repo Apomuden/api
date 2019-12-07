@@ -1,20 +1,31 @@
 <?php
 namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
+use phpDocumentor\Reflection\Types\Boolean;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Traits\ActiveTrait;
+
+
 class RepositoryEloquent implements IRepository{
    // model property on class instances
-   protected $model;
+   protected $model,$cache_prefix,$useCache=true,$useActiveTrait;
 
    // Constructor to bind model to repo
-   public function __construct(Model $model)
+   public function __construct(Model $model,bool $useCache=true)
    {
        $this->model = $model;
+       $this->cache_prefix=$this->cache_prefix??class_basename($this->model);
+       $this->useCache=$useCache;
+       $this->useActiveTrait=in_array(ActiveTrait::class, class_uses($this->model));
    }
 
    // Get all instances of model
    public function all()
    {
-       return $this->model->all();
+       if($this->useCache)
+         return Cache::get($this->cache_prefix.'->all')??($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+       else
+         return ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
    }
 
    // create a new record in the database
@@ -26,10 +37,8 @@ class RepositoryEloquent implements IRepository{
    // update record in the database
    public function update(array $data, $id)
    {
-       $this->model->unguard();
        $record = $this->model->find($id);
        $record= $record->update($data);
-       $this->model->reguard();
        return $record;
    }
 
@@ -42,10 +51,13 @@ class RepositoryEloquent implements IRepository{
    // show the record with the given id
    public function show($id)
    {
-       return $this->model->findOrFail($id);
+       if($this->useCache)
+           return Cache::get($this->cache_prefix.'->find->'.$id)??$this->model->find($id);
+       else
+           return $this->model->findOrFail($id);
    }
 
-  /*  // Get the associated model
+   // Get the associated model
    public function getModel()
    {
        return $this->model;
@@ -56,7 +68,7 @@ class RepositoryEloquent implements IRepository{
    {
        $this->model = $model;
       // return $this;
-   } */
+   }
 
    // Eager load database relationships
    public function with($relations)

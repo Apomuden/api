@@ -21,6 +21,7 @@ class CreateAccreditationsTable extends Migration
             $table->date('reg_date')->index();
             $table->string('tin')->index();
             $table->date('expiry_date')->index();
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE')->index();
             $table->timestamps();
         });
     }

@@ -11,7 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-class User extends Authenticatable
+use Tymon\JWTAuth\Contracts\JWTSubject;
+
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable,ActiveTrait;
 
@@ -24,7 +26,15 @@ class User extends Authenticatable
     protected $guarded = [];
 
     public $incrementing = false;
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
 
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
     public function getFullNameAttribute()
     {
       return ucwords(trim($this->firstname.' '.$this->middlename).' '.$this->surname);

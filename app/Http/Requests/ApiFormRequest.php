@@ -7,6 +7,8 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
+use Illuminate\Support\Facades\Log;
+
 abstract class ApiFormRequest extends LaravelFormRequest
 {
     /**
@@ -32,9 +34,10 @@ abstract class ApiFormRequest extends LaravelFormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
+        Log::error('Error::'.$errors);
         throw new HttpResponseException(
-            ApiResponse::withValidationError($errors)
-            //response()->json(['errors' => ], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            //ApiResponse::withValidationError($errors)
+            response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
         );
     }
 }

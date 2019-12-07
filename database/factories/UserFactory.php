@@ -8,6 +8,7 @@ use App\Models\EducationalLevel;
 use App\Models\Profession;
 use App\Models\Region;
 use App\Models\Religion;
+use App\Models\Role;
 use App\Models\StaffType;
 use App\Models\Title;
 use App\Models\User;
@@ -54,6 +55,7 @@ $factory->define(User::class, function (Faker $faker) {
         'origin_region_id'=>$country->regions()->inRandomOrder()->first()->id,
         'department_id'=>Department::inRandomOrder()->first()->id,
         'staff_type_id'=>StaffType::inRandomOrder()->first()->id,
+        'role_id'=>Role::inRandomOrder()->first()->id,
         'expires'=>false,
         'marital'=>$marital,
         'password'=>'secret',

@@ -3,7 +3,7 @@ namespace App\Repositories;
 interface IRepository{
     function all();
 
-    function create(array $data);
+    function store(array $data);
 
     function update(array $data, $id);
 

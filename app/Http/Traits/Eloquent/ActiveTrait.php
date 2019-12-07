@@ -2,7 +2,7 @@
 namespace App\Http\Traits;
 trait ActiveTrait
 {
-    function active($query,$status='ACTIVE'){
+    function scopeActive($query,$status='ACTIVE'){
        return $query->where('status',$status);
     }
 }

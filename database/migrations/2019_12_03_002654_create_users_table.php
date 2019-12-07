@@ -23,6 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->date('dob')->nullable();
             $table->enum('gender',['MALE','FEMALE']);
+            $table->unsignedInteger('role_id')->index();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');
             $table->unsignedInteger('religion_id')->nullable();
             $table->foreign('religion_id')->references('id')->on('religions')->onDelete('restrict');
 
@@ -69,6 +71,8 @@ class CreateUsersTable extends Migration
             $table->date('prof_expiry_date')->nullable()->unique();
             $table->string('signature')->nullable();
             $table->string('picture')->nullable();
+            $table->dateTime('last_login')->nullable();
+            $table->dateTime('last_logout')->nullable();
             $table->timestamps();
         });
     }

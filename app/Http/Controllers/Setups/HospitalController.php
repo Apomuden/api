@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Setups;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\HospitalRequest;
+use App\Http\Requests\Setups\HospitalRequest;
 use App\Http\Resources\HospitalResource;
 use App\Models\Hospital;
 use App\Repositories\HospitalEloquent;
