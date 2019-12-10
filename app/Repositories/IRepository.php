@@ -10,4 +10,5 @@ interface IRepository{
     function delete($id);
 
     function show($id);
+    function find($id);
 }

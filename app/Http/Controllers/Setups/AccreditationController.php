@@ -41,4 +41,12 @@ class AccreditationController extends Controller
             return ApiResponse::withException($e);
         }
    }
+
+   function update(AccreditionRequest $accreditionRequest,$accreditation)
+   {
+        $accreditation=$this->repository->update($accreditionRequest->all(),$accreditation);
+        return $accreditation?
+        ApiResponse::withOk('Accreditation Found',new AccreditationResource($accreditation))
+        : ApiResponse::withNotFound('Accreditation Not Found');
+   }
 }

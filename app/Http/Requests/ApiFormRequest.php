@@ -34,10 +34,8 @@ abstract class ApiFormRequest extends LaravelFormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
-        Log::error('Error::'.$errors);
         throw new HttpResponseException(
-            //ApiResponse::withValidationError($errors)
-            response()->json(['errors' => $errors], JsonResponse::HTTP_UNPROCESSABLE_ENTITY)
+            ApiResponse::withValidationError($errors)
         );
     }
 }

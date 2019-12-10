@@ -57,6 +57,10 @@ class RepositoryEloquent implements IRepository{
            return $this->model->findOrFail($id);
    }
 
+   public function find($id){
+      return $this->show($id);
+   }
+
    // Get the associated model
    public function getModel()
    {

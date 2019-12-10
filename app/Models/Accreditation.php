@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\DateHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,18 +10,18 @@ class Accreditation extends Model
 {
     protected $guarded = [];
 
-    protected $dateFormat="Y-m-d";
-    protected $casts = [
-        'reg_date' => 'date',
-        'expiry_date'=>'date',
-        'status'=>'string'
-    ];
 
-    function getFormatedRegDateAttribute(){
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($model)
+        {
 
-      return  (new Carbon($this->reg_date))->isoFormat('D-M-Y');
+            //format dates
+            $model->reg_date =DateHelper::toDBDate($model->reg_date);
+            $model->expiry_date =DateHelper::toDBDate($model->expiry_date);
+
+        });
     }
-    function getFormatedExpiryDateAttribute(){
-      return (new Carbon($this->expiry_date))->isoFormat('D-M-Y');
-    }
+
 }

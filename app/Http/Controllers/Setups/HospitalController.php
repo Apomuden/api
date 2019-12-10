@@ -5,11 +5,14 @@ namespace App\Http\Controllers\Setups;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Helpers\FileResolver;
 use App\Http\Requests\Setups\HospitalRequest;
+use App\Http\Requests\Setups\HospitalUpdateRequest;
 use App\Http\Resources\HospitalResource;
 use App\Models\Hospital;
 use App\Repositories\HospitalEloquent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HospitalController extends Controller
 {
@@ -29,7 +32,10 @@ class HospitalController extends Controller
 
     public function store(HospitalRequest $request)
     {
-       $requestData=ApiRequest::asArray($request);
+        $requestData=ApiRequest::asArray($request);
+
+        $requestData['logo']=FileResolver::base64ToFile($request->logo);
+
        $response=$this->repository->store($requestData);
 
        return  ApiResponse::withOk('Hospital created',new HospitalResource($response));
@@ -42,10 +48,14 @@ class HospitalController extends Controller
        return  ApiResponse::withOk('Hospital Found',new HospitalResource($this->repository->first()));
     }
 
-    public function update(Request $request)
+    public function update(HospitalUpdateRequest $request)
     {
         $requestData=ApiRequest::asArray($request);
+
+
+        $requestData['logo']=FileResolver::base64ToFile($request->logo);
         $response=$this->repository->update($requestData);
+
         return  ApiResponse::withOk('Hospital updated',new HospitalResource($response));
     }
 

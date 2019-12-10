@@ -31,7 +31,10 @@ Route::group(['prefix' => 'auth'], function () {
     //Setups
     Route::group(['prefix' => 'setups'], function () {
         Route::apiResource('countries','Setups\CountryController',['only'=>['index','show']]);
-        Route::apiResource('accreditations','Setups\accreditationController',['only'=>['index','show','store']]);
+        Route::apiResource('accreditations','Setups\AccreditationController',['only'=>['index','show','store','update']]);
+        Route::get('hospital','Setups\HospitalController@show')->name('hospital.show');
+        Route::post('hospital','Setups\HospitalController@store')->name('hospital.store');
+        Route::match(['PUT', 'PATCH'], 'hospital','Setups\HospitalController@update')->name('hospital.update');
     });
     Route::group(['prefix' => 'utils'], function () {
         //FileResolver

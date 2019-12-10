@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,8 +22,8 @@ class AccreditationResource extends JsonResource
             'reg_body'=>$this->reg_body,
             'reg_no'=>$this->reg_no,
             'tin'=>$this->tin,
-            'reg_date'=>$this->formatedregdate??null,
-            'expiry_date'=>$this->formatedexpirydate??null,
+            'reg_date'=>DateHelper::toDisplayDate($this->reg_date),
+            'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date),
             'status'=>$this->status
         ];
     }
