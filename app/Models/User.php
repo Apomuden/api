@@ -96,7 +96,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function id_type()
     {
-        return $this->belongsTo(idtype::class);
+        return $this->belongsTo(IdType::class);
     }
 
     public function religion()
