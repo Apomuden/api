@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\AgeGroup;
 use App\Models\EducationalLevel;
 use App\Models\Title;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,12 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         $this->call(CountriesTableSeeder::class);
         $this->call(RegionsTableSeeder::class);
         $this->call(HospitalTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
-        $this->call(ageGroupsSeeder::class);
+        $this->call(AgeGroupTableSeeder::class);
         $this->call(sponsorshipTypesSeeder::class);
         $this->call(billingCycleSeeder::class);
         $this->call(paymentStyleSeeder::class);
@@ -34,5 +38,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReligionTableSeeder::class);
         $this->call(EducationalLevelsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
