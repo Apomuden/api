@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFundingTypesTable extends Migration
+class CreatePaymentChannelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateFundingTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('funding_types', function (Blueprint $table) {
+        Schema::create('payment_channels', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->mediumText('description')->nullable();
+            $table->string('name');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
@@ -29,6 +28,6 @@ class CreateFundingTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('funding_types');
+        Schema::dropIfExists('payment_channels');
     }
 }

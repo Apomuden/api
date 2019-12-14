@@ -48,7 +48,7 @@ class HospitalController extends Controller
        return  ApiResponse::withOk('Hospital Found',new HospitalResource($this->repository->first()));
     }
 
-    public function update(HospitalUpdateRequest $request)
+    public function update(HospitalRequest $request)
     {
         $requestData=ApiRequest::asArray($request);
 

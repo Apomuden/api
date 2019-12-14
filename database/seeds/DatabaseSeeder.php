@@ -18,6 +18,13 @@ class DatabaseSeeder extends Seeder
         $this->call(HospitalTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
+        $this->call(age_groupsTableSeeder::class);
+        $this->call(sponsorshipTypesSeeder::class);
+        $this->call(billingCycleSeeder::class);
+        $this->call(paymentStyleSeeder::class);
+        $this->call(paymentChannelSeeder::class);
+        $this->call(billingSystemSeeder::class);
+        $this->call(id_typesTableSeeder::class);
         $this->call(FundingTypeTableSeeder::class);
         $this->call(TitleTableSeeder::class);
         $this->call(StaffCategoriesTableSeeder::class);

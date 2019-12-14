@@ -17,19 +17,15 @@ class CreateHospitalsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('logo')->nullable();
-            $table->string('staff_id_prefix',5);
-            $table->string('staff_id_seperator',2)->default('-');
-            $table->string('folder_id_prefix',5)->default('-');
-            $table->string('folder_id_seperator',2)->default('-');
-            $table->set('folder_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL');
-            $table->set('consultation_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL');
-            $table->set('payment_style',['PREPAID','POSTPAID'])->default('PREPAID');
-            $table->enum('discount_type',['ABSOLUTE','PERCENTAGE'])->default('ABSOLUTE');
-            $table->decimal('discount',20,2)->default(0);
-            $table->unsignedInteger('hours_of_consultation')->default('24');
-            $table->set('payment_channels',['CASH','MOMO','POS','CHEQUE','BANK_DEPOSIT'])->default('CASH,MOMO');
-            $table->set('installment_type',['FULL_PAYMENT','PART_PAYMENT','DEPOSIT','CREDIT'])->default('FULL_PAYMENT,CREDIT');
-            $table->boolean('set_appointment')->default(false)->comment('Can Records set appointment');
+            $table->string('staff_id_prefix',5)->nullable();
+            $table->string('staff_id_seperator',2)->nullable()->default('-');
+            $table->string('folder_id_prefix',5)->nullable()->default('-');
+            $table->string('folder_id_seperator',2)->nullable()->default('-');
+            $table->unsignedInteger('digits_after_staff_prefix')->default(3);
+            $table->unsignedInteger('digits_after_folder_prefix')->default(3);
+            $table->unsignedInteger('year_digits')->nullable()->default(2);
+            $table->set('allowed_folder_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL,FAMILY');
+            $table->set('allowed_installment_type',['FULL_PAYMENT','PART_PAYMENT','DEPOSIT','CREDIT'])->default('FULL_PAYMENT,CREDIT');
             $table->unsignedBigInteger('active_cell');
             $table->unsignedBigInteger('alternate_cell')->nullable();
             $table->string('email1');
@@ -37,8 +33,6 @@ class CreateHospitalsTable extends Migration
             $table->mediumText('postal_address')->nullable();
             $table->mediumText('physical_address')->nullable();
             $table->string('gps_location')->nullable();
-            $table->unsignedInteger('accreditation_id')->nullable();
-            $table->foreign('accreditation_id')->references('id')->on('accreditations')->onDelete('restrict');
             $table->timestamps();
         });
     }
