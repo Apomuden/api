@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Helpers\Security;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\ProfileBasicResource;
+use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
@@ -32,7 +34,7 @@ class AccessController extends Controller
                 $user->last_login=Carbon::now();
                 $user->save();
                 $token=auth('api')->login($user);
-                return $this->respondWithToken('Login successful',$token);
+                return $this->respondWithToken('Login successful',$token,$user);
             }
         }
         catch(Exception $e){
@@ -59,15 +61,16 @@ class AccessController extends Controller
             return ApiResponse::withException($e);
         }
     }
-    protected function respondWithToken($message,$token)
+    protected function respondWithToken($message,$token,$user=null)
     {
 
         $data= [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => (auth('api')->factory()->getTTL()/60).' hours',
-            'status'=>auth('api')->user()->status
+            'profile'=>$user?new ProfileResource($user):null
         ];
+
       return  ApiResponse::withOk($message,(object)$data);
     }
 }

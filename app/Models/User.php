@@ -75,6 +75,10 @@ class User extends Authenticatable implements JWTSubject
         'dob' => 'date',
     ];
 
+    public function title()
+    {
+        return $this->belongsTo(Title::class);
+    }
     public function role()
     {
         return $this->belongsTo(Role::class);
@@ -87,6 +91,69 @@ class User extends Authenticatable implements JWTSubject
 
     public function department()
     {
-        return $this->hasOne(Department::class);
+        return $this->belongsTo(Department::class);
+    }
+
+    public function id_type()
+    {
+        return $this->belongsTo(idtype::class);
+    }
+
+    public function religion()
+    {
+        return $this->belongsTo(Religion::class);
+    }
+    public function educational_level()
+    {
+        return $this->belongsTo(EducationalLevel::class);
+    }
+
+    public function staff_type()
+    {
+        return $this->belongsTo(StaffType::class);
+    }
+
+    public function staff_category()
+    {
+        return $this->belongsTo(StaffCategory::class);
+    }
+
+    public function specialty()
+    {
+        return $this->belongsTo(StaffSpecialty::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class,'origin_country_id');
+    }
+    public function region()
+    {
+        return $this->belongsTo(Region::class,'origin_region_id');
+    }
+
+    public function hometown()
+    {
+        return $this->belongsTo(Town::class,'hometown_id');
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
+
+    public function bank_branch()
+    {
+        return $this->belongsTo(BankBranch::class);
+    }
+
+    public function profession()
+    {
+        return $this->belongsTo(Profession::class);
+    }
+
+    public function emerg_relation()
+    {
+        return $this->belongsTo(Relationship::class);
     }
 }

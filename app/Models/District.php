@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class District extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
+
     public function region()
     {
         return $this->belongsTo(Region::class);

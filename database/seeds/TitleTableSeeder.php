@@ -13,13 +13,13 @@ class TitleTableSeeder extends Seeder
     public function run()
     {
         Title::insert([
-            ['name'=>'Mr'],
-            ['name'=>'Mrs'],
-            ['name'=>'Ms'],
-            ['name'=>'Miss'],
-            ['name'=>'Master'],
-            ['name'=>'Madam'],
-            ['name'=>'Maid'],
+            ['name'=>'Mr','gender'=>'MALE'],
+            ['name'=>'Mrs','gender'=>'FEMALE'],
+            ['name'=>'Ms','gender'=>'FEMALE'],
+            ['name'=>'Miss','gender'=>'FEMALE'],
+            ['name'=>'Master','gender'=>'MALE'],
+            ['name'=>'Madam','gender'=>'FEMALE'],
+            ['name'=>'Maid','gender'=>'FEMALE'],
         ]);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class RegionCollection extends ResourceCollection
+class TitleCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -14,6 +14,7 @@ class RegionCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return RegionResource::collection($this->collection);
+        return  TitleResource::collection($this->collection);
+
     }
 }

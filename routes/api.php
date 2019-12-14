@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +27,22 @@ Route::group(['prefix' => 'auth'], function () {
     //Setups
     Route::group(['prefix' => 'setups'], function () {
         Route::apiResource('countries','Setups\CountryController',['only'=>['index','show']]);
+
+        Route::get('districts/{district}/towns','Setups\TownController@showByDistrict')->name('district.towns.show');
+        Route::apiResource('towns','Setups\TownController',['only'=>['index','show','store','update']]);
+
+        Route::get('countries/{country}/regions','Setups\RegionController@showByCountry')->name('country.regions.show');
+        Route::apiResource('regions','Setups\RegionController',['only'=>['index','show']]);
+        Route::get('regions/{region}/districts','Setups\DistrictController@showByRegion')->name('region.districts.show');
+        Route::apiResource('districts','Setups\DistrictController',['only'=>['index','show','store','update']]);
         Route::apiResource('accreditations','Setups\AccreditationController',['only'=>['index','show','store','update']]);
         Route::get('hospital','Setups\HospitalController@show')->name('hospital.show');
         Route::post('hospital','Setups\HospitalController@store')->name('hospital.store');
         Route::match(['PUT', 'PATCH'], 'hospital','Setups\HospitalController@update')->name('hospital.update');
+
+        Route::apiResource('religions','Setups\ReligionController',['only'=>['index','show','store','update']]);
+        Route::apiResource('relationships','Setups\RelationshipController',['only'=>['index','show','store','update']]);
+        Route::apiResource('titles','Setups\TitleController',['only'=>['index','show','store','update']]);
     });
     Route::group(['prefix' => 'utils'], function () {
         //FileResolver

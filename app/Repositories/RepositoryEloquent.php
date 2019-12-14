@@ -20,12 +20,16 @@ class RepositoryEloquent implements IRepository{
    }
 
    // Get all instances of model
-   public function all()
+   public function all($sortBy=null)
    {
        if($this->useCache)
-         return Cache::get($this->cache_prefix.'->all')??($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+         $all= Cache::get($this->cache_prefix.'->all')??($this->useActiveTrait?$this->model->active()->get():$this->model->all());
        else
-         return ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+         $all= ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+
+         $all=$all && $sortBy?$all->sortBy($sortBy):$all;
+
+         return $all;
    }
 
    // create a new record in the database
@@ -38,8 +42,8 @@ class RepositoryEloquent implements IRepository{
    public function update(array $data, $id)
    {
        $record = $this->model->find($id);
-       $record= $record->update($data);
-       return $record;
+       $record->update($data);
+       return $record->refresh();
    }
 
    // remove record from the database

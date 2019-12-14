@@ -81,7 +81,7 @@ class CreateUsersTable extends Migration
             $table->string('prof_reg_no')->nullable()->unique();
             $table->date('prof_expiry_date')->nullable()->unique();
             $table->string('signature')->nullable();
-            $table->string('picture')->nullable();
+            $table->string('photo')->nullable();
             $table->dateTime('last_login')->nullable();
             $table->dateTime('last_logout')->nullable();
             $table->timestamps();
