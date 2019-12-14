@@ -42,6 +42,8 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::apiResource('religions','Setups\ReligionController',['only'=>['index','show','store','update']]);
         Route::apiResource('relationships','Setups\RelationshipController',['only'=>['index','show','store','update']]);
+
+        Route::get('gender/{gender}/titles','Setups\TitleController@showByGender')->name('gender.titles.show');
         Route::apiResource('titles','Setups\TitleController',['only'=>['index','show','store','update']]);
     });
     Route::group(['prefix' => 'utils'], function () {

@@ -59,5 +59,20 @@ class TitleController extends Controller
        }
    }
 
+   function showByGender($gender){
+    try{
+
+       $titles= $this->repository->getModel()->whereRaw('? in (gender)',[$gender])->active()->orderBy('name')->get();
+
+       return $titles?
+       ApiResponse::withOk('Available Titles',new TitleCollection($titles))
+       : ApiResponse::withNotFound('Titles Not Found');
+
+    }
+    catch(Exception $e){
+     return ApiResponse::withException($e);
+    }
+   }
+
 
 }
