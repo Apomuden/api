@@ -3,7 +3,7 @@
 use App\Models\AgeGroup;
 use Illuminate\Database\Seeder;
 
-class age_groupsTableSeeder extends Seeder
+class agegroupsTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
