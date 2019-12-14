@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class AccessController extends Controller
 {
@@ -44,7 +45,7 @@ class AccessController extends Controller
 
     function logout(){
         try{
-            $user=auth('api')->user;
+            $user=Auth::guard('api')->user();
             $user->last_logout=Carbon::now();
             auth('api')->logout();
             return ApiResponse::withOk('Logout successful!');
