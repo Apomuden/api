@@ -20,7 +20,7 @@ class CreateBankBranchesTable extends Migration
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('restrict');
             $table->string('sort_code')->unique()->nullable();
             $table->string('email')->nullable();
-            $table->unsignedInteger('phone')->nullable();
+            $table->unsignedBigInteger('phone')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->unique(['name','bank_id']);
             $table->timestamps();

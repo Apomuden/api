@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class IdType extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
 }

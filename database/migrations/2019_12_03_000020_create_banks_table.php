@@ -18,7 +18,8 @@ class CreateBanksTable extends Migration
             $table->string('name')->unique();
             $table->string('sort_code')->unique()->nullable();
             $table->string('email')->nullable();
-            $table->unsignedInteger('phone')->nullable();
+            $table->unsignedBigInteger('phone')->nullable();
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
     }
