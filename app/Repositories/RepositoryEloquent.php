@@ -41,7 +41,7 @@ class RepositoryEloquent implements IRepository{
    // update record in the database
    public function update(array $data, $id)
    {
-       $record = $this->model->find($id);
+       $record = $this->model->findOrFail($id);
        $record->update($data);
        return $record->refresh();
    }

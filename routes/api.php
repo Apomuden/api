@@ -45,6 +45,7 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::get('gender/{gender}/titles','Setups\TitleController@showByGender')->name('gender.titles.show');
         Route::apiResource('titles','Setups\TitleController',['only'=>['index','show','store','update']]);
+        Route::apiResource('departments','Setups\DepartmentController',['only'=>['index','show','store','update']]);
     });
     Route::group(['prefix' => 'utils'], function () {
         //FileResolver

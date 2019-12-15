@@ -75,6 +75,7 @@ class User extends Authenticatable implements JWTSubject
         'dob' => 'date',
     ];
 
+
     public function title()
     {
         return $this->belongsTo(Title::class);
