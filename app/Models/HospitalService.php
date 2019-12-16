@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class HospitalService extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
 }

@@ -2,17 +2,18 @@
 
 namespace App\Http\Requests\Setups;
 use App\Http\Requests\ApiFormRequest;
+use Illuminate\Support\Facades\Log;
 
-class IDTypeRequest extends ApiFormRequest
+class PermissionRequest extends ApiFormRequest
 {
    public function authorize(){
        return true;
    }
    public function rules(){
-       $id=$this->route('idtype')??null;
+       $id=$this->route('permission')??null;
+
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:id_types'.(isset($this->id)?','.$this->id:''),
-            'expires'=>'bail|sometimes|boolean',
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:permissions'.($id?','.$id:''),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

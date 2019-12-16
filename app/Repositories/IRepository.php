@@ -2,7 +2,7 @@
 namespace App\Repositories;
 interface IRepository{
     function all();
-
+    function paginate();
     function store(array $data);
 
     function update(array $data, $id);

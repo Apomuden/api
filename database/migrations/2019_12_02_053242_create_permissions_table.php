@@ -19,6 +19,7 @@ class CreatePermissionsTable extends Migration
             $table->string('controller');
             $table->string('method');
             $table->unique(['controller','method']);
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });
     }

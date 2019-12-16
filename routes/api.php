@@ -20,6 +20,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Auth\AccessController@login')->name('auth.login');
     Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
     Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
+
+      //Authenticated Auth Routes
+    Route::group(['middleware'=>['jwt.auth']], function () {
+        Route::apiResource('roles','Setups\RoleController',['only'=>['index','show','store','update']]);
+        Route::apiResource('permissions','Setups\PermissionController',['only'=>['index','show','update']]);
+    });
 });
 
   //Authenticated Routes
@@ -57,6 +63,9 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('staffcategories','Setups\StaffCategoryController',['only'=>['index','show','store','update']]);
         Route::get('staffcategories/{staffcategory}/professions','Setups\ProfessionController@showByCategory')->name('staffcategory.professions.show');
         Route::apiResource('professions','Setups\ProfessionController',['only'=>['index','show','store','update']]);
+        Route::apiResource('stafftypes','Setups\StaffTypeController',['only'=>['index','show','store','update']]);
+        Route::apiResource('hospitalservices','Setups\HospitalServiceController',['only'=>['index','show','store','update']]);
+
 
     });
     Route::group(['prefix' => 'utils'], function () {

@@ -22,14 +22,37 @@ class RepositoryEloquent implements IRepository{
    // Get all instances of model
    public function all($sortBy=null)
    {
-       if($this->useCache)
-         $all= Cache::get($this->cache_prefix.'->all')??($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+       $key=$this->cache_prefix.'->all';
+       if($this->useCache){
+            $all= Cache::get($key);
+            if($all)
+            return $all;
+            $all=$this->useActiveTrait?$this->model->active()->get():$this->model->all();
+       }
        else
          $all= ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
 
          $all=$all && $sortBy?$all->sortBy($sortBy):$all;
 
-         return $all;
+         return $this->cache($key,$all);
+   }
+
+   public function paginate($paginate=15,$sortBy=null){
+         $key=$this->cache_prefix.'->paginate::'.$paginate;
+        if($this->useCache){
+           $all= Cache::get($key);
+           if($all)
+           return $all;
+           $all=$this->useActiveTrait?$this->model->active():$this->model;
+        }
+        else
+          $all= ($this->useActiveTrait?$this->model->active():$this->model);
+
+          $all=$all && $sortBy?$all->orderBy($sortBy):$all;
+
+         $all=$all->paginate($paginate);
+
+         return $this->cache($key,$all);
    }
 
    // create a new record in the database
@@ -55,10 +78,18 @@ class RepositoryEloquent implements IRepository{
    // show the record with the given id
    public function show($id)
    {
-       if($this->useCache)
-           return Cache::get($this->cache_prefix.'->find->'.$id)??$this->model->find($id);
-       else
-           return $this->model->findOrFail($id);
+       $key=$this->cache_prefix.'->find->'.$id;
+       if($this->useCache){
+           $record= Cache::get($key);
+           if($record)
+           return $record;
+           $record=$this->model->find($id);
+       }
+       else{
+           $record=$this->model->findOrFail($id);
+       }
+
+       return $this->cache($key,$record);
    }
 
    public function find($id){
@@ -83,4 +114,10 @@ class RepositoryEloquent implements IRepository{
    {
        return $this->model->with($relations);
    }
+
+   protected function cache($key,$value){
+    Cache::forever($key,$value);
+    return $value;
+   }
+
 }

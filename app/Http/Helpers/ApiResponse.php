@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Helpers;
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use  Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -23,8 +24,13 @@ class ApiResponse{
             $response['taggedAs']='No records found';
         }
 
-        $response['data']=$data;
+        $response['data']=$data['data']??$data;
         return response()->json($response,HttpResponse::HTTP_OK,$http_response_header);
+    }
+
+    static function withPaginate($data=NULL,$http_response_header=[]){
+
+        return response()->json($data,HttpResponse::HTTP_OK,$http_response_header);
     }
 
 
