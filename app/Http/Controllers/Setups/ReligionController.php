@@ -35,7 +35,7 @@ class ReligionController extends Controller
     }
 
     function show($religion){
-        $district=$this->repository->show($religion);//pass the country
+        $religion=$this->repository->show($religion);//pass the country
         return $religion?
         ApiResponse::withOk('Religion Found',new GeneralResource($religion))
         : ApiResponse::withNotFound('Religion Not Found');

@@ -31,7 +31,7 @@ class IDTypeController extends Controller
         $idType=$this->repository->show($idType);//pass the country
         return $idType?
         ApiResponse::withOk('Id Type Found',new IDTypeResource($idType))
-        : ApiResponse::withNotFound('AgeGroup Not Found');
+        : ApiResponse::withNotFound('ID Type Not Found');
     }
 
    function store(IDTypeRequest $AgeGroupRequest){

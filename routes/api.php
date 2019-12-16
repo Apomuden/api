@@ -53,6 +53,10 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::get('banks/{bank}/branches','Setups\BankBranchController@showByBank')->name('bank.branches.show');
         Route::apiResource('bankbranches','Setups\BankBranchController',['only'=>['index','show','store','update']]);
+        Route::apiResource('languages','Setups\LanguageController',['only'=>['index','show','store','update']]);
+        Route::apiResource('staffcategories','Setups\StaffCategoryController',['only'=>['index','show','store','update']]);
+        Route::get('staffcategories/{staffcategory}/professions','Setups\ProfessionController@showByCategory')->name('staffcategory.professions.show');
+        Route::apiResource('professions','Setups\ProfessionController',['only'=>['index','show','store','update']]);
 
     });
     Route::group(['prefix' => 'utils'], function () {
