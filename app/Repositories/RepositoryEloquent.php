@@ -11,9 +11,11 @@ class RepositoryEloquent implements IRepository{
    protected $model,$cache_prefix,$useCache=true,$useActiveTrait;
 
    // Constructor to bind model to repo
-   public function __construct(Model $model,bool $useCache=true)
+   public function __construct(Model $model,bool $useCache=true,$with=null)
    {
        $this->model = $model;
+       $this->with=$with;
+
        $this->cache_prefix=$this->cache_prefix??class_basename($this->model);
        $this->useCache=$useCache;
        $this->useActiveTrait=in_array(ActiveTrait::class, class_uses($this->model));
@@ -27,10 +29,17 @@ class RepositoryEloquent implements IRepository{
             $all= Cache::get($key);
             if($all)
             return $all;
+            if($this->with)
+            $all=$this->useActiveTrait?$this->model->with($this->with)->active()->get():$this->model->with($this->with)->get();
+            else
             $all=$this->useActiveTrait?$this->model->active()->get():$this->model->all();
        }
-       else
-         $all= ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+       else{
+           if($this->with)
+           $all= ($this->useActiveTrait?$this->model->with($this->with)->active()->get():$this->model->with($this->with)->all());
+           else
+           $all= ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+       }
 
          $all=$all && $sortBy?$all->sortBy($sortBy):$all;
 
@@ -43,10 +52,18 @@ class RepositoryEloquent implements IRepository{
            $all= Cache::get($key);
            if($all)
            return $all;
+
+           if($this->with)
+           $all=$this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with);
+           else
            $all=$this->useActiveTrait?$this->model->active():$this->model;
         }
-        else
-          $all= ($this->useActiveTrait?$this->model->active():$this->model);
+        else{
+            if($this->with)
+            $all= ($this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with));
+            else
+            $all= ($this->useActiveTrait?$this->model->active():$this->model);
+        }
 
           $all=$all && $sortBy?$all->orderBy($sortBy):$all;
 
@@ -96,9 +113,16 @@ class RepositoryEloquent implements IRepository{
            $record= Cache::get($key);
            if($record)
            return $record;
+
+           if($this->with)
+           $record=$this->model->with($this->with)->find($id);
+           else
            $record=$this->model->find($id);
        }
        else{
+           if($this->with)
+           $record=$this->model->with($this->with)->findOrFail($id);
+           else
            $record=$this->model->findOrFail($id);
        }
 

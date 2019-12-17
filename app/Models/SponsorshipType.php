@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class SponsorshipType extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
+
 }

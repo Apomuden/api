@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentStyle extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
+
     public function funding_type()
     {
         return $this->hasMany(FundingType::class);

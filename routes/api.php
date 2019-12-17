@@ -67,6 +67,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('hospitalservices','Setups\HospitalServiceController',['only'=>['index','show','store','update']]);
         Route::apiResource('billingcycles','Setups\BillingCycleController',['only'=>['index','show','store','update']]);
         Route::apiResource('billingsystems','Setups\BillingSystemController',['only'=>['index','show','store','update']]);
+        Route::apiResource('paymentstyles','Setups\PaymentStyleController',['only'=>['index','show','store','update']]);
+        Route::apiResource('sponsorshiptypes','Setups\SponsorshipTypeController',['only'=>['index','show','store','update']]);
+        Route::apiResource('paymentchannels','Setups\PaymentChannelController',['only'=>['index','show','store','update']]);
+        Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
 
 
     });
