@@ -25,7 +25,6 @@ class AccessController extends Controller
     function login(LoginRequest $request){
         try{
             $user=$this->repository->getModel()->where('username',$request->username)->first();
-
             if(!$user)
             return ApiResponse::withNotAuthorized('User not found');
 
@@ -72,6 +71,6 @@ class AccessController extends Controller
             'profile'=>$user?new ProfileResource($user):null
         ];
 
-      return  ApiResponse::withOk($message,(object)$data);
+      return  ApiResponse::withOk($message,$data);
     }
 }

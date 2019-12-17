@@ -6,6 +6,7 @@ use App\Http\Helpers\DateHelper;
 use App\Models\Country;
 use DatePeriod;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
 
 class ProfileResource extends JsonResource
 {
@@ -39,14 +40,15 @@ class ProfileResource extends JsonResource
             'staff_id'=>$this->staff_id,
             'ssnit_no'=>$this->ssnit_no,
             'tin'=>$this->tin,
+            'username'=>$this->username,
             'surname'=>$this->surname,
             'middlename'=>$this->middlename,
             'firstname'=>$this->firstname,
             'dob'=>DateHelper::toDisplayDate($this->dob),
             'gender'=>$this->gender,
-            'country_name'=>$country->name??null,
+            'country_name'=>$country->country_name??null,
             'country_id'=>$country->id??null,
-            'region_name'=>$region->name??null,
+            'region_name'=>$region->region_name??null,
             'region_id'=>$region->id??null,
             'hometown_name'=>$hometown->name??null,
             'hometown_id'=>$hometown->id??null,
@@ -88,6 +90,9 @@ class ProfileResource extends JsonResource
             'bank_branch_id'=>$bank_branch->id??null,
             'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date)??null,
             'photo'=>$this->photo?\route('file.url',['users',$this->photo]):null,
+            'signature'=>$this->signature?\route('file.url',['signatures',$this->signature]):null,
+            'last_login'=>DateHelper::toDisplayDateTime($this->last_login),
+            'last_logout '=>DateHelper::toDisplayDateTime($this->last_logout),
             'status'=>$this->status
         ];
     }

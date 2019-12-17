@@ -2,46 +2,34 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Traits\PaginationTrait;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PermissionCollection extends ResourceCollection
 {
-    /**
-     * Transform the resource collection into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    private $pagination,$message;
+   use PaginationTrait;
+
+   //pagination and resource must be defined to allow pagination
+    public $pagination,$message,$resource;
 
     public function __construct($resource,$message)
     {
-        $newResource=Json_decode(json_encode($resource));
-        $this->pagination = [
-            'current_page' =>$resource->currentPage(),
-            'current_page_url' =>$newResource->path.'?page='.$resource->currentPage(),
-            'first_page_url'=>$newResource->first_page_url,
-            'next_page_url' =>$newResource->next_page_url,
-            'prev_page_url' =>$newResource->prev_page_url,
-            'last_page_url' =>$newResource->last_page_url,
-            'total_pages' => $resource->lastPage()
-        ];
+        $this->resource=$resource;
         $this->message=$message;
-
-        $resource = $resource->getCollection();
+        $this->paginateLinks();
+        //$resource = $resource->getCollection();
 
         parent::__construct($resource);
     }
     public function toArray($request)
     {
-        return  [
+        return [
             'errorCode'=>'000',
             'taggedAs'=>count($this->collection)?$this->message:'No records found',
             'dataCount'=>count($this->collection),
             'data'=>PermissionResource::collection($this->collection),
-            'pagination' => $this->pagination
+            'pagination'=>$this->pagination
         ];
-
     }
 
 }

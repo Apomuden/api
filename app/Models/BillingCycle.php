@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class BillingCycle extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
+
 }

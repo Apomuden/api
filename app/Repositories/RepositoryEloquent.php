@@ -38,7 +38,7 @@ class RepositoryEloquent implements IRepository{
    }
 
    public function paginate($paginate=15,$sortBy=null){
-         $key=$this->cache_prefix.'->paginate::'.$paginate;
+         $key=$this->cache_prefix.'->paginate';
         if($this->useCache){
            $all= Cache::get($key);
            if($all)
@@ -58,20 +58,33 @@ class RepositoryEloquent implements IRepository{
    // create a new record in the database
    public function store(array $data)
    {
+        //Delete Previous cached value
+        $this->deletCache();
+
        return $this->model->forceCreate($data);
    }
 
    // update record in the database
    public function update(array $data, $id)
    {
+       $key=$this->cache_prefix.'->find->'.$id;
        $record = $this->model->findOrFail($id);
        $record->update($data);
-       return $record->refresh();
+
+       //Delete Previous cached value
+       $this->deletCache($key);
+
+       $record=$record->refresh();
+       //Recache and return new value
+       return $this->cache($key,$record);
    }
 
    // remove record from the database
    public function delete($id)
    {
+       $key=$this->cache_prefix.'->find->'.$id;
+       //Delete Previous cached value
+       $this->deletCache($key);
        return $this->model->destroy($id);
    }
 
@@ -118,6 +131,19 @@ class RepositoryEloquent implements IRepository{
    protected function cache($key,$value){
     Cache::forever($key,$value);
     return $value;
+   }
+
+   protected function deletCache($key=null){
+         if($key)
+         Cache::forget($key);
+
+        //Delete the all
+        $key=$this->cache_prefix.'->all';
+        Cache::forget($key);
+
+        //Delete the paginate
+        $key=$this->cache_prefix.'->paginate';
+        Cache::forget($key);
    }
 
 }
