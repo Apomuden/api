@@ -66,6 +66,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('stafftypes','Setups\StaffTypeController',['only'=>['index','show','store','update']]);
         Route::apiResource('hospitalservices','Setups\HospitalServiceController',['only'=>['index','show','store','update']]);
         Route::apiResource('billingcycles','Setups\BillingCycleController',['only'=>['index','show','store','update']]);
+        Route::apiResource('billingsystems','Setups\BillingSystemController',['only'=>['index','show','store','update']]);
 
 
     });

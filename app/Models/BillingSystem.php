@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class BillingSystem extends Model
 {
     use ActiveTrait;
+    protected $guarded = [];
 }
