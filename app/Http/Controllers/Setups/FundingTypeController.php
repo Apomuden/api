@@ -8,6 +8,7 @@ use App\Http\Requests\Setups\FundingTypeRequest;
 use App\Http\Resources\FundingTypeCollection;
 use App\Http\Resources\FundingTypeResource;
 use App\Models\FundingType;
+use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 
@@ -17,7 +18,7 @@ class FundingTypeController extends Controller
 
     public function __construct(FundingType $fundingType)
     {
-        $this->repository= new RepositoryEloquent($fundingType,true,['sponsorship_type','billing_system']);
+        $this->repository= new RepositoryEloquent($fundingType,true,['sponsorship_type','billing_system','billing_cycle','payment_style','payment_channel']);
     }
 
     function index(){
@@ -48,5 +49,14 @@ class FundingTypeController extends Controller
        catch(Exception $e){
         return ApiResponse::withException($e);
        }
+   }
+
+   function showBySponsorshipType($sponsorshiptype){
+      $this->repository->setModel(new SponsorshipType());
+   
+       $fundingTypes=$this->repository->find($sponsorshiptype)->funding_types()->active()->orderBy('name')->get();
+      return $fundingTypes?
+      ApiResponse::withOk('Available Funding Types',new FundingTypeCollection($fundingTypes))
+      : ApiResponse::withNotFound('Funding Types Not Found');
    }
 }

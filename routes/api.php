@@ -70,6 +70,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('paymentstyles','Setups\PaymentStyleController',['only'=>['index','show','store','update']]);
         Route::apiResource('sponsorshiptypes','Setups\SponsorshipTypeController',['only'=>['index','show','store','update']]);
         Route::apiResource('paymentchannels','Setups\PaymentChannelController',['only'=>['index','show','store','update']]);
+
+        Route::get('sponsorshiptypes/{sponsorshiptype}/fundingtypes','Setups\FundingTypeController@showBySponsorshipType')->name('sponsorshiptype.fundingtypes.show');
         Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
 
 

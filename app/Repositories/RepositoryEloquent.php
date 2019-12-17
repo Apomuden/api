@@ -140,9 +140,12 @@ class RepositoryEloquent implements IRepository{
    }
 
    // Set the associated model
-   public function setModel($model)
+   public function setModel($model,$with=null)
    {
        $this->model = $model;
+       $this->with=$with;
+       $this->cache_prefix=$this->cache_prefix??class_basename($this->model);
+
       // return $this;
    }
 
