@@ -20,9 +20,14 @@ class FileResolver{
            if(!$fileBase64)
              return null;
 
+
             $folderPath =public_path('uploads').DIRECTORY_SEPARATOR.($uploadDir?$uploadDir.DIRECTORY_SEPARATOR:'');
 
             $file_parts = explode(";base64,", $fileBase64);
+
+
+            if(count($file_parts)==1)
+            return $fileBase64;
 
             $file_type_aux =explode("/", $file_parts[0]);
 
