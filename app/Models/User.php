@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
 use App\Http\Traits\ActiveTrait;
@@ -55,6 +56,15 @@ class User extends Authenticatable implements JWTSubject
             $model->expiry_date =$StaffType->validity_days?Carbon::now()->addDays($StaffType->validity_days):null;
 
             $model->staff_id=IDGenerator::getNewStaffID();
+
+            $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
+            $model->photo=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
+        });
+
+        static::updating(function($model){
+            $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
+            $model->photo=FileResolver::base64ToFile($model->photo,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
+
         });
     }
     /**

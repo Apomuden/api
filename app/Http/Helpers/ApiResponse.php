@@ -39,8 +39,13 @@ class ApiResponse{
     }
 
     static function withException(\Exception $e,$data=NULL,$http_response_header=[]){
-        Log::error($e->getMessage());
-        return response()->json(['errorCode'=>'003','taggedAs'=>'Error','data'=>$data],HttpResponse::HTTP_INTERNAL_SERVER_ERROR,$http_response_header);
+        if($e instanceof \Illuminate\Database\Eloquent\ModelNotFoundException)
+        return self::withNotFound();
+        else{
+            Log::error($e->getMessage());
+            return response()->json(['errorCode'=>'003','taggedAs'=>'Error','data'=>$data],HttpResponse::HTTP_INTERNAL_SERVER_ERROR,$http_response_header);
+        }
+
     }
 
     static function withNotOk($message,$data=NULL,$http_response_header=[]){

@@ -11,4 +11,5 @@ interface IRepository{
 
     function show($id);
     function find($id);
+    function findOrFail($id);
 }

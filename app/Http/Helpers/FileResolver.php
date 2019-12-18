@@ -2,10 +2,13 @@
 
 namespace App\Http\Helpers;
 
+use Illuminate\Support\Facades\Log;
+
 class FileResolver{
     static public function resolve($url,$subdirectory=null){
+        $subdirectory=str_replace('-',DIRECTORY_SEPARATOR,$subdirectory);
         $path=public_path('uploads').DIRECTORY_SEPARATOR.($subdirectory?$subdirectory.DIRECTORY_SEPARATOR:'').$url;
-        return $path;
+        Log::notice('photo',[$path]);
         return file_exists ($path)?$path:NULL;
     }
 
@@ -13,6 +16,9 @@ class FileResolver{
         return response()->file(self::resolve($subdirectory,$url));
     }
     static public function base64ToFile($fileBase64,$filename=null,$uploadDir=null){
+
+           if(!$fileBase64)
+             return null;
 
             $folderPath =public_path('uploads').DIRECTORY_SEPARATOR.($uploadDir?$uploadDir.DIRECTORY_SEPARATOR:'');
 
@@ -24,9 +30,10 @@ class FileResolver{
 
             $file_base64 = base64_decode($file_parts[1]);
 
-            $file = $folderPath . ($filename??uniqid()) . '.'.trim($file_type_aux[1]);
+            $file=($filename??uniqid()) . '.'.trim($file_type_aux[1]);
+            $full_path = $folderPath . $file;
 
-            file_put_contents($file,$file_base64);
+            file_put_contents($full_path,$file_base64);
 
             return $file;
     }

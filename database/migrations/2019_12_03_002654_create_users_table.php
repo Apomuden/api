@@ -45,7 +45,7 @@ class CreateUsersTable extends Migration
             $table->foreign('hometown_id')->references('id')->on('towns')->onDelete('restrict');
 
             $table->enum('marital',['SINGLE','MARRIED','DIVORCED','WIDOW','WIDOWER','OTHER']);
-            $table->unsignedBigInteger('active_cell');
+            $table->unsignedBigInteger('active_cell')->unique();
             $table->unsignedBigInteger('alternate_cell')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('emerg_name')->nullable();

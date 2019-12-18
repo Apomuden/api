@@ -68,7 +68,7 @@ class BankBranchController extends Controller
    function showByBank($bank){
        try{
         $this->repository->setModel(new Bank);
-        $bankBranches=$this->repository->find($bank)->branches()->active()->orderBy('name')->get();
+        $bankBranches=$this->repository->findOrFail($bank)->branches()->active()->orderBy('name')->get();
         return $bankBranches?
           ApiResponse::withOk('Available Bank Branches',new BankBranchCollection($bankBranches))
           : ApiResponse::withNotFound('Not Bank Branches Found');

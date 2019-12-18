@@ -89,8 +89,8 @@ class ProfileResource extends JsonResource
             'bank_branch_name'=>$bank_branch->name??null,
             'bank_branch_id'=>$bank_branch->id??null,
             'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date)??null,
-            'photo'=>$this->photo?\route('file.url',['users',$this->photo]):null,
-            'signature'=>$this->signature?\route('file.url',['signatures',$this->signature]):null,
+            'photo'=>$this->photo?\route('file.url',['users-photos',$this->photo]):null,
+            'signature'=>$this->signature?\route('file.url',['users-signatures',$this->signature]):null,
             'last_login'=>DateHelper::toDisplayDateTime($this->last_login),
             'last_logout '=>DateHelper::toDisplayDateTime($this->last_logout),
             'status'=>$this->status

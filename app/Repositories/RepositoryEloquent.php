@@ -121,13 +121,37 @@ class RepositoryEloquent implements IRepository{
        }
        else{
            if($this->with)
+           $record=$this->model->with($this->with)->find($id);
+           else
+           $record=$this->model->find($id);
+       }
+
+       return $this->cache($key,$record);
+   }
+
+
+   public function findOrFail($id)
+   {
+       $key=$this->cache_prefix.'->find->'.$id;
+       if($this->useCache){
+           $record= Cache::get($key);
+           if($record)
+           return $record;
+
+           if($this->with)
+           $record=$this->model->with($this->with)->findOrFail($id);
+           else
+           $record=$this->model->findOrFail($id);
+       }
+       else{
+           if($this->with)
            $record=$this->model->with($this->with)->findOrFail($id);
            else
            $record=$this->model->findOrFail($id);
        }
 
        return $this->cache($key,$record);
-   }
+   } 
 
    public function find($id){
       return $this->show($id);

@@ -25,6 +25,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware'=>['jwt.auth']], function () {
         Route::apiResource('roles','Setups\RoleController',['only'=>['index','show','store','update']]);
         Route::apiResource('permissions','Setups\PermissionController',['only'=>['index','show','update']]);
+        Route::group(['prefix' => 'profile'], function () {
+            Route::match(['PUT', 'PATCH'],'update','Auth\ProfileController@update')->name('profile.update');
+        });
     });
 });
 
@@ -73,6 +76,7 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::get('sponsorshiptypes/{sponsorshiptype}/fundingtypes','Setups\FundingTypeController@showBySponsorshipType')->name('sponsorshiptype.fundingtypes.show');
         Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
+        Route::apiResource('companies','Setups\CompanyController',['only'=>['index','show','store','update']]);
 
 
     });
