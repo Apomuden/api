@@ -77,6 +77,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('sponsorshiptypes/{sponsorshiptype}/fundingtypes','Setups\FundingTypeController@showBySponsorshipType')->name('sponsorshiptype.fundingtypes.show');
         Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
         Route::apiResource('companies','Setups\CompanyController',['only'=>['index','show','store','update']]);
+        Route::apiResource('specialties','Setups\SpecialtyController',['only'=>['index','show','store','update']]);
 
 
     });

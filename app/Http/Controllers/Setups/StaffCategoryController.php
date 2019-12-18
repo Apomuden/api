@@ -25,10 +25,10 @@ class StaffCategoryController extends Controller
         return ApiResponse::withOk('Staff Category list',new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($language){
-        $language=$this->repository->show($language);//pass the country
-        return $language?
-        ApiResponse::withOk('Staff Category Found',new GeneralResource($language))
+    function show($category){
+        $category=$this->repository->show($category);//pass the country
+        return $category?
+        ApiResponse::withOk('Staff Category Found',new GeneralResource($category))
         : ApiResponse::withNotFound('Staff Category Not Found');
     }
 
