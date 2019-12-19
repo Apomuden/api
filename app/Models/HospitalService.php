@@ -9,4 +9,9 @@ class HospitalService extends Model
 {
     use ActiveTrait;
     protected $guarded = [];
+
+    public function service_categories()
+    {
+        return $this->hasMany(ServiceCategory::class);
+    }
 }

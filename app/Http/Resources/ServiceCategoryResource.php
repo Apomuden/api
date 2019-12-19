@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DepartmentResource extends JsonResource
+class ServiceCategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,21 +14,14 @@ class DepartmentResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(isset($this->id)){
-           $head=$this->head;
-           $deputy_head=$this->deputy_head;
+           $hospital_service=$this->hospital_service;
             return [
                 'id'=>$this->id,
                 'name'=>$this->name,
-                'head_name'=>$head->fullname??null,
-                'head_id'=>$head->id??null,
-                'deputy_head_name'=>$deputy_head->fullname??null,
-                'deputy_head_id'=>$deputy_head->id??null,
+                'hospital_service_name'=>$this->hospital_service->name??null,
+                'hospital_service_id'=>$this->hospital_service->id??null,
                 'status'=>$this->status,
             ];
-        }
 
-        else
-           return NULL;
     }
 }

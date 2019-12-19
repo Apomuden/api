@@ -67,6 +67,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('staffcategories/{staffcategory}/professions','Setups\ProfessionController@showByCategory')->name('staffcategory.professions.show');
         Route::apiResource('professions','Setups\ProfessionController',['only'=>['index','show','store','update']]);
         Route::apiResource('stafftypes','Setups\StaffTypeController',['only'=>['index','show','store','update']]);
+
         Route::apiResource('hospitalservices','Setups\HospitalServiceController',['only'=>['index','show','store','update']]);
         Route::apiResource('billingcycles','Setups\BillingCycleController',['only'=>['index','show','store','update']]);
         Route::apiResource('billingsystems','Setups\BillingSystemController',['only'=>['index','show','store','update']]);
@@ -79,6 +80,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('companies','Setups\CompanyController',['only'=>['index','show','store','update']]);
         Route::apiResource('specialties','Setups\SpecialtyController',['only'=>['index','show','store','update']]);
 
+        Route::get('hospitalservices/{hospitalservice}/servicecategories','Setups\ServiceCategoryController@showByHospitalService')->name('hospitalservice.servicecategories.show');
+        Route::apiResource('servicecategories','Setups\ServiceCategoryController',['only'=>['index','show','store','update']]);
+        Route::get('servicecategories/{servicecategory}/servicesubcategories','Setups\ServiceSubCategoryController@showByServiceCategory')->name('servicecategory.servicesubcategories.show');
+        Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',['only'=>['index','show','store','update']]);
 
     });
     Route::group(['prefix' => 'utils'], function () {

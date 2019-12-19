@@ -78,7 +78,12 @@ class RepositoryEloquent implements IRepository{
         //Delete Previous cached value
         $this->deletCache();
 
-       return $this->model->forceCreate($data);
+       $record=$this->model->forceCreate($data);
+
+       //Recache and return new value
+       $key=$this->cache_prefix.'->find->'.$record->id;
+
+       return $this->cache($key,$record);
    }
 
    // update record in the database
@@ -151,7 +156,7 @@ class RepositoryEloquent implements IRepository{
        }
 
        return $this->cache($key,$record);
-   } 
+   }
 
    public function find($id){
       return $this->show($id);
@@ -177,6 +182,11 @@ class RepositoryEloquent implements IRepository{
    public function with($relations)
    {
        return $this->model->with($relations);
+   }
+
+   public function getInstanceWith($with){
+       $this->with($with);
+       return $this;
    }
 
    protected function cache($key,$value){
