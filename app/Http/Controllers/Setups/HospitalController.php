@@ -20,7 +20,7 @@ class HospitalController extends Controller
 
     public function __construct(Hospital $hospital)
     {
-        $this->repository= new HospitalEloquent($hospital);
+        $this->repository= new HospitalEloquent($hospital,['country','region']);
     }
 
     public function index()
@@ -45,7 +45,8 @@ class HospitalController extends Controller
 
     public function show()
     {
-       return  ApiResponse::withOk('Hospital Found',new HospitalResource($this->repository->first()));
+       $record=$this->repository->first();
+       return  ApiResponse::withOk('Hospital Found',new HospitalResource($record));
     }
 
     public function update(HospitalRequest $request)

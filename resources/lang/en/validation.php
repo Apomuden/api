@@ -118,7 +118,7 @@ return [
     'url' => 'The :attribute format is invalid.',
     'uuid' => 'The :attribute must be a valid UUID.',
     'file64' => 'The :attribute must be a file of type: :values.',
-    'set' => 'The :attribute must be either :values or both',
+    'set' => 'The :attribute must be either :values or all of these options',
     'phone' => 'The :attribute is not a valid phone number.',
     /*
     |--------------------------------------------------------------------------

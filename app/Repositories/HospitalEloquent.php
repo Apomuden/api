@@ -1,20 +1,26 @@
 <?php
 namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class HospitalEloquent extends RepositoryEloquent implements IHospitalRepository{
 
-    public function __construct(Model $model)
+    public function __construct(Model $model,$with=null)
     {
-        parent::__construct($model);
+        parent::__construct($model,true,$with);
     }
     function first()
     {
-       return $this->model->first();
+        $key=$this->cache_prefix.'->first';
+        if($this->with)
+        $record= Cache::get($key)??$this->getModel()->with($this->with)->first();
+        else
+        $record= Cache::get($key)??$this->getModel()->first();
+        return $this->cache($key,$record);
     }
 
     public function update(array $data,$id=null){
-        $record=$this->model->first();
+        $record=$this->first();
         $record->update($data);
         return $record->refresh();
     }

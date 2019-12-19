@@ -185,7 +185,9 @@ class RepositoryEloquent implements IRepository{
    }
 
    public function getInstanceWith($with){
-       $this->with($with);
+       if($with){
+        $this->with($with);
+       }
        return $this;
    }
 
