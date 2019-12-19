@@ -34,7 +34,7 @@ class HospitalController extends Controller
     {
         $requestData=ApiRequest::asArray($request);
 
-        $requestData['logo']=FileResolver::base64ToFile($request->logo);
+        //$requestData['logo']=FileResolver::base64ToFile($request->logo);
 
        $response=$this->repository->store($requestData);
 
@@ -53,7 +53,7 @@ class HospitalController extends Controller
         $requestData=ApiRequest::asArray($request);
 
 
-        $requestData['logo']=FileResolver::base64ToFile($request->logo);
+        //$requestData['logo']=FileResolver::base64ToFile($request->logo);
         $response=$this->repository->update($requestData);
 
         return  ApiResponse::withOk('Hospital updated',new HospitalResource($response));
