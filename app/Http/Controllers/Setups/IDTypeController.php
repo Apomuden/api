@@ -34,9 +34,9 @@ class IDTypeController extends Controller
         : ApiResponse::withNotFound('ID Type Not Found');
     }
 
-   function store(IDTypeRequest $AgeGroupRequest){
+   function store(IDTypeRequest $idTypeRequest){
        try{
-           $requestData=$AgeGroupRequest->all();
+           $requestData=$idTypeRequest->all();
 
            $idType=$this->repository->store($requestData);
         return ApiResponse::withOk('Id Type created',new IDTypeResource($idType->refresh()));

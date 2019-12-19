@@ -84,11 +84,13 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('servicecategories','Setups\ServiceCategoryController',['only'=>['index','show','store','update']]);
         Route::get('servicecategories/{servicecategory}/servicesubcategories','Setups\ServiceSubCategoryController@showByServiceCategory')->name('servicecategory.servicesubcategories.show');
         Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',['only'=>['index','show','store','update']]);
+        Route::apiResource('profiledocuments','Setups\ProfileDocumentController',['only'=>['index','show','store','update']]);
+        Route::get('profiles/{profile}/profiledocuments','Setups\ProfileDocumentController@showByProfile')->name('profile.profiledocuments.show');
+    });
 
-    });
-    Route::group(['prefix' => 'utils'], function () {
-        //FileResolver
-       Route::get('file/{subdirectory?}/{path}','Utils\FileResolverController@index')->name('file.url');
-    });
   });
+  Route::group(['prefix' => 'utils'], function () {
+    //FileResolver
+   Route::get('file/{subdirectory?}/{path}','Utils\FileResolverController@index')->name('file.url');
+});
 });

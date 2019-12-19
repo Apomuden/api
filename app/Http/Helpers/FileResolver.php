@@ -8,10 +8,16 @@ class FileResolver{
     static public function resolve($url,$subdirectory=null){
         $subdirectory=str_replace('-',DIRECTORY_SEPARATOR,$subdirectory);
         $path=public_path('uploads').DIRECTORY_SEPARATOR.($subdirectory?$subdirectory.DIRECTORY_SEPARATOR:'').$url;
-        Log::notice('photo',[$path]);
+        //Log::notice('photo',[$path]);
         return file_exists ($path)?$path:NULL;
     }
-
+    static public function unlink($prevFile,$currentFile,$uploadDir){
+        if($prevFile!=$currentFile){
+            $prevFile=FileResolver::resolve($prevFile,$uploadDir);
+            if($prevFile)
+            unlink($prevFile);
+        }
+    }
     static public function resolvePage($url,$subdirectory=null){
         return response()->file(self::resolve($subdirectory,$url));
     }

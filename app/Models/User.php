@@ -168,5 +168,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Relationship::class);
     }
 
-  
+    public function documents()
+    {
+        return $this->hasMany(UserDocument::class);
+    }
 }
