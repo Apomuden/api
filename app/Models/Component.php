@@ -17,13 +17,6 @@ class Component extends Model
 
     public function permissions()
     {
-        return $this->hasManyThrough(
-            Permission::class,
-            ComponentModule::class,
-            'component_id',
-            'component_id',
-            'id',
-            'component_id',
-        );
+        return $this->hasManyThrough(Permission::class,ComponentModule::class,'component_id','component_id','id','component_id');
     }
 }
