@@ -16,8 +16,8 @@ class CreateStaffNextOfKinTable extends Migration
         Schema::create('staff_next_of_kin', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedInteger('phone');
-            $table->string('email');
+            $table->unsignedBigInteger('phone');
+            $table->string('email')->nullable();
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
             $table->unsignedInteger('relation_id');

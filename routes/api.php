@@ -18,16 +18,25 @@ Route::group(['prefix' => 'v1'], function () {
 //Auth Routes
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Auth\AccessController@login')->name('auth.login');
-    Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
-    Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
+
 
       //Authenticated Auth Routes
     Route::group(['middleware'=>['jwt.auth']], function () {
-        Route::apiResource('roles','Setups\RoleController',['only'=>['index','show','store','update']]);
-        Route::apiResource('permissions','Setups\PermissionController',['only'=>['index','show','update']]);
+        Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
+        Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
+        Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
+        Route::apiResource('permissions','Auth\PermissionController',['only'=>['index','show','update']]);
         Route::group(['prefix' => 'profile'], function () {
-            Route::match(['PUT', 'PATCH'],'update','Auth\ProfileController@update')->name('profile.update');
+            Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');
         });
+
+        Route::group(['prefix' => 'profiles'], function () {
+            Route::get('{profile}/profiledocuments','Profile\ProfileDocumentController@showByProfile')->name('profile.profiledocuments.show');
+            Route::get('{profile}/profilenextofkins','Profile\ProfileNextOfKinController@showByProfile')->name('profile.profilenextofkins.show');
+        });
+        Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
+        Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);
+
     });
 });
 
@@ -84,8 +93,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('servicecategories','Setups\ServiceCategoryController',['only'=>['index','show','store','update']]);
         Route::get('servicecategories/{servicecategory}/servicesubcategories','Setups\ServiceSubCategoryController@showByServiceCategory')->name('servicecategory.servicesubcategories.show');
         Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',['only'=>['index','show','store','update']]);
-        Route::apiResource('profiledocuments','Setups\ProfileDocumentController',['only'=>['index','show','store','update']]);
-        Route::get('profiles/{profile}/profiledocuments','Setups\ProfileDocumentController@showByProfile')->name('profile.profiledocuments.show');
+
     });
 
   });

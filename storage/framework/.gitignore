@@ -1,3 +1,4 @@
+/public/uploads/*
 config.php
 routes.php
 schedule-*

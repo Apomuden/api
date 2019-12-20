@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\ActiveTrait;
-
+use Illuminate\Support\Facades\Log;
 
 class RepositoryEloquent implements IRepository{
    // model property on class instances
@@ -113,7 +113,9 @@ class RepositoryEloquent implements IRepository{
    // show the record with the given id
    public function show($id)
    {
+
        $key=$this->cache_prefix.'->find->'.$id;
+
        if($this->useCache){
            $record= Cache::get($key);
            if($record)
@@ -173,7 +175,7 @@ class RepositoryEloquent implements IRepository{
    {
        $this->model = $model;
        $this->with=$with;
-       $this->cache_prefix=$this->cache_prefix??class_basename($this->model);
+       $this->cache_prefix=class_basename($this->model);
 
       // return $this;
    }

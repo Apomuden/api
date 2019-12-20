@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Setups\ProfileRequest;
+use App\Http\Requests\Profile\ProfileRequest;
 use App\Http\Resources\ProfileResource;
 use App\Models\User;
 use App\Repositories\RepositoryEloquent;
@@ -25,9 +25,9 @@ class ProfileController extends Controller
         $user=Auth::guard('api')->user();
         $profile=$this->repository->update($profileRequest->all(),$user->id);
         return ApiResponse::withOk('Profile updated',new ProfileResource($profile));
-      }
+        }
        catch(Exception $e){
            return ApiResponse::withException($e);
-       } 
+       }
    }
 }

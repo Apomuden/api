@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Setups\ProfileDocumentRequest;
+use App\Http\Requests\Profile\ProfileDocumentRequest;
 use App\Http\Resources\ProfileDocumentCollection;
 use App\Http\Resources\ProfileDocumentResource;
 use App\Models\User;
@@ -61,7 +61,7 @@ class ProfileDocumentController extends Controller
        $this->repository->setModel(new User,['documents'=>function($query){
            $query->active()->orderBy('name');
        }]);
-       $documents=$this->repository->find($profile)->documents()->get();
+       $documents=$this->repository->find($profile)->documents??null;
 
        return $documents?
        ApiResponse::withOk('Available Documents Found',new ProfileDocumentCollection($documents))

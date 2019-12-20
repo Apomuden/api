@@ -16,7 +16,7 @@ class CreatePatientNextOfKinTable extends Migration
         Schema::create('patient_next_of_kin', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedInteger('phone');
+            $table->unsignedBigInteger('phone');
             $table->string('email');
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');

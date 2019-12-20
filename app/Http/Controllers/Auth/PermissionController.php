@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
@@ -19,7 +19,7 @@ class PermissionController extends Controller
 
     public function __construct(Permission $Permission)
     {
-        $this->repository= new RepositoryEloquent($Permission,false);
+        $this->repository= new RepositoryEloquent($Permission,true,['component']);
     }
 
     function index(){

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Setups;
+namespace App\Http\Requests\Auth;
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Support\Facades\Log;
 

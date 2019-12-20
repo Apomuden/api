@@ -19,4 +19,17 @@ class Permission extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+  public function component()
+  {
+      return $this->belongsTo(Component::class);
+  }
+
+    public function scopeModules($query)
+    {
+        return $query->rightJoin('component_module','permissions.component_id','=','component_module.component_id')
+                     ->rightJoin('modules','modules.id','=','component_module.module_id')
+                     ->distinct();
+
+    }
 }

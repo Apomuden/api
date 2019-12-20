@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Setups;
+namespace App\Http\Requests\Profile;
 use App\Http\Requests\ApiFormRequest;
 
 class ProfileDocumentRequest extends ApiFormRequest

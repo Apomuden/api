@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Component;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Permission;
@@ -27,18 +28,39 @@ class PermissionTableSeeder extends Seeder
             $controller = $_action[0];
             $method = end($_action);
 
-            // check if this permission is already exists
-            $permission_check = Permission::where(
-                    ['controller'=>$controller,'method'=>$method]
-                )->first();
-            if(!$permission_check){
-            $permission = new Permission;
-            $permission->name=$name;
-            $permission->controller = $controller;
-            $permission->method = $method;
-            $permission->save();
-            // add stored permission id in array
-            $permission_ids[] = $permission->id;
+            // Check if Component Exist
+            $_component=explode('\\',$controller);
+            $component_name=str_replace('Controller','',end($_component));
+
+            $component=Component::where(['name'=>$component_name])->first();
+
+            if(!$component){
+               $component=new Component;
+               $component->name=$component_name;
+               $component->save();
+            }
+
+           
+
+              // check if this permission is already exists
+              $permission = Permission::where(
+                ['controller'=>$controller,'method'=>$method]
+            )->first();
+
+            if(!$permission){
+                $permission = new Permission;
+                $permission->name=$name;
+                $permission->controller = $controller;
+                $permission->method = $method;
+                $permission->component_id=$component->id;
+                $permission->save();
+                // add stored permission id in array
+                $permission_ids[] = $permission->id;
+            }
+            else if(!$permission->component_id)
+            {
+                $permission->component_id=$component->id;
+                $permission->save();
             }
         }// find admin role.
         $admin_role = Role::where('name','Admin')->first();// atache all permissions to admin role

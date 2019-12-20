@@ -172,4 +172,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(UserDocument::class);
     }
+
+    public function nextofkins()
+    {
+        return $this->hasMany(StaffNextOfKin::class);
+    }
+
+  
 }
