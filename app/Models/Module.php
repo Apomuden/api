@@ -23,7 +23,7 @@ class Module extends Model
            'module_id',
            'component_id',
            'id',
-           'component_id',
+           'component_id'
        );
    }
 }
