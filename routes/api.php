@@ -25,6 +25,13 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
         Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
         Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
+
+        Route::apiResource('modules','Auth\ModuleController',['only'=>['index','show']]);
+        Route::get('components/{component}/permissions','Auth\PermissionController@showByComponent')->name('component.permissions.show');
+        Route::apiResource('components','Auth\ComponentController',['only'=>['index','show']]);
+
+        Route::get('modules/{module}/components','Auth\ComponentController@showByModule')->name('module.components.show');
+
         Route::apiResource('permissions','Auth\PermissionController',['only'=>['index','show','update']]);
         Route::group(['prefix' => 'profile'], function () {
             Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');

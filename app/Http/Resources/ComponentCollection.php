@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Http\Traits\PaginationTrait;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PermissionCollection extends ResourceCollection
+class ComponentCollection extends ResourceCollection
 {
    use PaginationTrait;
 
@@ -23,17 +23,13 @@ class PermissionCollection extends ResourceCollection
     }
     public function toArray($request)
     {
-        $data= [
+        return [
             'errorCode'=>'000',
             'taggedAs'=>count($this->collection)?$this->message:'No records found',
             'dataCount'=>count($this->collection),
-            'data'=>PermissionResource::collection($this->collection),
+            'data'=>GeneralResource::collection($this->collection),
+            'pagination'=>$this->pagination
         ];
-
-        if($this->pagination)
-        $data['pagination']=$this->pagination;
-
-        return $data;
     }
 
 }
