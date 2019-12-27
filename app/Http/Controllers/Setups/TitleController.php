@@ -8,7 +8,7 @@ use App\Http\Requests\Setups\TitleRequest;
 
 use App\Http\Resources\TitleCollection;
 use App\Http\Resources\TitleResource;
-use App\Models\title;
+use App\Models\Title;
 
 use App\Repositories\RepositoryEloquent;
 use Exception;
