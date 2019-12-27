@@ -26,4 +26,5 @@ class Module extends Model
            'component_id'
        );
    }
+
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Helpers;
 
+use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\Hash;
 
 class Security{
@@ -11,4 +12,5 @@ class Security{
     static function getNewPasswordHash($plain_password,$id){
        return Hash::make(trim($plain_password).trim($id));
     }
+
 }

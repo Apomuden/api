@@ -11,6 +11,8 @@ interface IRepository{
 
     function show($id);
     function find($id);
+    function showWhere(array $where);
+    function findWhere($where);
     function findOrFail($id);
     function getInstanceWith($with);
 }

@@ -136,6 +136,18 @@ class RepositoryEloquent implements IRepository{
        return $this->cache($key,$record);
    }
 
+   //find record by
+   public function showWhere(array $where)
+   {
+
+           if($this->with)
+           $record=$this->model->with($this->with)->where($where);
+           else
+           $record=$this->model->where($where);
+
+       return $record;
+   }
+
 
    public function findOrFail($id)
    {
@@ -162,6 +174,10 @@ class RepositoryEloquent implements IRepository{
 
    public function find($id){
       return $this->show($id);
+   }
+
+   public function findWhere($where){
+      return $this->showWhere($where);
    }
 
    // Get the associated model

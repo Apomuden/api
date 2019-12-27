@@ -33,7 +33,7 @@ class CreatePatientsTable extends Migration
             $table->date('id_expiry_date')->nullable();
             $table->unsignedBigInteger('folder_id');
             $table->foreign('folder_id')->references('id')->on('folders')->onDelete('restrict');
-            $table->string('old_folder_no')->nullable();
+            $table->string('old_folder_no')->nullable()->index();
             $table->unsignedInteger('origin_country_id')->nullable();
             $table->foreign('origin_country_id')->references('id')->on('countries')->onDelete('restrict');
             $table->unsignedBigInteger('origin_region_id')->nullable();

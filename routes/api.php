@@ -24,6 +24,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['middleware'=>['jwt.auth']], function () {
         Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
         Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
+
+        Route::get('roles/{role}/permissions/hierarchy','Auth\PermissionController@showHierarchyByRole')->name('role.permissions.hierarchy');
+        Route::get('roles/{role}/permissions','Auth\PermissionController@showByRole')->name('role.permissions.show');
+        Route::put('roles/{role}/attachmodules','Auth\AuthorizationController@attchModulesToRole')->name('role.attachmodules');
         Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
 
         Route::apiResource('modules','Auth\ModuleController',['only'=>['index','show']]);

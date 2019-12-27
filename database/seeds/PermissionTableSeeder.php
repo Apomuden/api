@@ -40,7 +40,7 @@ class PermissionTableSeeder extends Seeder
                $component->save();
             }
 
-           
+
 
               // check if this permission is already exists
               $permission = Permission::where(
@@ -65,5 +65,6 @@ class PermissionTableSeeder extends Seeder
         }// find admin role.
         $admin_role = Role::where('name','Admin')->first();// atache all permissions to admin role
         $admin_role->permissions()->attach($permission_ids);
+        $admin_role->attachPermissionsToUsers();
     }
 }

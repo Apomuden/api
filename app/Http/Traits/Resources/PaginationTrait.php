@@ -11,7 +11,8 @@ trait PaginationTrait
             'next_page_url' =>$newResource->next_page_url,
             'prev_page_url' =>$newResource->prev_page_url,
             'last_page_url' =>$newResource->last_page_url,
-            'total_pages' => $this->resource->lastPage()
+            'total_pages' => $this->resource->lastPage(),
+            'total_records'=>$newResource->total
         ];
     }
 }

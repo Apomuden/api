@@ -14,8 +14,8 @@ class HospitalResource extends JsonResource
      */
     public function toArray($request)
     {
-        $country=$this->country;
-        $region=$this->region;
+        $country=$this->country??null;
+        $region=$this->region??null;
         return [
             'id'=>$this->id,
             'name'=>$this->name,
@@ -35,9 +35,9 @@ class HospitalResource extends JsonResource
             'email2'=>$this->email2,
             'postal_address'=>$this->postal_address,
             'physical_address'=>$this->physical_address,
-            'country_name'=>$country->country_name,
+            'country_name'=>$country->country_name??null,
             'country_id'=>$country->id,
-            'region_name'=>$region->region_name,
+            'region_name'=>$region->region_name??null,
             'region_id'=>$region->id,
             'gps_location'=>$this->gps_location,
             'logo'=>$this->logo?\route('file.url',['logos',$this->logo]):null,
