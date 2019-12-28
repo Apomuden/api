@@ -15,7 +15,8 @@ class ComponentPermissionsResource extends JsonResource
     public function toArray($request)
     {
         if(isset($this->id)){
-            $permissions=new PermissionCollection($this->permissions,'Associated permissions');
+            $permissions=count($this->permissions)? PermissionResource::collection($this->permissions):[];
+            //$permissions=$this->permissions;
             return [
                 'id'=>$this->id,
                 'name'=>$this->name,

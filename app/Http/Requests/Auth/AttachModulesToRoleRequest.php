@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth;
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Support\Facades\Log;
 
-class AttacheModuleToRoleRequest extends ApiFormRequest
+class AttachModulesToRoleRequest extends ApiFormRequest
 {
    public function authorize(){
        return true;

@@ -25,9 +25,17 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('logout', 'Auth\AccessController@logout')->name('auth.logout');
         Route::get('/refresh', 'Auth\AccessController@refresh')->name('auth.refresh');
 
-        Route::get('roles/{role}/permissions/hierarchy','Auth\PermissionController@showHierarchyByRole')->name('role.permissions.hierarchy');
+        Route::get('roles/{role}/permissions/hierarchy','Auth\PermissionController@showHierarchyByRole')->name('role.permissions.hierarchy.show');
         Route::get('roles/{role}/permissions','Auth\PermissionController@showByRole')->name('role.permissions.show');
-        Route::put('roles/{role}/attachmodules','Auth\AuthorizationController@attchModulesToRole')->name('role.attachmodules');
+
+        //Authorization routes
+        Route::put('roles/{role}/attachmodules','Auth\AuthorizationController@attachModulesToRole')->name('role.attachmodules');
+        Route::put('roles/{role}/detachmodules','Auth\AuthorizationController@detachModulesFromRole')->name('role.detachmodules');
+        Route::put('roles/{role}/detachmodules','Auth\AuthorizationController@detachModulesFromRole')->name('role.detachmodules');
+
+        Route::put('roles/{role}/attachpermissions','Auth\AuthorizationController@attachPermissionsToRole')->name('role.attachpermissions');
+        Route::put('roles/{role}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromRole')->name('role.detachpermissions');
+
         Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
 
         Route::apiResource('modules','Auth\ModuleController',['only'=>['index','show']]);
@@ -37,13 +45,30 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('modules/{module}/components','Auth\ComponentController@showByModule')->name('module.components.show');
 
         Route::apiResource('permissions','Auth\PermissionController',['only'=>['index','show','update']]);
+
+        //Logged In User Routes
         Route::group(['prefix' => 'profile'], function () {
+            Route::get('permissions/hierarchy','Profile\ProfileController@showPermissionHierarchy')->name('profile.permissions.hierarchy.show');
+            Route::get('permissions','Profile\ProfileController@showPermissions')->name('profile.permissions.show');
+            Route::get('permissions/paginated','Profile\ProfileController@showPermissionsPaginated')->name('profile.permissions.paginated.show');
             Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');
         });
 
+        //User By Id
         Route::group(['prefix' => 'profiles'], function () {
             Route::get('{profile}/profiledocuments','Profile\ProfileDocumentController@showByProfile')->name('profile.profiledocuments.show');
             Route::get('{profile}/profilenextofkins','Profile\ProfileNextOfKinController@showByProfile')->name('profile.profilenextofkins.show');
+
+            //Authorization routes
+            Route::put('{profile}/attachmodules','Auth\AuthorizationController@attachModulesToUser')->name('profile.attachmodules');
+            Route::put('{profile}/detachmodules','Auth\AuthorizationController@detachModulesFromUser')->name('profile.detachmodules');
+            Route::put('{profile}/attachpermissions','Auth\AuthorizationController@attachPermissionsToUser')->name('profile.attachpermissions');
+            Route::put('{profile}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromUser')->name('profile.detachpermissions');
+
+            //User Permissions
+            Route::get('{profile}/permissions','Auth\PermissionController@showPermissions')->name('profile.permissions.show');
+            Route::get('{profile}/permissions/hierarchy','Auth\PermissionController@showPermissionHierarchy')->name('profile.permissions.hierarchy.show');
+            Route::get('{profile}/permissions/paginated','Auth\PermissionController@showPermissionsPaginated')->name('profile.permissions.paginated.show');
         });
         Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
         Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);

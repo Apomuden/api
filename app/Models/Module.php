@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Module extends Model
 {
-    use ActiveTrait;
+    use ActiveTrait,SortableTrait;
     protected $guarded = [];
 
     public function components()

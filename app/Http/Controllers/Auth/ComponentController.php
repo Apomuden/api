@@ -34,10 +34,9 @@ class ComponentController extends Controller
         $this->repository->setModel(new Module);
 
         $components=$this->repository->getInstanceWith(['components'=>function($query){
-            $query->active()->orderBy('name')->paginate(10);
+            $query->active()->orderBy('name')->sortBy('name')->paginate(10);
         }])->find($module)->components;
 
         return ApiResponse::withOk('Available Components', GeneralResource::collection($components));
     }
-
 }

@@ -15,7 +15,7 @@ class ModulePermissionsResource extends JsonResource
     public function toArray($request)
     {
         if(isset($this->id)){
-            $components=new ComponentPermissionsCollection($this->components);
+            $components=($this->components && count($this->components))?ComponentPermissionsResource::collection($this->components):[];
             return [
                 'id'=>$this->id,
                 'name'=>$this->name,

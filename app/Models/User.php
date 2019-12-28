@@ -7,6 +7,7 @@ use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
 use App\Http\Traits\ActiveTrait;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -177,6 +178,38 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(StaffNextOfKin::class);
     }
+    public function attachPermissions($permissions){
+            try{
+                $this->permissions()->attach($permissions);
+            }
+            catch(Exception $e){}
+    }
+    public function detachPermissions($permissions){
+            try{
+                $this->permissions()->detach($permissions);
+            }
+            catch(Exception $e){}
+    }
 
-  
+    public function attachModules($module_ids){
+        $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
+        foreach($modules as $module){
+           $components=$module->components;
+           foreach($components as $component){
+               $permissions=$component->permissions;
+               $this->attachPermissions($permissions);
+           }
+        }
+     }
+
+     public function detachModules($module_ids){
+         $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
+         foreach($modules as $module){
+            $components=$module->components;
+            foreach($components as $component){
+                $permissions=$component->permissions;
+               $this->detachPermissions($permissions);
+            }
+         }
+      }
 }

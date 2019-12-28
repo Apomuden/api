@@ -4,7 +4,7 @@ trait PaginationTrait
 {
     function paginateLinks(){
         $newResource=Json_decode(json_encode($this->resource))??null;
-        $this->pagination = [
+        $this->pagination =method_exists($this->resource,'currentPage')? [
             'current_page' => $this->resource->currentPage(),
             'current_page_url' =>$newResource->path.'?page='. $this->resource->currentPage(),
             'first_page_url'=>$newResource->first_page_url,
@@ -13,6 +13,6 @@ trait PaginationTrait
             'last_page_url' =>$newResource->last_page_url,
             'total_pages' => $this->resource->lastPage(),
             'total_records'=>$newResource->total
-        ];
+        ]:[];
     }
 }

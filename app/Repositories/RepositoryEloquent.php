@@ -46,9 +46,17 @@ class RepositoryEloquent implements IRepository{
          return $this->cache($key,$all);
    }
 
-   public function paginate($paginate=15,$sortBy=null){
+   public function paginate($paginate=15,$sortBy=null,$order='ASC'){
+
+        //Get the sort from the route params
+        $urlSortBy=\request()->input('sortBy');
+        $urlOrder=\request()->input('order');
+        $sortBy=$urlSortBy??$sortBy;
+        $order=$urlOrder??$order;
+
          $key=$this->cache_prefix.'->paginate';
-        if($this->useCache){
+
+        if(!$urlSortBy & $this->useCache){
            $all= Cache::get($key);
            if($all)
            return $all;
@@ -65,7 +73,7 @@ class RepositoryEloquent implements IRepository{
             $all= ($this->useActiveTrait?$this->model->active():$this->model);
         }
 
-          $all=$all && $sortBy?$all->orderBy($sortBy):$all;
+          $all=$all && $sortBy?$all->orderBy($sortBy,$order):$all;
 
          $all=$all->paginate($paginate);
 
@@ -139,7 +147,6 @@ class RepositoryEloquent implements IRepository{
    //find record by
    public function showWhere(array $where)
    {
-
            if($this->with)
            $record=$this->model->with($this->with)->where($where);
            else
@@ -209,9 +216,12 @@ class RepositoryEloquent implements IRepository{
        return $this;
    }
 
-   protected function cache($key,$value){
-    Cache::forever($key,$value);
-    return $value;
+   protected function cache($key,$value,$time=null){
+        if($time)
+        Cache ::put($key,$value ,$time);
+        else
+        Cache::forever($key,$value);
+        return $value;
    }
 
    protected function deletCache($key=null){

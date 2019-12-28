@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Auth\PermissionRequest;
 use App\Http\Requests\Setups\RoleRequest;
+use App\Http\Resources\ComponentPermissionsResource;
 use App\Http\Resources\ModulePermissionsCollection;
 use App\Http\Resources\PermissionCollection;
 use App\Http\Resources\PermissionResource;
@@ -13,6 +14,7 @@ use App\Models\Component;
 use App\Models\Module;
 use App\Models\Permission;
 use App\Models\Role;
+use App\Models\User;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 
@@ -54,7 +56,6 @@ class PermissionController extends Controller
        $permissions=$this->repository->find($component)->permissions;
 
        return ApiResponse::withOk('Available Permissions',PermissionResource::collection($permissions));
-
    }
 
    function showByRole($role){
@@ -66,10 +67,32 @@ class PermissionController extends Controller
 
    function showHierarchyByRole($role){
        $withPermissions=['permissions'=>function($q) use($role){$q->whereHas('roles',function($q2) use ($role){$q2->where('id',$role);});}];
-       $modules=Module::with(['components'=>function($q) use($withPermissions){$q->with($withPermissions);}])->orderBy('name')->paginate(10);
+       $modules=Module::with(['components'=>function($q) use($withPermissions){$q->with($withPermissions);}])->sortBy('name')->paginate(10);
 
-       return $modules;
 
-       return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules,"Permissions hierachyr"));
+       return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules,"Permissions hierachy"));
+   }
+
+   //get User Permissions
+   function showPermissionHierarchy($user){
+    $this->repository->setModel(new User);
+    $user=$this->repository->findOrFail($user);
+    $withPermissions=['permissions'=>function($q) use($user){$q->whereHas('users',function($q2) use ($user){$q2->where('id',$user->id);});}];
+    $modules=Module::with(['components'=>function($q) use($withPermissions){$q->with($withPermissions);}])->sortBy('name')->paginate(10);
+
+    return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules,"Permissions hierachy"));
+   }
+
+   function showPermissions($user){
+       $this->repository->setModel(new User);
+       $user=$this->repository->findOrFail($user);
+      $permissions=$user->permissions()->active()->sortBy('name')->get();
+     return ApiResponse::withOk('Available Permissions',PermissionResource::collection($permissions));
+   }
+   function showPermissionsPaginated($user){
+      $this->repository->setModel(new User);
+      $user=$this->repository->findOrFail($user);
+      $permissions=$user->permissions()->active()->sortBy('name')->paginate(10);
+     return ApiResponse::withPaginate(new PermissionCollection($permissions,'Available permissions'));
    }
 }
