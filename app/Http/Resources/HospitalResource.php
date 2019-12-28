@@ -36,9 +36,9 @@ class HospitalResource extends JsonResource
             'postal_address'=>$this->postal_address,
             'physical_address'=>$this->physical_address,
             'country_name'=>$country->country_name??null,
-            'country_id'=>$country->id,
+            'country_id'=>$country->id??null,
             'region_name'=>$region->region_name??null,
-            'region_id'=>$region->id,
+            'region_id'=>$region->id??null,
             'gps_location'=>$this->gps_location,
             'logo'=>$this->logo?\route('file.url',['logos',$this->logo]):null,
         ];

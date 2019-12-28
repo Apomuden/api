@@ -34,11 +34,11 @@ class AuthorizationController extends Controller
         }
     }
 
-    function detachModulesFromRole(AttachModulesToRoleRequest $request,$role,$cascade){
+    function detachModulesFromRole(AttachModulesToRoleRequest $request,$role,$cascade=false){
         try{
             $role=$this->repository->findOrFail($role);
 
-            $role->detachModules($request->module_ids);
+            $role->detachModules($request->module_ids,$cascade);
 
             return ApiResponse::withOk('Modules detached from role successfully');
         }

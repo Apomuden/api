@@ -31,10 +31,11 @@ Route::group(['prefix' => 'auth'], function () {
         //Authorization routes
         Route::put('roles/{role}/attachmodules','Auth\AuthorizationController@attachModulesToRole')->name('role.attachmodules');
         Route::put('roles/{role}/detachmodules','Auth\AuthorizationController@detachModulesFromRole')->name('role.detachmodules');
-        Route::put('roles/{role}/detachmodules','Auth\AuthorizationController@detachModulesFromRole')->name('role.detachmodules');
+        Route::put('roles/{role}/detachmodules/cascade','Auth\AuthorizationController@detachModulesFromRoleCascade')->name('role.detachmodules.cascade');
 
         Route::put('roles/{role}/attachpermissions','Auth\AuthorizationController@attachPermissionsToRole')->name('role.attachpermissions');
         Route::put('roles/{role}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromRole')->name('role.detachpermissions');
+        Route::put('roles/{role}/detachpermissions/cascade','Auth\AuthorizationController@detachPermissionsFromRoleCascade')->name('role.detachpermissions');
 
         Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
 
