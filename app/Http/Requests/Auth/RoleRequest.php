@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Auth;
 use App\Http\Requests\ApiFormRequest;
-use Illuminate\Support\Facades\Log;
 
 class RoleRequest extends ApiFormRequest
 {

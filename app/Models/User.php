@@ -212,4 +212,21 @@ class User extends Authenticatable implements JWTSubject
             }
          }
       }
+
+
+      public function attachComponents($component_ids){
+        $components=Component::with('permissions')->get();
+           foreach($components as $component){
+               $permissions=$component->permissions;
+               $this->attachPermissions($permissions);
+           }
+     }
+
+     public function detachComponents($component_ids){
+        $components=Component::with('permissions')->get();
+            foreach($components as $component){
+                $permissions=$component->permissions;
+               $this->detachPermissions($permissions);
+            }
+      }
 }

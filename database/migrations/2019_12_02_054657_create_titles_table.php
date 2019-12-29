@@ -16,7 +16,7 @@ class CreateTitlesTable extends Migration
         Schema::create('titles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->set('gender',['MALE','FEMALE'])->default('MALE','FEMALE');
+            $table->set('gender',['MALE','FEMALE','BIGENDER'])->default('MALE,FEMALE');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
         });

@@ -37,11 +37,21 @@ Route::group(['prefix' => 'auth'], function () {
         Route::put('roles/{role}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromRole')->name('role.detachpermissions');
         Route::put('roles/{role}/detachpermissions/cascade','Auth\AuthorizationController@detachPermissionsFromRoleCascade')->name('role.detachpermissions');
 
+         //Authorization routes
+         Route::put('roles/{role}/attachcomponents','Auth\AuthorizationController@attachComponentsToRole')->name('role.attachcomponents');
+         Route::put('roles/{role}/detachcomponents','Auth\AuthorizationController@detachComponentsFromRole')->name('role.detachcomponents');
+         Route::put('roles/{role}/detachcomponents/cascade','Auth\AuthorizationController@detachComponentsFromRoleCascade')->name('role.detachcomponents.cascade');
+
+
+
         Route::apiResource('roles','Auth\RoleController',['only'=>['index','show','store','update']]);
 
         Route::apiResource('modules','Auth\ModuleController',['only'=>['index','show']]);
         Route::get('components/{component}/permissions','Auth\PermissionController@showByComponent')->name('component.permissions.show');
         Route::apiResource('components','Auth\ComponentController',['only'=>['index','show']]);
+
+
+
 
         Route::get('modules/{module}/components','Auth\ComponentController@showByModule')->name('module.components.show');
 
@@ -65,6 +75,8 @@ Route::group(['prefix' => 'auth'], function () {
             Route::put('{profile}/detachmodules','Auth\AuthorizationController@detachModulesFromUser')->name('profile.detachmodules');
             Route::put('{profile}/attachpermissions','Auth\AuthorizationController@attachPermissionsToUser')->name('profile.attachpermissions');
             Route::put('{profile}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromUser')->name('profile.detachpermissions');
+            Route::put('{profile}/attachcomponents','Auth\AuthorizationController@attachComponentsToUser')->name('profile.attachcomponents');
+            Route::put('{profile}/detachcomponents','Auth\AuthorizationController@detachComponentsFromUser')->name('profile.detachcomponents');
 
             //User Permissions
             Route::get('{profile}/permissions','Auth\PermissionController@showPermissions')->name('profile.permissions.show');
@@ -79,6 +91,11 @@ Route::group(['prefix' => 'auth'], function () {
 
   //Authenticated Routes
   Route::group(['middleware'=>['jwt.auth']],function () {
+    //Pricing
+    Route::group(['prefix' => 'pricing'], function () {
+        Route::get('serviceprices/search','Pricing\ServicePricingController@search')->name('serviceprices.search');
+        Route::apiResource('serviceprices','Pricing\ServicePricingController',['only'=>['index','show','store','update']]);
+    });
     //Setups
     Route::group(['prefix' => 'setups'], function () {
         Route::apiResource('countries','Setups\CountryController',['only'=>['index','show']]);
