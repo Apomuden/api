@@ -6,6 +6,7 @@ use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,7 +18,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable,ActiveTrait;
+    use Notifiable,ActiveTrait,SortableTrait;
 
 
     /**

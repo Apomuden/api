@@ -65,6 +65,9 @@ Route::group(['prefix' => 'auth'], function () {
             Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');
         });
 
+         //Registrations Routes
+        Route::apiResource('profiles', 'Profile\UserRegisterationController',['only'=>['index','show','store','update']]);
+
         //User By Id
         Route::group(['prefix' => 'profiles'], function () {
             Route::get('{profile}/profiledocuments','Profile\ProfileDocumentController@showByProfile')->name('profile.profiledocuments.show');
@@ -82,6 +85,7 @@ Route::group(['prefix' => 'auth'], function () {
             Route::get('{profile}/permissions','Auth\PermissionController@showPermissions')->name('profile.permissions.show');
             Route::get('{profile}/permissions/hierarchy','Auth\PermissionController@showPermissionHierarchy')->name('profile.permissions.hierarchy.show');
             Route::get('{profile}/permissions/paginated','Auth\PermissionController@showPermissionsPaginated')->name('profile.permissions.paginated.show');
+
         });
         Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
         Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);
@@ -96,6 +100,8 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('serviceprices/search','Pricing\ServicePricingController@search')->name('serviceprices.search');
         Route::apiResource('serviceprices','Pricing\ServicePricingController',['only'=>['index','show','store','update']]);
     });
+
+
     //Setups
     Route::group(['prefix' => 'setups'], function () {
         Route::apiResource('countries','Setups\CountryController',['only'=>['index','show']]);

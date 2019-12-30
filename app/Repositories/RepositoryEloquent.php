@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 class RepositoryEloquent implements IRepository{
    // model property on class instances
-   protected $model,$cache_prefix,$useCache=true,$useActiveTrait;
+   protected $model,$cache_prefix,$useCache=true;
+   public $useActiveTrait;
 
    // Constructor to bind model to repo
    public function __construct(Model $model,bool $useCache=true,$with=null)
