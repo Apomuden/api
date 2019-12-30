@@ -35,7 +35,7 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::put('roles/{role}/attachpermissions','Auth\AuthorizationController@attachPermissionsToRole')->name('role.attachpermissions');
         Route::put('roles/{role}/detachpermissions','Auth\AuthorizationController@detachPermissionsFromRole')->name('role.detachpermissions');
-        Route::put('roles/{role}/detachpermissions/cascade','Auth\AuthorizationController@detachPermissionsFromRoleCascade')->name('role.detachpermissions');
+        Route::put('roles/{role}/detachpermissions/cascade','Auth\AuthorizationController@detachPermissionsFromRoleCascade')->name('role.detachpermissions.cascade');
 
          //Authorization routes
          Route::put('roles/{role}/attachcomponents','Auth\AuthorizationController@attachComponentsToRole')->name('role.attachcomponents');
@@ -82,9 +82,9 @@ Route::group(['prefix' => 'auth'], function () {
             Route::put('{profile}/detachcomponents','Auth\AuthorizationController@detachComponentsFromUser')->name('profile.detachcomponents');
 
             //User Permissions
-            Route::get('{profile}/permissions','Auth\PermissionController@showPermissions')->name('profile.permissions.show');
-            Route::get('{profile}/permissions/hierarchy','Auth\PermissionController@showPermissionHierarchy')->name('profile.permissions.hierarchy.show');
-            Route::get('{profile}/permissions/paginated','Auth\PermissionController@showPermissionsPaginated')->name('profile.permissions.paginated.show');
+            Route::get('{profile}/permissions','Auth\PermissionController@showPermissions')->name('profiles.single.permissions.show');
+            Route::get('{profile}/permissions/hierarchy','Auth\PermissionController@showPermissionHierarchy')->name('profiles.single.permissions.hierarchy.show');
+            Route::get('{profile}/permissions/paginated','Auth\PermissionController@showPermissionsPaginated')->name('profiles.single.permissions.paginated.show');
 
         });
         Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
