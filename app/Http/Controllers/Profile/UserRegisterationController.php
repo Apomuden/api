@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Profile\ProfileRequest;
 use App\Http\Resources\ProfilePaginatedCollection;
+use App\Http\Resources\ProfileResource;
+use App\Http\Resources\ProfileWithIDResource;
 use App\Models\User;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\Hash;
@@ -24,5 +27,16 @@ class UserRegisterationController extends Controller
         $users=$this->repository->paginate(10,'username');
 
         return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of users'));
+   }
+
+   function store(ProfileRequest $request)
+   {
+       $profile=$this->repository->store($request->all());
+       return ApiResponse::withOk('Profile created',new ProfileWithIDResource($profile->refresh()));
+   }
+
+   function update(ProfileRequest $request,$profile){
+        $profile=$this->repository->update($request->all(),$profile);
+        return ApiResponse::withOk('Profile updated',new ProfileWithIDResource($profile->refresh()));
    }
 }
