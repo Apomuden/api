@@ -11,6 +11,7 @@ use App\Http\Resources\ProfileResource;
 use App\Http\Resources\ProfileWithIDResource;
 use App\Models\User;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,21 @@ class UserRegisterationController extends Controller
 
         return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of users'));
    }
+
+   function show($profile)
+   {
+      $profile=$this->repository->find($profile);
+      return ApiResponse::withOk('Profile found',new ProfileWithIDResource($profile));
+   }
+
+  /*  function search(){
+      $params=\request()->query();
+      if($params)
+      $users=$this->repository->getModel()->findBy($params)->sortBy('username')->paginate(10);
+      else
+      $users=$this->repository->paginate(10,'username');
+      return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of found users'));
+   } */
 
    function store(ProfileRequest $request)
    {

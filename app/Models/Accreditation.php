@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
+use App\Http\Traits\FindByTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Accreditation extends Model
 {
+    use FindByTrait;
     protected $guarded = [];
 
 

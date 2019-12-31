@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
+use App\Http\Traits\SortableTrait;
 use App\Repositories\HospitalEloquent;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-   use ActiveTrait;
+   use ActiveTrait,SortableTrait,FindByTrait;
    protected $guarded = [];
 
   /*  public static function boot()

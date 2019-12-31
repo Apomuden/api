@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
-    use ActiveTrait,SortableTrait;
+    use ActiveTrait,SortableTrait,FindByTrait;
     protected $guarded = [];
     public $preserveKeys = true;
     public function roles()

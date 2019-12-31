@@ -25,11 +25,11 @@ class ServicePricingController extends Controller
        return ApiResponse::withOk('Service Prices List',new ServicePriceCollection($servicePrices));
     }
 
-    public function search(){
+    /* public function search(){
        $params=request()->query();
        $servicePrices=$this->repository->getModel()->findBy($params)->orderBy('description')->get();
        return ApiResponse::withOk('Service Prices List',new ServicePriceCollection($servicePrices));
-    }
+    } */
 
     /**
      * Store a newly created resource in storage.

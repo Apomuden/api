@@ -6,19 +6,21 @@ use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable,ActiveTrait,SortableTrait;
+    use Notifiable,ActiveTrait,SortableTrait,FindByTrait;
 
 
     /**
@@ -192,6 +194,9 @@ class User extends Authenticatable implements JWTSubject
             catch(Exception $e){}
     }
 
+    static function getCategorySummary(){
+        return self::select('staff_category_id',DB::raw('count(*) as total'))->groupBy('staff_category_id')->whereHas('staff_category')->get();
+    }
     public function attachModules($module_ids){
         $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
         foreach($modules as $module){

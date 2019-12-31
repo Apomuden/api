@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use App\Http\Helpers\ApiResponse;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\UnauthorizedException;
 use  Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -90,6 +91,17 @@ class Handler extends ExceptionHandler
        else
        return ApiResponse::withJson($this->errorCode,trim($exception->getMessage(),'.'),NULL,HttpResponse::HTTP_UNAUTHORIZED);
  */
+       if($exception instanceof QueryException){
+        $searchParams=\request()->query();
+
+        unset($searchParams['sortBy']);
+        unset($searchParams['order']);
+        if($searchParams){
+            $messageArray=explode('(',$exception->getMessage());
+            return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',$messageArray[0],HttpResponse::HTTP_BAD_REQUEST);
+        }
+        return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',NULL,HttpResponse::HTTP_BAD_REQUEST);
+       }
         return parent::render($request, $exception);
     }
 }

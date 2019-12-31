@@ -4,12 +4,14 @@ use Illuminate\Database\Eloquent\Model;
 use phpDocumentor\Reflection\Types\Boolean;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class RepositoryEloquent implements IRepository{
    // model property on class instances
    protected $model,$cache_prefix,$useCache=true;
-   public $useActiveTrait;
+   public $useActiveTrait=false,$useFindBy;
 
    // Constructor to bind model to repo
    public function __construct(Model $model,bool $useCache=true,$with=null)
@@ -19,30 +21,51 @@ class RepositoryEloquent implements IRepository{
 
        $this->cache_prefix=$this->cache_prefix??class_basename($this->model);
        $this->useCache=$useCache;
-       $this->useActiveTrait=in_array(ActiveTrait::class, class_uses($this->model));
+       //$this->useActiveTrait=in_array(ActiveTrait::class, class_uses($this->model));
+       $this->useFindBy=in_array(FindByTrait::class, class_uses($this->model));
    }
 
    // Get all instances of model
    public function all($sortBy=null)
    {
        $key=$this->cache_prefix.'->all';
+       $searchParams=\request()->query();
+
+       unset($searchParams['sortBy']);
+       unset($searchParams['order']);
+
+       DB::enableQueryLog();
+
        if($this->useCache){
             $all= Cache::get($key);
-            if($all)
-            return $all;
-            if($this->with)
-            $all=$this->useActiveTrait?$this->model->with($this->with)->active()->get():$this->model->with($this->with)->get();
-            else
-            $all=$this->useActiveTrait?$this->model->active()->get():$this->model->all();
+            if(!$searchParams && $all)
+               return $all;
+            if($this->with){
+                $all=$this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with);
+                $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
+                $all=$all->get();
+            }
+            else{
+                $all=$this->useActiveTrait?$this->model->active():$this->model;
+                $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
+                $all=$all->get();
+            }
        }
        else{
-           if($this->with)
-           $all= ($this->useActiveTrait?$this->model->with($this->with)->active()->get():$this->model->with($this->with)->all());
-           else
-           $all= ($this->useActiveTrait?$this->model->active()->get():$this->model->all());
+           if($this->with){
+               $all= ($this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with));
+               $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
+               $all=$all->get();
+           }
+           else{
+               $all= ($this->useActiveTrait?$this->model->active():$this->model);
+               $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
+               $all=$all->get();
+           }
        }
 
          $all=$all && $sortBy?$all->sortBy($sortBy):$all;
+
 
          return $this->cache($key,$all);
    }
@@ -55,11 +78,17 @@ class RepositoryEloquent implements IRepository{
         $sortBy=$urlSortBy??$sortBy;
         $order=$urlOrder??$order;
 
+        $searchParams=\request()->query();
+
+        unset($searchParams['sortBy']);
+        unset($searchParams['order']);
+
+
          $key=$this->cache_prefix.'->paginate';
 
         if(!$urlSortBy & $this->useCache){
            $all= Cache::get($key);
-           if($all)
+           if(!$searchParams && $all)
            return $all;
 
            if($this->with)
@@ -75,6 +104,8 @@ class RepositoryEloquent implements IRepository{
         }
 
           $all=$all && $sortBy?$all->orderBy($sortBy,$order):$all;
+
+         $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
 
          $all=$all->paginate($paginate);
 

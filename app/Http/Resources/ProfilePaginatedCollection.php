@@ -30,7 +30,7 @@ class ProfilePaginatedCollection extends ResourceCollection
             'data'=>ProfileWithIDResource::collection($this->collection),
         ];
 
-        if($this->pagination)
+        if($data['dataCount'] && $this->pagination)
         $data['pagination']=$this->pagination;
 
         return $data;

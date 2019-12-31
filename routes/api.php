@@ -15,10 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1'], function () {
+
+//Main Dashboard
+Route::group(['prefix' => 'dashboard'], function () {
+     Route::get('staffcategories','Summaries\StaffCategoryController@index')->name('dashboard.staffcategories');
+});
 //Auth Routes
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Auth\AccessController@login')->name('auth.login');
-
 
       //Authenticated Auth Routes
     Route::group(['middleware'=>['jwt.auth']], function () {
@@ -65,8 +69,12 @@ Route::group(['prefix' => 'auth'], function () {
             Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');
         });
 
+        /*//Search profiles
+        Route::get('profiles/search','Profile\UserRegisterationController@search')->name('profiles.search');
+       */
          //Registrations Routes
         Route::apiResource('profiles', 'Profile\UserRegisterationController',['only'=>['index','show','store','update']]);
+
 
         //User By Id
         Route::group(['prefix' => 'profiles'], function () {
@@ -97,7 +105,7 @@ Route::group(['prefix' => 'auth'], function () {
   Route::group(['middleware'=>['jwt.auth']],function () {
     //Pricing
     Route::group(['prefix' => 'pricing'], function () {
-        Route::get('serviceprices/search','Pricing\ServicePricingController@search')->name('serviceprices.search');
+        //Route::get('serviceprices/search','Pricing\ServicePricingController@search')->name('serviceprices.search');
         Route::apiResource('serviceprices','Pricing\ServicePricingController',['only'=>['index','show','store','update']]);
     });
 
@@ -146,6 +154,9 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::get('sponsorshiptypes/{sponsorshiptype}/fundingtypes','Setups\FundingTypeController@showBySponsorshipType')->name('sponsorshiptype.fundingtypes.show');
         Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
+
+        //Company routes
+        // Route::get('companies/search','Setups\CompanyController@search')->name('companies.search');
         Route::apiResource('companies','Setups\CompanyController',['only'=>['index','show','store','update']]);
         Route::apiResource('specialties','Setups\SpecialtyController',['only'=>['index','show','store','update']]);
 

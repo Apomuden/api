@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class ServicePrice extends Model
 {
-    use ActiveTrait,SortableTrait;
+    use ActiveTrait,SortableTrait,FindByTrait;
     protected $guarded = [];
 
     public function  getDisplayNameAttribute(){
@@ -43,11 +44,4 @@ class ServicePrice extends Model
         return $this->belongsTo(AgeGroup::class);
     }
 
-    //This is for a quicking based on the params
-    public function scopeFindBy($query,array $params){
-        foreach($params as $key=>$value){
-            $query=$query->orWhere($key,'like',"{$value}%");
-        }
-        return $query;
-    }
 }

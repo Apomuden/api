@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class Role extends Model
 {
-    use ActiveTrait;
+    use ActiveTrait,FindByTrait;
     protected $guarded = [];
     public function permissions()
     {

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use App\Http\Helpers\FileResolver;
+use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Hospital extends Model
 {
+    use FindByTrait;
     protected $guarded = [];
     public static function boot()
     {

@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Http\Traits\ActiveTrait;
+use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class ServiceCategory extends Model
 {
-    use ActiveTrait;
+    use ActiveTrait,FindByTrait;
     protected $guarded = [];
 
     public function hospital_service()

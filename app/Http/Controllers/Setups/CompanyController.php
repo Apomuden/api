@@ -21,9 +21,18 @@ class CompanyController extends Controller
     }
 
     function index(){
-
         return ApiResponse::withOk('Company list',new CompanyCollection($this->repository->all('name')));
     }
+
+    /* function search(){
+        $params=\request()->query();
+        if($params)
+        $companies=$this->repository->getModel()->findBy($params)->get();
+        else
+        $companies=$this->repository->all('name');
+
+        return ApiResponse::withOk('Companies found',new CompanyCollection($companies));
+    } */
 
     function show($company){
         $company=$this->repository->show($company);//pass the country

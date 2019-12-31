@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Http\Traits\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 
 class PermissionRole extends Model
 {
+    use FindByTrait;
     protected $guarded = [];
 
     public static function boot()
@@ -14,7 +16,7 @@ class PermissionRole extends Model
         parent::boot();
         static::creating(function($model)
         {
-           
+
         });
 
         static::deleted(function($model){
