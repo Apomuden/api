@@ -70,8 +70,13 @@ class Patient extends Model
                 $model->sponsorship_type_id=$funding_type->sponsorship_type_id;
 
 
-                //Attach Patient to folder
-                $model->folders()->attach($model->folder_id);
+                $original = $model->getOriginal();
+
+                if($original->folder_id!=$model->folder_id)
+                $model->folders()->detach($original->folder_id);
+
+                 //Attach Patient to folder
+                 $model->folders()->attach($model->folder_id);
             }
             catch(Exception $e){}
         });
@@ -81,6 +86,11 @@ class Patient extends Model
   {
       return $this->belongsTo(Title::class);
   }
+  public function getFullNameAttribute()
+  {
+    return ucwords(trim($this->firstname.' '.$this->middlename).' '.$this->surname);
+  }
+
   public function getActiveFolderAttribute(){
      return $this->folders()->active()->orderBy('created_at','DESC')->first();
   }

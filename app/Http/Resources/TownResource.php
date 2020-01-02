@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TownResource extends JsonResource
@@ -22,8 +23,8 @@ class TownResource extends JsonResource
                 'region_id'=>$this->region_id,
                 'district_id'=>$this->district_id,
                 'status'=>$this->status,
-                //'created_at'=>(String)$this->created_at,
-                //'updated_at'=>(String)$this->updated_at
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         else
            return NULL;

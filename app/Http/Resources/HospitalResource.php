@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class HospitalResource extends JsonResource
@@ -41,6 +42,8 @@ class HospitalResource extends JsonResource
             'region_id'=>$region->id??null,
             'gps_location'=>$this->gps_location,
             'logo'=>$this->logo?\route('file.url',['logos',$this->logo]):null,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

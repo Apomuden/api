@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BankResource extends JsonResource
@@ -22,6 +23,8 @@ class BankResource extends JsonResource
                 'phone'=>$this->phone,
                 'email'=>$this->email,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

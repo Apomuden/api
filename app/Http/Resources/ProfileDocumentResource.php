@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileDocumentResource extends JsonResource
@@ -23,6 +24,8 @@ class ProfileDocumentResource extends JsonResource
                 'user_id'=>$staff->id,
                 'file'=>$this->file?\route('file.url',['users-files',$this->file]):null,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
         else

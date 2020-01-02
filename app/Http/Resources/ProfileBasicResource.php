@@ -88,7 +88,9 @@ class ProfileBasicResource extends JsonResource
             'bank_branch_id'=>$bank_branch->id??null,
             'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date)??null,
             'photo'=>$this->photo?\route('file.url',['users',$this->photo]):null,
-            'status'=>$this->status
+            'status'=>$this->status,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

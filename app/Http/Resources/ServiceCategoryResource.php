@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ServiceCategoryResource extends JsonResource
@@ -21,6 +22,8 @@ class ServiceCategoryResource extends JsonResource
                 'hospital_service_name'=>$this->hospital_service->name??null,
                 'hospital_service_id'=>$this->hospital_service->id??null,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
 
     }

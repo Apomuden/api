@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ServicePriceResource extends JsonResource
@@ -36,7 +37,9 @@ class ServicePriceResource extends JsonResource
                 'gender'=>$this->gender,
                 'patient_status'=>$this->patient_status,
                 'amount'=>$this->amount,
-                'status'=>$this->status
+                'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
         else

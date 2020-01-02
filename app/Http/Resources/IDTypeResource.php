@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class IDTypeResource extends JsonResource
@@ -20,6 +21,8 @@ class IDTypeResource extends JsonResource
                 'name'=>$this->name,
                 'expires'=>boolval($this->expires),
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

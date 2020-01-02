@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DepartmentResource extends JsonResource
@@ -25,6 +26,8 @@ class DepartmentResource extends JsonResource
                 'deputy_head_name'=>$deputy_head->fullname??null,
                 'deputy_head_id'=>$deputy_head->id??null,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

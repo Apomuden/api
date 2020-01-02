@@ -16,7 +16,9 @@ class FolderResource extends JsonResource
             'id'=>$this->id,
             'folder_no'=>$this->folder_no,
             'folder_type'=>$this->folder_type,
-            'status'=>$this->status
+            'status'=>$this->status,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AgeGroupResource extends JsonResource
@@ -22,6 +23,8 @@ class AgeGroupResource extends JsonResource
                 'min_age'=>$this->min_age,
                 'max_age'=>$this->max_age,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

@@ -24,7 +24,9 @@ class AccreditationResource extends JsonResource
             'tin'=>$this->tin,
             'reg_date'=>DateHelper::toDisplayDate($this->reg_date),
             'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date),
-            'status'=>$this->status
+            'status'=>$this->status,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

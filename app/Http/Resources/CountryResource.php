@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CountryResource extends JsonResource
@@ -22,6 +23,8 @@ class CountryResource extends JsonResource
             'call_code'=>$this->call_code,
             'currency'=>$this->currency,
             'alt_currency'=>$this->alternate_currency,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

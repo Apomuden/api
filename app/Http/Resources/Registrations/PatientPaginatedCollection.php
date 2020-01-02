@@ -23,11 +23,11 @@ class PatientPaginatedCollection extends ResourceCollection
     }
     public function toArray($request)
     {
-        $data= [
+        $data=[
             'errorCode'=>'000',
             'taggedAs'=>count($this->collection)?$this->message:'No records found',
             'dataCount'=>count($this->collection),
-            'data'=>ProfileWithIDResource::collection($this->collection),
+            'data'=>PatientResource::collection($this->collection),
         ];
 
         if($data['dataCount'] && $this->pagination)

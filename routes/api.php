@@ -114,6 +114,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('patients/paginated','Registration\PatientController@paginated')->name('registration.paginated.show');
         Route::apiResource('patients','Registration\PatientController',['only'=>['index','show','store','update']]);
         Route::apiResource('folders','Registration\FolderController',['only'=>['index','show','store','update']]);
+        Route::apiResource('patientnextofkins','Registration\PatientNextOfKinController',['only'=>['index','show','store','update']]);
     });
 
 

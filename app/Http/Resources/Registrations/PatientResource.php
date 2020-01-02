@@ -46,7 +46,7 @@ class PatientResource extends JsonResource
             'id'=>$this->id,
             'title'=>$title->name,
             'title_id'=>$title->id,
-            'patient_id'=>$this->patient_id,
+            'patient_no'=>$this->patient_id,
             'folder_no'=>$folder->folder_no,
             'folder_rack'=>$folder->rack_no,
             'folder_type'=>$folder->folder_type,
@@ -113,7 +113,9 @@ class PatientResource extends JsonResource
             'photo'=>$this->photo?\route('file.url',['patients-photos',$this->photo]):null,
             'mortality'=>$this->mortality,
             'reg_status'=>$this->reg_status,
-            'status'=>$this->status
+            'status'=>$this->status,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

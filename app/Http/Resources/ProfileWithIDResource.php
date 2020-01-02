@@ -95,7 +95,9 @@ class ProfileWithIDResource extends JsonResource
             'signature'=>$this->signature?\route('file.url',['users-signatures',$this->signature]):null,
             'last_login'=>DateHelper::toDisplayDateTime($this->last_login),
             'last_logout '=>DateHelper::toDisplayDateTime($this->last_logout),
-            'status'=>$this->status
+            'status'=>$this->status,
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

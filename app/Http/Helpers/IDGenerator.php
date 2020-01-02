@@ -37,15 +37,29 @@ class IDGenerator{
     }
 
     static function getNewPatientID(){
-        $lastID=Patient::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->max('patient_id');
-        $id_parts=explode('/',$lastID);
+        $repository=new HospitalEloquent(new Hospital);
+        $hospital=$repository->first();
 
-        $month=date('m');
+        $lastID=Patient::whereYear('created_at',date('Y'))->max('patient_id');
+
         $year=date('y');
+       /*switch($hospital->year_digits){
+            case 4;
+               $year=date('Y');
+            break;
+            case 3;
+               $year='0'.date('y');
+            break;
+        } */
 
-        $number=intval($id_parts[0])+1;
+        if($lastID)
+        $number=$lastID;
+        else
+        $number=0;
 
-        return sprintf('%07d',$number).$year.''.$month;
+        $number=intval(str_replace('/'.$year,'',$number))+1;
+
+        return sprintf('%07d',$number).'/'.$year;
     }
 
     static function getNewFolderNo(){
@@ -53,8 +67,8 @@ class IDGenerator{
            $repository=new HospitalEloquent(new Hospital);
            $hospital=$repository->first();
            //get last max ID
-           $lastID=Folder::whereYear('created_at',date('Y'))->whereMonth('created_at',date('m'))->max('folder_no');
-           $id_parts=$hospital->folder_id_seperator?explode($hospital->folder_id_seperator,$lastID):$lastID;
+           $lastID=Folder::whereYear('created_at',date('Y'))->max('folder_no');
+           //$id_parts=$hospital->folder_id_seperator?explode($hospital->folder_id_seperator,$lastID):$lastID;
 
            $year=date('y');
            $month=date('m');
@@ -69,16 +83,18 @@ class IDGenerator{
                break;
            }
 
-           $yearMonth=sprintf('%0'.(strlen($year)+2).'d',$month.$year);
+           $yearMonth=sprintf('%0'.(strlen($year)).'d',$year);
 
-           if(is_array($id_parts))
-           $number=trim(str_replace($hospital->folder_id_seperator,'',$id_parts[0]));
+           if($lastID){
+             $number=trim(str_replace($hospital->folder_id_seperator.$yearMonth,'',$lastID));
+             $number=str_replace($hospital->folder_id_prefix,'',$number);
+           }
            else
-           $number=$id_parts;
+           $number=0;
 
-           $number=str_replace($yearMonth,'', str_replace($hospital->folder_id_prefix,'',$number));
+           //$number=str_replace($yearMonth,'', str_replace($hospital->folder_id_prefix,'',$number));
 
-           $number=is_numeric($number)?(intval($number)+1):1;
+           $number=is_numeric($number)?intval($number)+1:1;
 
            return $hospital->folder_id_prefix.sprintf('%0'.$hospital->digits_after_folder_prefix.'d',$number).$hospital->folder_id_seperator.$yearMonth;
     }

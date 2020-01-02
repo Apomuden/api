@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProfileNextOfKinResource extends JsonResource
@@ -26,6 +27,8 @@ class ProfileNextOfKinResource extends JsonResource
                 'relationship_name'=>$relationship->name,
                 'relationship_id'=>$relationship->id,
                 'status'=>$this->status,
+                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
         else
