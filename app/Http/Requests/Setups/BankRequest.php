@@ -11,7 +11,7 @@ class BankRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('bank')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:departments,district_id'.(isset($this->id)?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:departments,district_id'.($this->id?','.$this->id:''),
             'sort_code'=>'bail|sometimes',
             'email'=>'bail|sometimes|email',
             'phone'=>'bail|sometimes|numeric',

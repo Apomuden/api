@@ -100,7 +100,7 @@ class Handler extends ExceptionHandler
             $messageArray=explode('(',$exception->getMessage());
             return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',$messageArray[0],HttpResponse::HTTP_BAD_REQUEST);
         }
-        return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',NULL,HttpResponse::HTTP_BAD_REQUEST);
+        //return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',NULL,HttpResponse::HTTP_BAD_REQUEST);
        }
         return parent::render($request, $exception);
     }

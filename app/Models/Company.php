@@ -14,6 +14,10 @@ class Company extends Model
    use ActiveTrait,SortableTrait,FindByTrait;
    protected $guarded = [];
 
+   public function billing_sponsors()
+   {
+       return $this->hasMany(BillingSponsor::class);
+   }
   /*  public static function boot()
     {
         parent::boot();

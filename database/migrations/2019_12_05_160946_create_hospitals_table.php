@@ -19,10 +19,10 @@ class CreateHospitalsTable extends Migration
             $table->string('logo')->nullable();
             $table->string('staff_id_prefix',5)->nullable();
             $table->string('staff_id_seperator',2)->nullable()->default('-');
-            $table->string('folder_id_prefix',5)->nullable()->default('-');
-            $table->string('folder_id_seperator',2)->nullable()->default('-');
-            $table->unsignedInteger('digits_after_staff_prefix')->default(3);
-            $table->unsignedInteger('digits_after_folder_prefix')->default(3);
+            $table->string('folder_id_prefix',5)->nullable();
+            $table->string('folder_id_seperator',2)->nullable();
+            $table->unsignedInteger('digits_after_staff_prefix')->default(4);
+            $table->unsignedInteger('digits_after_folder_prefix')->default(4);
             $table->unsignedInteger('year_digits')->nullable()->default(2);
             $table->set('allowed_folder_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL,FAMILY');
             $table->set('allowed_installment_type',['FULL_PAYMENT','PART_PAYMENT','DEPOSIT','CREDIT'])->default('FULL_PAYMENT,CREDIT');

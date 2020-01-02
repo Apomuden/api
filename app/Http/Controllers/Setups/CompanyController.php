@@ -7,9 +7,11 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Setups\CompanyRequest;
 use App\Http\Resources\CompanyCollection;
 use App\Http\Resources\CompanyResource;
+use App\Models\BillingSponsor;
 use App\Models\Company;
 use App\Repositories\RepositoryEloquent;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -45,7 +47,17 @@ class CompanyController extends Controller
        try{
            $requestData=$companyRequest->all();
 
+           $sponsorship_type_id=$requestData['sponsorship_type_id'];
+           unset($requestData['sponsorship_type_id']);
+
+           DB::beginTransaction();
            $company=$this->repository->store($requestData);
+
+           if($sponsorship_type_id && $company){
+               $this->repository->setModel(new BillingSponsor);
+               $this->repository->store(['name'=>$company->name,'sponsorship_type_id'=>$sponsorship_type_id,'company_id'=>$company->id]);
+           }
+           DB::commit();
           return ApiResponse::withOk('Company created',new CompanyResource($company->refresh()));
       }
        catch(Exception $e){

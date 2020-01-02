@@ -109,6 +109,13 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('serviceprices','Pricing\ServicePricingController',['only'=>['index','show','store','update']]);
     });
 
+    //Registrations
+    Route::group(['prefix' => 'registry'], function () {
+        Route::get('patients/paginated','Registration\PatientController@paginated')->name('registration.paginated.show');
+        Route::apiResource('patients','Registration\PatientController',['only'=>['index','show','store','update']]);
+        Route::apiResource('folders','Registration\FolderController',['only'=>['index','show','store','update']]);
+    });
+
 
     //Setups
     Route::group(['prefix' => 'setups'], function () {
@@ -154,6 +161,9 @@ Route::group(['prefix' => 'auth'], function () {
 
         Route::get('sponsorshiptypes/{sponsorshiptype}/fundingtypes','Setups\FundingTypeController@showBySponsorshipType')->name('sponsorshiptype.fundingtypes.show');
         Route::apiResource('fundingtypes','Setups\FundingTypeController',['only'=>['index','show','store','update']]);
+
+        Route::apiResource('billingsponsors','Setups\BillingSponsorController',['only'=>['index','show','store','update']]);
+
 
         //Company routes
         // Route::get('companies/search','Setups\CompanyController@search')->name('companies.search');

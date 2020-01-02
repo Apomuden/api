@@ -10,4 +10,13 @@ class BillingSponsor extends Model
 {
     use ActiveTrait,FindByTrait;
     protected $guarded = [];
+
+    public function sponsorship_type()
+    {
+        return $this->belongsTo(SponsorshipType::class);
+    }
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
 }

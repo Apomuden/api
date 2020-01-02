@@ -229,6 +229,7 @@ class RepositoryEloquent implements IRepository{
    public function setModel($model,$with=null)
    {
        $this->model = $model;
+       if($with)
        $this->with=$with;
        $this->cache_prefix=class_basename($this->model);
 
@@ -253,6 +254,12 @@ class RepositoryEloquent implements IRepository{
         Cache ::put($key,$value ,$time);
         else
         Cache::forever($key,$value);
+
+        $searchParams=\request()->query();
+
+        if($searchParams)
+        $this->deletCache($key);
+
         return $value;
    }
 

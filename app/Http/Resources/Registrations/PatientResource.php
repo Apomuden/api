@@ -1,0 +1,119 @@
+<?php
+
+namespace App\Http\Resources;
+
+use App\Http\Helpers\DateHelper;
+use App\Models\Country;
+use DatePeriod;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
+
+class PatientResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toArray($request)
+    {
+        $country=$this->country;
+        $region=$this->region;
+        $district=$this->district;
+        $title=$this->title;
+        $id_type=$this->id_type;
+        $religion=$this->religion;
+        $educational_level=$this->educational_level;
+
+        $emerg_relation=$this->emerg_relation;
+        $hometown=$this->hometown;
+        $profession=$this->profession;
+
+        $folder=$this->activefolder;
+        $old_folder_no=$this->oldfolder->folder_no??$this->old_folder_no;
+        $sponsorship_type=$this->sponsorship_type;
+        $funding_type=$this->funding_type;
+        $billing_system=$this->billing_system;
+        $billing_cycle=$this->billing_cycle;
+        $payment_style=$this->payment_style;
+        $payment_channel=$this->payment_channel;
+        $native_language=$this->native_language;
+        $second_language=$this->second_language;
+        $official_language=$this->official_language;
+
+        return [
+            'id'=>$this->id,
+            'title'=>$title->name,
+            'title_id'=>$title->id,
+            'patient_id'=>$this->patient_id,
+            'folder_no'=>$folder->folder_no,
+            'folder_rack'=>$folder->rack_no,
+            'folder_type'=>$folder->folder_type,
+            'folder_status'=>$folder->status,
+            'old_folder_no'=>$old_folder_no,
+            'funding_type_name'=>$funding_type->name,
+            'funding_type_id'=>$funding_type->id,
+            'sponsorship_type_name'=>$sponsorship_type->name,
+            'sponsorship_type_id'=>$sponsorship_type->id,
+            'billing_system_name'=>$billing_system->name,
+            'billing_system_id'=>$billing_system->id,
+            'billing_cycle_name'=>$billing_cycle->name,
+            'billing_cycle_id'=>$billing_cycle->id,
+            'payment_style_name'=>$payment_style->name,
+            'payment_style_id'=>$payment_style->id,
+            'payment_channel_name'=>$payment_channel->name,
+            'payment_channel_id'=>$payment_channel->id,
+            'ssnit_no'=>$this->ssnit_no,
+            'tin'=>$this->tin,
+            'username'=>$this->username,
+            'surname'=>$this->surname,
+            'middlename'=>$this->middlename,
+            'firstname'=>$this->firstname,
+            'dob'=>DateHelper::toDisplayDate($this->dob),
+            'gender'=>$this->gender,
+            'country_name'=>$country->country_name??null,
+            'country_id'=>$country->id??null,
+            'region_name'=>$region->region_name??null,
+            'region_id'=>$region->id??null,
+            'district_name'=>$district->name??null,
+            'district_id'=>$district->id??null,
+            'hometown_name'=>$hometown->name??null,
+            'hometown_id'=>$hometown->id??null,
+            'marital'=>$this->marital,
+            'profession_name'=>$profession->name??null,
+            'profession_id'=>$profession->id??null,
+            'staff_id'=>$this->staff_id??null,
+            'work_address'=>$this->work_address??null,
+            'residence_address'=>$this->residence_address??null,
+
+            'native_language_name'=>$native_language->name??null,
+            'native_language_id'=>$native_language->id??null,
+            'second_language_name'=>$second_language->name??null,
+            'second_language_id'=>$second_language->id??null,
+            'official_language_name'=>$official_language->name??null,
+            'official_language_id'=>$official_language->id??null,
+
+            'id_type_name'=>$id_type->name??null,
+            'id_type_id'=>$id_type->id??null,
+            'id_no'=>$this->id_no,
+            'id_expiry_date'=>DateHelper::toDisplayDate($this->id_expiry_date)??null,
+
+            'religion_name'=>$religion->name??null,
+            'religion_id'=>$religion->id??null,
+            'educational_level_name'=>$educational_level->name??null,
+            'educational_level_id'=>$educational_level->id??null,
+            'active_cell'=>$this->active_cell,
+            'email'=>$this->email,
+            'emerg_name'=>$this->emerg_name ,
+            'emerg_phone'=>$this->emerg_phone1 ,
+            'emerg_relation_name'=>$emerg_relation->name??null,
+            'emerg_relation_id'=>$emerg_relation->id??null,
+
+            'photo'=>$this->photo?\route('file.url',['patients-photos',$this->photo]):null,
+            'mortality'=>$this->mortality,
+            'reg_status'=>$this->reg_status,
+            'status'=>$this->status
+        ];
+    }
+}

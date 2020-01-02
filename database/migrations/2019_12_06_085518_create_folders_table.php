@@ -18,7 +18,7 @@ class CreateFoldersTable extends Migration
             $table->string('folder_no')->unique();
             $table->string('rack_no')->nullable();
             $table->enum('folder_type',['INDIVIDUAL','FAMILY'])->default('INDIVIDUAL');
-            $table->enum('status',['ACTIVE','INACTIVE','NULLIFIED'])->default('ACTIVE');
+            $table->enum('status',['ACTIVE','INACTIVE','NULLIFIED','OLD'])->default('ACTIVE');
             $table->timestamps();
         });
     }

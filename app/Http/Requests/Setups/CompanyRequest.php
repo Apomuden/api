@@ -14,6 +14,7 @@ class CompanyRequest extends ApiFormRequest
             'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:companies'.($id?','.$id:''),
             'phone' => 'bail|sometimes|numeric|min:10|unique:companies'.($id?','.$id:''),
             'email'=>'bail|sometimes|email|unique:companies'.($id?','.$id:''),
+            'sponsorship_type_id'=>'bail|sometimes|integer|exists:sponsorship_types,id',
             'gps_location'=>'bail|sometimes|string',
             'postal_address'=>'bail|sometimes|string',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'

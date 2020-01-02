@@ -22,6 +22,9 @@ class HospitalEloquent extends RepositoryEloquent implements IHospitalRepository
     public function update(array $data,$id=null){
         $record=$this->first();
         $record->update($data);
-        return $record->refresh();
+
+        $key=$this->cache_prefix.'->first';
+
+        return $this->cache($key,$record->refresh());
     }
 }

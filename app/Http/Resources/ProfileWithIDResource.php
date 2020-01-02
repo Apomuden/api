@@ -38,6 +38,7 @@ class ProfileWithIDResource extends JsonResource
         return [
             'id'=>$this->id,
             'title'=>$title->name,
+            'title_id'=>$title->id,
             'staff_id'=>$this->staff_id,
             'ssnit_no'=>$this->ssnit_no,
             'tin'=>$this->tin,

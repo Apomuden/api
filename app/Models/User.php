@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
@@ -22,12 +23,6 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable,ActiveTrait,SortableTrait,FindByTrait;
 
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $guarded = [];
 
     public $incrementing = false;
@@ -54,6 +49,8 @@ class User extends Authenticatable implements JWTSubject
             $model->id=Str::uuid();
             $model->password=Security::getNewPasswordHash($model->password,$model->id);
 
+            $model->dob=DateHelper::toDBDate($model->dob);
+
             //get the associated staff type
             $StaffType=StaffType::findOrFail($model->staff_type_id);
             $model->expires =$StaffType->validity_days?true:false;
@@ -66,6 +63,8 @@ class User extends Authenticatable implements JWTSubject
         });
 
         static::updating(function($model){
+            $model->dob=DateHelper::toDBDate($model->dob);
+
             $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
             $model->photo=FileResolver::base64ToFile($model->photo,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
 

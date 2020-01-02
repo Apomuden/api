@@ -15,4 +15,9 @@ class SponsorshipType extends Model
     {
         return $this->hasMany(FundingType::class);
     }
+
+    public function billing_sponsors()
+    {
+        return $this->hasMany(BillingSponsor::class);
+    }
 }
