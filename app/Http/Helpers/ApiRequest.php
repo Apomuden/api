@@ -11,4 +11,10 @@ class ApiRequest{
     static function asObject(Request $request){
        return (object) self::asArray($request);
      }
+
+     static function sanitize_string($string){
+            $string = strip_tags($string);
+            $string = addslashes($string);
+            return filter_var($string, FILTER_SANITIZE_STRING);
+     }
 }
