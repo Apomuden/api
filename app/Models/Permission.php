@@ -22,10 +22,10 @@ class Permission extends Model
         return $this->belongsToMany(User::class);
     }
 
-  public function component()
-  {
-      return $this->belongsTo(Component::class);
-  }
+    public function component()
+    {
+        return $this->belongsTo(Component::class);
+    }
 
     public function scopeModules($query)
     {

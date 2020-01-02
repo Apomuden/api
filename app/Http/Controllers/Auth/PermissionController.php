@@ -5,8 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Auth\PermissionRequest;
-use App\Http\Requests\Setups\RoleRequest;
-use App\Http\Resources\ComponentPermissionsResource;
 use App\Http\Resources\ModulePermissionsCollection;
 use App\Http\Resources\PermissionCollection;
 use App\Http\Resources\PermissionResource;
@@ -17,6 +15,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Repositories\RepositoryEloquent;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class PermissionController extends Controller
 {
@@ -59,8 +58,11 @@ class PermissionController extends Controller
    }
 
    function showByRole($role){
-     $this->repository->setModel(new Role);
-     $permissions=$this->repository->find($role)->permissionspaginated;
+    $withPermissions=['permissions'=>function($q) use($role){$q->whereHas('roles',function($q2) use ($role){$q2->where('id',$role);});}];
+
+     //$this->repository->setModel(new Role);
+     //$permissions=$this->repository->find($role)->permissionspaginated()->paginate(10);
+     $permissions=$this->repository->getInstanceWith($withPermissions)->paginate(10,'name');
 
      return ApiResponse::withPaginate(new PermissionCollection($permissions,'Available Permissions'));
    }
@@ -75,7 +77,8 @@ class PermissionController extends Controller
 
    //get User Permissions
    function showPermissionHierarchy($user){
-    $this->repository->setModel(new User);
+    $this->repository=new RepositoryEloquent(new User);
+
     $user=$this->repository->findOrFail($user);
     $withPermissions=['permissions'=>function($q) use($user){$q->whereHas('users',function($q2) use ($user){$q2->where('id',$user->id);});}];
     $modules=Module::with(['components'=>function($q) use($withPermissions){$q->with($withPermissions);}])->sortBy('name')->paginate(10);
@@ -84,14 +87,19 @@ class PermissionController extends Controller
    }
 
    function showPermissions($user){
-       $this->repository->setModel(new User);
-       $user=$this->repository->findOrFail($user);
-      $permissions=$user->permissions()->active()->sortBy('name')->get();
+
+     $this->repository=new RepositoryEloquent(new User);
+
+     $user=$this->repository->findOrFail($user);
+
+     $permissions=$user->permissions()->active()->sortBy('name')->get();
+
      return ApiResponse::withOk('Available Permissions',PermissionResource::collection($permissions));
    }
    function showPermissionsPaginated($user){
-      $this->repository->setModel(new User);
-      $user=$this->repository->findOrFail($user);
+    $this->repository=new RepositoryEloquent(new User);
+
+     $user=$this->repository->findOrFail($user);
       $permissions=$user->permissions()->active()->sortBy('name')->paginate(10);
      return ApiResponse::withPaginate(new PermissionCollection($permissions,'Available permissions'));
    }
