@@ -11,6 +11,7 @@ trait FindByTrait{
 
         unset($params['dateFrom']);
         unset($params['dateTo']);
+        unset($params['page']);
 
         if($dateFrom)
         $query=$query->whereDate('created_at', '=>', date(strtotime($dateFrom)));
@@ -36,7 +37,7 @@ trait FindByTrait{
         foreach($params as $key=>$value){
             $key=ApiRequest::sanitize_string($key)??null;
             $value=ApiRequest::sanitize_string($value)??null;
-            
+
             $query=$query->orWhere($key,'like',"{$value}%");
         }
         return $query;
