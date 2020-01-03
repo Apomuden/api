@@ -17,4 +17,14 @@ class ApiRequest{
             $string = addslashes($string);
             return filter_var($string, FILTER_SANITIZE_STRING);
      }
+     static function startsWith($string, $start)
+     {
+        return strrpos($string, $start, -strlen($string)) !== false;
+     }
+
+     static function endsWith($string, $end)
+    {
+        return ($offset = strlen($string) - strlen($end)) >= 0
+            && strpos($string, $end, $offset) !== false;
+    }
 }
