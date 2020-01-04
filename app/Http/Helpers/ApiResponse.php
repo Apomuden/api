@@ -61,6 +61,6 @@ class ApiResponse{
         return response()->json($response,HttpResponse::HTTP_NOT_FOUND,$http_response_header);
     }
     static function withNotAuthorized($data=NULL,$http_response_header=[]){
-        return response()->json(['errorCode'=>'004','taggedAs'=>'Unauthorized','data'=>null],HttpResponse::HTTP_UNAUTHORIZED,$http_response_header);
+        return response()->json(['errorCode'=>'004','taggedAs'=>'Unauthorized','data'=>$data],HttpResponse::HTTP_UNAUTHORIZED,$http_response_header);
       }
 }

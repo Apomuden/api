@@ -23,6 +23,7 @@ Route::group(['prefix' => 'dashboard'], function () {
 //Auth Routes
 Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'Auth\AccessController@login')->name('auth.login');
+    Route::post('/rescue','Auth\AccessController@sendRecoveryMail')->name('auth.recovery');
 
       //Authenticated Auth Routes
     Route::group(['middleware'=>['jwt.auth']], function () {

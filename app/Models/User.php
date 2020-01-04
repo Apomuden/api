@@ -11,11 +11,9 @@ use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -64,6 +62,12 @@ class User extends Authenticatable implements JWTSubject
 
         static::updating(function($model){
             $model->dob=DateHelper::toDBDate($model->dob);
+
+            $original = $model->getOriginal();
+
+            if($original->password!=$model->password)
+            $model->password=Security::getNewPasswordHash($model->password,$model->id);
+
 
             $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
             $model->photo=FileResolver::base64ToFile($model->photo,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
@@ -180,6 +184,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(StaffNextOfKin::class);
     }
+
+    public function recoveries()
+    {
+        return $this->hasMany(PasswordReset::class);
+    }
+
     public function attachPermissions($permissions){
             try{
                 $this->permissions()->attach($permissions);
