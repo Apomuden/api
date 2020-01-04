@@ -63,9 +63,9 @@ class User extends Authenticatable implements JWTSubject
         static::updating(function($model){
             $model->dob=DateHelper::toDBDate($model->dob);
 
-            $original = $model->getOriginal();
+            $original_password = $model->getOriginal('password');
 
-            if(isset($model->password) && $original->password!=$model->password)
+            if(isset($model->password) && $original_password!=$model->password)
             $model->password=Security::getNewPasswordHash($model->password,$model->id);
 
 

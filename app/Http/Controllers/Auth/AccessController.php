@@ -26,7 +26,7 @@ class AccessController extends Controller
         $this->repository= new RepositoryEloquent($user);
     }
     function login(LoginRequest $request){
-        //try{
+        try{
             $user=$this->repository->getModel()->where('username',$request->username)->first();
             if(!$user)
             return ApiResponse::withNotAuthorized('User not found');
@@ -55,10 +55,10 @@ class AccessController extends Controller
                 $token=auth('api')->login($user);
                 return $this->respondWithToken('Login successful',$token,$user);
 
-       /*  }
+       }
         catch(Exception $e){
                 return ApiResponse::withException($e);
-        } */
+        }
     }
 
     function logout(){
