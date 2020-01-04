@@ -65,7 +65,7 @@ class User extends Authenticatable implements JWTSubject
 
             $original = $model->getOriginal();
 
-            if($original->password!=$model->password)
+            if(isset($model->password) && $original->password!=$model->password)
             $model->password=Security::getNewPasswordHash($model->password,$model->id);
 
 
