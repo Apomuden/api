@@ -94,7 +94,7 @@ class AccessController extends Controller
 
     //sending recovery mail
     function sendRecoveryMail(RecoveryMailRequest $request){
-        //try{
+        try{
             $user=$this->repository->getModel()->where('email',$request->email)->first();
             if($user->status!='ACTIVE' && $user->status!='RECOVERY_MODE')
             return ApiResponse::withNotAuthorized('Sorry you are '.$user->status);
@@ -115,9 +115,9 @@ class AccessController extends Controller
             dispatch(new SendRecoveryMail($user->firstname,$user->email,$new_password));
 
             return ApiResponse::withOk('Recovery mail sent!');
-       /*  }
+         }
         catch(Exception $e){
             return ApiResponse::withException($e);
-        } */
+        }
     }
 }

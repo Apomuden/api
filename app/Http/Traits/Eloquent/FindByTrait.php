@@ -38,10 +38,10 @@ trait FindByTrait{
         unset($params['page']);
 
         if($dateFrom)
-        $query=$query->whereDate('created_at', '=>', date(strtotime($dateFrom)));
+        $query=$query->whereDate('created_at', '>=', date('Y-m-d',strtotime($dateFrom)));
 
         if($dateTo)
-        $query=$query->whereDate('created_at', '<=', date(strtotime($dateTo)));
+        $query=$query->whereDate('created_at', '<=', date('Y-m-d',strtotime($dateTo)));
 
         unset($params['sortBy'],$params['order']);
 

@@ -68,11 +68,9 @@ Route::group(['prefix' => 'auth'], function () {
             Route::get('permissions','Profile\ProfileController@showPermissions')->name('profile.permissions.show');
             Route::get('permissions/paginated','Profile\ProfileController@showPermissionsPaginated')->name('profile.permissions.paginated.show');
             Route::match(['PUT', 'PATCH'],'update','Profile\ProfileController@update')->name('profile.update');
+            Route::apiResource('remarks','Profile\UserRemarkController',['only'=>['index','show','store','update']]);
         });
 
-        /*//Search profiles
-        Route::get('profiles/search','Profile\UserRegisterationController@search')->name('profiles.search');
-       */
          //Registrations Routes
         Route::apiResource('profiles', 'Profile\UserRegisterationController',['only'=>['index','show','store','update']]);
 
