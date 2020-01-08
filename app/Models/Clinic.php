@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Clinic extends Model
 {
-    use FindByTrait;
+    use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
     public function service_prices()

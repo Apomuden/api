@@ -18,12 +18,14 @@ class ClinicResource extends JsonResource
         if (isset($this->id)) {
             $hospital_service = $this->hospital_services;
             $service_price = $this->service_prices;
+
             return [
                 'id' => $this->id,
-                'hospital_service_name' => $hospital_service->name,
-                'hospital_service_id' => $hospital_service->id,
-                'service_price_amount' => $service_price->amount,
-                'service_price_id' => $service_price->id,
+                'name' => $this->name,
+                'hospital_service_name' => $hospital_service->name ?? null,
+                'hospital_service_id' => $hospital_service->id ?? null,
+                'service_price' => $service_price->amount ?? null,
+                'service_price_id' => $service_price->id ?? null,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
