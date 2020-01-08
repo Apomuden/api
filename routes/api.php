@@ -177,6 +177,9 @@ Route::group(['prefix' => 'auth'], function () {
 
     });
 
+    //Clinic Routes
+      Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
+
   });
   Route::group(['prefix' => 'utils'], function () {
     //FileResolver
