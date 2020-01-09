@@ -26,7 +26,7 @@ class ProfileRequest extends ApiFormRequest
             'email'=>'bail|sometimes|nullable|email|unique:users,email'.($id?','.$id:''),
             'ssnit_no'=>'bail|sometimes|nullable|unique:users,ssnit_no'.($id?','.$id:''),
             'tin'=>'bail|sometimes|nullable|unique:users,tin'.($id?','.$id:''),
-            'title_id'=>'bail|sometimes|integer|exits:titles,id',
+            'title_id'=>'bail|sometimes|integer|exists:titles,id',
             'surname'=>'bail|'.($id?'sometimes':'required').'|string',
             'middlename'=>'bail|sometimes|nullable|string',
             'firstname'=>'bail|'.($id?'sometimes':'required').'|string',
