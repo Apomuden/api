@@ -12,7 +12,7 @@ class Clinic extends Model
     use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
-    public function service_categories()
+    public function service_category()
     {
         return $this->belongsTo(ServiceCategory::class);
     }
