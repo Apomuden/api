@@ -97,7 +97,12 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
         Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);
 
+        //Consultations Routes
+        Route::match(['PUT', 'PATCH'], 'consultations/{consultation}','Clinic\ConsultationController@update')->name('consultation.update');
+        Route::apiResource('consultations','Clinic\ConsultationController',['only'=>['index','show','store','update']]);
+
     });
+
 });
 
   //Authenticated Routes
@@ -175,10 +180,12 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('servicecategories/{servicecategory}/servicesubcategories','Setups\ServiceSubCategoryController@showByServiceCategory')->name('servicecategory.servicesubcategories.show');
         Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',['only'=>['index','show','store','update']]);
 
+        //Clinic Routes
+        Route::match(['PUT', 'PATCH'], 'clinics/{clinic}','Clinic\ClinicController@update')->name('clinic.update');
+        Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
+
     });
 
-    //Clinic Routes
-      Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
 
   });
   Route::group(['prefix' => 'utils'], function () {

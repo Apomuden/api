@@ -12,13 +12,9 @@ class Clinic extends Model
     use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
-    public function service_price()
+    public function service_category()
     {
-        return $this->belongsTo(ServicePrice::class);
+        return $this->belongsTo(ServiceCategory::class);
     }
 
-    public function hospital_service()
-    {
-        return $this->belongsTo(HospitalService::class);
-    }
 }

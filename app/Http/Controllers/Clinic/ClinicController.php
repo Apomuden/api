@@ -17,7 +17,7 @@ class ClinicController extends Controller
     protected $repository;
     public function __construct(Clinic $clinic)
     {
-        $this->repository= new RepositoryEloquent($clinic);
+        $this->repository = new RepositoryEloquent($clinic);
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +26,7 @@ class ClinicController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Clinic list',new ClinicCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Clinic list', new ClinicCollection($this->repository->all('name')));
     }
 
     /**
@@ -37,11 +37,9 @@ class ClinicController extends Controller
      */
     public function store(ClinicRequest $request)
     {
-        $requestData=ApiRequest::asArray($request);
+        $requestData = ApiRequest::asArray($request);
 
-        //$requestData['logo']=FileResolver::base64ToFile($request->logo);
-
-        $response=$this->repository->store($request);
+        $response = $this->repository->store($requestData);
 
         return  ApiResponse::withOk('Clinic created', new ClinicResource($response));
     }
@@ -54,21 +52,10 @@ class ClinicController extends Controller
      */
     public function show(Clinic $clinic)
     {
-        $Clinic=$this->repository->show($clinic);//pass the country
-        return $Clinic?
-            ApiResponse::withOk('Clinic Found',new ClinicResource($clinic))
+        $Clinic = $this->repository->show($clinic);
+        return $Clinic ?
+            ApiResponse::withOk('Clinic Found', new ClinicResource($clinic))
             : ApiResponse::withNotFound('Clinic Not Found');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Clinic  $clinic
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Clinic $clinic)
-    {
-        //
     }
 
     /**
@@ -81,9 +68,9 @@ class ClinicController extends Controller
     public function update(ClinicRequest $request, Clinic $clinic)
     {
         try{
-            $company=$this->repository->update($request->all(),$clinic);
+            $company = $this->repository->update($request->all(), $clinic->id);
 
-            return ApiResponse::withOk('Clinic updated',new ClincResource($clinic));
+            return ApiResponse::withOk('Clinic updated', new ClinicResource($clinic));
 
         }
         catch(Exception $e){
