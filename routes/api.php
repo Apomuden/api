@@ -99,9 +99,6 @@ Route::group(['prefix' => 'auth'], function () {
 
     });
 
-    //Clinic Routes
-    Route::match(['PUT', 'PATCH'], 'clinics/{clinic}','Clinic\ClinicController@update')->name('clinic.update');
-    Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
 });
 
   //Authenticated Routes
@@ -178,6 +175,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('servicecategories','Setups\ServiceCategoryController',['only'=>['index','show','store','update']]);
         Route::get('servicecategories/{servicecategory}/servicesubcategories','Setups\ServiceSubCategoryController@showByServiceCategory')->name('servicecategory.servicesubcategories.show');
         Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',['only'=>['index','show','store','update']]);
+
+        //Clinic Routes
+        Route::match(['PUT', 'PATCH'], 'clinics/{clinic}','Clinic\ClinicController@update')->name('clinic.update');
+        Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
 
     });
 
