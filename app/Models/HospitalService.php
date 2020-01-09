@@ -15,9 +15,4 @@ class HospitalService extends Model
     {
         return $this->hasMany(ServiceCategory::class);
     }
-
-    public function clinic()
-    {
-        return $this->hasMany(Clinic::class);
-    }
 }

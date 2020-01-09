@@ -24,7 +24,7 @@ class ClinicRequest extends ApiFormRequest
     public function rules() : array
     {
         $id = $this->route('clinic') ?? null;
-        
+
         return [
             'name' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
             'service_category_id'=>'bail|sometimes|integer|exists:service_categories,id',

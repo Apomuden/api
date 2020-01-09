@@ -44,9 +44,4 @@ class ServicePrice extends Model
         return $this->belongsTo(AgeGroup::class);
     }
 
-    public function clinic()
-    {
-        return $this->hasMany(Clinic::class);
-    }
-
 }

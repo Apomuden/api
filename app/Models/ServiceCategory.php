@@ -20,4 +20,10 @@ class ServiceCategory extends Model
     {
         return $this->hasMany(ServiceSubcategory::class);
     }
+
+    public function clinic()
+    {
+        return $this->hasMany(Clinic::class);
+    }
+
 }
