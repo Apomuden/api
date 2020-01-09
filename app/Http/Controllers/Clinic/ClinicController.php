@@ -41,7 +41,7 @@ class ClinicController extends Controller
 
         //$requestData['logo']=FileResolver::base64ToFile($request->logo);
 
-        $response=$this->repository->store($request);
+        $response=$this->repository->store($requestData);
 
         return  ApiResponse::withOk('Clinic created', new ClinicResource($response));
     }
@@ -61,17 +61,6 @@ class ClinicController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Clinic  $clinic
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Clinic $clinic)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -81,9 +70,9 @@ class ClinicController extends Controller
     public function update(ClinicRequest $request, Clinic $clinic)
     {
         try{
-            $company=$this->repository->update($request->all(),$clinic);
+            $company=$this->repository->update($request->all(),$clinic->id);
 
-            return ApiResponse::withOk('Clinic updated',new ClincResource($clinic));
+            return ApiResponse::withOk('Clinic updated',new ClinicResource($clinic));
 
         }
         catch(Exception $e){

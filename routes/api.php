@@ -98,6 +98,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);
 
     });
+
+    //Clinic Routes
+    Route::match(['PUT', 'PATCH'], 'clinics/{clinic}','Clinic\ClinicController@update')->name('clinic.update');
+    Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
 });
 
   //Authenticated Routes
@@ -177,8 +181,6 @@ Route::group(['prefix' => 'auth'], function () {
 
     });
 
-    //Clinic Routes
-      Route::apiResource('clinics','Clinic\ClinicController',['only'=>['index','show','store','update']]);
 
   });
   Route::group(['prefix' => 'utils'], function () {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Clinic;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class ClinicRequest extends FormRequest
+class ClinicRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class ClinicRequest extends FormRequest
     {
         $id = $this->route('clinic') ?? null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:clinics'.($id?','.$id:''),
+            'name' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
             'service_price_id'=>'bail|sometimes|integer|exists:service_prices,id',
             'hospital_service_id'=>'bail|sometimes|integer|exists:hospital_services,id',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
