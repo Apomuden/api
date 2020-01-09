@@ -26,7 +26,7 @@ class PatientController extends Controller
 
        unset($this->searchParams['folder_no'],
        $this->searchParams['rack_no'],
-       $this->searchParams['folder_type'],
+       $this->searchParams['folder_type']
        );
 
        $folderSearch=[];
