@@ -10,9 +10,9 @@ class ClinicCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return object
      */
-    public function toArray($request)
+    public function toArray($request) : object
     {
         return  ClinicResource::collection($this->collection);
     }
