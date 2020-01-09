@@ -34,4 +34,5 @@ class AddServiceCategoryIdToClinicsTable extends Migration
             $table->dropColumn('service_category_id');
         });
     }
+    
 }
