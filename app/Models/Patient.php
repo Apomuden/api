@@ -191,9 +191,4 @@ class Patient extends Model
   {
       return $this->belongsTo(Religion::class);
   }
-
-  public function consultation()
-  {
-      return $this->hasMany(Consultation::class);
-  }
 }

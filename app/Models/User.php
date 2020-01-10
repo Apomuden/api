@@ -190,11 +190,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(PasswordReset::class);
     }
 
-    public function consultation()
-    {
-        return $this->hasMany(Consultation::class);
-    }
-
     public function attachPermissions($permissions){
             try{
                 $this->permissions()->attach($permissions);

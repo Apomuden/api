@@ -14,9 +14,7 @@ class AddToClinicsTable extends Migration
     public function up()
     {
         Schema::table('clinics', function (Blueprint $table) {
-            $table->enum('age',['ALL','CHILD','ADULT'])->default('ALL')->after('name');
-            $table->enum('gender',['ALL','MALE','FEMALE'])->default('ALL')->after('age');
-            $table->enum('patient_status',['ALL','OUT','IPD'])->default('ALL')->after('gender');
+            //
         });
     }
 
@@ -28,7 +26,7 @@ class AddToClinicsTable extends Migration
     public function down()
     {
         Schema::table('clinics', function (Blueprint $table) {
-            $table->dropColumn(['age','gender','patient_status']);
+            //
         });
     }
 }
