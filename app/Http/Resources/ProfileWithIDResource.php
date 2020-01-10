@@ -38,7 +38,7 @@ class ProfileWithIDResource extends JsonResource
         return [
             'id'=>$this->id,
             'title'=>$title->name,
-            'title_id'=>$title->id,
+            'title_id'=>$title->id??null,
             'staff_id'=>$this->staff_id,
             'ssnit_no'=>$this->ssnit_no,
             'tin'=>$this->tin,
@@ -74,7 +74,7 @@ class ProfileWithIDResource extends JsonResource
             'role_name'=>$role->name??null,
             'role_id'=>$role->id??null,
             'religion_name'=>$religion->name??null,
-            'religion_id'=>$religion->id,
+            'religion_id'=>$religion->id??null,
             'educational_level_name'=>$educational_level->name??null,
             'educational_level_id'=>$educational_level->id??null,
             'appointment_date'=>DateHelper::toDisplayDate($this->appointment_date)??null,
