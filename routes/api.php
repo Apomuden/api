@@ -97,6 +97,10 @@ Route::group(['prefix' => 'auth'], function () {
         Route::apiResource('profilenextofkins','Profile\ProfileNextOfKinController',['only'=>['index','show','store','update']]);
         Route::apiResource('profiledocuments','Profile\ProfileDocumentController',['only'=>['index','show','store','update']]);
 
+        //Consultations Routes
+        Route::match(['PUT', 'PATCH'], 'consultations/{consultation}','Consultation\ConsultationController@update')->name('consultation.update');
+        Route::apiResource('consultations','Consultation\ConsultationController',['only'=>['index','show','store','update']]);
+
     });
 
 });
