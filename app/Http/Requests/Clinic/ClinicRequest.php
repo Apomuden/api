@@ -26,8 +26,13 @@ class ClinicRequest extends ApiFormRequest
         $id = $this->route('clinic') ?? null;
 
         return [
-            'name' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
-            'service_category_id'=>'bail|sometimes|integer|exists:service_categories,id',
+            //'' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
+            'service_price_id'=>'bail|sometimes|integer|exists:service_prices,id',
+            'clinic_id'=>'bail|sometimes|integer|exists:clinics,id',
+            'patient_id'=>'bail|sometimes|integer|exists:patients,id',
+            'user_id'=>'bail|sometimes|integer|exists:users,id',
+            'scheduled_for'=>'bail|sometimes|datetime|exists:users,id',
+            'user_id'=>'bail|sometimes|integer|exists:users,id',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
