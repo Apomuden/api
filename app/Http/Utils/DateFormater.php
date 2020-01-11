@@ -6,7 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 
 class DateFormater {
-    public function __construct(String $date,String $displayDateFormat="d-m-Y",String $displayDateTimeFormat="d-m-Y H:i:s")
+    public function __construct(String $date,String $displayDateFormat="Y-m-d",String $displayDateTimeFormat="Y-m-d H:i:s")
     {
        $this->time=strtotime(strpos('/',$date)!==-1?str_replace('/','-',$date):(new Carbon($date))->isoFormat('D-M-Y H:m:s'));
        $this->displayDateFormat=$displayDateFormat;
