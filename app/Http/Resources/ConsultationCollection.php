@@ -10,10 +10,10 @@ class ConsultationCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return object
      */
-    public function toArray($request)
+    public function toArray($request) : object
     {
-        return parent::toArray($request);
+        return  ConsultationResource::collection($this->collection);
     }
 }
