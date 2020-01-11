@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Clinic;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Clinic\ConsultationRequest;
 use App\Http\Resources\ConsultationResource;
 use App\Http\Resources\ConsultationCollection;
 use App\Models\Consultation;
@@ -12,59 +14,47 @@ use Illuminate\Http\Request;
 
 class ConsultationController extends Controller
 {
+    protected $repository;
+    public function __construct(Consultation $consultation)
+    {
+        $this->repository = new RepositoryEloquent($consultation);
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return
      */
-    protected $repository;
-    public function index(Consultation $clinic)
+    public function index(Consultation $consultation)
     {
-        $this->repository = new RepositoryEloquent($clinic);
-        return ApiResponse::withOk('Clinic list', new ConsultationCollection($this->repository->all('name')));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return ApiResponse::withOk('Consultation Services list', new ConsultationCollection($this->repository->all('name')));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return
      */
-    public function store(Request $request)
+    public function store(ConsultationRequest $request)
     {
-        //
+        $requestData = ApiRequest::asArray($request);
+        $response = $this->repository->store($requestData);
+
+        return  ApiResponse::withOk('Consultation service record created', new ConsultationResource($response));
     }
 
     /**
      * Display the specified resource.
      *
      * @param  \App\Models\Consultation  $consultation
-     * @return \Illuminate\Http\Response
+     * @return
      */
     public function show(Consultation $consultation)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Consultation  $consultation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Consultation $consultation)
-    {
-        //
+        $Consultation = $this->repository->show($consultation);
+        return $Consultation ?
+            ApiResponse::withOk('Consultation service record Found', new ConsultationResource($consultation))
+            : ApiResponse::withNotFound('No record found');
     }
 
     /**
@@ -72,11 +62,19 @@ class ConsultationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Consultation  $consultation
-     * @return \Illuminate\Http\Response
+     * @return
      */
-    public function update(Request $request, Consultation $consultation)
+    public function update(ConsultationRequest $request, Consultation $consultation)
     {
-        //
+        try{
+            $company = $this->repository->update($request->all(), $consultation->id);
+
+            return ApiResponse::withOk('Consultation service record updated', new ConsultationResource($consultation));
+
+        }
+        catch(Exception $e){
+            return ApiResponse::withException($e);
+        }
     }
 
     /**
