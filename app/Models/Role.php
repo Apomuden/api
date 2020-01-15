@@ -32,7 +32,6 @@ class Role extends Model
            ComponentRole::class,
             'role_id',
             'id'
-
        );
    }
 
