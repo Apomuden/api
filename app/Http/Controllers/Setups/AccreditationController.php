@@ -49,4 +49,10 @@ class AccreditationController extends Controller
         ApiResponse::withOk('Accreditation Found',new AccreditationResource($accreditation))
         : ApiResponse::withNotFound('Accreditation Not Found');
    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Accreditation deleted successfully');
+    }
 }

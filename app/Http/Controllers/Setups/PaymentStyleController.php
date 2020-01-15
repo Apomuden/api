@@ -52,4 +52,10 @@ class PaymentStyleController extends Controller
         return ApiResponse::withException($e);
        }
    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Payment style deleted successfully');
+    }
 }

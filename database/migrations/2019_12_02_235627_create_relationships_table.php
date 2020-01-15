@@ -18,6 +18,8 @@ class CreateRelationshipsTable extends Migration
             $table->string('name');
             $table->enum('status',['ACTIVE','INACTIVE']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','deleted_at']);
         });
     }
 

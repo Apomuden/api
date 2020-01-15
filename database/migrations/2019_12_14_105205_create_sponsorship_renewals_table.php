@@ -28,6 +28,8 @@ class CreateSponsorshipRenewalsTable extends Migration
             $table->uuid('renewed_by');
             $table->foreign('renewed_by')->references('id')->on('users')->onDelete('restrict');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['patient_id', 'billing_sponsor_id', 'sponsorship_policy_id','deleted_at'],'unique_sponsorship_renewal');
         });
     }
 

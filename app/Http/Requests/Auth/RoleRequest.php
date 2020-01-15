@@ -12,7 +12,7 @@ class RoleRequest extends ApiFormRequest
        $id=$this->route('role')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:roles'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required'). "|string|".$this->softUnique('roles','name',$id),
             'description'=>'bail|sometimes|string',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

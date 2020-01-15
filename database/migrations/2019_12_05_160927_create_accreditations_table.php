@@ -23,6 +23,8 @@ class CreateAccreditationsTable extends Migration
             $table->date('expiry_date')->index();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE')->index();
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['reg_no', 'reg_date','deleted_at']);
         });
     }
 

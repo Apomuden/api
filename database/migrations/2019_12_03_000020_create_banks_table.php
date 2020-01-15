@@ -15,12 +15,16 @@ class CreateBanksTable extends Migration
     {
         Schema::create('banks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->string('sort_code')->unique()->nullable();
+            $table->string('name');
+            $table->string('sort_code')->nullable();
             $table->string('email')->nullable();
             $table->unsignedBigInteger('phone')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','deleted_at']);
+            $table->unique(['sort_code', 'deleted_at']);
+
         });
     }
 

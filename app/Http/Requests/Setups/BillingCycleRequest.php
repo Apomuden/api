@@ -13,7 +13,7 @@ class BillingCycleRequest extends ApiFormRequest
        $id=$this->route('billingcycle')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:billing_cycles'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('billing_cycles','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

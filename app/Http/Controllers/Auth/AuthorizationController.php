@@ -10,6 +10,9 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Auth\AttachComponentsRequest;
 use App\Http\Requests\Auth\AttachModulesToUserRequest;
 use App\Http\Requests\Auth\AttachPermissionsRequest;
+use App\Http\Requests\Auth\DetachComponentsRequest;
+use App\Http\Requests\Auth\DetachModulesToRoleRequest;
+use App\Http\Requests\Auth\DetachModulesToUserRequest;
 use App\Models\User;
 use Exception;
 
@@ -26,7 +29,7 @@ class AuthorizationController extends Controller
         try{
             $role=$this->repository->findOrFail($role);
 
-            $role->attachModules($request->module_ids);
+            $role->syncModules($request->modules);
 
             return ApiResponse::withOk('Modules attached to role successfully');
         }
@@ -35,11 +38,11 @@ class AuthorizationController extends Controller
         }
     }
 
-    function detachModulesFromRole(AttachModulesToRoleRequest $request,$role,$cascade=false){
+    function detachModulesFromRole(DetachModulesToRoleRequest $request,$role,$cascade=false){
         try{
             $role=$this->repository->findOrFail($role);
 
-            $role->detachModules($request->module_ids,$cascade);
+            $role->detachModules($request->modules,$cascade);
 
             return ApiResponse::withOk('Modules detached from role successfully');
         }
@@ -50,18 +53,18 @@ class AuthorizationController extends Controller
     function attachComponentsToRole(AttachComponentsRequest $request,$role){
         try{
             $role=$this->repository->findOrFail($role);
-            $role->attachComponents($request->module_ids);
+            $role->syncComponents($request->components);
             return ApiResponse::withOk('Components attached to role successfully');
         }
         catch(Exception $e){
             return ApiResponse::withException($e);
         }
     }
-    function detachComponentsFromRole(AttachComponentsRequest $request,$role,$cascade=false){
+    function detachComponentsFromRole(DetachComponentsRequest $request,$role,$cascade=false){
         try{
             $role=$this->repository->findOrFail($role);
 
-            $role->detachComponents($request->module_ids,$cascade);
+            $role->detachComponents($request->components,$cascade);
 
             return ApiResponse::withOk('Components detached from role successfully');
         }
@@ -69,50 +72,20 @@ class AuthorizationController extends Controller
             return ApiResponse::withException($e);
         }
     }
-    function detachComponentsFromRoleCascade(AttachComponentsRequest $request,$role){
+    function detachComponentsFromRoleCascade(DetachComponentsRequest $request,$role){
         return $this->detachComponentsFromRole($request,$role,true);
     }
 
 
-    function detachModulesFromRoleCascade(AttachModulesToRoleRequest $request,$role){
+    function detachModulesFromRoleCascade(DetachModulesToRoleRequest $request,$role){
         return $this->detachModulesFromRole($request,$role,true);
-    }
-
-    function attachPermissionsToRole(AttachPermissionsRequest $request,$role){
-        try{
-            $role=$this->repository->findOrFail($role);
-
-            $role->attachPermissions($request->permission_ids);
-
-            return ApiResponse::withOk('Permissions attached to role successfully');
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
-    }
-
-    function detachPermissionsFromRole(AttachPermissionsRequest $request,$role,$cascade=false){
-        try{
-            $role=$this->repository->findOrFail($role);
-
-            $role->detachPermissions($request->permission_ids,$cascade);
-
-            return ApiResponse::withOk('Permissions detached from role successfully');
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
-    }
-
-    function detachPermissionsFromRoleCascade(AttachPermissionsRequest $request,$role){
-       return $this->detachPermissionsFromRole($request,$role,true);
     }
 
     function attachModulesToUser(AttachModulesToUserRequest $request,$user){
         try{
             $this->repository->setModel(new User);
             $user=$this->repository->findOrFail($user);
-            $user->attachModules($request->module_ids);
+            $user->syncModules($request->modules);
 
             return ApiResponse::withOk('Modules attached to user successfully');
         }
@@ -120,11 +93,11 @@ class AuthorizationController extends Controller
             return ApiResponse::withException($e);
         }
     }
-    function detachModulesFromUser(AttachModulesToUserRequest $request,$user){
+    function detachModulesFromUser(DetachModulesToUserRequest $request,$user){
         try{
             $this->repository->setModel(new User);
             $user=$this->repository->findOrFail($user);
-            $user->detachModules($request->module_ids);
+            $user->detachModules($request->modules);
 
             return ApiResponse::withOk('Modules detached from user successfully');
         }
@@ -132,47 +105,24 @@ class AuthorizationController extends Controller
             return ApiResponse::withException($e);
         }
     }
-    function attachPermissionsToUser(AttachPermissionsRequest $request,$user){
-        try{
-            $this->repository->setModel(new User);
-            $user=$this->repository->findOrFail($user);
-            $user->attachPermissions($request->permission_ids);
 
-            return ApiResponse::withOk('Permissions attached to user successfully');
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
-    }
-    function detachPermissionsFromUser(AttachPermissionsRequest $request,$user){
-        try{
-            $this->repository->setModel(new User);
-            $user=$this->repository->findOrFail($user);
-            $user->detachPermissions($request->permission_ids);
-
-            return ApiResponse::withOk('Permissions detached from user successfully');
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
-    }
 
     function attachComponentsToUser(AttachComponentsRequest $request,$user){
         try{
             $this->repository->setModel(new User);
             $user=$this->repository->findOrFail($user);
-            $user->attachComponents($request->component_ids);
+            $user->syncComponents($request->components);
             return ApiResponse::withOk('Components attached to user successfully');
         }
         catch(Exception $e){
             return ApiResponse::withException($e);
         }
     }
-    function detachComponentsFromUser(AttachComponentsRequest $request,$user){
+    function detachComponentsFromUser(DetachComponentsRequest $request,$user){
         try{
             $this->repository->setModel(new User);
             $user=$this->repository->findOrFail($user);
-            $user->detachComponents($request->component_ids);
+            $user->detachComponents($request->components);
             return ApiResponse::withOk('Components detached from user successfully');
         }
         catch(Exception $e){

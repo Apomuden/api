@@ -13,7 +13,7 @@ class PermissionRequest extends ApiFormRequest
        $id=$this->route('permission')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:permissions'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('permissions','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

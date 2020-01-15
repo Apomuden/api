@@ -8,10 +8,11 @@ use App\Http\Traits\SortableTrait;
 use App\Repositories\HospitalEloquent;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Company extends Model
 {
-   use ActiveTrait,SortableTrait,FindByTrait;
+   use ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
    protected $guarded = [];
 
    public function billing_sponsors()

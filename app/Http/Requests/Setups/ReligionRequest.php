@@ -13,8 +13,7 @@ class ReligionRequest extends ApiFormRequest
        $id=$this->route('religion')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:religions'.($id?','.$id:''),
-
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('religions','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

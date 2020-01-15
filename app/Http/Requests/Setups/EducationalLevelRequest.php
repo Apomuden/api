@@ -11,7 +11,7 @@ class EducationalLevelRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('educationallevel')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:educational_levels'.($this->id?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('educational_levels','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

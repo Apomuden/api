@@ -33,6 +33,8 @@ class CreatePatientSponsorsTable extends Migration
             $table->date('expiry_date')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE','TERMINATED','BLACKLISTED'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['patient_id','sponsorship_policy_id', 'billing_sponsor_id','deleted_at'],'unique_patient_sponsor');
         });
     }
 

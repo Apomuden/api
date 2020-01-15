@@ -51,6 +51,11 @@ class ProfessionController extends Controller
         return ApiResponse::withException($e);
        }
    }
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Profession deleted successfully');
+    }
    function showByCategory($staffcategory){
        try{
         $this->repository->setModel(new StaffCategory);

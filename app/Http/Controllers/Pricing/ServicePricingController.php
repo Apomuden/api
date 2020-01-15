@@ -76,6 +76,7 @@ class ServicePricingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Service Price deleted successfully');
     }
 }

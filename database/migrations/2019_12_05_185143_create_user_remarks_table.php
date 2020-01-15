@@ -22,6 +22,7 @@ class CreateUserRemarksTable extends Migration
             $table->uuid('remarker_id');
             $table->foreign('remarker_id')->references('id')->on('users')->onDelete('restrict');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

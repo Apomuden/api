@@ -6,12 +6,12 @@ use App\Http\Helpers\DateHelper;
 use App\Http\Traits\FindByTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Accreditation extends Model
 {
-    use FindByTrait;
+    use FindByTrait, SoftDeletes;
     protected $guarded = [];
-
 
     public static function boot()
     {

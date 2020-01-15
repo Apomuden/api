@@ -6,10 +6,11 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Component extends Model
 {
-    use ActiveTrait,SortableTrait,FindByTrait;
+    use ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
 
     public function modules()
@@ -17,8 +18,8 @@ class Component extends Model
         return $this->belongsToMany(Module::class);
     }
 
-    public function permissions()
+    public function roles()
     {
-        return $this->hasManyThrough(Permission::class,ComponentModule::class,'component_id','component_id','id','component_id');
+        return $this->belongsToMany(Role::class);
     }
 }

@@ -13,7 +13,7 @@ class SponsorshipTypeRequest extends ApiFormRequest
        $id=$this->route('sponsorshiptype')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:sponsorship_types'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('sponsorship_types','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

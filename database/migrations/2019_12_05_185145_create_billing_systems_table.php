@@ -15,9 +15,11 @@ class CreateBillingSystemsTable extends Migration
     {
         Schema::create('billing_systems', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','deleted_at']);
         });
     }
 

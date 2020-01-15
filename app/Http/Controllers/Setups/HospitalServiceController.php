@@ -23,21 +23,21 @@ class HospitalServiceController extends Controller
     }
 
     function index(){
-        return ApiResponse::withOk('Hospital list',new GeneralCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Hospital service list',new GeneralCollection($this->repository->all('name')));
     }
 
     function show($hospitalService){
         $hospitalService=$this->repository->show($hospitalService);//pass the country
         return $hospitalService?
         ApiResponse::withOk('Hospital Found',new GeneralResource($hospitalService))
-        : ApiResponse::withNotFound('Hospital Not Found');
+        : ApiResponse::withNotFound('Hospital service Not Found');
     }
 
    function store(HospitalServiceRequest $hospitalServiceRequest){
        try{
            $requestData=$hospitalServiceRequest->all();
            $hospitalService=$this->repository->store($requestData);
-           return ApiResponse::withOk('Hospital created',new GeneralResource($hospitalService->refresh()));
+           return ApiResponse::withOk('Hospital service created',new GeneralResource($hospitalService->refresh()));
        }
        catch(Exception $e){
          return ApiResponse::withException($e);
@@ -47,10 +47,16 @@ class HospitalServiceController extends Controller
    function update(HospitalServiceRequest $hospitalServiceRequest,$hospitalService){
        try{
         $hospitalService=$this->repository->update($hospitalServiceRequest->all(),$hospitalService);
-        return ApiResponse::withOk('Hospital updated',new GeneralResource($hospitalService));
+        return ApiResponse::withOk('Hospital service updated',new GeneralResource($hospitalService));
        }
        catch(Exception $e){
         return ApiResponse::withException($e);
        }
    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Hospital service deleted successfully');
+    }
 }

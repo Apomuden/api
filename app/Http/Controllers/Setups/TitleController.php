@@ -58,7 +58,11 @@ class TitleController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Title deleted successfully');
+    }
    function showByGender($gender){
     try{
 

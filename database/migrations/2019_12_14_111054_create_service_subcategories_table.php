@@ -21,8 +21,9 @@ class CreateServiceSubcategoriesTable extends Migration
             $table->unsignedBigInteger('service_category_id');
             $table->foreign('service_category_id')->references('id')->on('service_categories')->oonDelete('restrict');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->unique(['name','service_category_id']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','service_category_id','deleted_at']);
         });
     }
 

@@ -62,7 +62,11 @@ class ServiceSubCategoryController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Service sub category deleted successfully');
+    }
    function showByServiceCategory($serviceCategory){
        $this->repository->setModel(new ServiceCategory,['service_subcategories'=>function($query){
            $query->active()->orderBy('name');

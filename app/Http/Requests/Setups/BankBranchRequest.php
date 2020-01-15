@@ -11,8 +11,8 @@ class BankBranchRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('bankbranch')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:departments,district_id'.(isset($this->id)?','.$this->id:''),
-            'sort_code'=>'bail|sometimes',
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('bank_branches', 'bank_id',$id),
+            'sort_code'=>'bail|sometimes|'.$this->softUnique('bank_branches','sort_code',$id),
             'email'=>'bail|sometimes|email',
             'phone'=>'bail|sometimes|numeric',
             'bank_id'=>'bail|'.($id?'sometimes':'required').'|numeric',

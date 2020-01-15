@@ -6,7 +6,6 @@
 ---2014_10_12_100000_create_password_resets_table
 ---2019_08_19_000000_create_failed_jobs_table
 ---2019_12_02_052155_create_roles_table
----2019_12_02_053242_create_permissions_table
 ---2019_12_02_054107_permission_role
 ---2019_12_02_054657_create_user_titles_table
 ---2019_12_02_054830_create_departments_table

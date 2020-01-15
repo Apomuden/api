@@ -13,7 +13,7 @@ class ProfessionRequest extends ApiFormRequest
        $id=$this->route('profession')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:professions'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('professions','name',$id),
             'staff_category_id'=>'bail|sometimes|numeric',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

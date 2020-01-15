@@ -15,9 +15,11 @@ class CreateStaffCategoriesTable extends Migration
     {
         Schema::create('staff_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'deleted_at']);
         });
     }
 

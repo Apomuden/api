@@ -12,7 +12,7 @@ class FundingTypeRequest extends ApiFormRequest
        $id=$this->route('fundingtype')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:funding_types'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('funding_types','name',$id),
             'sponsorship_type_id'=>'bail|'.($id?'sometimes':'required').'|numeric',
             'billing_system_id'=>'bail|'.($id?'sometimes':'required').'|numeric',
             'billing_cycle_id'=>'bail|'.($id?'sometimes':'required').'|numeric',

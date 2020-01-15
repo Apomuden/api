@@ -22,9 +22,10 @@ class CreateTownsTable extends Migration
             $table->foreign('region_id')->references('id')->on('regions')->onDelete('restrict');
             $table->unsignedBigInteger('district_id');
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('restrict');
-            $table->unique(['name','country_id','region_id','district_id']);
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'country_id', 'region_id', 'district_id','deleted_at']);
         });
     }
 

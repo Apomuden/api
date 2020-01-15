@@ -13,12 +13,13 @@ use App\Http\Utils\DateFormater;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use phpDocumentor\Reflection\Types\Self_;
 use PHPUnit\Framework\Constraint\Count;
 
 class Patient extends Model
 {
-  use ActiveTrait,FindByTrait,SortableTrait;
+  use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
   protected $guarded = [];
 
   public static function boot()
@@ -43,6 +44,8 @@ class Patient extends Model
             $model->payment_style_id=$funding_type->payment_style_id;
             $model->payment_channel_id=$funding_type->payment_channel_id;
             $model->sponsorship_type_id=$funding_type->sponsorship_type_id;
+
+
 
         });
 

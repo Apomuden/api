@@ -61,6 +61,7 @@ class BillingSponsorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Billing Sponsor deleted successfully');
     }
 }

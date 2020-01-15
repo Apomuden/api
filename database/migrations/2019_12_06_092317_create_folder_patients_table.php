@@ -20,6 +20,7 @@ class CreateFolderPatientsTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');
             $table->timestamps();
+            $table->unique(['folder_id', 'patient_id']);
         });
     }
 

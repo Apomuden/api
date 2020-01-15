@@ -129,6 +129,7 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Patient deleted successfully');
     }
 }

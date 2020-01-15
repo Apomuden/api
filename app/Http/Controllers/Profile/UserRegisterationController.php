@@ -55,4 +55,10 @@ class UserRegisterationController extends Controller
         $profile=$this->repository->update($request->all(),$profile);
         return ApiResponse::withOk('Profile updated',new ProfileWithIDResource($profile->refresh()));
    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Profile deleted successfully');
+    }
 }

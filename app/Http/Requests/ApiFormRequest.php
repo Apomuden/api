@@ -38,4 +38,17 @@ abstract class ApiFormRequest extends LaravelFormRequest
             ApiResponse::withValidationError($errors)
         );
     }
+    protected function softUnique($table,$field,$id){
+        return "unique:{$table},{$field},{$id},id,deleted_at,NULL";
+    }
+    protected function softUniqueWith($table,$fields,$id){
+        $fields=trim($fields,",").',deleted_at';
+       return "unique_with:{$table},{$fields}".($id?','.$id:'');
+    }
+    public function validationData()
+    {
+        return array_merge($this->request->all(), [
+            'deleted_at' => null
+        ]);
+    }
 }

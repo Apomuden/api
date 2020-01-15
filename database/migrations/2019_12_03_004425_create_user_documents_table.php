@@ -19,8 +19,9 @@ class CreateUserDocumentsTable extends Migration
             $table->uuid('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
             $table->string('file');
-            $table->unique(['name','user_id']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'user_id', 'deleted_at']);
         });
     }
 

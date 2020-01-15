@@ -10,16 +10,19 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
-use Exception;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Support\Facades\Cache;
+
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable,ActiveTrait,SortableTrait,FindByTrait;
+    use Notifiable,ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
 
     protected $guarded = [];
 
@@ -38,6 +41,15 @@ class User extends Authenticatable implements JWTSubject
       return ucwords(trim($this->firstname.' '.$this->middlename).' '.$this->surname);
     }
 
+    public function components()
+    {
+        return $this->belongsToMany(Component::class);
+    }
+
+    public function modules()
+    {
+        return $this->belongsToMany(Module::class,'component_user')->distinct();
+    }
 
     public static function boot()
     {
@@ -102,10 +114,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
 
     public function department()
     {
@@ -189,59 +197,115 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(PasswordReset::class);
     }
-
-    public function attachPermissions($permissions){
-            try{
-                $this->permissions()->attach($permissions);
-            }
-            catch(Exception $e){}
-    }
-    public function detachPermissions($permissions){
-            try{
-                $this->permissions()->detach($permissions);
-            }
-            catch(Exception $e){}
-    }
-
     static function getCategorySummary(){
         return self::select('staff_category_id',DB::raw('count(*) as total'))->groupBy('staff_category_id')->whereHas('staff_category')->get();
     }
-    public function attachModules($module_ids){
-        $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
+
+    public function detachModules($modules){
         foreach($modules as $module){
-           $components=$module->components;
+            ComponentUser::where('user_id', $this->id)
+                ->where('module_id', $module)
+                ->delete();
+        }
+        $this->deleteCache();
+    }
+    public function syncModules($modules,$detach=false){
+        $payload = [];
+        foreach($modules as $module){
+            $module=(object) $module;
+          $components = Module::with('components')->where('id',$module->id)->first()->components;
            foreach($components as $component){
-               $permissions=$component->permissions;
-               $this->attachPermissions($permissions);
+
+                if(isset($module->all)){
+                    $payload[$component->id] = [
+                        'all' => $module->all ?? false,
+                        'add' => $module->all ?? false,
+                        'view' => $module->all ?? false,
+                        'edit' => $module->all ?? false,
+                        'update' => $module->all ?? false,
+                        'delete' => $module->all ?? false,
+                        'print' => $module->all ?? false,
+                    ];
+                }
+
+                $payload[$component->id]['module_id']= $module->id;
+                if (isset($module->add))
+                    $payload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
+                if (isset($module->view))
+                    $payload[$component->id]['view'] = $module->all ? $module->all : ($module->view ?? false);
+
+                if (isset($module->edit))
+                    $payload[$component->id]['edit'] = $module->all ? $module->all : ($module->edit ?? false);
+
+                if (isset($module->update))
+                    $payload[$component->id]['update'] = $module->all ? $module->all : ($module->update ?? false);
+
+                if (isset($module->delete))
+                    $payload[$component->id]['delete'] = $module->all ? $module->all : ($module->delete ?? false);
+
+                if (isset($module->print))
+                    $payload[$component->id]['print'] = $module->all ? $module->all : ($module->print ?? false);
            }
         }
+        $this->components()->sync($payload, $detach);
+        $this->deleteCache();
      }
-
-     public function detachModules($module_ids){
-         $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
-         foreach($modules as $module){
-            $components=$module->components;
-            foreach($components as $component){
-                $permissions=$component->permissions;
-               $this->detachPermissions($permissions);
-            }
-         }
-      }
-
-
-      public function attachComponents($component_ids){
-        $components=Component::with('permissions')->get();
+      public function syncComponents($components,$detach=false){
+           $payload=[];
+           $components=$components;
            foreach($components as $component){
-               $permissions=$component->permissions;
-               $this->attachPermissions($permissions);
+                    $component=(object) $component;
+                    $dbcomponent= ComponentModule::where('component_id', $component->id)->first();
+              if(!$dbcomponent)
+                continue;
+
+            if (isset($component->all)) {
+                $payload[$component->id] = [
+                    'all' => $component->all ?? false,
+                    'add' => $component->all ?? false,
+                    'view' => $component->all ?? false,
+                    'edit' => $component->all ?? false,
+                    'update' => $component->all ?? false,
+                    'delete' => $component->all ?? false,
+                    'print' => $component->all ?? false,
+                ];
+            }
+
+            $payload[$component->id]['module_id']=$dbcomponent->module_id;
+
+            if (isset($component->add))
+                $payload[$component->id]['add'] = $component->all ? $component->all : ($component->add ?? false);
+            if (isset($component->view))
+                $payload[$component->id]['view'] = $component->all ? $component->all : ($component->view ?? false);
+
+            if (isset($component->edit))
+                $payload[$component->id]['edit'] = $component->all ? $component->all : ($component->edit ?? false);
+
+            if (isset($component->update))
+                $payload[$component->id]['update'] = $component->all ? $component->all : ($component->update ?? false);
+
+            if (isset($component->delete))
+                $payload[$component->id]['delete'] = $component->all ? $component->all : ($component->delete ?? false);
+
+            if (isset($component->print))
+                $payload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
            }
+           $this->components()->sync($payload,$detach);
+          $this->deleteCache();
      }
 
-     public function detachComponents($component_ids){
-        $components=Component::with('permissions')->get();
-            foreach($components as $component){
-                $permissions=$component->permissions;
-               $this->detachPermissions($permissions);
-            }
-      }
+     public function detachComponents($components){
+        foreach($components as  $component){
+            ComponentUser::where('component_id',$component)
+                           ->where('user_id',$this->id)
+                           ->delete();
+        }
+
+        $this->deleteCache();
+     }
+
+     private function deleteCache(){
+            $key = 'components->user->' . $this->id;
+            Cache::forget($key);
+     }
 }

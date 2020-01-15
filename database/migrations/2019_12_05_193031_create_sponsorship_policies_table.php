@@ -19,8 +19,9 @@ class CreateSponsorshipPoliciesTable extends Migration
             $table->unsignedBigInteger('billing_sponsor_id');
             $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->unique(['name','billing_sponsor_id']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'billing_sponsor_id','deleted_at']);
         });
     }
 

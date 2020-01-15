@@ -5,18 +5,19 @@ namespace App\Models;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Repositories\RepositoryEloquent;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use PhpParser\Node\Stmt\TryCatch;
 
 class Role extends Model
 {
-    use ActiveTrait,FindByTrait;
+    use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
-    public function permissions()
+
+    public function components()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->belongsToMany(Component::class);
     }
 
     public function users()
@@ -24,120 +25,182 @@ class Role extends Model
         return $this->hasMany(User::class);
     }
 
-    public function modules()
-    {
-       //$this->join('mo')
-    }
+   public function modules()
+   {
+       return $this->hasManyThrough(
+           Module::class,
+           ComponentRole::class,
+            'role_id',
+            'id',
 
-    public function getPermissionsPaginatedAttribute()
-    {
-      return $this->permissions()->active()->sortBy('name')->paginate(10);
-    }
+       );
+   }
 
-    public function attachPermissionsToUsers($permissions=null){
+    public function synComponentToUsers($components,$detach=false){
         $users=$this->users;
         foreach($users as $user){
-            try{
-                $user->permissions()->attach($permissions??$this->permissions);
-            }
-            catch(Exception $e){
-                continue;
-            }
+            $user->syncComponents($components,$detach);
         }
     }
 
-    public function detachPermissionsFromUsers($permissions=null){
-        $users=$this->users;
-        foreach($users as $user){
-            try{
-                $user->permissions()->detach($permissions??$this->permissions);
-            }
-            catch(Exception $e){
-                continue;
-            }
-        }
-    }
+    public function detachModules($modules,$cascade=false){
+          foreach($modules as $module){
+             $component= ComponentRole::where('role_id',$this->id)
+                             ->where('module_id',$module)
+                             ->delete();
 
-    public function attachPermissions($permissions){
-        try{
-            $this->permissions()->attach($permissions);
-            $this->attachPermissionsToUsers($permissions);
-        }
-        catch(Exception $e){ }
+
+            if ($cascade) {
+                $users = $this->users;
+                foreach ($users as $user) {
+                    ComponentUser::where('user_id', $user->id)
+                        ->where('module_id', $module)
+                        ->delete();
+                }
+            }
+          }
     }
-    public function detachPermissions($permissions,$cascade=false){
-        try{
-            $this->permissions()->detach($permissions);
-            if($cascade)
-            $this->detachPermissionsFromUsers($permissions);
-        }
-        catch(Exception $e){ }
-    }
-    public function attachModules($module_ids){
-       $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
+    public function syncModules($modules,$detach=false){
+       $syncPayload=[];
+       $payload=[];
+
+       $modules=$modules;
        foreach($modules as $module){
-          $components=$module->components;
+           $module=(object) $module;
+          $dbModule = Module::with('components')->where('id', $module->id)->first();
+          $components= $dbModule->components;
           foreach($components as $component){
-              try{
-                $permissions=$component->permissions;
-                $this->permissions()->attach($permissions);
-                $this->attachPermissionsToUsers($permissions);
-              }
-              catch(Exception $e){
-                continue;
-              }
 
+            if(isset($module->all)){
+                $syncPayload[$component->id] = [
+                    'all' => $module->all??false,
+                    'add' => $module->all??false,
+                    'view' => $module->all??false,
+                    'edit' => $module->all??false,
+                    'delete' => $module->all??false,
+                    'update' => $module->all??false,
+                    'print' => $module->all??false
+                ];
+            }
+
+                $syncPayload[$component->id]['module_id']= $module->id;
+                if (isset($module->add))
+                    $syncPayload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
+                if (isset($module->view))
+                    $syncPayload[$component->id]['view'] = $module->all ? $module->all : ($module->view ?? false);
+
+                if (isset($module->edit))
+                    $syncPayload[$component->id]['edit'] = $module->all ? $module->all : ($module->edit ?? false);
+
+                if (isset($module->update))
+                    $syncPayload[$component->id]['update'] = $module->all ? $module->all : ($module->update ?? false);
+
+                if (isset($module->delete))
+                    $syncPayload[$component->id]['delete'] = $module->all ? $module->all : ($module->delete ?? false);
+
+                if (isset($module->print))
+                    $syncPayload[$component->id]['print'] = $module->all ? $module->all : ($module->print ?? false);
+
+
+
+                $componentPayload['id'] = $component->id;
+                if (isset($module->all))
+                    $componentPayload['all'] =  ($module->all ?? false);
+                if (isset($module->add))
+                    $componentPayload['add'] = $module->all ? $module->all : ($module->add ?? false);
+                if (isset($module->view))
+                    $componentPayload['view'] = $module->all ? $module->all : ($module->view ?? false);
+                if (isset($module->edit))
+                    $componentPayload['edit'] = $module->all ? $module->all : ($module->edit ?? false);
+                if (isset($module->update))
+                    $componentPayload['update'] = $module->all ? $module->all : ($module->update ?? false);
+                if (isset($component->delete))
+                    $componentPayload['delete'] = $module->all ? $module->all : ($module->delete ?? false);
+                if (isset($module->print))
+                    $componentPayload['print'] = $module->all ? $module->all : ($module->print ?? false);
+
+                $payload[]=$componentPayload;
           }
        }
+       $this->components()->sync($syncPayload,$detach);
+       $this->synComponentToUsers($payload,$detach);
     }
 
-    public function detachModules($module_ids,$cascade=false){
-        $modules=Module::with(['components'=>function($q){$q->with('permissions');}])->whereIn('id',$module_ids)->get();
-        foreach($modules as $module){
-           $components=$module->components;
-           foreach($components as $component){
-               try{
-                    $permissions=$component->permissions;
-                    $this->permissions()->detach($permissions);
-                    if($cascade)
-                    $this->detachPermissionsFromUsers($permissions);
-               }
-               catch(Exception $e){
-                    continue;
-               }
+     public function syncComponents($components,$detach=false){
+        $syncPayload = [];
+        $payload = [];
 
-           }
+           foreach($components as $component){
+               $component=(object) $component;
+                $dbcomponent= ComponentModule::where('component_id', $component->id)->first();
+                if(!$dbcomponent)
+                  continue;
+
+            if (isset($component->all)){
+                $syncPayload[$component->id] =[
+                    'all'=> $component->all??false,
+                    'add'=> $component->all??false,
+                    'view'=>$component->all??false,
+                    'edit'=>$component->all??false,
+                    'update'=>$component->all??false,
+                    'delete'=>$component->all??false,
+                    'print'=>$component->all??false,
+                ];
+
+            }
+
+            $syncPayload[$component->id]['module_id'] = $dbcomponent->module_id;
+
+            if (isset($component->add))
+                $syncPayload[$component->id]['add'] = $component->all ? $component->all : ($component->add ?? false);
+            if (isset($component->view))
+                $syncPayload[$component->id]['view'] = $component->all ? $component->all : ($component->view ?? false);
+            if (isset($component->edit))
+                $syncPayload[$component->id]['edit'] = $component->all ? $component->all : ($component->edit ?? false);
+            if (isset($component->update))
+                $syncPayload[$component->id]['update'] = $component->all ? $component->all : ($component->update ?? false);
+            if (isset($component->delete))
+                $syncPayload[$component->id]['delete'] = $component->all ? $component->all : ($component->delete ?? false);
+            if (isset($component->print))
+                $syncPayload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
+
+
+            $componentPayload['id']=$component->id;
+            if (isset($component->all))
+                $componentPayload['all'] =  ($component->all ?? false);
+            if (isset($component->add))
+                $componentPayload['add'] = $component->all ? $component->all : ($component->add ?? false);
+            if (isset($component->edit))
+                $componentPayload['edit'] = $component->all ? $component->all : ($component->edit ?? false);
+            if (isset($component->view))
+                $componentPayload['view'] = $component->all ? $component->all : ($component->view ?? false);
+            if (isset($component->update))
+                $componentPayload['update'] = $component->all ? $component->all : ($component->update ?? false);
+            if (isset($component->delete))
+                $componentPayload['delete'] = $component->all ? $component->all : ($component->delete ?? false);
+            if (isset($component->print))
+                $componentPayload['print'] = $component->all ? $component->all : ($component->print ?? false);
+
+            $payload[]=$componentPayload;
+         }
+        $this->components()->sync($syncPayload, $detach);
+        $this->synComponentToUsers($payload, $detach);
+     }
+    public function detachComponents($components, $cascade = false)
+    {
+        foreach ($components as $component) {
+             ComponentRole::where('role_id', $this->id)
+                ->where('component_id', $component)
+                ->delete();
+
+            if ($cascade) {
+                $users = $this->users;
+                foreach ($users as $user) {
+                    ComponentUser::where('user_id', $user->id)
+                        ->where('component_id', $component)
+                        ->delete();
+                }
+            }
         }
-     }
-
-
-     public function attachComponents($component_ids){
-        $components=Component::with('permissions')->get();
-           foreach($components as $component){
-               try{
-                 $permissions=$component->permissions;
-                 $this->permissions()->attach($permissions);
-                 $this->attachPermissionsToUsers($permissions);
-               }
-               catch(Exception $e){
-                 continue;
-               }
-         }
-     }
-
-     public function detachComponents($component_ids,$cascade){
-        $components=Component::with('permissions')->get();
-           foreach($components as $component){
-               try{
-                 $permissions=$component->permissions;
-                 $this->permissions()->detach($permissions);
-
-                 if($cascade)
-                 $this->detachPermissionsFromUsers($permissions);
-               }
-               catch(Exception $e){
-                 continue;
-               }
-         }
-     }
+    }
 }

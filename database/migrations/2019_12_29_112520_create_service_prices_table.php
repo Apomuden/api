@@ -30,8 +30,10 @@ class CreateServicePricesTable extends Migration
             $table->set('patient_status',['IN-PATIENT','OUT-PATIENT','WALK-IN'])->default('IN-PATIENT,OUT-PATIENT,WALK-IN');
             $table->decimal('amount',20,2)->default(0);
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->unique(['service_category_id','service_subcategory_id','age_group_id','gender','funding_type_id','patient_status'],'unique_service_price');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'funding_type_id', 'patient_status','deleted_at'], 'unique_service_price');
+
         });
     }
 

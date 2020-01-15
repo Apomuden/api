@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('staff_id')->unique();
+            $table->string('staff_id');
             $table->unsignedInteger('title_id');
             $table->foreign('title_id')->references('id')->on('titles')->onDelete('restrict');
             $table->string('surname');
@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender',['MALE','FEMALE','BIGENDER']);
             $table->unsignedBigInteger('id_type_id')->nullable();
             $table->foreign('id_type_id')->references('id')->on('id_types')->onDelete('restrict');
-            $table->string('id_no')->nullable()->unique();
+            $table->string('id_no')->nullable();
             $table->unsignedInteger('role_id')->index();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('restrict');
             $table->unsignedInteger('religion_id')->nullable();
@@ -45,9 +45,9 @@ class CreateUsersTable extends Migration
             $table->foreign('hometown_id')->references('id')->on('towns')->onDelete('restrict');
 
             $table->enum('marital',['SINGLE','MARRIED','DIVORCED','WIDOW','WIDOWER','OTHER']);
-            $table->unsignedBigInteger('active_cell')->unique();
+            $table->unsignedBigInteger('active_cell');
             $table->unsignedBigInteger('alternate_cell')->nullable();
-            $table->string('email')->nullable()->unique();
+            $table->string('email')->nullable();
             $table->string('emerg_name')->nullable();
             $table->string('emerg_phone1')->nullable();
             $table->string('emerg_phone2')->nullable();
@@ -63,12 +63,12 @@ class CreateUsersTable extends Migration
             $table->foreign('profession_id')->references('id')->on('professions')->onDelete('restrict');
             $table->unsignedBigInteger('staff_specialty_id')->nullable();
             $table->foreign('staff_specialty_id')->references('id')->on('staff_specialties')->onDelete('restrict');
-            $table->string('username')->unique();
+            $table->string('username');
             $table->string('password');
             $table->enum('status',['ACTIVE','INACTIVE','SUSPENDED','LOCKED','RECOVERY_MODE','DISMISSED'])->default('ACTIVE');
             $table->date('appointment_date')->nullable();
-            $table->string('ssnit_no')->unique()->nullable();
-            $table->string('tin')->unique()->nullable();
+            $table->string('ssnit_no')->nullable();
+            $table->string('tin')->nullable();
             $table->decimal('basic',2)->default(0);
             $table->unsignedInteger('bank_id')->nullable();
             $table->foreign('bank_id')->references('id')->on('banks')->onDelete('restrict');
@@ -78,13 +78,22 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('staff_category_id')->nullable();
             $table->foreign('staff_category_id')->references('id')->on('staff_categories')->onDelete('restrict');
             $table->string('prof_body')->nullable();
-            $table->string('prof_reg_no')->nullable()->unique();
-            $table->date('prof_expiry_date')->nullable()->unique();
+            $table->string('prof_reg_no')->nullable();
+            $table->date('prof_expiry_date')->nullable();
             $table->string('signature')->nullable();
             $table->string('photo')->nullable();
             $table->dateTime('last_login')->nullable();
             $table->dateTime('last_logout')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['id_no','deleted_at']);
+            $table->unique(['staff_id','deleted_at']);
+            $table->unique(['ssnit_no','deleted_at']);
+            $table->unique(['prof_reg_no','deleted_at']);
+            $table->unique(['username','deleted_at']);
+            $table->unique(['tin','deleted_at']);
+            $table->unique(['active_cell','deleted_at']);
+            $table->unique(['email','deleted_at']);
         });
     }
 

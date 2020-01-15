@@ -13,7 +13,7 @@ class ProfileNextOfKinRequest extends ApiFormRequest
        $id=$this->route('profilenextofkin')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:staff_next_of_kin,phone,user_id'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('staff_next_of_kin','phone,user_id',$id),
             'phone'=>'bail|'.($id?'sometimes':'required').'|integer|min:10',
             'email'=>'bail|sometimes|nullable|email',
             'user_id'=>'bail|'.($id?'sometimes':'required').'|exists:users,id',

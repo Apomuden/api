@@ -11,7 +11,7 @@ class ServiceSubCategoryRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('servicesubcategory')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:service_subcategories,service_category_id'.(isset($this->id)?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('service_subcategories','service_category_id',$id),
             'service_category_id'=>'bail|'.($id?'sometimes':'required').'|exists:service_categories,id',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

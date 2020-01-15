@@ -34,14 +34,14 @@ class HospitalRequest extends ApiFormRequest
             'postal_address'=>'bail|sometimes|nullable|string',
             'gps_location'=>'bail|sometimes|nullable',
         ];
+
+
    }
 
-   /* public function withValidator($validator)
-   {
-        $validator->after(function ($validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add('field', 'Something is wrong with this field!');
-            }
-        });
-   } */
+    public function validationData()
+    {
+       $data=parent::validationData();
+       unset($data['deleted_at']);
+       return $data;
+    }
 }

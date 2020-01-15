@@ -11,8 +11,7 @@ class TownRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('town')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:towns,district_id'.(isset($this->id)?','.$this->id:''),
-
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('towns', 'district_id',$id),
             'district_id'=>'bail|'.($id?'sometimes':'required').'|numeric',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

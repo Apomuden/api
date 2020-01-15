@@ -13,7 +13,7 @@ class PaymentStyleRequest extends ApiFormRequest
        $id=$this->route('paymentstyle')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:payment_styles'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('payment_styles','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

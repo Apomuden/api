@@ -13,7 +13,7 @@ class PaymentChannelRequest extends ApiFormRequest
        $id=$this->route('paymentchannel')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:payment_channels'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('payment_channels','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

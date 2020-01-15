@@ -12,9 +12,8 @@ class AttachModulesToRoleRequest extends ApiFormRequest
    public function rules(){
 
         return [
-            //'role_id' => 'bail|required|integer|exists:roles,id',
-            'module_ids'=>'bail|required|array',
-            'module_ids.*'=>'bail|exists:modules,id'
+            'modules'=>'bail|required|array',
+            'modules.*.id'=> 'bail|distinct|exists:modules,id'
         ];
    }
 }

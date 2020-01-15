@@ -50,10 +50,14 @@ class FundingTypeController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Funding type deleted successfully');
+    }
    function showBySponsorshipType($sponsorshiptype){
       $this->repository->setModel(new SponsorshipType());
-   
+
        $fundingTypes=$this->repository->find($sponsorshiptype)->funding_types()->active()->orderBy('name')->get();
       return $fundingTypes?
       ApiResponse::withOk('Available Funding Types',new FundingTypeCollection($fundingTypes))

@@ -6,11 +6,12 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class UserRemark extends Model
 {
-    use ActiveTrait,FindByTrait,SortableTrait;
+    use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
 
 

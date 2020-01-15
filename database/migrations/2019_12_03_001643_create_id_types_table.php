@@ -15,10 +15,12 @@ class CreateIdTypesTable extends Migration
     {
         Schema::create('id_types', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->boolean('expires')->default(true);
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'deleted_at']);
         });
     }
 

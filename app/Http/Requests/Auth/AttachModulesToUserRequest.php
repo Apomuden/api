@@ -13,8 +13,8 @@ class AttachModulesToUserRequest extends ApiFormRequest
 
         return [
             //'role_id' => 'bail|required|integer|exists:roles,id',
-            'module_ids'=>'bail|required|array',
-            'module_ids.*'=>'bail|exists:modules,id'
+            'modules'=>'bail|required|array',
+            'modules.*.id'=>'bail|integer|distinct|exists:modules,id'
         ];
    }
 }

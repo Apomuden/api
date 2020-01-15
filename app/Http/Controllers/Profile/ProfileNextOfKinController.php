@@ -56,7 +56,11 @@ class ProfileNextOfKinController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Profile deleted successfully');
+    }
    function showByProfile($profile){
        $this->repository->setModel(new User,['nextofkins'=>function($query){
            $query->active()->with(['relationship','user'])->orderBy('name');

@@ -6,10 +6,11 @@ use App\Http\Helpers\FileResolver;
 use App\Http\Traits\ActiveTrait;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserDocument extends Model
 {
-    use ActiveTrait;
+    use ActiveTrait,SoftDeletes;
     protected $guarded = [];
 
     public function user()

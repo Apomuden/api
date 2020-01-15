@@ -11,7 +11,7 @@ class RelationshipRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('relationship')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:relationships,district_id'.(isset($this->id)?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('relationships','name',$id),
 
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

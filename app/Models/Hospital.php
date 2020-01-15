@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Helpers\FileResolver;
 use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Hospital extends Model
 {

@@ -11,10 +11,10 @@ class TitleRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('title')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:titles'.($this->id?','.$this->id:''),
-            'gender'=>'bail|sometimes|Set:MALE,FEMALE',
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('titles','name',$id),
+            'gender'=>'bail|sometimes|set:MALE,FEMALE',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }
-  
+
 }

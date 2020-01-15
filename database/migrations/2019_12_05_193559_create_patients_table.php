@@ -28,7 +28,7 @@ class CreatePatientsTable extends Migration
             $table->enum('gender',['MALE','FEMALE','BIGENDER']);
             $table->unsignedBigInteger('id_type_id')->nullable();
             $table->foreign('id_type_id')->references('id')->on('id_types')->onDelete('restrict');
-            $table->string('id_no')->nullable()->unique();
+            $table->string('id_no')->nullable();
             $table->boolean('id_expires')->nullable();
             $table->date('id_expiry_date')->nullable();
             $table->unsignedBigInteger('folder_id');
@@ -64,8 +64,8 @@ class CreatePatientsTable extends Migration
             $table->foreign('religion_id')->references('id')->on('religions')->onDelete('restrict');
             $table->unsignedBigInteger('profession_id')->nullable();
             $table->foreign('profession_id')->references('id')->on('professions')->onDelete('restrict');
-            $table->string('staff_id')->nullable()->unique();
-            $table->string('ssnit_no')->nullable()->unique();
+            $table->string('staff_id')->nullable();
+            $table->string('ssnit_no')->nullable();
             $table->mediumText('work_address')->nullable();
             $table->unsignedInteger('educational_level_id')->nullable();
             $table->foreign('educational_level_id')->references('id')->on('educational_levels')->onDelete('restrict');
@@ -85,6 +85,10 @@ class CreatePatientsTable extends Migration
             $table->enum('mortality',['ALIVE','DEAD'])->default('ALIVE');
             $table->enum('reg_status',['IN-PATIENT','OUT-PATIENT','WALK-IN']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['staff_id','deleted_at']);
+            $table->unique(['ssnit_no','deleted_at']);
+            $table->unique(['id_no','deleted_at']);
         });
     }
 

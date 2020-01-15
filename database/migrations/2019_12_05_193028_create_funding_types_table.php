@@ -28,8 +28,9 @@ class CreateFundingTypesTable extends Migration
             $table->foreign('payment_channel_id')->references('id')->on('payment_channels')->onDelete('restrict');
             $table->mediumText('description')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->unique(['name','sponsorship_type_id']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','deleted_at']);
         });
     }
 

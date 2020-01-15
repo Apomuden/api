@@ -57,7 +57,11 @@ class ServiceCategoryController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Service category deleted successfully');
+    }
    function showByHospitalService($hospitalservice){
        $this->repository->setModel(new HospitalService,['service_categories'=>function($query){
            $query->active()->orderBy('name');

@@ -10,8 +10,11 @@
 | the IoC container for the system binding all of the various parts.
 |
 */
-
-$app = new Illuminate\Foundation\Application(
+//Default Laravel Application
+/* $app = new Illuminate\Foundation\Application(
+    $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
+); */
+$app = new App\Http\Foundation\Application(
     $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
 );
 

@@ -15,12 +15,14 @@ class CreateAgeGroupsTable extends Migration
     {
         Schema::create('age_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->enum('duration_type',['YEAR','MONTH'])->default('YEAR');
+            $table->string('name');
+            $table->enum('duration_type',['YEAR','MONTH','DAY'])->default('YEAR');
             $table->unsignedInteger('min_age');
             $table->unsignedInteger('max_age')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name','deleted_at']);
         });
     }
 

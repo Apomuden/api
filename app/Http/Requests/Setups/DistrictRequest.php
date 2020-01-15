@@ -11,7 +11,7 @@ class DistrictRequest extends ApiFormRequest
    public function rules(){
     $id = $this->route('district')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:districts,region_id'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('districts','region_id',$id),
             //'country_id' => 'bail|'.($id?'sometimes':'required').'|numeric',
             'region_id'=>'bail|'.($id?'sometimes':'required').'|numeric',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'

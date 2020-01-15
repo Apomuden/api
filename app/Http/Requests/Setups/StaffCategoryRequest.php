@@ -13,8 +13,7 @@ class StaffCategoryRequest extends ApiFormRequest
        $id=$this->route('staffcategory')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:staff_categories'.($id?','.$id:''),
-
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('staff_categories','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

@@ -58,7 +58,8 @@ class ServicePriceRequest extends ApiFormRequest
                     'funding_type_id'=>$funding_type_id,
                     'age_group_id'=>$age_group_id,
                     'gender'=>$gender,
-                    'patient_status'=>$patient_status
+                    'patient_status'=>$patient_status,
+                    'deleted_at'=>null
                 ];
                 $servicePrice=$repository->find($id)??$repository->findWhere($where)->first();
 
@@ -95,7 +96,7 @@ class ServicePriceRequest extends ApiFormRequest
     else if($service_category_id){
         $repository=new RepositoryEloquent(new ServiceCategory);
         $service_category=$repository->find($service_category_id);
-        
+
         if($service_category)
         $data['hospital_service_id']=$service_category->hospital_service_id;
     }

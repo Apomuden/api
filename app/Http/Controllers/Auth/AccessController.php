@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RecoveryMailRequest;
 use Illuminate\Support\Str;
 use App\Http\Resources\ProfileResource;
+use App\Http\Resources\ProfileWithIDResource;
 use App\Jobs\SendRecoveryMail;
 use App\Models\PasswordReset;
 use App\Models\User;
@@ -23,6 +24,7 @@ class AccessController extends Controller
 
     public function __construct(User $user)
     {
+
         $this->repository= new RepositoryEloquent($user);
     }
     function login(LoginRequest $request){
@@ -86,7 +88,7 @@ class AccessController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => (auth('api')->factory()->getTTL()/60).' hours',
-            'profile'=>$user?new ProfileResource($user):null
+            'profile'=>$user?new ProfileWithIDResource($user):null
         ];
 
       return  ApiResponse::withOk($message,$data);

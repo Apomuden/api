@@ -18,8 +18,9 @@ class CreateServiceCategoriesTable extends Migration
             $table->string('name');
             $table->unsignedInteger('hospital_service_id');
             $table->foreign('hospital_service_id')->references('id')->on('hospital_services')->oonDelete('restrict');            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
-            $table->unique(['name','hospital_service_id']);
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['name', 'hospital_service_id','deleted_at']);
         });
     }
 

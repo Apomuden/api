@@ -11,7 +11,7 @@ class AgeGroupRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('agegroup')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique_with:departments,district_id'.(isset($this->id)?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('age_groups','name',$id),
             'duration_type'=>'bail|sometimes|in:YEAR,MONTH',
             'min_age'=>'bail|'.($id?'sometimes':'required').'|min:0,max:100',
             'max_age'=>'bail|sometimes|nullable|min:1',

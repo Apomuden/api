@@ -52,4 +52,10 @@ class StaffTypeController extends Controller
         return ApiResponse::withException($e);
        }
    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Staff type deleted successfully');
+    }
 }

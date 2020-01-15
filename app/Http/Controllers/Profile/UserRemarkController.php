@@ -66,6 +66,7 @@ class UserRemarkController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Remark deleted successfully');
     }
 }

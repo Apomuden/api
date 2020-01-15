@@ -11,7 +11,7 @@ class HospitalServiceRequest extends ApiFormRequest
    public function rules(){
        $id=$this->route('hospitalservice')??null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:hospital_services'.(isset($this->id)?','.$this->id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('hospital_services','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

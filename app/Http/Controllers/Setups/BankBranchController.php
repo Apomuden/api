@@ -64,7 +64,11 @@ class BankBranchController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Bank Branch deleted successfully');
+    }
    function showByBank($bank){
        try{
         $this->repository->setModel(new Bank);

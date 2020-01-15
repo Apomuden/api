@@ -56,7 +56,11 @@ class ProfileDocumentController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Document deleted successfully');
+    }
    function showByProfile($profile){
        $this->repository->setModel(new User,['documents'=>function($query){
            $query->active()->orderBy('name');

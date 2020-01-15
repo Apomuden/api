@@ -13,8 +13,7 @@ class SpecialtyRequest extends ApiFormRequest
        $id=$this->route('specialty')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:staff_specialties'.($id?','.$id:''),
-
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('staff_specialties','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

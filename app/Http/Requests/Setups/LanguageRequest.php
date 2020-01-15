@@ -13,7 +13,7 @@ class LanguageRequest extends ApiFormRequest
        $id=$this->route('language')??null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|unique:languages'.($id?','.$id:''),
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('languages','name',$id),
 
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];

@@ -10,8 +10,8 @@ class AttachComponentsRequest extends ApiFormRequest
    }
    public function rules(){
         return [
-            'component_ids'=>'bail|required|array',
-            'component_ids.*'=>'bail|exists:components,id'
+            'components'=>'bail|required|array',
+            'components.*.id'=>'bail|integer|distinct|exists:components,id'
         ];
    }
 }

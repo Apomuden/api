@@ -61,5 +61,9 @@ class RelationshipController extends Controller
        }
    }
 
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Relationship deleted successfully');
+    }
 }

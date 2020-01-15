@@ -31,7 +31,7 @@ class PatientNextOfKinRequest extends ApiFormRequest
              'name'=>'bail|'.($id?'sometimes':'required').'|string',
              'phone'=>'bail|'.($id?'sometimes':'required').'|numeric|min:9',
              'relation_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:relationships,id',
-             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id|unique_with:patient_next_of_kin,name,phone,patient_id'.($id?','.$id:''),
+             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id|'.$this->softUniqueWith('patient_next_of_kin', 'name,phone,patient_id',$id),
              'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,NULLIFIED,OLD'
         ];
     }

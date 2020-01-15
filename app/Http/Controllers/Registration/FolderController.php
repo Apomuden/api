@@ -8,6 +8,8 @@ use App\Http\Requests\Registrations\FolderRequest;
 use App\Http\Resources\Registrations\FolderResource;
 use App\Models\Folder;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 
 class FolderController extends Controller
 {
@@ -18,7 +20,7 @@ class FolderController extends Controller
        $this->repository=new RepositoryEloquent($folder);
     }
 
-    public function index()
+    public function index(Request $request)
     {
        return ApiResponse::withOk('Folders List',FolderResource::collection($this->repository->all('surname')));
     }
@@ -62,6 +64,7 @@ class FolderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Folder deleted successfully');
     }
 }

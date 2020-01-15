@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Helpers\Security;
 use App\Models\Component;
+use App\Models\ComponentModule;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
-use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 class PermissionTableSeeder extends Seeder
 {
@@ -14,57 +17,75 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $permission_ids = []; // an empty array of stored permission IDs
         // iterate though all routes
-
+        DB::beginTransaction();
         $routes=Route::getRoutes()->getRoutes();
         foreach ($routes as $key => $route)
         {
-            // get route action
+            $action = $route->getAction();
             $name=$route->getName();
-            $action = $route->getActionname();// separating controller and method
-            $_action = explode('@',$action);
+            $module=$action['module']??null;
+            $component=$action['component']??null;
+            //$parent_component=$action['parent_component']??null;
 
-            $controller = $_action[0];
-            $method = end($_action);
+            if( is_null($module) || is_null($component))
+                continue;
 
-            // Check if Component Exist
-            $_component=explode('\\',$controller);
-            $component_name=str_replace('Controller','',end($_component));
-
-            $component=Component::where(['name'=>$component_name])->first();
-
-            if(!$component){
-               $component=new Component;
-               $component->name=$component_name;
-               $component->save();
-            }
-
-
-
-              // check if this permission is already exists
-              $permission = Permission::where(
-                ['controller'=>$controller,'method'=>$method]
-            )->first();
-
-            if(!$permission){
-                $permission = new Permission;
-                $permission->name=$name;
-                $permission->controller = $controller;
-                $permission->method = $method;
-                $permission->component_id=$component->id;
-                $permission->save();
-                // add stored permission id in array
-                $permission_ids[] = $permission->id;
-            }
-            else if(!$permission->component_id)
+            $dbModules=Security::getModuleByTag($module)??null;
+            $dbComponent=Security::getComponentByTag($component)??null;
+            if(is_array($dbModules))
             {
-                $permission->component_id=$component->id;
-                $permission->save();
+
+               foreach($dbModules as $dbModule){
+                 $componentModule=ComponentModule::where('component_id',$dbComponent->id)
+                        ->where('module_id',$dbModule->id)->first();
+
+                 //If Exists
+                 if($componentModule)
+                   continue;
+
+                ComponentModule::create([
+                     'component_id'=>$dbComponent->id,
+                     'module_id'=>$dbModule->id,
+                 ]);
+
+
+               }
             }
-        }// find admin role.
-        $admin_role = Role::where('name','Admin')->first();// atache all permissions to admin role
-        $admin_role->permissions()->attach($permission_ids);
-        $admin_role->attachPermissionsToUsers();
+            else if($dbModules)
+            {
+                $componentModule=ComponentModule::where('component_id',$dbComponent->id)
+                        ->where('module_id',$dbModules->id)->first();
+
+                //If Exists
+                if($componentModule)
+                        continue;
+
+
+                 ComponentModule::create([
+                            'component_id'=>$dbComponent->id,
+                            'module_id'=>$dbModules->id,
+                ]);
+
+            }
+        }
+
+        //Syn Admin Role
+        $adminRole=Role::where('name', 'Dev')->first();
+        if(!$adminRole)
+         $adminRole=Role::create(['name' => 'Dev']);
+
+
+        //Sync Role to components
+        $synPayload = [];
+        $components=ComponentModule::all();
+         foreach($components as $component){
+            $synPayload[] = [
+                'id' => $component->component_id,//This is the component
+                'all' => true
+            ];
+         }
+        $adminRole->syncComponents($synPayload);
+        DB::commit();
     }
 }

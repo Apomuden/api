@@ -58,7 +58,11 @@ class DistrictController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('District deleted successfully');
+    }
    function showByRegion($region){
        try{
         $this->repository->setModel(new Region());

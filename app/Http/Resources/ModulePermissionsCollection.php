@@ -30,7 +30,7 @@ class ModulePermissionsCollection extends ResourceCollection
             'data'=>ModulePermissionsResource::collection($this->collection),
         ];
 
-        if($this->pagination)
+        if($this->pagination && count($this->collection))
         $data['pagination']=$this->pagination;
 
         return $data;

@@ -62,7 +62,11 @@ class TownController extends Controller
         return ApiResponse::withException($e);
        }
    }
-
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Town deleted successfully');
+    }
    function showByDistrict($district){
      $this->repository->setModel(new District);
      $towns=$this->repository->find($district)->towns()->active()->orderBy('name')->get();
