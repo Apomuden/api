@@ -16,6 +16,8 @@ class CreateComponentModuleTable extends Migration
         Schema::create('component_module', function (Blueprint $table) {
             $table->unsignedBigInteger('component_id');
             $table->foreign('component_id')->references('id')->on('components')->onDelete('restrict');
+            $table->unsignedBigInteger('parent_component_id')->nullable();
+            $table->foreign('parent_component_id')->references('id')->on('components')->onDelete('restrict');
             $table->unsignedBigInteger('module_id');
             $table->foreign('module_id')->references('id')->on('modules')->onDelete('restrict');
             $table->primary(['component_id','module_id']);
