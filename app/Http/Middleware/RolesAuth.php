@@ -48,7 +48,7 @@ class RolesAuth extends BaseMiddleware
            if(!$role || $role->status!='ACTIVE')
                return ApiResponse::withNotAuthorized('Role not Active or Deleted');
            else if (ucwords($role->name) == 'Dev')
-               return $next($request);
+               return $next($request); 
             else{
                  $route= $request->route();
                  $action = $route->getAction();
@@ -58,7 +58,7 @@ class RolesAuth extends BaseMiddleware
 
                  $nameParts= explode('.', $name);
                  $operation=strtolower(end($nameParts));
-                Log::critical('action',[$operation]);
+                //Log::critical('action',[$operation]);
 
                  switch($operation){
                      case 'index':

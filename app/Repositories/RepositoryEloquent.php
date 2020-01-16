@@ -5,6 +5,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -264,7 +265,8 @@ class RepositoryEloquent implements IRepository{
    }
 
    protected function deletCache($key=null){
-         if($key)
+
+       /*if($key)
          Cache::forget($key);
 
         //Delete the all
@@ -273,7 +275,9 @@ class RepositoryEloquent implements IRepository{
 
         //Delete the paginate
         $key=$this->cache_prefix.'->paginate';
-        Cache::forget($key);
+        Cache::forget($key);*/
+
+        Artisan::call('cache:clear');
    }
 
 }

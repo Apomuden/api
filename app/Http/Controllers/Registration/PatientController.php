@@ -73,14 +73,13 @@ class PatientController extends Controller
       $this->repository->useFindBy=false;
       $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders',$this->withCallback));
       $patients=$this->repository->all('surname');
-
       //return [DB::getQueryLog()];
       return ApiResponse::withOk('Patients List',PatientResource::collection($patients));
     }
-
     public function paginated()
     {
-      $this->repository->setModel(Patient::whereHas('folders',$this->withCallback));
+      $this->repository->useFindBy = false;
+      $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders',$this->withCallback));
       return ApiResponse::withPaginate(new PatientPaginatedCollection($this->repository->paginate(10,'surname'),'Patients List'));
     }
     /**
