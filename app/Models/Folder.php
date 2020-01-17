@@ -16,7 +16,7 @@ class Folder extends Model
     protected $guarded = [];
     public function patients()
     {
-        return $this->belongsToMany(Patient::class);
+        return $this->belongsToMany(Patient::class, 'folder_patients');
     }
 
     public static function boot()

@@ -52,6 +52,18 @@ class Patient extends Model
         Static::created(function($model){
              //Attach Patient to folder
              $model->folders()->attach($model->folder_id);
+             $folder= $model->folders()->orderBy('created_at', 'desc')->first();
+             if(strtoupper($folder->folder_type)== 'FAMILY'){
+                $postFix = $folder->patients()->where('postfix','!=',null)->max('postfix');
+
+                if($postFix)
+                $postFix++;
+                else
+                $postFix='a';
+
+                $model->postfix=$postFix;
+                $model->save();
+             }
         });
 
         static::updating(function($model){
@@ -75,11 +87,25 @@ class Patient extends Model
 
                 $original = $model->getOriginal();
 
-                if($original->folder_id!=$model->folder_id)
-                $model->folders()->detach($original->folder_id);
+                if($original->folder_id!=$model->folder_id){
+                    $model->folders()->detach($original->folder_id);
 
-                 //Attach Patient to folder
-                 $model->folders()->attach($model->folder_id);
+                    $folder = $model->folders()->orderBy('created_at', 'desc')->first();
+                    if (strtoupper($folder->folder_type) == 'FAMILY') {
+                        $postFix = $folder->patients()->where('postfix', '!=', null)->max('postfix');
+
+                        if ($postFix)
+                            $postFix++;
+                        else
+                            $postFix = 'a';
+
+                        $model->postfix = $postFix;
+                    }
+                }
+
+                //Attach Patient to folder
+                $model->folders()->attach($model->folder_id);
+
             }
             catch(Exception $e){}
         });

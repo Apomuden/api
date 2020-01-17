@@ -7,6 +7,13 @@ Route::get('patients/paginated',[
     'module'=>'records-mgt',
     'component'=>'patient-registry'
 ]);
+//Patients Route
+Route::post('patients/withfolder',[
+    'uses'=> 'Registration\PatientController@storePatientWithFolder',
+    'as'=>'patients.withfolder',
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
 Route::apiResource('patients','Registration\PatientController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',

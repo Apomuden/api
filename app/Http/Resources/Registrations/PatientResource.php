@@ -47,7 +47,7 @@ class PatientResource extends JsonResource
             'title'=>$title->name,
             'title_id'=>$title->id,
             'patient_no'=>$this->patient_id,
-            'folder_no'=>$folder->folder_no,
+            'folder_no'=>$folder->folder_no.($this->postfix??null),
             'folder_rack'=>$folder->rack_no,
             'folder_type'=>$folder->folder_type,
             'folder_status'=>$folder->status,

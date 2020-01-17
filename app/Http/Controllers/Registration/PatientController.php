@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Registration;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\PatientRequest;
+use App\Http\Requests\Registrations\PatientWithFolderRequest;
 use App\Http\Resources\PatientPaginatedCollection;
 use App\Http\Resources\PatientResource;
+use App\Models\Folder;
 use App\Models\Patient;
 use App\Repositories\RepositoryEloquent;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,6 +27,9 @@ class PatientController extends Controller
       $rack_no=$this->searchParams['rack_no']??null;
       $folder_type=$this->searchParams['folder_type']??null;
 
+      //Folder Postfix of patient
+      $postfix= $folder_no? substr($folder_no, -1):null;
+
        unset($this->searchParams['folder_no'],
        $this->searchParams['rack_no'],
        $this->searchParams['folder_type']
@@ -31,7 +37,12 @@ class PatientController extends Controller
 
        $folderSearch=[];
        if($folder_no)
-       $folderSearch['folder_no']=$folder_no;
+       $folderSearch['folder_no']='='.$folder_no;
+
+       if(!is_numeric(trim($postfix))){
+            $this->searchParams['postfix'] = '=' . trim($postfix);
+            $folderSearch['folder_no']=rtrim($folderSearch['folder_no'],$postfix);
+       }
 
        if($rack_no)
        $folderSearch['rack_no']=$rack_no;
@@ -95,6 +106,30 @@ class PatientController extends Controller
        return ApiResponse::withOk('Patient created',new PatientResource($patient->refresh()));
     }
 
+    public function storePatientWithFolder(PatientWithFolderRequest $request){
+        try{
+            DB::beginTransaction();
+            //Create Folder
+            $this->repository->setModel(new Folder);
+            $payload = ['folder_type' => $request->folder_type];
+            $folder = $this->repository->store($payload);
+
+            //Add Patient
+            $payload = $request->all();
+            $payload['folder_id'] = $folder->id;
+            unset($payload['folder_type']);
+
+            $this->repository->setModel(new Patient);
+            $patient = $this->repository->store($payload);
+
+            DB::commit();
+            return ApiResponse::withOk('Patient created', new PatientResource($patient->refresh()));
+        }
+       catch(Exception $e){
+           DB::rollback();
+           return ApiResponse::withException($e);
+       }
+    }
     /**
      * Display the specified resource.
      *

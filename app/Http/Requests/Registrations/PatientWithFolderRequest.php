@@ -6,7 +6,7 @@ use App\Http\Requests\ApiFormRequest;
 use App\Models\IdType;
 use App\Repositories\RepositoryEloquent;
 
-class PatientRequest extends ApiFormRequest
+class PatientWithFolderRequest extends ApiFormRequest
 {
     public function authorize()
     {
@@ -16,7 +16,6 @@ class PatientRequest extends ApiFormRequest
     {
         $id = $this->route('patient') ?? null;
         $id_type_id = \request()->input('id_type_id') ?? null;
-        $reg_status = \request()->input('reg_status') ?? null;
         $id_type = null;
         if ($id_type_id) {
             $repository = new  RepositoryEloquent(new IdType);
@@ -26,7 +25,7 @@ class PatientRequest extends ApiFormRequest
             'title_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:titles,id',
             'old_folder_no' => 'bail|sometimes|nullable',
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
-            'folder_id' => 'bail|' . (($id||$reg_status== 'WALK-IN') ? 'sometimes' : 'required') . '|integer|exists:folders,id',
+            'folder_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|in:INDIVIDUAL,FAMILY',
             'ssnit_no' => 'bail|sometimes|nullable',
             'tin' => 'bail|sometimes|nullable',
             'surname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|min:2',
