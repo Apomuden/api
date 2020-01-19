@@ -7,7 +7,7 @@ use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PatientSponsors extends Model
+class PatientSponsor extends Model
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     public function sponsor()
@@ -23,5 +23,10 @@ class PatientSponsors extends Model
     public function patients()
     {
         return $this->hasMany(Patient::class);
+    }
+
+    public function relationship()
+    {
+        return $this->belongsTo(Relationship::class,'relation_id');
     }
 }

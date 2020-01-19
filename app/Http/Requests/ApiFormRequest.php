@@ -45,6 +45,9 @@ abstract class ApiFormRequest extends LaravelFormRequest
         $fields=trim($fields,",").',deleted_at';
        return "unique_with:{$table},{$fields}".($id?','.$id:'');
     }
+    protected function websiteRegEx(){
+        return 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+    }
     public function validationData()
     {
         return array_merge($this->request->all(), [

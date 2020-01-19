@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\Hospital;
 use App\Models\IdType;
+use App\Repositories\HospitalEloquent;
 use App\Repositories\RepositoryEloquent;
 
 class PatientRequest extends ApiFormRequest
@@ -22,7 +24,8 @@ class PatientRequest extends ApiFormRequest
             $repository = new  RepositoryEloquent(new IdType);
             $id_type = $repository->find($id_type_id);
         }
-        return [
+
+        $data= [
             'title_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:titles,id',
             'old_folder_no' => 'bail|sometimes|nullable',
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
@@ -61,5 +64,7 @@ class PatientRequest extends ApiFormRequest
             'reg_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'status' => 'bail|sometimes|string|in:ACTIVE,INACTIVE,SUSPENDED,BLACKLISTED'
         ];
+
+        return $data;
     }
 }
