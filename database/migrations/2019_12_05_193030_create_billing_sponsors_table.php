@@ -16,14 +16,14 @@ class CreateBillingSponsorsTable extends Migration
         Schema::create('billing_sponsors', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedInteger('sponsorship_type_id');
-            $table->foreign('sponsorship_type_id')->references('id')->on('sponsorship_types')->onDelete('restrict');
+            //$table->unsignedInteger('sponsorship_type_id');
+            //$table->foreign('sponsorship_type_id')->references('id')->on('sponsorship_types')->onDelete('restrict');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
             $table->enum('status',['ACTIVE','INACTIVE','TERMINATED','BLACKLISTED'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['name','deleted_at']);
+            //$table->unique(['name','deleted_at']);
         });
     }
 
