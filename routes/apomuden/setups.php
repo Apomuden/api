@@ -175,6 +175,11 @@ use Illuminate\Support\Facades\Route;
             'module'=>['records-mgt','sys-mgt'],
             'component'=>'setup.sponsorshiptypes'
         ]);
+        Route::apiResource('sponsorpolicies', 'Setups\SponsorshipPolicyController',[
+            //'only'=>['index','show','store','update'],
+            'module'=>['records-mgt','sys-mgt'],
+            'component'=>'setup.sponsorshiptypes'
+        ]);
         Route::apiResource('paymentchannels','Setups\PaymentChannelController',[
             //'only'=>['index','show','store','update'],
             'module'=>['records-mgt','sys-mgt'],

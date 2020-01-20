@@ -52,7 +52,12 @@ class BillingSponsorController extends Controller
     public function show($billingsponsor)
     {
         $billingSponsor=$this->repository->find($billingsponsor);
-        return ApiResponse::withOk("Billing Sponsor found", new BillingSponsorResource($billingSponsor));
+        return
+        $billingSponsor?
+         ApiResponse::withOk("Billing Sponsor found", new BillingSponsorResource($billingSponsor))
+         :
+         ApiResponse::withOk("Billing Sponsor not found");
+
     }
 
     public function update(BillingSponsorRequest $request, $billingsponsor)

@@ -151,6 +151,31 @@ class RepositoryEloquent implements IRepository{
        return $this->model->destroy($id);
    }
 
+   // first the record with the given id
+   public function first()
+   {
+
+       $key=$this->cache_prefix.'->first';
+
+       if($this->useCache){
+           $record= Cache::get($key);
+           if($record)
+           return $record;
+
+           if($this->with)
+           $record=$this->model->with($this->with)->first();
+           else
+           $record=$this->model->first();
+       }
+       else{
+           if($this->with)
+           $record=$this->model->with($this->with)->first();
+           else
+           $record=$this->model->first();
+       }
+
+       return $this->cache($key,$record);
+   }
    // show the record with the given id
    public function show($id)
    {
