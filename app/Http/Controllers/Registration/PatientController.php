@@ -165,11 +165,15 @@ class PatientController extends Controller
         $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
 
 
-        $patient = $this->repository->first();
+        $patientCount = $this->repository->count();
+        $patient=$this->repository->first();
 
-        return $patient?
-         ApiResponse::withOk('Patient found', new PatientResource($patient)):
-         ApiResponse::withNotFound(null);
+        if($patientCount==1)
+          return ApiResponse::withOk('Patient found', new PatientResource($patient));
+        else
+         return ApiResponse::withNotFound(null);
+
+
     }
     /**
      * Update the specified resource in storage.
