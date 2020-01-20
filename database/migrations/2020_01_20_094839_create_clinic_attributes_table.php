@@ -17,7 +17,7 @@ class CreateClinicAttributesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('clinic_id');
             $table->unsignedBigInteger('service_category_id');
-            $table->unsignedBigInteger('billing_cycle_id');
+            $table->unsignedInteger('billing_cycle_id');
             $table->unsignedBigInteger('duration');
             $table->softDeletes();
             $table->timestamps();

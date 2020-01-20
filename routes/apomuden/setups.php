@@ -238,3 +238,15 @@ use Illuminate\Support\Facades\Route;
             'module'=>['records-mgt','sys-mgt'],
             'component'=>'setup.servicesubcategories'
         ]);
+
+        Route::apiResource('clinics','Setups\ClinicController',[
+            //'only'=>['index','show','store','update'],
+            'module'=>['records-mgt','sys-mgt'],
+            'component'=>'setup.clinics'
+        ]);
+
+        Route::apiResource('clinicattributes','Setups\ClinicAttributeController',[
+            //'only'=>['index','show','store','update'],
+            'module'=>['records-mgt','sys-mgt'],
+            'component'=>'setup.clinicattributes'
+        ]);

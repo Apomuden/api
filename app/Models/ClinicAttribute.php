@@ -16,4 +16,14 @@ class ClinicAttribute extends Model
     {
         return $this->belongsTo(Clinic::class);
     }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class);
+    }
+
+    public function service_category()
+    {
+        return $this->belongsTo(ServiceCategory::class);
+    }
 }

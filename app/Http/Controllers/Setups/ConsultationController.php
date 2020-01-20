@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Clinic;
+namespace App\Http\Controllers\Setups;
 
-use App\Models\ClinicAttribute;
 use App\Http\Controllers\Controller;
+use App\Models\Consultation;
 use Illuminate\Http\Request;
 
-class ClinicAttributeController extends Controller
+class ConsultationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -42,10 +42,10 @@ class ClinicAttributeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\ClinicAttribute  $clinicAttribute
+     * @param  \App\Models\Consultation  $consultation
      * @return \Illuminate\Http\Response
      */
-    public function show(ClinicAttribute $clinicAttribute)
+    public function show(Consultation $consultation)
     {
         //
     }
@@ -53,10 +53,10 @@ class ClinicAttributeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\ClinicAttribute  $clinicAttribute
+     * @param  \App\Models\Consultation  $consultation
      * @return \Illuminate\Http\Response
      */
-    public function edit(ClinicAttribute $clinicAttribute)
+    public function edit(Consultation $consultation)
     {
         //
     }
@@ -65,10 +65,10 @@ class ClinicAttributeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\ClinicAttribute  $clinicAttribute
+     * @param  \App\Models\Consultation  $consultation
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClinicAttribute $clinicAttribute)
+    public function update(Request $request, Consultation $consultation)
     {
         //
     }
@@ -76,10 +76,10 @@ class ClinicAttributeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\ClinicAttribute  $clinicAttribute
+     * @param  \App\Models\Consultation  $consultation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ClinicAttribute $clinicAttribute)
+    public function destroy(Consultation $consultation)
     {
         //
     }

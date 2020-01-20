@@ -16,14 +16,13 @@ class ClinicResource extends JsonResource
     public function toArray($request)
     {
         if (isset($this->id)) {
-            $service_category = $this->service_category;
+            $age_group = $this->age_group;
 
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'service_category_name' => $service_category->name ?? null,
-                'service_category_id' => $service_category->id ?? $this->service_category_id ?? null,
-                'age' => $this->age,
+                'age_group_name' => $age_group->name,
+                'age_group_id' => $this->age_group_id,
                 'gender' => $this->gender,
                 'patient_status' => $this->patient_status,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),

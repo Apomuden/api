@@ -25,12 +25,10 @@ class ClinicRequest extends ApiFormRequest
     public function rules() : array
     {
         $id = $this->route('clinic') ?? null;
-        $consultation_id = HospitalService::whereIn('name',['CONSULTATION','CONSULTATION SERVICE','CONSULTATION SERVICES'])->pluck('id')->first();
 
         return [
             'name' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
-            'service_category_id'=>'bail|sometimes|integer|exists:service_categories,id,hospital_service_id,'.$consultation_id,
-            'age'=>'bail|sometimes|in:ALL,CHILD,ADULT',
+            'age_group_id'=>'bail|sometimes|integer|exists:age_groups,id',
             'gender'=>'bail|sometimes|in:ALL,MALE,FEMALE',
             'patient_status'=>'bail|sometimes|in:ALL,OUT,IPD',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
