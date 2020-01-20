@@ -7,14 +7,13 @@ use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Clinic extends Model
+class ClinicAttribute extends Model
 {
     use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
-    public function clinic_attribute()
+    public function clinic()
     {
-        return $this->hasMany(ClinicAttribute::class);
+        return $this->belongsTo(Clinic::class);
     }
-
 }
