@@ -93,7 +93,7 @@ class PatientController extends Controller
       if($this->withCallback)
             $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
       else
-            $this->repository->setModel(Patient::findBy($this->searchParams));
+        $this->repository->setModel(Patient::findBy($this->searchParams));
 
       $patients=$this->repository->all('surname');
       //return [DB::getQueryLog()];
@@ -110,6 +110,8 @@ class PatientController extends Controller
 
         return ApiResponse::withPaginate(new PatientPaginatedCollection($this->repository->paginate(10,'surname'),'Patients List'));
     }
+
+
     /**
      * Store a newly created resource in storage.
      *
@@ -158,7 +160,17 @@ class PatientController extends Controller
         $patient=$this->repository->find($patient);
         return ApiResponse::withOk('Patient found',new PatientResource($patient));
     }
+    public function findByFolder(){
+       //
+        $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
 
+
+        $patient = $this->repository->first();
+
+        return $patient?
+         ApiResponse::withOk('Patient found', new PatientResource($patient)):
+         ApiResponse::withNotFound(null);
+    }
     /**
      * Update the specified resource in storage.
      *

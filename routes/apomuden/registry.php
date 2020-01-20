@@ -14,11 +14,19 @@ Route::post('patients/withfolder',[
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
+
+Route::get('patients/single', [
+    'uses' => 'Registration\PatientController@findByFolder',
+    'as' => 'patients.single.view',
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
 Route::apiResource('patients','Registration\PatientController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',
     'component'=>'patient-registry'
 ]);
+
 Route::apiResource('folders','Registration\FolderController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',

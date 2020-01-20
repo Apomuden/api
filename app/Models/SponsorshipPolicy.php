@@ -10,4 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SponsorshipPolicy extends Model
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
+    protected $guarded = [];
+
+     public function billing_sponsor()
+     {
+         return $this->belongsTo(BillingSponsor::class);
+     }
 }
