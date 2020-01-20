@@ -169,7 +169,7 @@ class PatientController extends Controller
 
         return $patient?
          ApiResponse::withOk('Patient found', new PatientResource($patient)):
-         ApiResponse::withNotFound('Patient not found');
+         ApiResponse::withNotFound(null);
     }
     /**
      * Update the specified resource in storage.
