@@ -176,6 +176,30 @@ class RepositoryEloquent implements IRepository{
 
        return $this->cache($key,$record);
    }
+    // count the record with the given id
+    public function count()
+    {
+
+        $key = $this->cache_prefix . '->count';
+
+        if ($this->useCache) {
+            $record = Cache::get($key);
+            if ($record)
+                return $record;
+
+            if ($this->with)
+                $record = $this->model->with($this->with)->count();
+            else
+                $record = $this->model->count();
+        } else {
+            if ($this->with)
+                $record = $this->model->with($this->with)->count();
+            else
+                $record = $this->model->count();
+        }
+
+        return $this->cache($key, $record);
+    }
    // show the record with the given id
    public function show($id)
    {
