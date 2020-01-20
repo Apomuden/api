@@ -31,7 +31,7 @@ class Patient extends Model
 
             $model->id_expiry_date=DateHelper::toDBDate($model->id_expiry_date);
 
-            $model->patient_id=IDGenerator::getNewPatientID();
+            $model->patient_id=IDGenerator::getNewPatientID(($model->reg_status??null));
 
             $model->photo=FileResolver::base64ToFile($model->signature,$model->patient_id,'patients'.DIRECTORY_SEPARATOR.'photos')??null;
 
@@ -45,25 +45,26 @@ class Patient extends Model
             $model->payment_channel_id=$funding_type->payment_channel_id;
             $model->sponsorship_type_id=$funding_type->sponsorship_type_id;
 
-
-
         });
 
         Static::created(function($model){
              //Attach Patient to folder
-             $model->folders()->attach($model->folder_id);
-             $folder= $model->folders()->orderBy('created_at', 'desc')->first();
-             if(strtoupper($folder->folder_type)== 'FAMILY'){
-                $postFix = $folder->patients()->where('postfix','!=',null)->max('postfix');
+             if(isset($model->reg_status) && $model->reg_status!='WALK-IN'){
+                $model->folders()->attach($model->folder_id);
+                $folder = $model->folders()->orderBy('created_at', 'desc')->first();
+                if (strtoupper($folder->folder_type) == 'FAMILY') {
+                    $postFix = $folder->patients()->where('postfix', '!=', null)->max('postfix');
 
-                if($postFix)
-                $postFix++;
-                else
-                $postFix='a';
+                    if ($postFix)
+                        $postFix++;
+                    else
+                        $postFix = 'a';
 
-                $model->postfix=$postFix;
-                $model->save();
+                    $model->postfix = $postFix;
+                    $model->save();
+                }
              }
+
         });
 
         static::updating(function($model){
@@ -87,7 +88,7 @@ class Patient extends Model
 
                 $original = $model->getOriginal();
 
-                if($original->folder_id!=$model->folder_id){
+                if(isset($model->folder_id) && $original->folder_id!=$model->folder_id){
                     $model->folders()->detach($original->folder_id);
 
                     $folder = $model->folders()->orderBy('created_at', 'desc')->first();
@@ -103,9 +104,10 @@ class Patient extends Model
                     }
                 }
 
-                //Attach Patient to folder
-                $model->folders()->attach($model->folder_id);
-
+                if(isset($model->folder_id) && $model->folder_id){
+                    //Attach Patient to folder
+                    $model->folders()->attach($model->folder_id);
+                }
             }
             catch(Exception $e){}
         });

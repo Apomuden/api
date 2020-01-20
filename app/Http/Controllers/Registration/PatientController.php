@@ -50,9 +50,11 @@ class PatientController extends Controller
        if($folder_type)
        $folderSearch['folder_type']=$folder_type;
 
+     if($folderSearch)
       $this->withCallback=function($query) use($folderSearch) {
           $query->findBy($folderSearch);
        };
+
        $with=[
            'country',
            'region',
@@ -73,8 +75,12 @@ class PatientController extends Controller
            'native_language',
            'second_language',
            'official_language',
-           'folders'=>$this->withCallback
+           'folders'
        ];
+
+       if($this->withCallback)
+       $with['folders']= $this->withCallback;
+
        $this->repository=new RepositoryEloquent(new Patient,true,$with);
 
     }
@@ -82,7 +88,13 @@ class PatientController extends Controller
     {
       //DB::enableQueryLog();
       $this->repository->useFindBy=false;
-      $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders',$this->withCallback));
+
+      //Enforce folder search only when folder params are specified
+      if($this->withCallback)
+            $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
+      else
+            $this->repository->setModel(Patient::findBy($this->searchParams));
+
       $patients=$this->repository->all('surname');
       //return [DB::getQueryLog()];
       return ApiResponse::withOk('Patients List',PatientResource::collection($patients));
@@ -90,8 +102,13 @@ class PatientController extends Controller
     public function paginated()
     {
       $this->repository->useFindBy = false;
-      $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders',$this->withCallback));
-      return ApiResponse::withPaginate(new PatientPaginatedCollection($this->repository->paginate(10,'surname'),'Patients List'));
+        //Enforce folder search only when folder params are specified
+        if ($this->withCallback)
+            $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
+        else
+            $this->repository->setModel(Patient::findBy($this->searchParams));
+
+        return ApiResponse::withPaginate(new PatientPaginatedCollection($this->repository->paginate(10,'surname'),'Patients List'));
     }
     /**
      * Store a newly created resource in storage.

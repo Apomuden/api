@@ -26,7 +26,7 @@ class CreatePatientSponsorsTable extends Migration
             $table->string('card_serial_no')->unique();
             $table->string('staff_name')->nullable();
             $table->string('staff_id')->nullable();
-            $table->enum('benefit_type',['SELF','DEPENDANT'])->default('SELF');
+            $table->enum('benefit_type',['SELF','DEPENDANT','BABY'])->default('SELF');
             $table->unsignedInteger('relation_id');
             $table->foreign('relation_id')->references('id')->on('relationships')->onDelete('restrict');
             $table->date('issued_date');

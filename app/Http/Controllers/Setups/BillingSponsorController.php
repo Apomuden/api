@@ -16,7 +16,15 @@ class BillingSponsorController extends Controller
 
     public function __construct(BillingSponsor $billingSponsor)
     {
-        $this->repository=new RepositoryEloquent($billingSponsor,true,['company','sponsorship_type']);
+        $with = [
+            'sponsorship_type',
+            'billing_system',
+            'billing_cycle',
+            'payment_style',
+            'payment_channel',
+
+        ];
+        $this->repository=new RepositoryEloquent($billingSponsor,true,$with);
     }
     public function index()
     {

@@ -9,7 +9,6 @@ use App\Repositories\HospitalEloquent;
 
 class IDGenerator{
     static function getNewStaffID(){
-
             //Creating the Staff ID
             $repository=new HospitalEloquent(new Hospital);
             $hospital=$repository->first();
@@ -36,30 +35,31 @@ class IDGenerator{
             return $hospital->staff_id_prefix.sprintf('%0'.$hospital->digits_after_staff_prefix.'d',$number).$hospital->staff_id_seperator.$year;
     }
 
-    static function getNewPatientID(){
+    static function getNewPatientID($reg_Status=NULL){
         $repository=new HospitalEloquent(new Hospital);
         $hospital=$repository->first();
-
         $lastID=Patient::whereYear('created_at',date('Y'))->max('patient_id');
 
-        $year=date('y');
-       /*switch($hospital->year_digits){
-            case 4;
-               $year=date('Y');
-            break;
-            case 3;
-               $year='0'.date('y');
-            break;
-        } */
 
+        if($reg_Status == 'WALK-IN')
+        $lastID = str_replace($hospital->walkin_prefix, '', $lastID);
+
+        $year=date('y');
         if($lastID)
         $number=$lastID;
         else
         $number=0;
 
-        $number=intval(str_replace('/'.$year,'',$number))+1;
+        $number= str_replace('/' . $year, '', $number);
 
-        return sprintf('%07d',$number).'/'.$year;
+        if(is_numeric($number))
+        $number=intval($number)+1;
+        else
+        $number=0;
+
+        $number=sprintf('%07d', $number) . '/' . $year;
+
+        return  $reg_Status == 'WALK-IN'? $hospital->walkin_prefix.$number:$number;
     }
 
     static function getNewFolderNo(){
@@ -72,7 +72,6 @@ class IDGenerator{
 
            $year=date('y');
            $month=date('m');
-
 
            switch($hospital->year_digits){
                case 4;
