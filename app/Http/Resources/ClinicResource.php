@@ -28,8 +28,8 @@ class ClinicResource extends JsonResource
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
-        } else {
-            return NULL;
         }
+
+        return NULL;
     }
 }

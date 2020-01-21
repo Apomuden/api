@@ -16,4 +16,9 @@ class Clinic extends Model
    {
        return $this->belongsTo(AgeGroup::class);
    }
+
+    public function clinic_consult_service()
+    {
+        return $this->hasMany(ClinicConsultService::class);
+    }
 }

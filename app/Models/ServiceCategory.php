@@ -22,8 +22,8 @@ class ServiceCategory extends Model
         return $this->hasMany(ServiceSubcategory::class);
     }
 
-    public function clinic_attribute()
+    public function clinic_consult_service()
     {
-        return $this->hasMany(ClinicAttribute::class);
+        return $this->hasMany(ClinicConsultService::class);
     }
 }

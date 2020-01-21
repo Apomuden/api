@@ -12,4 +12,8 @@ class BillingCycle extends Model
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
 
+    public function clinic_consult_service()
+    {
+        return $this->hasMany(ClinicConsultService::class);
+    }
 }
