@@ -245,8 +245,8 @@ use Illuminate\Support\Facades\Route;
             'component'=> 'setup.free.clinics'
         ]);
 
-    Route::apiResource('consultationservices','Setups\ClinicConsultServiceController',[
+    Route::apiResource('consultservices','Setups\ClinicConsultServiceController',[
         //'only'=>['index','show','store','update'],
         'module'=>['records-mgt','sys-mgt'],
-        'component'=> 'setup.free.consultationservice'
+        'component'=> 'setup.free.consultservices'
     ]);
