@@ -21,8 +21,8 @@ class ClinicResource extends JsonResource
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'age_group_name' => $age_group->name,
-                'age_group_id' => $this->age_group_id,
+                'age_group_name' => $age_group->name??null,
+                'age_group_id' => $this->age_group_id??null,
                 'gender' => $this->gender,
                 'patient_status' => $this->patient_status,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),

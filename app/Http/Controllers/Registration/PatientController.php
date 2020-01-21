@@ -163,8 +163,6 @@ class PatientController extends Controller
     public function findByFolder(){
        //
         $this->repository->setModel(Patient::findBy($this->searchParams)->whereHas('folders', $this->withCallback));
-
-
         $patientCount = $this->repository->count();
         $patient=$this->repository->first();
 

@@ -20,7 +20,7 @@ class HospitalController extends Controller
 
     public function __construct(Hospital $hospital)
     {
-        $this->repository= new HospitalEloquent($hospital,['country','region']);
+        $this->repository = new HospitalEloquent($hospital, ['country', 'region']);
     }
 
     public function index()
@@ -32,32 +32,31 @@ class HospitalController extends Controller
 
     public function store(HospitalRequest $request)
     {
-        $requestData=ApiRequest::asArray($request);
+        $requestData = ApiRequest::asArray($request);
 
         //$requestData['logo']=FileResolver::base64ToFile($request->logo);
 
-       $response=$this->repository->store($requestData);
+        $response = $this->repository->store($requestData);
 
-       return  ApiResponse::withOk('Hospital created',new HospitalResource($response));
-
+        return  ApiResponse::withOk('Hospital created', new HospitalResource($response));
     }
 
 
     public function show()
     {
-       $record=$this->repository->first();
-       return  ApiResponse::withOk('Hospital Found',new HospitalResource($record));
+        $record = $this->repository->first();
+        return  ApiResponse::withOk('Hospital Found', new HospitalResource($record));
     }
 
     public function update(HospitalRequest $request)
     {
-        $requestData=ApiRequest::asArray($request);
+        $requestData = ApiRequest::asArray($request);
 
 
         //$requestData['logo']=FileResolver::base64ToFile($request->logo);
-        $response=$this->repository->update($requestData);
+        $response = $this->repository->update($requestData);
 
-        return  ApiResponse::withOk('Hospital updated',new HospitalResource($response));
+        return  ApiResponse::withOk('Hospital updated', new HospitalResource($response));
     }
 
 
