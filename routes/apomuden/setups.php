@@ -242,7 +242,7 @@ use Illuminate\Support\Facades\Route;
         Route::apiResource('clinics','Setups\ClinicController',[
             //'only'=>['index','show','store','update'],
             'module'=>['records-mgt','sys-mgt'],
-            'component'=>'setup.clinics'
+            'component'=> 'setup.free.clinics'
         ]);
 
         Route::apiResource('clinicattributes','Setups\ClinicAttributeController',[

@@ -12,9 +12,8 @@ class Clinic extends Model
     use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
-    public function clinic_attribute()
-    {
-        return $this->hasMany(ClinicAttribute::class);
-    }
-
+   public function age_group()
+   {
+       return $this->belongsTo(AgeGroup::class);
+   }
 }

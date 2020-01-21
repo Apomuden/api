@@ -14,10 +14,10 @@ class AddAdditionalFieldsToClinicsTable extends Migration
     public function up()
     {
         Schema::table('clinics', function (Blueprint $table) {
-            $table->unsignedInteger('age_group_id')->after('name');
+            $table->unsignedInteger('age_group_id')->after('name')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('restrict');
             $table->set('gender',['MALE','FEMALE','BIGENDER'])->default('MALE,FEMALE,BIGENDER')->after('age_group_id');
-            $table->set('patient_status',['IN-PATIENT', 'OUT-PATIENT'])->default('IN-PATIENT,OUT-PATIENT')->after('gender');
+            $table->set('patient_status',['IN-PATIENT', 'OUT-PATIENT','WALK-IN'])->default('IN-PATIENT,OUT-PATIENT,WALK-IN')->after('gender');
         });
     }
 

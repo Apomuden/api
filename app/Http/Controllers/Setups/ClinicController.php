@@ -38,9 +38,7 @@ class ClinicController extends Controller
      */
     public function store(ClinicRequest $request)
     {
-        $requestData = ApiRequest::asArray($request);
-
-        $response = $this->repository->store($requestData);
+        $response = $this->repository->store($request->all());
 
         return  ApiResponse::withOk('Clinic created', new ClinicResource($response));
     }
@@ -51,11 +49,11 @@ class ClinicController extends Controller
      * @param  \App\Models\Clinic  $clinic
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Clinic $clinic)
+    public function show($id)
     {
-        $Clinic = $this->repository->show($clinic);
+        $Clinic = $this->repository->show($id);
         return $Clinic ?
-            ApiResponse::withOk('Clinic Found', new ClinicResource($clinic))
+            ApiResponse::withOk('Clinic Found', new ClinicResource($id))
             : ApiResponse::withNotFound('Clinic Not Found');
     }
 
@@ -66,10 +64,10 @@ class ClinicController extends Controller
      * @param  \App\Models\Clinic  $clinic
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ClinicRequest $request, Clinic $clinic)
+    public function update(ClinicRequest $request,$id)
     {
         try{
-            $company = $this->repository->update($request->all(), $clinic->id);
+            $clinic = $this->repository->update($request->all(), $id);
 
             return ApiResponse::withOk('Clinic updated', new ClinicResource($clinic));
 
