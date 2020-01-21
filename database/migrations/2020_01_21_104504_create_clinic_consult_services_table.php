@@ -18,7 +18,7 @@ class CreateClinicConsultServicesTable extends Migration
             $table->string('display_name')->nullable();
             $table->unsignedBigInteger('clinic_id');
             $table->unsignedBigInteger('service_category_id');
-            $table->unsignedDecimal('price', 9, 2);
+            $table->unsignedDecimal('price',20, 2);
             $table->unsignedInteger('billing_cycle_id');
             $table->unsignedInteger('duration');
             $table->softDeletes();

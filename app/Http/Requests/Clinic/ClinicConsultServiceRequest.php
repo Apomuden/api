@@ -31,8 +31,8 @@ class ClinicConsultServiceRequest extends ApiFormRequest
             'clinic_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:clinics,id',
             'billing_cycle_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:billing_cycles,id',
             'service_category_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:service_categories,id',
-            'duration'=>'bail|'.($id?'sometimes':'required').'|numeric|min:0',
-            'price'=>'bail|'.($id?'sometimes':'required').'|numeric|regex:/^\d*(\.\d{2})?$/|min:0',
+            'duration'=>'bail|'.($id?'sometimes':'required').'|numeric|min:1',
+            'price'=>'bail|'.($id?'sometimes':'required').'|numeric|min:0',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
