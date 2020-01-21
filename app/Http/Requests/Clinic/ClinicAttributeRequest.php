@@ -3,9 +3,9 @@
 namespace App\Http\Requests\Clinic;
 
 use App\Models\HospitalService;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class ClinicAttributeRequest extends FormRequest
+class ClinicAttributeRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

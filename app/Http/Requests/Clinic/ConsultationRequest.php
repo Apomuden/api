@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Clinic;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class ConsultationRequest extends FormRequest
+class ConsultationRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

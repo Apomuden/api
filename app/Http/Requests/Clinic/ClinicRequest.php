@@ -28,9 +28,9 @@ class ClinicRequest extends ApiFormRequest
 
         return [
             'name' => 'bail|'.($id ? 'sometimes':'required').'|string'.(!$id ? '|unique:clinics':''),
-            'age_group_id'=>'bail|sometimes|integer|exists:age_groups,id',
-            'gender'=>'bail|sometimes|in:ALL,MALE,FEMALE',
-            'patient_status'=>'bail|sometimes|in:ALL,OUT,IPD',
+            'age_group_id'=>'bail|sometimes|nullable|integer|exists:age_groups,id',
+            'gender'=>'bail|sometimes|nullable|set:MALE,FEMALE,BIGENDER',
+            'patient_status'=>'bail|sometimes|nullable|set:IN-PATIENT,OUT-PATIENT',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
