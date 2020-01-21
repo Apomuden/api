@@ -27,7 +27,7 @@ class CreateClinicConsultServicesTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('cascade');
             $table->foreign('service_category_id')->references('id')->on('service_categories')->onDelete('restrict');
             $table->foreign('billing_cycle_id')->references('id')->on('billing_cycles')->onDelete('restrict');
-
+            $table->unique(['display_n'])
         });
     }
 
