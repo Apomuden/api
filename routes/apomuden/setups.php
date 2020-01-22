@@ -239,6 +239,12 @@ use Illuminate\Support\Facades\Route;
             'component'=>'setup.servicesubcategories'
         ]);
 
+        Route::post('clinics/withconsultationservices',[
+            'uses'=>'Setups\ClinicController@storeWithConsultServices',
+            'as'=> 'clinics.withconsultationservices.store',
+            'module' => ['records-mgt', 'sys-mgt'],
+            'component' => 'setup.free.clinics'
+        ]);
         Route::apiResource('clinics','Setups\ClinicController',[
             //'only'=>['index','show','store','update'],
             'module'=>['records-mgt','sys-mgt'],
@@ -248,5 +254,5 @@ use Illuminate\Support\Facades\Route;
     Route::apiResource('consultationservices','Setups\ClinicConsultServiceController',[
         //'only'=>['index','show','store','update'],
         'module'=>['records-mgt','sys-mgt'],
-        'component'=> 'setup.free.consultationservices'
+        'component'=> 'setup.free.clinics'
     ]);

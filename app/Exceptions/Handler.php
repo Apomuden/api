@@ -90,7 +90,7 @@ class Handler extends ExceptionHandler
         return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',NULL,HttpResponse::HTTP_BAD_REQUEST);
        else
        return ApiResponse::withJson($this->errorCode,trim($exception->getMessage(),'.'),NULL,HttpResponse::HTTP_UNAUTHORIZED);
- 
+
        if($exception instanceof QueryException){
         $searchParams=\request()->query();
 
@@ -100,7 +100,6 @@ class Handler extends ExceptionHandler
             $messageArray=explode('(',$exception->getMessage());
             return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',$messageArray[0],HttpResponse::HTTP_BAD_REQUEST);
         }
-        //return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',NULL,HttpResponse::HTTP_BAD_REQUEST);
        }
         return parent::render($request, $exception);
     }

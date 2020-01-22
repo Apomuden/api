@@ -40,7 +40,7 @@ class ClinicConsultServiceController extends Controller
     {
         $response = $this->repository->store($request->all());
 
-        return  ApiResponse::withOk('Clinic Consultation Service created', new ClinicConsultServiceResource($response));
+        return  ApiResponse::withOk('Clinic Consultation Service created', new ClinicConsultServiceResource($response->refresh()));
     }
 
     /**
@@ -52,8 +52,9 @@ class ClinicConsultServiceController extends Controller
     public function show($id)
     {
         $ClinicConsultService = $this->repository->show($id);
+
         return $ClinicConsultService ?
-            ApiResponse::withOk('Clinic Consultation Service Found', new ClinicConsultServiceResource($id))
+            ApiResponse::withOk('Clinic Consultation Service Found', new ClinicConsultServiceResource($ClinicConsultService))
             : ApiResponse::withNotFound('Clinic Consultation Service Not Found');
     }
 
@@ -64,12 +65,13 @@ class ClinicConsultServiceController extends Controller
      * @param  \App\Models\ClinicConsultService  $clinicConsultService
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ClinicConsultServiceRequest $request,$id)
+    public function update(ClinicConsultServiceRequest $request, $consultationservice)
     {
         try{
-            $clinicConsultService = $this->repository->update($request->all(), $id);
 
-            return ApiResponse::withOk('Clinic Consultation Service updated', new ClinicConsultServiceResource($clinicConsultService));
+            $consultationservice = $this->repository->update($request->all(), $consultationservice);
+
+            return ApiResponse::withOk('Clinic Consultation Service updated', new ClinicConsultServiceResource($consultationservice));
 
         }
         catch(Exception $e){
