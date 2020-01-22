@@ -23,6 +23,8 @@ class ClinicConsultServiceResource extends JsonResource
             return [
                 'id' => $this->id,
                 'display_name' => $this->name??$service_category->name??null,
+                'clinic_name' => $clinic->name??null,
+                'clinic_id' => $clinic->id??$this->clinic_id??null,
                 'billing_cycle_name' => $billing_cycle->name??null,
                 'billing_cycle_id' => $this->billing_cycle_id??null,
                 'service_category_name' => $service_category->name??null,

@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Clinic;
 
 use App\Http\Requests\ApiFormRequest;
-use App\Models\HospitalService;
 
 class ClinicConsultServiceRequest extends ApiFormRequest
 {
@@ -24,7 +23,7 @@ class ClinicConsultServiceRequest extends ApiFormRequest
      */
     public function rules() : array
     {
-        $id = $this->route('consultationservices') ?? null;
+        $id = $this->route('consultationservice') ?? null;
 
         return [
             'display_name' => 'bail|sometimes|nullable|string|'.$this->softUnique('clinic_consult_services','display_name',$id),

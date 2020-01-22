@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Clinic\ClinicConsultServiceRequest;
+use App\Http\Requests\Clinic\MultipleClinicConsultServiceRequest;
 use App\Http\Resources\ClinicConsultServiceResource;
 use App\Http\Resources\ClinicConsultServiceCollection;
 use App\Models\ClinicConsultService;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClinicConsultServiceController extends Controller
 {
@@ -41,6 +43,27 @@ class ClinicConsultServiceController extends Controller
         $response = $this->repository->store($request->all());
 
         return  ApiResponse::withOk('Clinic Consultation Service created', new ClinicConsultServiceResource($response));
+    }
+
+    public function storeMultiple(MultipleClinicConsultServiceRequest $request)
+    {
+        DB::beginTransaction();
+        try {
+            $response = [];
+            if (isset($request['consultation_services'])) {
+                foreach ($request['consultation_services'] as $consultation_service) {
+                    $consultation_service['clinic_id'] = $request['clinic_id'];
+                    $response[] = $this->repository->store($consultation_service->all());
+                }
+                DB::commit();
+                return ApiResponse::withOk('Clinic Consultation Services created', new ClinicConsultServiceResource($response));
+            }
+        }
+        catch(Exception $e){
+            DB::rollBack();
+            return ApiResponse::withException($e);
+        }
+
     }
 
     /**

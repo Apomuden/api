@@ -27,8 +27,9 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
         Route::prefix('registry')->group(base_path('routes/apomuden/registry.php'));
 
         //Setups
-        Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
     });
+
+    Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
   Route::group(['prefix' => 'utils'], function () {
     //FileResolver
    Route::get('file/{subdirectory?}/{path}',[
