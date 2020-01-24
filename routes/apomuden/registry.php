@@ -1,16 +1,17 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('patients/paginated',[
-    'uses'=>'Registration\PatientController@paginated',
-    'as'=>'patients.paginated.view',
-    'module'=>'records-mgt',
-    'component'=>'patient-registry'
+Route::get('patients/paginated', [
+    'uses' => 'Registration\PatientController@paginated',
+    'as' => 'patients.paginated.view',
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
 ]);
 //Patients Route
-Route::post('patients/withfolder',[
-    'uses'=> 'Registration\PatientController@storePatientWithFolder',
-    'as'=>'patients.withfolder',
+Route::post('patients/withfolder', [
+    'uses' => 'Registration\PatientController@storePatientWithFolder',
+    'as' => 'patients.withfolder',
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
@@ -21,19 +22,30 @@ Route::get('patients/single', [
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
-Route::apiResource('patients','Registration\PatientController',[
+Route::apiResource('patients', 'Registration\PatientController', [
     //'only'=>['index','show','store','update'],
-    'module'=>'records-mgt',
-    'component'=>'patient-registry'
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
 ]);
 
-Route::apiResource('folders','Registration\FolderController',[
-    //'only'=>['index','show','store','update'],
-    'module'=>'records-mgt',
-    'component'=>'patient-registry'
+Route::post('patientsponsors/multiple',[
+      'uses'=> 'Registration\PatientSponsorController@storeMultiple',
+      'as'=>'patients.multiple.view',
+      'module' => 'records-mgt',
+      'component' => 'patient-registry'
 ]);
-Route::apiResource('patientnextofkins','Registration\PatientNextOfKinController',[
+Route::apiResource('patientsponsors', 'Registration\PatientSponsorController', [
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
+
+Route::apiResource('folders', 'Registration\FolderController', [
     //'only'=>['index','show','store','update'],
-    'module'=>'records-mgt',
-    'component'=>'patient-registry'
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
+Route::apiResource('patientnextofkins', 'Registration\PatientNextOfKinController', [
+    //'only'=>['index','show','store','update'],
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
 ]);
