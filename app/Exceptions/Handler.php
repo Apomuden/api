@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
 
-       if ($exception instanceof UnauthorizedException) {
+       /*if ($exception instanceof UnauthorizedException) {
 
             $preException = $exception->getPrevious();
             if ($preException instanceof
@@ -100,7 +100,7 @@ class Handler extends ExceptionHandler
             $messageArray=explode('(',$exception->getMessage());
             return ApiResponse::withJson($this->errorCode,'RESOURCE_CALL_ERROR',$messageArray[0],HttpResponse::HTTP_BAD_REQUEST);
         }
-       }
+       }*/
         return parent::render($request, $exception);
     }
 }
