@@ -12,6 +12,7 @@ class PatientSponsor extends Model
 {
     use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
+
     public static function boot()
     {
         parent::boot();
@@ -20,9 +21,8 @@ class PatientSponsor extends Model
             $model->relation_id=null;
         });
 
-
         static::updating(function ($model) {
-            if ($model->benefit_type == 'SELF')
+            if ($model->benefit_type=='SELF')
                 $model->relation_id = null;
         });
     }
@@ -54,5 +54,10 @@ class PatientSponsor extends Model
     public function relationship()
     {
         return $this->belongsTo(Relationship::class,'relation_id');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }

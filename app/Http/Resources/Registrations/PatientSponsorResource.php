@@ -22,7 +22,7 @@ class PatientSponsorResource extends JsonResource
         $sponsorship_policy=$this->sponsorship_policy??null;
         $patient = $this->patient ?? null;
         $relationship = $this->relationship??null;
-
+        $company=$this->company;
 
       return [
             'id' => $this->id,
@@ -31,6 +31,13 @@ class PatientSponsorResource extends JsonResource
             'billing_sponsor_id' => $billing_sponsor->id,
             'sponsorship_policy_name' => $sponsorship_policy->name ?? null,
             'sponsorship_policy_id' => $sponsorship_policy->id ?? null,
+            'member_id'=>$this->member_id,
+            'card_serial_no'=>$this->card_serial_no??null,
+            'company_name'=>$company->name??null,
+            'company_id'=>$company->id??null,
+            'staff_name'=>$this->staff_name??null,
+            'staff_id'=>$this->staff_id??null,
+            'benefit_type'=>$this->benefit_type??null,
             'relation_name' => $relationship->name ?? null,
             'relation_id' => $relationship->id ?? null,
             'status' => $this->status,

@@ -23,7 +23,7 @@ class PatientSponsorController extends Controller
     public function index()
     {
 
-       return ApiResponse::withOk('Patient sponsors list',PatientSponsorResource::collection($this->repository->all('reg_no')));
+       return ApiResponse::withOk('Patient sponsors list',PatientSponsorResource::collection($this->repository->all('member_id')));
     }
 
     /**
@@ -59,8 +59,8 @@ class PatientSponsorController extends Controller
             if($sponsor['benefit_type']=='BABY' && $sponsor['relation_id']!=$mother_relation->id)
             return ApiResponse::withValidationError([['sponsors.'.$iterator.'.relation_id'=> 'The selected sponsors.' . $iterator . '.relation_id is not correct for Baby Benefit type']]);
 
-            elseif($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['reg_no' => $sponsor['reg_no']])->first())
-                return ApiResponse::withValidationError([['sponsors.' . $iterator . '.reg_no' => ['The selected sponsors.' . $iterator . '.reg_no already exists']]]);
+            elseif($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['member_id' => $sponsor['member_id']])->first())
+                return ApiResponse::withValidationError([['sponsors.' . $iterator . '.member_id' => ['The selected sponsors.' . $iterator . '.member_id already exists']]]);
             elseif ($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['card_serial_no' => $sponsor['card_serial_no']])->first())
                 return ApiResponse::withValidationError([['sponsors.' . $iterator . '.card_serial_no' => ['The selected sponsors.' . $iterator . '.card_serial_no no already exists']]]);
 
