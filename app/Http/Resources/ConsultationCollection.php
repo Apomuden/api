@@ -14,6 +14,6 @@ class ConsultationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return ConsultationResource::collection($this->collection);
     }
 }

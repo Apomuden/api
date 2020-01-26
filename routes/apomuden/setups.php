@@ -256,3 +256,16 @@ use Illuminate\Support\Facades\Route;
         'module'=>['records-mgt','sys-mgt'],
         'component'=> 'setup.free.clinics'
     ]);
+
+Route::apiResource('consultations','Setups\ConsultationController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'setup.free.clinics'
+]);
+
+Route::post('consultation/request',[
+    'uses'=>'Setups\ConsultationController@store',
+    'as'=> 'consultations.request.store',
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
