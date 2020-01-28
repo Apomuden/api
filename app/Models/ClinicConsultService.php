@@ -27,4 +27,9 @@ class ClinicConsultService extends Model
     {
         return $this->belongsTo(Clinic::class);
     }
+
+    public function consultation()
+    {
+        return $this->hasMany(Consultation::class);
+    }
 }

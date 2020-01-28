@@ -51,6 +51,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Module::class,'component_user')->distinct();
     }
 
+    public function consultation()
+    {
+        return $this->hasMany(Consultation::class);
+    }
+
     public static function boot()
     {
         parent::boot();

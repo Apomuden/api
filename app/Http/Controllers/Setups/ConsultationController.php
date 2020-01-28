@@ -27,7 +27,7 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Clinic Consultation Service list', new ConsultationCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
     }
 
     /**
@@ -40,7 +40,7 @@ class ConsultationController extends Controller
     {
         $response = $this->repository->store($request->all());
 
-        return  ApiResponse::withOk('Clinic Consultation Service created', new ConsultationResource($response->refresh()));
+        return  ApiResponse::withOk('Consultation Service created', new ConsultationResource($response->refresh()));
     }
 
     /**
@@ -54,8 +54,8 @@ class ConsultationController extends Controller
         $consultation = $this->repository->show($id);
 
         return $consultation ?
-            ApiResponse::withOk('Clinic Consultation Service Found', new ConsultationResource($consultation))
-            : ApiResponse::withNotFound('Clinic Consultation Service Not Found');
+            ApiResponse::withOk('Consultation Service Found', new ConsultationResource($consultation))
+            : ApiResponse::withNotFound('Consultation Service Not Found');
     }
 
     /**
@@ -71,7 +71,7 @@ class ConsultationController extends Controller
 
             $consultation = $this->repository->update($request->all(), $consultation);
 
-            return ApiResponse::withOk('Clinic Consultation Service updated', new ConsultationResource($consultation));
+            return ApiResponse::withOk('Consultation Service updated', new ConsultationResource($consultation));
 
         }
         catch(Exception $e){
@@ -82,7 +82,7 @@ class ConsultationController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return ApiResponse::withOk('Clinic Consultation Service deleted successfully');
+        return ApiResponse::withOk('Consultation Service deleted successfully');
     }
 
 }
