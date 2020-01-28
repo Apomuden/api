@@ -27,7 +27,7 @@ class ClinicConsultServiceResource extends JsonResource
                 'billing_cycle_id' => $this->billing_cycle_id??null,
                 'service_category_name' => $service_category->name??null,
                 'service_category_id' => $this->service_category_id??null,
-                'price' => $this->price,
+                'price' => doubleval($this->price),
                 'duration' => $this->duration,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)

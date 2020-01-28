@@ -22,12 +22,14 @@ class CreatePatientSponsorsTable extends Migration
             $table->unsignedBigInteger('sponsorship_policy_id')->nullable();
             $table->foreign('sponsorship_policy_id')->references('id')->on('sponsorship_policies')->onDelete('restrict');
             $table->unsignedInteger('priority')->comment('priority  number');
-            $table->string('reg_no');
-            $table->string('card_serial_no')->unique();
+            $table->string('member_id');
+            $table->string('card_serial_no')->nullable();
+            $table->unsignedBigInteger('company_id')->nullable();
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
             $table->string('staff_name')->nullable();
             $table->string('staff_id')->nullable();
             $table->enum('benefit_type',['SELF','DEPENDANT','BABY'])->default('SELF');
-            $table->unsignedInteger('relation_id');
+            $table->unsignedInteger('relation_id')->nullable();
             $table->foreign('relation_id')->references('id')->on('relationships')->onDelete('restrict');
             $table->date('issued_date');
             $table->date('expiry_date')->nullable();
@@ -35,6 +37,8 @@ class CreatePatientSponsorsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['patient_id','sponsorship_policy_id', 'billing_sponsor_id','deleted_at'],'unique_patient_sponsor');
+            $table->unique(['member_id', 'patient_id', 'deleted_at']);
+            $table->unique(['card_serial_no', 'patient_id', 'deleted_at']);
         });
     }
 
