@@ -46,8 +46,8 @@ class CompanyController extends Controller
    function store(CompanyRequest $companyRequest){
        try{
            $requestData=$companyRequest->all();
+           $sponsorship_type_id=$requestData['sponsorship_type_id']??null;
 
-           $sponsorship_type_id=$requestData['sponsorship_type_id'];
            unset($requestData['sponsorship_type_id']);
 
            DB::beginTransaction();
