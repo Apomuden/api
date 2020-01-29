@@ -47,7 +47,7 @@ class CompanyController extends Controller
        try{
            $requestData=$companyRequest->all();
 
-           $sponsorship_type_id=$requestData['sponsorship_type_id'];
+           $sponsorship_type_id=$requestData['sponsorship_type_id'] ?? null;
            unset($requestData['sponsorship_type_id']);
 
            DB::beginTransaction();
