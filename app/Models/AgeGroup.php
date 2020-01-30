@@ -12,9 +12,14 @@ class AgeGroup extends Model
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
 
-    public function clinic_attribute()
+    public function clinic()
     {
-        return $this->hasMany(ClinicAttribute::class);
+        return $this->hasMany(Clinic::class);
+    }
+
+    public function consultation()
+    {
+        return $this->hasMany(Consultation::class);
     }
 
 }

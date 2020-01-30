@@ -41,4 +41,9 @@ class FundingType extends Model
     {
         return $this->belongsTo(PaymentChannel::class);
     }
+
+    public function consultation()
+    {
+        return $this->hasMany(Consultation::class);
+    }
 }

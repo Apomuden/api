@@ -4,16 +4,16 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ConsultationCollection extends ResourceCollection
+class PatientSponsorCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function toArray($request)
     {
-        return ConsultationResource::collection($this->collection);
+        return PatientSponsorResource::collection($this->collection);
     }
 }
