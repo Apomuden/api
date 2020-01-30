@@ -28,30 +28,42 @@ class PatientSponsorRequest extends ApiFormRequest
     {
         $id=$this->route('patientsponsor')??null;
         $billing_sponsor_id = $this->billing_sponsor_id ?? null;
-        $billing_sponsor = BillingSponsor::find($billing_sponsor_id);
+        $billing_sponsor = $billing_sponsor_id ? (BillingSponsor::find($billing_sponsor_id)) : null;
 
-        /*
-        $sponsorship_type=['name'=>null];
+        $validator_values=['sponsorship_type_name'=>null, 'sponsorship_type_id'=>null];
         if ($billing_sponsor) {
-            $sponsorship_type = SponsorshipType::find($billing_sponsor->sponsorship_type_id);
+            $validator_values['sponsorship_type_id'] = $billing_sponsor->sponsorship_type_id??null;
+            $sponsorship_types = $validator_values['sponsorship_type_id'] ? (SponsorshipType::find($validator_values['sponsorship_type_id'])) : null;
+            if($sponsorship_types) {
+                $validator_values['sponsorship_type_name'] = strtolower($sponsorship_types->name??null);
+            }
+            unset($sponsorship_types);
         }
-        */
+
         return [
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'billing_sponsor_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:billing_sponsors,id',
-            'sponsorship_policy_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_policies,id',
-            'relation_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:relationships,id',
-            'staff_name'=>'bail|sometimes|nullable|string',
-            'staff_id'=>'bail|sometimes|nullable|string',
-            'member_id'=>'bail|sometimes|nullable|string',
-            'card_serial_no'=>'bail|sometimes|unique',
+
+            'sponsorship_policy_id'=>'bail|'.(($validator_values['sponsorship_type_name'] === 'private insurance' && !$id) ? 'required':'sometimes|nullable').'
+                                     |integer|exists:sponsorship_policies,id',
+
+            'relation_id'=>'bail|'.($id?'sometimes':'required_if:benefit_type,DEPENDANT').'|integer|exists:relationships,id',
+
+            'staff_name'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance'
+                    || $validator_values['sponsorship_type_name']==='private insurance') && $this->benefit_type==='DEPENDANT' && !$id) ? 'required':'sometimes|nullable').'|string',
+
+            'staff_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government company'
+                    || $validator_values['sponsorship_type_name']==='private company')  && !$id) ? 'required':'sometimes|nullable').'|string',
+
+            'member_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance'
+                    || $validator_values['sponsorship_type_name']==='private insurance') && !$id) ? 'required':'sometimes|nullable').'|string',
+
+            'card_serial_no'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance') && !$id) ? 'required':'sometimes|nullable').'|unique',
             'user_id'=>'bail|sometimes|nullable|exists:users,id',
             'priority'=>'bail|sometimes|nullable|integer|min:0',
-            'issued_date'=>'bail|'.($id?'sometimes':'required').'|date',
+            'issued_date'=>'bail|'.(($validator_values['sponsorship_type_name'] === 'patient' && !$id)?'sometimes':'required').'|date',
             'expiry_date'=>'bail|sometimes|nullable|date',
-            'priority'=>'bail|sometimes|nullable|',
             'benefit_type'=>'bail|sometimes|in:SELF,DEPENDANT,BABY',
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('sponsorship_types','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
