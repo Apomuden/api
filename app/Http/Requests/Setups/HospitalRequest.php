@@ -33,6 +33,7 @@ class HospitalRequest extends ApiFormRequest
             'region_id'=>"bail|sometimes|nullable|exists:regions,id",
             'postal_address'=>'bail|sometimes|nullable|string',
             'gps_location'=>'bail|sometimes|nullable',
+            'ownership_type'=>'bail|sometimes|in:PRIVATE,MISSION,GOVERNMENT'
         ];
 
 

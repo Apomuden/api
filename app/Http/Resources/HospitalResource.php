@@ -41,6 +41,7 @@ class HospitalResource extends JsonResource
             'region_name'=>$region->region_name??null,
             'region_id'=>$region->id??null,
             'gps_location'=>$this->gps_location,
+            'ownership_type'=>$this->ownership_type,
             'logo'=>$this->logo?\route('file.url',['logos',$this->logo]):null,
             'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
             'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
