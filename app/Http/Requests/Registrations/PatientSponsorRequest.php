@@ -55,10 +55,10 @@ class PatientSponsorRequest extends ApiFormRequest
 
             'company_id' => 'bail|sometimes|nullable|exists:companies,id',
 
-            'relation_id'=>'bail|'.($id?'sometimes|nullable':'required_if:benefit_type,DEPENDANT').'|integer|exists:relationships,id',
+            'relation_id'=>'bail|'.($id || $benefit_type!=='DEPENDANT'?'sometimes|nullable':'required').'|integer|exists:relationships,id',
 
             'staff_name'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government company'
-                        || $validator_values['sponsorship_type_name']==='private company') && !$id) ? 'required_if:benefit_type,DEPENDANT':'sometimes|nullable').'|string',
+                        || $validator_values['sponsorship_type_name']==='private company') && $benefit_type==='DEPENDANT' && !$id) ? 'required':'sometimes|nullable').'|string',
 
             'staff_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government company'
                         || $validator_values['sponsorship_type_name']==='private company')  && !$id) ? 'required':'sometimes|nullable').'|string',
