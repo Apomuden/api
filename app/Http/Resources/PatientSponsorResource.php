@@ -20,7 +20,7 @@ class PatientSponsorResource extends JsonResource
             $billing_sponsor = $this->billing_sponsor;
             $sponsorship_policy = $this->sponsorship_policy;
             $relationship = $this->relationship;
-            $user = $this->user;
+            //$user = $this->user;
             return [
                 'id'=>$this->id,
                 'name'=>$this->name,
