@@ -181,18 +181,6 @@ Route::apiResource('sponsorpolicies', 'Setups\SponsorshipPolicyController',[
     'component'=>'setup.sponsorshiptypes'
 ]);
 
-Route::post('patientsponsors/permit',[
-    'uses'=>'Setups\PatientSponsorController@store',
-    'as'=> 'patientsponsors.permit.store',
-    'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'setup.sponsorshiptypes'
-]);
-
-Route::apiResource('patientsponsors', 'Setups\PatientSponsorController',[
-    //'only'=>['index','show','store','update'],
-    'module'=>['records-mgt','sys-mgt'],
-    'component'=>'setup.sponsorshiptypes'
-]);
 Route::apiResource('paymentchannels','Setups\PaymentChannelController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
