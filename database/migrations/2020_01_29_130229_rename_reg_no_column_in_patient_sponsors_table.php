@@ -15,10 +15,10 @@ class RenameRegNoColumnInPatientSponsorsTable extends Migration
     {
         Schema::table('patient_sponsors', function (Blueprint $table) {
             if (Schema::hasColumn('patient_sponsors','reg_no')) {
-                $table->string('member_id')->after('reg_no');
+                $table->string('member_id')->nullable()->after('reg_no');
                 $table->dropColumn('reg_no');
             }
-            $table->uuid('user_id')->after('expiry_date');
+            $table->uuid('user_id')->nullable()->after('expiry_date');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
@@ -32,7 +32,7 @@ class RenameRegNoColumnInPatientSponsorsTable extends Migration
     {
         Schema::table('patient_sponsors', function (Blueprint $table) {
             if (Schema::hasColumn('patient_sponsors','member_id')) {
-                $table->string('reg_no')->after('member_id');
+                $table->string('reg_no')->nullable()->after('member_id');
                 $table->dropColumn('member_id');
             }
             $table->dropForeign(['user_id']);
