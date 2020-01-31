@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\PatientSponsorMultipleRequest;
 use App\Http\Requests\Registrations\PatientSponsorRequest;
-use App\Http\Resources\PatientSponsorResource;
+use App\Http\Resources\Registrations\PatientSponsorResource;
 use App\Models\PatientSponsor;
 use App\Models\Relationship;
 use App\Models\SponsorshipPolicy;
@@ -36,7 +36,7 @@ class PatientSponsorController extends Controller
     {
        $sponsor= $this->repository->store($request->all());
 
-      return ApiResponse::withOk('Patient sponsor created',new PatientSponsorResource($sponsor->refresh()));
+       return ApiResponse::withOk('Patient sponsor created',new PatientSponsorResource($sponsor->refresh()));
     }
 
     public function storeMultiple(PatientSponsorMultipleRequest $request){
