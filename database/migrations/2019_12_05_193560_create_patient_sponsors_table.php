@@ -21,8 +21,8 @@ class CreatePatientSponsorsTable extends Migration
             $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
             $table->unsignedBigInteger('sponsorship_policy_id')->nullable();
             $table->foreign('sponsorship_policy_id')->references('id')->on('sponsorship_policies')->onDelete('restrict');
-            $table->unsignedInteger('priority')->comment('priority  number');
-            $table->string('member_id');
+            $table->unsignedInteger('priority')->nullable()->comment('priority  number');
+            $table->string('member_id')->nullable();
             $table->string('card_serial_no')->nullable();
             $table->unsignedBigInteger('company_id')->nullable();
             $table->foreign('company_id')->references('id')->on('companies')->onDelete('restrict');
@@ -31,7 +31,7 @@ class CreatePatientSponsorsTable extends Migration
             $table->enum('benefit_type',['SELF','DEPENDANT','BABY'])->default('SELF');
             $table->unsignedInteger('relation_id')->nullable();
             $table->foreign('relation_id')->references('id')->on('relationships')->onDelete('restrict');
-            $table->date('issued_date');
+            $table->date('issued_date')->nullable();
             $table->date('expiry_date')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE','TERMINATED','BLACKLISTED'])->default('ACTIVE');
             $table->timestamps();
