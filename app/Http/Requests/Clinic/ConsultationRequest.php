@@ -25,7 +25,7 @@ class ConsultationRequest extends ApiFormRequest
      */
     public function rules() : array
     {
-        $id = $this->route('consultation') ?? null;
+        $id = $this->route('consultation') ?? $this->route('consultationservicerequest') ?? null;
         return [
             'consultation_given'=>'bail|sometimes|nullable|string',
             'order_type'=>'bail|'.($id?'sometimes':'required').'|string|in:INTERNAL,EXTERNAL',

@@ -264,9 +264,8 @@ Route::apiResource('consultations','Setups\ConsultationController',[
     'component'=> 'setup.free.clinics'
 ]);
 
-Route::post('requestconsultation',[
-    'uses'=>'Setups\ConsultationController@store',
-    'as'=> 'consultations.requestConsultation.store',
-    'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'setup.free.clinics'
+Route::apiResource('consultationservicerequests', 'Setups\ConsultationController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'setup.free.clinics'
 ]);
