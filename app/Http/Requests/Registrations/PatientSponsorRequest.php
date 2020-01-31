@@ -29,7 +29,7 @@ class PatientSponsorRequest extends ApiFormRequest
     {
         $id=$this->route('patientsponsor')??null;
         $billing_sponsor_id=request()->input('billing_sponsor_id')??null;
-        $sponsorship_policy_id=request()->input('sponsorship_policy_id')??null;
+        //$sponsorship_policy_id=request()->input('sponsorship_policy_id')??null;
         //$company_id=request()->input('company_id')??null;
         $benefit_type=request()->input('benefit_type')??null;
         $billing_sponsor = $billing_sponsor_id ? (BillingSponsor::find($billing_sponsor_id)) : null;
