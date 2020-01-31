@@ -15,7 +15,7 @@ class CreateConsultationsTable extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('consultation_given');
+            $table->string('consultation_given')->nullable();
             $table->unsignedInteger('service_quantity')->default(1);
             $table->unsignedDecimal('service_fee', 20, 2)->default(0.00);
             $table->unsignedBigInteger('patient_id');
@@ -23,14 +23,14 @@ class CreateConsultationsTable extends Migration
             $table->unsignedInteger('sponsorship_type_id');
             $table->unsignedInteger('age_group_id');
             $table->unsignedInteger('age');
-            $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT']);
+            $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT');
             $table->unsignedBigInteger('consultation_service_id');
-            $table->uuid('user_id')->nullable()->comment('The doctor to whom the consultation service is assigned');
+            $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
             $table->enum('order_type', ['INTERNAL', 'EXTERNAL'])->default('INTERNAL');
             $table->dateTime('attendance_date')->useCurrent();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('ended_at')->nullable();
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('INACTIVE');
+            $table->enum('status', ['COMPLETED', 'IN-QUEUE', 'SUSPENDED'])->default('IN-QUEUE');
             $table->softDeletes();
             $table->timestamps();
 

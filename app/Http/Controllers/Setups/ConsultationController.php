@@ -12,6 +12,8 @@ use App\Models\Consultation;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
+//use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as FacadeRoute;
 
 class ConsultationController extends Controller
 {
@@ -27,7 +29,13 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
+        $routeName = FacadeRoute::currentRouteName();
+        if ($routeName === "consultationsericerequests.index") {
+            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->findWhere('name')));
+        }
+        else {
+            return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
+        }
     }
 
     /**
