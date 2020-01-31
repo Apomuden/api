@@ -29,7 +29,7 @@ class PatientSponsorRequest extends ApiFormRequest
     {
         $id=$this->route('patientsponsor')??null;
         $billing_sponsor_id=request()->input('billing_sponsor_id')??null;
-        $sponsorship_policy_id=request()->input('sponsorship_policy_id')??null;
+        //$sponsorship_policy_id=request()->input('sponsorship_policy_id')??null;
         //$company_id=request()->input('company_id')??null;
         $benefit_type=request()->input('benefit_type')??null;
         $billing_sponsor = $billing_sponsor_id ? (BillingSponsor::find($billing_sponsor_id)) : null;
@@ -50,9 +50,9 @@ class PatientSponsorRequest extends ApiFormRequest
 
         return [
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
-            'billing_sponsor_id'=>'bail|'.($id|| $sponsorship_policy_id?'sometimes|nullable':'required').'|integer|exists:billing_sponsors,id',
-
             'sponsorship_policy_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_policies,id',
+            'billing_sponsor_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:billing_sponsors,id',
+
             'company_id' => 'bail|sometimes|nullable|exists:companies,id',
 
             'relation_id'=>'bail|'.($id?'sometimes':'required_if:benefit_type,DEPENDANT').'|integer|exists:relationships,id',
