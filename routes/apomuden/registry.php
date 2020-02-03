@@ -39,6 +39,11 @@ Route::apiResource('patientsponsors', 'Registration\PatientSponsorController', [
     'component' => 'patient-registry'
 ]);
 
+Route::apiResource('sponsorshiprenewals', 'Registration\SponsorshipRenewalController', [
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
+
 Route::apiResource('folders', 'Registration\FolderController', [
     //'only'=>['index','show','store','update'],
     'module' => 'records-mgt',
