@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Registration;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
@@ -30,7 +30,7 @@ class ConsultationController extends Controller
     public function index()
     {
         $routeName = FacadeRoute::currentRouteName();
-        if ($routeName === "consultationsericerequests.index") {
+        if ($routeName === 'consultationservicerequests.index') {
             return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->findWhere('name')));
         }
         else {

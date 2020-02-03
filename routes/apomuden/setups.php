@@ -257,15 +257,3 @@ Route::apiResource('consultationservices','Setups\ClinicConsultServiceController
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'setup.free.clinics'
 ]);
-
-Route::apiResource('consultations','Setups\ConsultationController',[
-    //'only'=>['index','show','store','update'],
-    'module'=>['records-mgt','sys-mgt'],
-    'component'=> 'setup.free.clinics'
-]);
-
-Route::apiResource('consultationservicerequests', 'Setups\ConsultationController',[
-    //'only'=>['index','show','store','update'],
-    'module'=>['records-mgt','sys-mgt'],
-    'component'=> 'setup.free.clinics'
-]);

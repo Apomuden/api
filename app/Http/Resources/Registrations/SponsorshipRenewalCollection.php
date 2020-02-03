@@ -4,7 +4,7 @@ namespace App\Http\Resources\Registrations;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class PatientSponsorCollection extends ResourceCollection
+class SponsorshipRenewalCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -14,6 +14,6 @@ class PatientSponsorCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return PatientSponsorResource::collection($this->collection);
+        return SponsorshipRenewalResource::collection($this->collection);
     }
 }
