@@ -11,6 +11,7 @@ use App\Models\PatientSponsor;
 use App\Models\Relationship;
 use App\Models\SponsorshipPolicy;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PatientSponsorController extends Controller
@@ -34,6 +35,7 @@ class PatientSponsorController extends Controller
      */
     public function store(PatientSponsorRequest $request)
     {
+        $request['user_id'] = Auth::id();
        $sponsor= $this->repository->store($request->all());
 
        return ApiResponse::withOk('Patient sponsor created',new PatientSponsorResource($sponsor->refresh()));

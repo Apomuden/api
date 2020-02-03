@@ -49,3 +49,15 @@ Route::apiResource('patientnextofkins', 'Registration\PatientNextOfKinController
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
+
+Route::apiResource('consultations','registry\ConsultationController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'records-mgt',
+    'component'=> 'patient-registry'
+]);
+
+Route::apiResource('consultationservicerequests', 'registry\ConsultationController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'patient-registry'
+]);
