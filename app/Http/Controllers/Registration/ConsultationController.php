@@ -5,22 +5,25 @@ namespace App\Http\Controllers\Registration;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Clinic\ConsultationRequest;
-use App\Http\Resources\ConsultationResource;
-use App\Http\Resources\ConsultationCollection;
+use App\Http\Requests\Registrations\ConsultationRequest;
+use App\Http\Resources\Registrations\ConsultationResource;
+use App\Http\Resources\Registrations\ConsultationCollection;
 use App\Models\Consultation;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
-//use Illuminate\Routing\Route;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as FacadeRoute;
 
 class ConsultationController extends Controller
 {
     protected $repository;
+    protected $routeName;
     public function __construct(Consultation $consultation)
     {
         $this->repository = new RepositoryEloquent($consultation);
+        $this->routeName = FacadeRoute::currentRouteName();
+
     }
     /**
      * Display a listing of the resource.
@@ -29,13 +32,10 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        $routeName = FacadeRoute::currentRouteName();
-        if ($routeName === 'consultationservicerequests.index') {
-            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->findWhere('name')));
+        if ($this->routeName === 'consultationservicerequests.index') {
+            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->showWhere(['status' => 'IN-QUEUE'])));
         }
-        else {
-            return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
-        }
+        ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
     }
 
     /**
@@ -46,9 +46,10 @@ class ConsultationController extends Controller
      */
     public function store(ConsultationRequest $request)
     {
+        $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
 
-        return  ApiResponse::withOk('Consultation Service created', new ConsultationResource($response->refresh()));
+        return  ApiResponse::withOk( $message, new ConsultationResource($response->refresh()));
     }
 
     /**
@@ -59,11 +60,17 @@ class ConsultationController extends Controller
      */
     public function show($id)
     {
-        $consultation = $this->repository->show($id);
+        $message = $this->routeName === 'consultationservicerequests.show' ? 'Consultation Service request' : 'Consultation Service';
+        if ($this->routeName==='consultationservicerequests.show') {
+            $consultation = $this->repository->showWhere(['id'=>$id,'status'=>'IN-QUEUE']);
+        }
+        else {
+            $consultation = $this->repository->show($id);
+        }
 
         return $consultation ?
-            ApiResponse::withOk('Consultation Service Found', new ConsultationResource($consultation))
-            : ApiResponse::withNotFound('Consultation Service Not Found');
+            ApiResponse::withOk($message.' Found', new ConsultationResource($consultation))
+            : ApiResponse::withNotFound($message.' Not Found');
     }
 
     /**

@@ -22,7 +22,6 @@ class SponsorshipRenewalController extends Controller
     }
     public function index()
     {
-
         return ApiResponse::withOk('Sponsorship Renewals list',SponsorshipRenewalResource::collection($this->repository->all('member_id')));
     }
 

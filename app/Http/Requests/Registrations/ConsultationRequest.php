@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Clinic;
+namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\Patient;

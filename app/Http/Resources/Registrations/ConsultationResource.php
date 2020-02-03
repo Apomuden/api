@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Registrations;
 
 use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
