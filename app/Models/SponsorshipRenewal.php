@@ -27,4 +27,8 @@ class SponsorshipRenewal extends Model
     public function sponsorship_policy() {
         return $this->belongsTo(SponsorshipPolicy::class);
     }
+
+    public function patient_sponsor() {
+        return $this->belongsTo(PatientSponsor::class);
+    }
 }
