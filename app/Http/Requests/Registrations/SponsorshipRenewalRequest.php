@@ -4,9 +4,9 @@ namespace App\Http\Requests\Registrations;
 
 use App\Models\BillingSponsor;
 use App\Models\SponsorshipType;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class SponsorshipRenewalRequest extends FormRequest
+class SponsorshipRenewalRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -48,13 +48,14 @@ class SponsorshipRenewalRequest extends FormRequest
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'sponsorship_policy_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_policies,id',
             'billing_sponsor_id'=>'bail|'.($id?'sometimes|nullable':'required').'|integer|exists:billing_sponsors,id',
+            'patient_sponsor_id'=>'bail|sometimes|nullable|integer|exists:billing_sponsors,id',
 
             'member_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance'
                         || $validator_values['sponsorship_type_name']==='private insurance') && !$id) ? 'required':'sometimes|nullable').'|string',
 
             'card_serial_no'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance') && !$id) ? 'required':'sometimes|nullable').'|unique',
-            'renewal_start_date'=>'bail|sometimes|nullable|date',
-            'renewal_end_date'=>'bail|sometimes|nullable|date',
+            'renewal_start_date'=>'bail|'.($id?'sometimes':'required').'|date',
+            'renewal_end_date'=>'bail|'.($id?'sometimes':'required').'|date',
         ];
     }
 }

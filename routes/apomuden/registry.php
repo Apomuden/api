@@ -29,10 +29,10 @@ Route::apiResource('patients', 'Registration\PatientController', [
 ]);
 
 Route::post('patientsponsors/multiple',[
-      'uses'=> 'Registration\PatientSponsorController@storeMultiple',
-      'as'=>'patients.multiple.view',
-      'module' => 'records-mgt',
-      'component' => 'patient-registry'
+    'uses'=> 'Registration\PatientSponsorController@storeMultiple',
+    'as'=>'patients.multiple.view',
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
 ]);
 Route::apiResource('patientsponsors', 'Registration\PatientSponsorController', [
     'module' => 'records-mgt',
@@ -55,13 +55,13 @@ Route::apiResource('patientnextofkins', 'Registration\PatientNextOfKinController
     'component' => 'patient-registry'
 ]);
 
-Route::apiResource('consultations','registry\ConsultationController',[
+Route::apiResource('consultations','Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
 
-Route::apiResource('consultationservicerequests', 'registry\ConsultationController',[
+Route::apiResource('consultationservicerequests', 'Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'patient-registry'
