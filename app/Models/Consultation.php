@@ -42,4 +42,10 @@ class Consultation extends Model
     {
         return $this->belongsTo(AgeGroup::class);
     }
+
+    public function billing_sponsor()
+    {
+        return $this->belongsTo(BillingSponsor::class);
+    }
+
 }
