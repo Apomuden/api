@@ -11,6 +11,7 @@ use App\Http\Resources\Registrations\ConsultationCollection;
 use App\Models\Consultation;
 use App\Repositories\RepositoryEloquent;
 use Exception;
+use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Route as FacadeRoute;
@@ -49,9 +50,11 @@ class ConsultationController extends Controller
         if(isset($request['sponsorship_type'])) {
             unset($request['sponsorship_type']);
         }
-        if(isset($request['sponsorship_type_id'])) {
-            unset($request['sponsorship_type']);
-        }
+        $repo = new RepositoryEloquent(new Consultation);
+        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
+        //if($hasAnUnservedRequest) {
+            //return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request']);
+        //}
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
 
