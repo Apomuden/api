@@ -53,7 +53,7 @@ class ConsultationRequest extends ApiFormRequest
             'sponsorship_type_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_types,id',
             'age_group_id'=>'bail|sometimes|nullable|integer|exists:age_groups,id',
             'attendance_date'=>'bail|'.($id?'sometimes':'required').'|date',
-            'billing_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|string|exists:billing_sponsors,id',
+            'billing_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:billing_sponsors,id',
             'member_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,member_id',
             'staff_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,staff_id',
             'card_serial_no'=>'bail|'.(!$id && $sponsorship_type=='government insurance' ? 'required':'sometimes|nullable').'|string|exists:patient_sponsors,card_serial_no',
