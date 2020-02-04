@@ -14,7 +14,7 @@ class AddAdditionalFieldsToConsultationsTable extends Migration
     public function up() : void
     {
         Schema::table('consultations', static function (Blueprint $table) {
-            $table->string('billing_sponsor_id')->after('patient_id')->nullable();
+            $table->unsignedBigInteger('billing_sponsor_id')->after('patient_id')->nullable();
             $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
             $table->string('member_id')->after('patient_id')->nullable();
             $table->string('ccc', 5)->unique()->after('member_id')->nullable()->comment('Claim Check Code');
