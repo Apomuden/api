@@ -26,6 +26,7 @@ class ConsultationResource extends JsonResource
 
             return [
                 'id' => $this->id,
+                'order_type'=>$this->order_type,
                 'consultation_given'=>$this->consultation_given,
                 'consultation_service_name'=>$clinic_consult_service->name??null,
                 'consultation_service_id'=>$clinic_consult_service->id??null,
@@ -46,6 +47,7 @@ class ConsultationResource extends JsonResource
                 'member_id'=>$this->member_id,
                 'ccc'=>$this->ccc,
                 'attendance_date' => DateHelper::toDisplayDateTime($this->attendance_date),
+                'patient_status'=>$this->patient_status,
                 'started_at' => DateHelper::toDisplayDateTime($this->started_at),
                 'ended_at' => DateHelper::toDisplayDateTime($this->ended_at),
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
