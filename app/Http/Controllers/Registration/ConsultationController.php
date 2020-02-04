@@ -33,7 +33,7 @@ class ConsultationController extends Controller
     public function index()
     {
         if ($this->routeName === 'consultationservicerequests.index') {
-            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->showWhere(['status' => 'IN-QUEUE'])));
+            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->all()->where(['status' => 'IN-QUEUE'])));
         }
         ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
     }
