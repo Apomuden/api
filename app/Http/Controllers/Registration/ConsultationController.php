@@ -46,6 +46,12 @@ class ConsultationController extends Controller
      */
     public function store(ConsultationRequest $request)
     {
+        if(isset($request['sponsorship_type'])) {
+            unset($request['sponsorship_type']);
+        }
+        if(isset($request['sponsorship_type_id'])) {
+            unset($request['sponsorship_type']);
+        }
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
 
