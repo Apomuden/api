@@ -66,7 +66,7 @@ class PatientSponsorRequest extends ApiFormRequest
             'member_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance'
                         || $validator_values['sponsorship_type_name']==='private insurance') && !$id) ? 'required':'sometimes|nullable').'|string|'.($benefit_type == 'BABY'? $this->softUniqueWith('patient_sponsors', 'member_id,patient_id', $id): $this->softUnique('patient_sponsors', 'member_id',$id)),
 
-            'card_serial_no'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance') && !$id) ? 'required':'sometimes|nullable').'|unique|'.($benefit_type=='BABY'? $this->softUniqueWith('patient_sponsors', 'card_serial_no,patient_id', $id): $this->softUnique('patient_sponsors', 'card_serial_no', $id)),
+            'card_serial_no'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance') && !$id) ? 'required':'sometimes|nullable').'|unique:patient_sponsors,card_serial_no'.($benefit_type=='BABY'? $this->softUniqueWith('patient_sponsors', 'card_serial_no,patient_id', $id): $this->softUnique('patient_sponsors', 'card_serial_no', $id)),
             'user_id'=>'bail|sometimes|nullable|exists:users,id',
             'priority'=>'bail|sometimes|nullable|numeric|min:1',
             'issued_date'=>'bail|sometimes|nullable|date',
