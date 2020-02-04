@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Registrations;
 
 use App\Http\Helpers\DateHelper;
+use App\Models\SponsorshipType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PatientSponsorResource extends JsonResource
@@ -25,6 +26,12 @@ class PatientSponsorResource extends JsonResource
             return [
                 'id'=>$this->id,
                 'patient_id'=>$patient->id??$this->patient_id??null,
+                'billing_sponsor'=> [
+                    'id'=>$billing_sponsor->id??null,
+                    'name'=>$billing_sponsor->name??null,
+                    'sponsorship_type_id'=>$billing_sponsor->sponsorship_type_id??null,
+                    'sponsorship_type_name'=>$billing_sponsor->sponsorship_type_id? SponsorshipType::find($billing_sponsor->sponsorship_type_id)->name : null,
+                ],
                 'billing_sponsor_name' => $billing_sponsor->name??null,
                 'billing_sponsor_id' => $billing_sponsor->id??null,
                 'sponsorship_policy_name' => $sponsorship_policy->name??null,
