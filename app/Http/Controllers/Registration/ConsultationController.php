@@ -9,6 +9,7 @@ use App\Http\Requests\Registrations\ConsultationRequest;
 use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Resources\Registrations\ConsultationCollection;
 use App\Models\Consultation;
+use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Facade\FlareClient\Api;
@@ -48,6 +49,18 @@ class ConsultationController extends Controller
     public function store(ConsultationRequest $request)
     {
         if(isset($request['sponsorship_type'])) {
+            if (!isset($request['sponsorship_type_id'])) {
+                $sponsorshipType = (new RepositoryEloquent(new SponsorshipType))->findWhere(['name'=>$request['sponsorship_type']])
+                ->orWhere(['name'=>ucfirst($request['sponsorship_type'])])
+                ->orWhere(['name'=>ucwords($request['sponsorship_type'])])
+                ->orWhere(['name'=>strtolower($request['sponsorship_type'])])
+                ->orWhere(['name'=>strtoupper($request['sponsorship_type'])])->first();
+                $sponsorshipType = $sponsorshipType?$sponsorshipType->id:null;
+                if ($sponsorshipType) {
+                    $request['sponsorship_type_id'] = $sponsorshipType;
+                }
+                unset($sponsorshipType);
+            }
             unset($request['sponsorship_type']);
         }
         $repo = new RepositoryEloquent(new Consultation);
