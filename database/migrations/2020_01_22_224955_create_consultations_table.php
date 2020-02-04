@@ -20,8 +20,8 @@ class CreateConsultationsTable extends Migration
             $table->unsignedDecimal('service_fee', 20, 2)->default(0.00);
             $table->unsignedBigInteger('patient_id');
             $table->unsignedInteger('funding_type_id');
-            $table->unsignedInteger('sponsorship_type_id');
-            $table->unsignedInteger('age_group_id');
+            $table->unsignedInteger('sponsorship_type_id')->nullable();
+            $table->unsignedInteger('age_group_id')->nullable();
             $table->unsignedInteger('age');
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT');
             $table->unsignedBigInteger('consultation_service_id');
@@ -30,7 +30,7 @@ class CreateConsultationsTable extends Migration
             $table->dateTime('attendance_date')->useCurrent();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('ended_at')->nullable();
-            $table->enum('status', ['COMPLETED', 'IN-QUEUE', 'SUSPENDED'])->default('IN-QUEUE');
+            $table->enum('status', ['SERVED', 'IN-QUEUE', 'SUSPENDED','INACTIVE'])->default('IN-QUEUE');
             $table->softDeletes();
             $table->timestamps();
 

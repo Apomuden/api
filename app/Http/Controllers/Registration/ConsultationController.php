@@ -33,9 +33,9 @@ class ConsultationController extends Controller
     public function index()
     {
         if ($this->routeName === 'consultationservicerequests.index') {
-            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->all()->where(['status' => 'IN-QUEUE'])));
+            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->showWhere(['status' => 'IN-QUEUE'])->get()));
         }
-        ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('created_at')));
     }
 
     /**
@@ -68,7 +68,7 @@ class ConsultationController extends Controller
     {
         $message = $this->routeName === 'consultationservicerequests.show' ? 'Consultation Service request' : 'Consultation Service';
         if ($this->routeName==='consultationservicerequests.show') {
-            $consultation = $this->repository->showWhere(['id'=>$id,'status'=>'IN-QUEUE']);
+            $consultation = $this->repository->showWhere(['id'=>$id,'status'=>'IN-QUEUE'])->first();
         }
         else {
             $consultation = $this->repository->show($id);

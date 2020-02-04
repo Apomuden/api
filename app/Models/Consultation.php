@@ -15,7 +15,7 @@ class Consultation extends Model
 
     public function clinic_consult_service()
     {
-        return $this->belongsTo(ClinicConsultService::class);
+        return $this->belongsTo(ClinicConsultService::class, 'consultation_service_id');
     }
 
     public function patient()
