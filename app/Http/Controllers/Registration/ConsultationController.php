@@ -64,7 +64,7 @@ class ConsultationController extends Controller
             unset($request['sponsorship_type']);
         }
         $repo = new RepositoryEloquent(new Consultation);
-        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
+        //$hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
         //if($hasAnUnservedRequest) {
             //return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request']);
         //}
