@@ -35,10 +35,6 @@ class ServicePrice extends Model
         return $this->belongsTo(ServiceSubcategory::class);
     }
 
-    public function funding_type()
-    {
-        return $this->belongsTo(FundingType::class);
-    }
 
     public function age_group()
     {

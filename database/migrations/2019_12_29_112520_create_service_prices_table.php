@@ -25,14 +25,14 @@ class CreateServicePricesTable extends Migration
             $table->unsignedInteger('age_group_id')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('restrict');
             $table->set('gender',['MALE','FEMALE','BIGENDER'])->default('MALE,FEMALE');
-            $table->unsignedInteger('funding_type_id')->nullable();
-            $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict');
+           /*  $table->unsignedInteger('funding_type_id')->nullable();
+            $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict'); */
             $table->set('patient_status',['IN-PATIENT','OUT-PATIENT','WALK-IN'])->default('IN-PATIENT,OUT-PATIENT,WALK-IN');
             $table->decimal('amount',20,2)->default(0);
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'funding_type_id', 'patient_status','deleted_at'], 'unique_service_price');
+            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_service_price');
 
         });
     }

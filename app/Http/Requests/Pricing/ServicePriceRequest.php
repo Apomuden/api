@@ -25,9 +25,9 @@ class ServicePriceRequest extends ApiFormRequest
             'service_subcategory_id'=>'bail|sometimes|nullable|integer|exists:service_subcategories,id',
             'age_group_id'=>'bail|sometimes|nullable|integer|exists:age_groups,id',
             'gender'=>'bail|sometimes|nullable|set:'.$this->gender.',BIGENDER',
-            'funding_type_id'=>'bail|sometimes|nullable|integer|exists:funding_types,id',
             'patient_status'=>'bail|sometimes|set:'.$this->patient_status,
-            'amount'=>'bail|'.($id?'sometimes':'required').'|numeric',
+            'prepaid_amount'=>'bail|'.($id?'sometimes':'required').'|numeric',
+            'postpaid_amount'=>'bail|'.($id?'sometimes':'required').'|numeric',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }
@@ -38,7 +38,6 @@ class ServicePriceRequest extends ApiFormRequest
             $all=$this->all();
             $service_subcategory_id=$all['service_subcategory_id']??null;
             $service_category_id=$all['service_category_id']??null;
-            $funding_type_id=$all['funding_type_id']??null;
             $age_group_id=$all['age_group_id']??null;
             $gender=$all['gender']??$this->gender;
             $patient_status=$all['patient_status']??$this->patient_status;
@@ -50,12 +49,9 @@ class ServicePriceRequest extends ApiFormRequest
             }
             else{
                 $repository=new RepositoryEloquent(new ServicePrice);
-
-
                 $where=[
                     'service_category_id'=>$service_category_id,
                     'service_subcategory_id'=>$service_subcategory_id,
-                    'funding_type_id'=>$funding_type_id,
                     'age_group_id'=>$age_group_id,
                     'gender'=>$gender,
                     'patient_status'=>$patient_status,
@@ -63,10 +59,9 @@ class ServicePriceRequest extends ApiFormRequest
                 ];
                 $servicePrice=$repository->find($id)??$repository->findWhere($where)->first();
 
-
+                //dd($servicePrice);
                 if($servicePrice && $servicePrice->service_category_id==$service_category_id
                     && $servicePrice->service_subcategory_id==$service_subcategory_id
-                    && $servicePrice->funding_type_id==$funding_type_id
                     && $servicePrice->age_group_id==$age_group_id
                     && $servicePrice->gender==$gender
                     && $servicePrice->patient_status==$patient_status
@@ -91,7 +86,6 @@ class ServicePriceRequest extends ApiFormRequest
             $data['service_category_id']=$service_subcategory->service_category_id;
             $data['hospital_service_id']=$service_subcategory->hospital_service_id;
         }
-
     }
     else if($service_category_id){
         $repository=new RepositoryEloquent(new ServiceCategory);
