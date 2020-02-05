@@ -19,7 +19,6 @@ class ServicePriceResource extends JsonResource
             $hospital_service=$this->hospital_service;
             $service_category=$this->service_category;
             $service_subcategory=$this->service_subcategory;
-            $funding_type=$this->funding_type;
             $age_group=$this->age_group;
             return [
                 'id'=>$this->id,
@@ -30,13 +29,12 @@ class ServicePriceResource extends JsonResource
                 'service_category_id'=>$service_category->id,
                 'service_subcategory_name'=>$service_subcategory->name,
                 'service_subcategory_id'=>$service_subcategory->id,
-                'funding_type_name'=>$funding_type->name??null,
-                'funding_type_id'=>$funding_type->id??null,
                 'age_group_name'=>$age_group->name??null,
                 'age_group_id'=>$age_group->id??null,
                 'gender'=>$this->gender,
                 'patient_status'=>$this->patient_status,
-                'amount'=>$this->amount,
+                'prepaid_amount'=>$this->prepaid_amount,
+                'postpaid_amount'=>$this->postpaid_amount,
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
