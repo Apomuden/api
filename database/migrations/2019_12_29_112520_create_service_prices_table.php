@@ -28,7 +28,8 @@ class CreateServicePricesTable extends Migration
            /*  $table->unsignedInteger('funding_type_id')->nullable();
             $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict'); */
             $table->set('patient_status',['IN-PATIENT','OUT-PATIENT','WALK-IN'])->default('IN-PATIENT,OUT-PATIENT,WALK-IN');
-            $table->decimal('amount',20,2)->default(0);
+            $table->decimal('prepaid_amount',20,2)->default(0);
+            $table->decimal('postpaid_amount',20,2)->default(0);
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
