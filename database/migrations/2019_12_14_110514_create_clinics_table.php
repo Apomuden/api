@@ -16,6 +16,18 @@ class CreateClinicsTable extends Migration
         Schema::create('clinics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->unsignedBigInteger('main_clinic_id');
+            $table->foreign('main_clinic_id')->references('id')->on('service_categories')->onDelete('restrict');
+            $table->unsignedInteger('billing_cycle_id');
+            $table->foreign('billing_cycle_id')->references('id')->on('billing_cycles')->onDelete('restrict');
+            $table->unsignedInteger('billing_duration');
+            $table->unsignedInteger('age_group_id')->nullable();
+            $table->foreign('age_group_id')->references('id')->on('age_groups')->onDDelete('restrict');
+
+            $table->set('gender',['MALE','FEMALE','BIGENDER'])->default('MALE,FEMALE,BIGENDER');
+
+            $table->set('patient_status',['IN-PATIENT','OUT-PATIENT','WALK-IN'])->default('IN-PATIENT,OUT-PATIENT,WALK-IN');
+            
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
