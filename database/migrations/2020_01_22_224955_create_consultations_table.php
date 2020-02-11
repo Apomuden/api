@@ -25,6 +25,7 @@ class CreateConsultationsTable extends Migration
             $table->unsignedInteger('age');
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT');
             $table->unsignedBigInteger('consultation_service_id');
+            $table->uuid('user_id')->comment('The user who made the request');
             $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
             $table->enum('order_type', ['INTERNAL', 'EXTERNAL'])->default('INTERNAL');
             $table->dateTime('attendance_date')->useCurrent();
