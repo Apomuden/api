@@ -4,10 +4,8 @@ namespace App\Http\Requests\Clinic;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\HospitalService;
-use App\Models\ServiceCategory;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class ClinicRequest extends ApiFormRequest
@@ -51,8 +49,6 @@ class ClinicRequest extends ApiFormRequest
                     $query->where('hospital_service_id',($consultationService->id??null));
                 })
              ],
-            'billing_cycle_id'=> 'bail|'. ($id ? 'sometimes' : 'required').'|exists:billing_cycles,id',
-            'billing_duration'=>'bail|'. ($id ? 'sometimes' : 'required').'|numeric|min:1',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }

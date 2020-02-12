@@ -18,10 +18,6 @@ class Clinic extends Model
        return $this->belongsTo(AgeGroup::class);
    }
 
-   public function billing_cycle()
-   {
-       return $this->belongsTo(BillingCycle::class);
-   }
 
    public function main_clinic()
    {
