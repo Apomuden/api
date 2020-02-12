@@ -18,7 +18,6 @@ class ClinicResource extends JsonResource
         if (isset($this->id)) {
             $age_group = $this->age_group;
             $main_clinic=$this->main_clinic;
-            $billing_cycle=$this->billing_cycle;
 
             return [
                 'id' => $this->id,
@@ -27,9 +26,6 @@ class ClinicResource extends JsonResource
                 'age_group_id' => $age_group->id??null,
                 'main_clinic_name'=>$main_clinic->name??null,
                 'main_clinic_id'=>$main_clinic->id??null,
-                'billing_cycle_name'=> $billing_cycle->name??null,
-                'billing_cycle_id'=> $billing_cycle->id??null,
-                'billing_duration'=> $this->billing_duration??null,
                 'gender' => $this->gender,
                 'status' => $this->status,
                 'patient_status' => $this->patient_status,

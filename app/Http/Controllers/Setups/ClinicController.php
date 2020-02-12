@@ -10,7 +10,6 @@ use App\Http\Requests\Clinic\ClinicWithConsultServicesRequest;
 use App\Http\Resources\ClinicResource;
 use App\Http\Resources\ClinicCollection;
 use App\Models\Clinic;
-use App\Models\ClinicConsultService;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
@@ -47,24 +46,7 @@ class ClinicController extends Controller
         return  ApiResponse::withOk('Clinic created', new ClinicResource($response));
     }
 
-    public function storeWithConsultServices(ClinicWithConsultServicesRequest $request){
-         DB::beginTransaction();
-         $clinic=Arr::except($request->all(),['consultation_services']);
 
-         $consultation_services=$request['consultation_services'];
-
-         $clinic=$this->repository->store($clinic);
-         if($clinic){
-             $this->repository->setModel(new ClinicConsultService);
-             foreach($consultation_services as $service){
-                   $service=(array) $service;
-                  $service['clinic_id']=$clinic->id;
-                  $this->repository->store($service);
-             }
-         }
-        DB::commit();
-        return  ApiResponse::withOk('Clinic created', new ClinicResource($clinic->refresh()));
-    }
 
     /**
      * Display the specified resource.
