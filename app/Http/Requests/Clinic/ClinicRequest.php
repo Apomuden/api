@@ -35,7 +35,6 @@ class ClinicRequest extends ApiFormRequest
         $consultationService=$repository->findWhere(['name'=> 'Consultation Service'])
                     ->orWhere('name', 'Consultation')->first();
 
-
         return [
             'name' => 'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('clinics','name',$id),
             'age_group_id'=>'bail|somerimes|nullable|integer|exists:age_groups,id',

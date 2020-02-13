@@ -44,24 +44,24 @@ class RepositoryEloquent implements IRepository{
             if($this->with){
                 $all=$this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with);
                 $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
-                $all=$all->get();
+                $all=$all->latest()->get();
             }
             else{
                 $all=$this->useActiveTrait?$this->model->active():$this->model;
                 $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
-                $all=$all->get();
+                $all=$all->latest()->get();
             }
        }
        else{
            if($this->with){
                $all= ($this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with));
                $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
-               $all=$all->get();
+                $all = $all->latest()->get();
            }
            else{
                $all= ($this->useActiveTrait?$this->model->active():$this->model);
                $all=($this->useFindBy && $searchParams)?$all->findBy($searchParams):$all;
-               $all=$all->get();
+                $all = $all->latest()->get();
            }
        }
 

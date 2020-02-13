@@ -13,9 +13,9 @@ class Consultation extends Model
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
 
-    public function clinic_consult_service()
+    public function consultation_service()
     {
-        return $this->belongsTo(ClinicConsultService::class, 'consultation_service_id');
+        return $this->belongsTo(ServiceSubcategory::class, 'consultation_service_id');
     }
 
     public function patient()
