@@ -16,7 +16,7 @@ class ConsultationResource extends JsonResource
     public function toArray($request)
     {
         if (isset($this->id)) {
-            $clinic_consult_service = $this->clinic_consult_service;
+            $clinic_consult_service = $this->consultation_service;
             $user = $this->user;
             $patient = $this->patient;
             $funding_type = $this->funding_type;

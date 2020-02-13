@@ -47,7 +47,7 @@ class ConsultationRequest extends ApiFormRequest
             'age'=>'bail|'.($id?'sometimes':'required').'|integer|min:1',
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'user_id'=>'bail|sometimes|nullable|integer|exists:users, id',
-            'consultation_service_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:clinic_consult_services,id',
+            'consultation_service_id'=>'bail|'.($id?'sometimes':'required'). '|integer|exists:service_subcategories,id',
             'funding_type_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:funding_types,id',
             'sponsorship_type'=>'bail|'.($id?'sometimes':'required').'|string',
             'sponsorship_type_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_types,id',
