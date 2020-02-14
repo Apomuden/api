@@ -37,15 +37,15 @@ class ClinicService extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-           $repository=new RepositoryEloquent(new ServiceSubcategory);
-           $service=$repository->find($model->consultation_service_id);
-           $model->main_clinic_id=$service->service_category_id;
+           $repository=new RepositoryEloquent(new Clinic);
+           $clinic=$repository->find($model->clinic_id);
+           $model->main_clinic_id=$clinic->main_clinic_id;
         });
 
         static::updating(function ($model) {
-            $repository = new RepositoryEloquent(new ServiceSubcategory);
-            $service = $repository->find($model->consultation_service_id);
-            $model->main_clinic_id = $service->service_category_id;
+            $repository = new RepositoryEloquent(new Clinic);
+            $clinic = $repository->find($model->clinic_id);
+            $model->main_clinic_id = $clinic->main_clinic_id;
         });
     }
 }
