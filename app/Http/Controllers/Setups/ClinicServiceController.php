@@ -50,7 +50,7 @@ class ClinicServiceController extends Controller
             $service=(object) $service;
             $this->repository->store([
                 'clinic_id'=>$clinic_id,
-                'consultation_service_id'=>$service->consultation_service_id,
+                //'consultation_service_id'=>$service->consultation_service_id,
                 'billing_cycle_id'=>$service->billing_cycle_id,
                 'billing_duration'=>$service->billing_duration
             ]);
