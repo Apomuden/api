@@ -17,7 +17,7 @@ class ClinicServiceResource extends JsonResource
     {
         $clinic=$this->clinic??null;
         $main_clinic=$this->main_clinic??null;
-        $consultation_service=$this->consultation_service??null;
+        //$consultation_service=$this->consultation_service??null;
         $billing_cycle=$this->billing_cycle??null;
         return [
             'id'=>$this->id??null,
@@ -25,8 +25,8 @@ class ClinicServiceResource extends JsonResource
             'clinic_id'=>$clinic->id??null,
             'main_clinic_name'=>$main_clinic->name??null,
             'main_clinic_id'=>$main_clinic->id??null,
-            'consultation_service_name'=> $consultation_service->name??null,
-            'consultation_service_id'=> $consultation_service->id??null,
+            //'consultation_service_name'=> $consultation_service->name??null,
+            //'consultation_service_id'=> $consultation_service->id??null,
             'billing_cycle_name'=> $billing_cycle->name??null,
             'billing_cycle_id'=> $billing_cycle->id??null,
             'billing_duration'=> $this->billing_duration??null,

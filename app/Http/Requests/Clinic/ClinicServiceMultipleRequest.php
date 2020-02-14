@@ -27,14 +27,14 @@ class ClinicServiceMultipleRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $repository = new RepositoryEloquent(new Clinic);
-        $clinic = $repository->find((request()->input('clinic_id') ?? null));
+        //$repository = new RepositoryEloquent(new Clinic);
+        //$clinic = $repository->find((request()->input('clinic_id') ?? null));
         return [
             'clinic_id' => 'bail|integer|exists:clinics,id',
             'services'=> 'bail|required|array',
-            'services.*.consultation_service_id' => ['bail','integer','distinct', Rule::exists('service_subcategories', 'id')->where(function ($query) use ($clinic) {
+            /*'services.*.consultation_service_id' => ['bail','integer','distinct', Rule::exists('service_subcategories', 'id')->where(function ($query) use ($clinic) {
                 $query->where('service_category_id', $clinic->main_clinic_id);
-            })],
+            })],*/
             'services.*.billing_cycle_id'=> 'bail|integer|exists:billing_cycles,id',
             'services.*.billing_duration'=> 'bail|integer|min:1',
         ];

@@ -24,10 +24,10 @@ class ClinicService extends Model
         return $this->belongsTo(ServiceCategory::class,'main_clinic_id');
     }
 
-    public function consultation_service()
+    /*public function consultation_service()
     {
         return $this->belongsTo(ServiceSubcategory::class, 'consultation_service_id');
-    }
+    } */
 
     public function billing_cycle()
     {

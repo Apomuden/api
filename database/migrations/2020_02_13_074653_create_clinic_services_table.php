@@ -19,8 +19,8 @@ class CreateClinicServicesTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
             $table->unsignedBigInteger('main_clinic_id');
             $table->foreign('main_clinic_id')->references('id')->on('service_categories')->onDelete('restrict');
-            $table->unsignedBigInteger('consultation_service_id');
-            $table->foreign('consultation_service_id')->references('id')->on('service_subcategories')->onDelete('restrict');
+            //$table->unsignedBigInteger('consultation_service_id');
+            //$table->foreign('consultation_service_id')->references('id')->on('service_subcategories')->onDelete('restrict');
             $table->unsignedInteger('billing_cycle_id');
             $table->foreign('billing_cycle_id')->references('id')->on('billing_cycles')->onDelete('restrict');
             $table->unsignedInteger('billing_duration');
