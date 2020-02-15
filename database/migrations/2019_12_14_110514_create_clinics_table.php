@@ -16,8 +16,8 @@ class CreateClinicsTable extends Migration
         Schema::create('clinics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('main_clinic_id');
-            $table->foreign('main_clinic_id')->references('id')->on('service_categories')->onDelete('restrict');
+            $table->unsignedInteger('clinic_type_id');
+            $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
             $table->unsignedInteger('age_group_id')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDDelete('restrict');
 

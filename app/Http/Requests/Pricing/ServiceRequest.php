@@ -3,12 +3,12 @@
 namespace App\Http\Requests\Pricing;
 use App\Http\Requests\ApiFormRequest;
 use App\Models\ServiceCategory;
-use App\Models\ServicePrice;
+use App\Models\Service;
 use App\Models\ServiceSubcategory;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\Log;
 
-class ServicePriceRequest extends ApiFormRequest
+class ServiceRequest extends ApiFormRequest
 {
    public function authorize(){
        return true;
@@ -16,7 +16,7 @@ class ServicePriceRequest extends ApiFormRequest
    protected $gender='MALE,FEMALE';
    protected $patient_status='IN-PATIENT,OUT-PATIENT,WALK-IN';
    public function rules(){
-    $id=$this->route('serviceprice')??null;
+    $id=$this->route('service')??null;
 
         return [
             'description' => 'bail|sometimes|nullable|string',
@@ -42,13 +42,13 @@ class ServicePriceRequest extends ApiFormRequest
             $gender=$all['gender']??$this->gender;
             $patient_status=$all['patient_status']??$this->patient_status;
 
-            $id=$this->route('serviceprice')??null;
+            $id=$this->route('service')??null;
 
             if (!$id && !$service_category_id && ! $service_subcategory_id) {
                 $validator->errors()->add('service_category', 'Service category id or Service Sub category id is required!');
             }
             else{
-                $repository=new RepositoryEloquent(new ServicePrice);
+                $repository=new RepositoryEloquent(new Service);
                 $where=[
                     'service_category_id'=>$service_category_id,
                     'service_subcategory_id'=>$service_subcategory_id,
@@ -57,17 +57,17 @@ class ServicePriceRequest extends ApiFormRequest
                     'patient_status'=>$patient_status,
                     'deleted_at'=>null
                 ];
-                $servicePrice=$repository->find($id)??$repository->findWhere($where)->first();
+                $service=$repository->find($id)??$repository->findWhere($where)->first();
 
-                //dd($servicePrice);
-                if($servicePrice && $servicePrice->service_category_id==$service_category_id
-                    && $servicePrice->service_subcategory_id==$service_subcategory_id
-                    && $servicePrice->age_group_id==$age_group_id
-                    && $servicePrice->gender==$gender
-                    && $servicePrice->patient_status==$patient_status
-                    && $servicePrice->id!=$id
+                //dd($service);
+                if($service && $service->service_category_id==$service_category_id
+                    && $service->service_subcategory_id==$service_subcategory_id
+                    && $service->age_group_id==$age_group_id
+                    && $service->gender==$gender
+                    && $service->patient_status==$patient_status
+                    && $service->id!=$id
                 )
-                $validator->errors()->add('service_price', 'Service price already exists!');
+                $validator->errors()->add('service', 'Service already exists!');
             }
         });
    }
