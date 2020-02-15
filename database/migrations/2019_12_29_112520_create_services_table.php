@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServicePricesTable extends Migration
+class CreateServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateServicePricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_prices', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('description')->nullable();
+            $table->string('description');
             $table->unsignedInteger('hospital_service_id');
             $table->foreign('hospital_service_id')->references('id')->on('hospital_services')->onDelete('restrict');
             $table->unsignedBigInteger('service_category_id');
@@ -33,7 +33,8 @@ class CreateServicePricesTable extends Migration
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_service_price');
+            $table->unique(['description','deleted_at']);
+            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_service');
 
         });
     }
@@ -45,6 +46,6 @@ class CreateServicePricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_prices');
+        Schema::dropIfExists('services');
     }
 }

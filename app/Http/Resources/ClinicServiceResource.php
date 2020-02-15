@@ -16,17 +16,24 @@ class ClinicServiceResource extends JsonResource
     public function toArray($request)
     {
         $clinic=$this->clinic??null;
-        $main_clinic=$this->main_clinic??null;
+        $clinic_type=$this->clinic_type??null;
         //$consultation_service=$this->consultation_service??null;
         $billing_cycle=$this->billing_cycle??null;
+        $service_category=$this->service_category??null;
+        $service_subcategory=$this->service_subcategory??null;
+        $service=$this->service??null;
         return [
             'id'=>$this->id??null,
             'clinic_name'=>$clinic->name??null,
             'clinic_id'=>$clinic->id??null,
-            'main_clinic_name'=>$main_clinic->name??null,
-            'main_clinic_id'=>$main_clinic->id??null,
-            //'consultation_service_name'=> $consultation_service->name??null,
-            //'consultation_service_id'=> $consultation_service->id??null,
+            'clinic_type_name'=> $clinic_type->name??null,
+            'clinic_type__id'=> $clinic_type->id??null,
+            "service_category_name"=>$service_category->name??null,
+            "service_category_id"=> $service_category->id??null,
+            "service_subcategory_name"=>$service_subcategory->name??null,
+            "service_subcategory_id"=> $service_subcategory->id??null,
+            "service_name"=>$service->description??null,
+            "service_id"=>$service->id??null,
             'billing_cycle_name'=> $billing_cycle->name??null,
             'billing_cycle_id'=> $billing_cycle->id??null,
             'billing_duration'=> $this->billing_duration??null,

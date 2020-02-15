@@ -4,25 +4,25 @@ namespace App\Http\Controllers\Pricing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Pricing\ServicePriceRequest;
-use App\Http\Resources\ServicePriceCollection;
-use App\Http\Resources\ServicePriceResource;
-use App\Models\ServicePrice;
+use App\Http\Requests\Pricing\ServiceRequest;
+use App\Http\Resources\ServiceCollection;
+use App\Http\Resources\ServiceResource;
+use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Http\Request;
 
-class ServicePricingController extends Controller
+class ServiceController extends Controller
 {
     protected $repository;
 
-    public function __construct(ServicePrice $servicePrice){
-          $this->repository=new RepositoryEloquent($servicePrice);
+    public function __construct(Service $service){
+          $this->repository=new RepositoryEloquent($service);
     }
     public function index()
     {
-       $servicePrices=$this->repository->all('description');
+       $services=$this->repository->all('description');
 
-       return ApiResponse::withOk('Service Prices List',new ServicePriceCollection($servicePrices));
+       return ApiResponse::withOk('Service List',new ServiceCollection($services));
     }
 
     /* public function search(){
@@ -37,10 +37,10 @@ class ServicePricingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ServicePriceRequest $request)
+    public function store(ServiceRequest $request)
     {
        $servicePrice=$this->repository->store($request->all());
-       return ApiResponse::withOk('Service price created',new ServicePriceResource($servicePrice->refresh()));
+       return ApiResponse::withOk('Service created',new ServiceResource($servicePrice->refresh()));
     }
 
     /**
@@ -52,7 +52,7 @@ class ServicePricingController extends Controller
     public function show($serviceprice)
     {
         $servicePrice=$this->repository->find($serviceprice);
-        return ApiResponse::withOk('Found service price',new ServicePriceResource($servicePrice));
+        return ApiResponse::withOk('Found service',new ServiceResource($servicePrice));
     }
 
     /**
@@ -62,10 +62,10 @@ class ServicePricingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ServicePriceRequest $request,$serviceprice)
+    public function update(ServiceRequest $request,$serviceprice)
     {
        $servicePrice=$this->repository->update($request->all(),$serviceprice);
-       return ApiResponse::withOk('Found service price',new ServicePriceResource($servicePrice));
+       return ApiResponse::withOk('Found service updated',new ServiceResource($servicePrice));
     }
 
     /**
@@ -77,6 +77,6 @@ class ServicePricingController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return ApiResponse::withOk('Service Price deleted successfully');
+        return ApiResponse::withOk('Service deleted successfully');
     }
 }

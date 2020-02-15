@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ServicePriceResource extends JsonResource
+class ServiceResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

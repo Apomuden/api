@@ -8,7 +8,7 @@ use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ServicePrice extends Model
+class Service extends Model
 {
     use ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];

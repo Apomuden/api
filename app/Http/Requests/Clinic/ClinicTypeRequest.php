@@ -8,7 +8,7 @@ use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
-class ClinicRequest extends ApiFormRequest
+class ClinicTypeRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,15 +27,11 @@ class ClinicRequest extends ApiFormRequest
      */
     public function rules() : array
     {
-        $id = $this->route('clinic') ?? null;
+        $id = $this->route('clinictype') ?? null;
 
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('clinics','name',$id),
-            'age_group_id'=>'bail|somerimes|nullable|integer|exists:age_groups,id',
-            'gender'=>'bail|'.($id?'sometimes':'required').'|set:MALE,FEMALE,BIGENDER',
-            'patient_status'=> 'bail|'.($id?'sometimes':'required').'|set:IN-PATIENT,OUT-PATIENT,WALK-IN',
-            'clinic_type_id'=> 'bail|'. ($id ? 'sometimes' : 'required').'|exists:clinic_types,id',
+            'name' => 'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('clinic_types','name',$id),
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
