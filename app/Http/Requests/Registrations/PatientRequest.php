@@ -35,7 +35,7 @@ class PatientRequest extends ApiFormRequest
             'surname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|min:2',
             'middlename' => 'bail|sometimes|nullable|string',
             'firstname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|min:2',
-            'dob' => 'bail|sometimes|nullable|date',
+            'dob' => 'bail|'. ($id ? 'sometimes' : 'required').'|date',
             'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:MALE,FEMALE,BIGENDER',
             'origin_country_id' => 'bail|sometimes|nullable|integer|exists:countries,id',
             'origin_region_id' => 'bail|sometimes|nullable|integer|exists:regions,id',
