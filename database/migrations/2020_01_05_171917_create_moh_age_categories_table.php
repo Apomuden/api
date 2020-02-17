@@ -15,6 +15,7 @@ class CreateMohAgeCategoriesTable extends Migration
     {
         Schema::create('age_categories', function (Blueprint $table) {
             $table->Increments('id');
+            $table->string('description')->nullable();
             $table->unsignedInteger('age_classification_id');
             $table->foreign('age_classification_id')->references('id')->on('age_classifications')->onDelete('restrict');
             $table->unsignedInteger('min_age');
@@ -28,6 +29,7 @@ class CreateMohAgeCategoriesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['age_classification_id', 'min_age', 'min_comparator','age_group_id', 'max_age', 'max_comparator', 'max_unit','deleted_at'],'unique_age_categories');
+            $table->unique(['description', 'age_classification_id']);
         });
     }
 

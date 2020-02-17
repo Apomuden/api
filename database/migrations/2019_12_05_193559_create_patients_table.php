@@ -23,9 +23,9 @@ class CreatePatientsTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('firstname');
             $table->string('photo')->nullable();
-            $table->date('dob')->nullable();
+            $table->date('dob')->index();
 
-            $table->enum('gender',['MALE','FEMALE','BIGENDER']);
+            $table->enum('gender',['MALE','FEMALE','BIGENDER'])->index();
             $table->unsignedBigInteger('id_type_id')->nullable();
             $table->foreign('id_type_id')->references('id')->on('id_types')->onDelete('restrict');
             $table->string('id_no')->nullable();

@@ -3,9 +3,11 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\HospitalService;
 use App\Models\Patient;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Validation\Rule;
 
 class ConsultationRequest extends ApiFormRequest
 {
@@ -39,6 +41,11 @@ class ConsultationRequest extends ApiFormRequest
                 $sponsorship_type = $sponsorship_type?strtolower($sponsorship_type):null;
             }
         }
+        $repository = new RepositoryEloquent(new HospitalService);
+        $consultation_service = $repository
+            ->findWhere(['name' => 'Consultation'])
+            ->orWhere('name', 'Consultation service')->first();
+
         return [
             'consultation_given'=>'bail|sometimes|nullable|string',
             'order_type'=>'bail|'.($id?'sometimes':'required').'|string|in:INTERNAL,EXTERNAL',
@@ -47,7 +54,12 @@ class ConsultationRequest extends ApiFormRequest
             'age'=>'bail|'.($id?'sometimes':'required').'|integer|min:1',
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'user_id'=>'bail|sometimes|nullable|integer|exists:users, id',
-            'consultation_service_id'=>'bail|'.($id?'sometimes':'required'). '|integer|exists:services,id',
+            'consultation_service_id'=> [
+                'bail', ($id ? 'sometime' : 'required'), 'integer',
+                Rule::exists('services', 'id')->where(function ($query) use ($consultation_service) {
+                    $query->where('hospital_service_id', $consultation_service->id);
+                })
+            ],
             'funding_type_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:funding_types,id',
             'sponsorship_type'=>'bail|'.($id?'sometimes':'required').'|string',
             'sponsorship_type_id'=>'bail|sometimes|nullable|integer|exists:sponsorship_types,id',

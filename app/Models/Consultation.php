@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Http\Helpers\DateHelper;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
+use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -12,7 +14,39 @@ class Consultation extends Model
 {
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];
+    public static function boot()
+    {
+        parent::boot();
+        static::created(function ($model) {
+            //create an attendance
+            unset($model->consultation_given);
+            unset($model->service_quantity);
+            unset($model->service_fee);
+            unset($model->member_id);
+            unset($model->ccc);
+            unset($model->staff_id);
+            unset($model->consultation_service_id);
+            unset($model->user_id);
+            unset($model->started_at);
+            unset($model->status);
 
+          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id))
+           Attendance::create($model);
+        });
+
+        static::updated(function ($model) {
+            //update an attendance
+            $repository=new RepositoryEloquent(new Attendance);
+            $model->attendance_id=$repository
+            ->getModel()
+            ->where('patient_id',$model->patient_id)
+            ->where('clinic_id',$model->clinic_id)
+            ->whereDate('attendance_date',$model->attendance_date)
+            ->lastest()->first()->id??null;
+
+            Attendance::updateObject($model);
+        });
+    }
     public function consultation_service()
     {
         return $this->belongsTo(Service::class, 'consultation_service_id');

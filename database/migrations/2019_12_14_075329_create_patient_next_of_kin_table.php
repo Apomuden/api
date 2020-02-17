@@ -17,7 +17,7 @@ class CreatePatientNextOfKinTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->unsignedBigInteger('phone');
-            $table->unsignedBigInteger('alternate_phone');
+            $table->unsignedBigInteger('alternate_phone')->nullable();
             $table->string('email')->nullable();
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');
