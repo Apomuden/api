@@ -4,6 +4,8 @@ namespace App\Http\Requests\Clinic;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\Clinic;
+use App\Models\HospitalService;
+use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -28,11 +30,17 @@ class ClinicServiceRequest extends ApiFormRequest
     public function rules()
     {
         $id=$this->route('clinicservice')??null;
-        //$repository=new RepositoryEloquent(new Clinic);
-        //$clinic=$repository->find((request()->input('clinic_id')??null));
+        $repository=new RepositoryEloquent(new HospitalService);
+        $consultation_service=$repository
+        ->findWhere(['name'=>'Consultation'])
+        ->orWhere('name','Consultation service')->first();
         return [
             'clinic_id'=>['bail',($id?'sometime':'required'),'integer', Rule::exists('clinics', 'id')],
-             "service_id"=>'bail|'. ($id ? 'sometime' : 'required').'|exists:services,id',
+            'service_id'=> ['bail', ($id ? 'sometime' : 'required'), 'integer',
+               Rule::exists('services', 'id')->where(function($query) use($consultation_service){
+                  $query->where('hospital_service_id',$consultation_service->id);
+               })
+             ],
             'billing_cycle_id'=> ['bail',($id ? 'sometime' : 'required'), 'integer', Rule::exists('billing_cycles', 'id')],
             'billing_duration'=> 'bail|'.($id ? 'sometime' : 'required').'|integer|min:1'
         ];
