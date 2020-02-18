@@ -65,11 +65,11 @@ class ConsultationController extends Controller
             unset($request['sponsorship_type']);
         }
         if (isset($request['clinic_id'])) {
-            $clinic_type = ((new RepositoryEloquent(new Clinic))->find($request['clinic_id'])->first()->clinic_type_id)??null;
-            if ($clinic_type) {
-                $request['clinic_type_id'] = $clinic_type;
+            $clinic_type_id = ((new RepositoryEloquent(new Clinic))->find($request['clinic_id'])->first()->clinic_type_id)??null;
+            if ($clinic_type_id) {
+                $request['clinic_type_id'] = $clinic_type_id;
             }
-            unset($clinic_type);
+            unset($clinic_type_id);
         }
         $repo = new RepositoryEloquent(new Consultation);
         $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
