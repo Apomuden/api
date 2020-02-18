@@ -23,6 +23,8 @@ class ConsultationResource extends JsonResource
             $age_group = $this->age_group;
             $sponsorship_type = $this->sponsorship_type;
             $billing_sponsor = $this->billing_sponsor;
+            $clinic = $this->clinic;
+            $clinic_type = $this->clinic_type;
 
             return [
                 'id' => $this->id,
@@ -30,6 +32,10 @@ class ConsultationResource extends JsonResource
                 'consultation_given'=>$this->consultation_given,
                 'consultation_service_name'=>$clinic_consult_service->name??null,
                 'consultation_service_id'=>$clinic_consult_service->id??null,
+                'clinic_name'=>$clinic->name??null,
+                'clinic_id'=>$clinic->id??null,
+                'clinic_type_name'=>$clinic_type->name??null,
+                'clinic_type_id'=>$clinic_type->id??null,
                 'patient_name'=>$patient->name??null,
                 'patient_id'=>$patient->id??null,
                 'funding_type_name'=>$funding_type->name??null,

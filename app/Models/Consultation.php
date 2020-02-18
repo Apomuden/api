@@ -49,12 +49,22 @@ class Consultation extends Model
     }
     public function consultation_service()
     {
-        return $this->belongsTo(Service::class, 'consultation_service_id');
+        return $this->belongsTo(ClinicService::class, 'consultation_service_id');
     }
 
     public function patient()
     {
         return $this->belongsTo(Patient::class);
+    }
+
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
+    public function clinic_type()
+    {
+        return $this->belongsTo(ClinicType::class);
     }
 
     public function user()

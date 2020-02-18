@@ -26,7 +26,7 @@ class CreateClinicServicesTable extends Migration
             $table->unsignedBigInteger('service_subcategory_id')->nullable();
             $table->foreign('service_subcategory_id')->references('id')->on('service_subcategories')->onDelete('restrict');
             $table->unsignedBigInteger('service_id');
-            $table->foreign('service_id')->references('id')->on('services')->pnDelete('restrict');
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('restrict');
             $table->unsignedInteger('billing_cycle_id');
             $table->foreign('billing_cycle_id')->references('id')->on('billing_cycles')->onDelete('restrict');
             $table->unsignedInteger('billing_duration');

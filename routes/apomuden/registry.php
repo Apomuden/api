@@ -66,3 +66,9 @@ Route::apiResource('consultationservicerequests', 'Registration\ConsultationCont
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'patient-registry'
 ]);
+
+Route::apiResource('attendance', 'Registration\AttendanceController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'patient-registry'
+]);

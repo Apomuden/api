@@ -30,6 +30,7 @@ class ConsultationRequest extends ApiFormRequest
     {
         $id = ($this->route('consultation') ?? $this->route('consultationservicerequest')) ?? null;
         $sponsorship_type = (request()->input('sponsorship_type'))??null;
+        $clinic_id = (request()->input('clinic_id'))??null;
         if ($sponsorship_type) {
             $sponsorship_type = $sponsorship_type ? strtolower($sponsorship_type) : null;
         }
@@ -54,10 +55,11 @@ class ConsultationRequest extends ApiFormRequest
             'age'=>'bail|'.($id?'sometimes':'required').'|integer|min:1',
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'user_id'=>'bail|sometimes|nullable|integer|exists:users, id',
+            'clinic_id'=>['bail', ($id ? 'sometimes' : 'required'), 'integer'],
             'consultation_service_id'=> [
-                'bail', ($id ? 'sometime' : 'required'), 'integer',
-                Rule::exists('services', 'id')->where(function ($query) use ($consultation_service) {
-                    $query->where('hospital_service_id', $consultation_service->id);
+                'bail', ($id ? 'sometimes' : 'required'), 'integer',
+                Rule::exists('clinic_services', 'id')->where(function ($query) use ($clinic_id, $consultation_service) {
+                    $query->where(['hospital_service_id'=> $consultation_service->id, 'clinic_id'=>$clinic_id]);
                 })
             ],
             'funding_type_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:funding_types,id',
