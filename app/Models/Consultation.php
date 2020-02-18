@@ -57,6 +57,16 @@ class Consultation extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    public function clinic()
+    {
+        return $this->belongsTo(Clinic::class);
+    }
+
+    public function clinic_type()
+    {
+        return $this->belongsTo(ClinicType::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
