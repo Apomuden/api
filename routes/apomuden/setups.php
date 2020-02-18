@@ -246,7 +246,7 @@ Route::post('clinicservices/multiple',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
-Route::apiResource('clinictypes','setups\ClinicTypeController',[
+Route::apiResource('clinictypes','Setups\ClinicTypeController',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
