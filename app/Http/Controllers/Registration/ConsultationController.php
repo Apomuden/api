@@ -8,6 +8,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\ConsultationRequest;
 use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Resources\Registrations\ConsultationCollection;
+use App\Models\Clinic;
 use App\Models\Consultation;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
@@ -63,11 +64,18 @@ class ConsultationController extends Controller
             }
             unset($request['sponsorship_type']);
         }
+        if (isset($request['clinic_id'])) {
+            $clinic_type_id = ((new RepositoryEloquent(new Clinic))->find($request['clinic_id'])->first()->clinic_type_id)??null;
+            if ($clinic_type_id) {
+                $request['clinic_type_id'] = $clinic_type_id;
+            }
+            unset($clinic_type_id);
+        }
         $repo = new RepositoryEloquent(new Consultation);
-        //$hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
-        //if($hasAnUnservedRequest) {
-            //return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request']);
-        //}
+        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->count();
+        if($hasAnUnservedRequest) {
+            return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request']);
+        }
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
 
