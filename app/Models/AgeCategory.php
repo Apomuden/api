@@ -20,4 +20,12 @@ class AgeCategory extends Model
             $model->description=$model->description??(new RepositoryEloquent(new AgeGroup()))->find($model->age_group_id)->name;
         });
     }
+
+    public function age_group() {
+        return $this->belongsTo(AgeGroup::class);
+    }
+
+    public function age_classification() {
+        return $this->belongsTo(AgeClassification::class);
+    }
 }

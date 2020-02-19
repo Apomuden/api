@@ -15,11 +15,11 @@ class AddClinicIdToConsultationsTable extends Migration
     {
         Schema::table('consultations', function (Blueprint $table) {
             $table->unsignedBigInteger('clinic_id')->after('id');
-            $table->unsignedBigInteger('clinic_type_id')->after('id');
+            $table->unsignedInteger('clinic_type_id')->after('id');
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
             $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
-            $table->unique(['description','deleted_at']);
-            $table->unique(['service_category_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_consultation_service');
+            //$table->unique(['consultation_given','deleted_at']);
+            //$table->unique(['age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_consultation_service');
         });
     }
 
