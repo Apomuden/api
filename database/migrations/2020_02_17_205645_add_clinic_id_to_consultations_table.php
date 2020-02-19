@@ -19,7 +19,7 @@ class AddClinicIdToConsultationsTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
             $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
             //$table->unique(['consultation_given','deleted_at']);
-            $table->unique(['service_category_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_consultation_service');
+            //$table->unique(['age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_consultation_service');
         });
     }
 
