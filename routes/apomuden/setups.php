@@ -239,7 +239,6 @@ Route::apiResource('servicesubcategories','Setups\ServiceSubCategoryController',
     'module'=>['records-mgt','sys-mgt'],
     'component'=>'setup.servicesubcategories'
 ]);
-
 Route::post('clinicservices/multiple',[
     'uses'=> 'Setups\ClinicServiceController@storeMultiple',
     'as'=> 'clinicsservices.multiple.store',
