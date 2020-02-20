@@ -58,7 +58,7 @@ class ConsultationRequest extends ApiFormRequest
             'clinic_id'=>['bail', ($id ? 'sometimes' : 'required'), 'integer','exists:clinics,id'],
             'consultation_service_id'=> [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
-                Rule::exists('clinic_services', 'id')->where(function ($query) use ($clinic_id, $consultation_service) {
+                Rule::exists('clinic_services', 'service_id')->where(function ($query) use ($clinic_id, $consultation_service) {
                     $query->where(['hospital_service_id'=> $consultation_service->id??null, 'clinic_id'=>$clinic_id]);
                 })
             ],
