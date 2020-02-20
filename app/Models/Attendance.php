@@ -7,6 +7,7 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +77,7 @@ class Attendance extends Model
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
             $patient=$repository->findOrFail($model->patient_id);
+            throw new Exception(json_encode($patient));
             $model->age = Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;
