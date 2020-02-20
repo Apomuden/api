@@ -9,6 +9,7 @@ use App\Http\Traits\SortableTrait;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Consultation extends Model
 {
@@ -17,6 +18,10 @@ class Consultation extends Model
     public static function boot()
     {
         parent::boot();
+        static::creating(function($model){
+            $user = Auth::guard('api')->user();
+            $model->user_id=$user->id;
+        });
         static::created(function ($model) {
             //create an attendance
             $service_id= $model->consultation_service_id??null;
