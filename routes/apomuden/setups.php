@@ -264,11 +264,11 @@ Route::apiResource('clinicservices', 'Setups\ClinicServiceController',[
 Route::apiResource('agecategories','Setups\AgeCategoryController',[
     //'only'=>['index','show','store','update','delete'],
     'module'=>['records-mgt','sys-mgt'],
-    'component'=>'setup.free.agecategories'
+    'component'=> 'setup.agegroups'
 ]);
 
 Route::apiResource('ageclassifications','Setups\AgeClassificationController',[
     //'only'=>['index','show','store','update','delete'],
     'module'=>['records-mgt','sys-mgt'],
-    'component'=>'setup.free.ageclassifications'
+    'component'=> 'setup.agegroups'
 ]);

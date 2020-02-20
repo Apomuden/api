@@ -27,11 +27,12 @@ class AttendanceRequest extends ApiFormRequest
     {
         $id=$this->route('attendance')??null;
 
-       $insured=request()->input('insured')??'YES';
+        $clinic_id=request()->input('clinic_id')??null;
+
+        $insured=request()->input('insured')??'YES';
 
         return [
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|exists:patients,id',
-            //'patient_status'=> 'bail|' . ($id ? 'sometimes' : 'required'). '|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'insured'=>'bail|sometimes|nullable|in:YES,NO',
             'sponsor_id'=> ['bail',$insured=='YES'?'required':'sometime', $insured == 'YES' ? 'required' : 'nullable',
                Rule::exists('billing_sponsors','id')->where(function($query){
@@ -42,6 +43,12 @@ class AttendanceRequest extends ApiFormRequest
                 'bail', ($id ? 'sometimes' : 'required'),
                  Rule::exists('clinics', 'id')->where(function ($query) {
                     $query->where('status', 'ACTIVE');
+                })
+            ],
+            'service_id'=> [
+                'bail', ($id ? 'sometimes' : 'required'),
+                Rule::exists('clinic_services', 'service_id')->where(function ($query) use($clinic_id) {
+                    $query->where('status', 'ACTIVE')->where('clinic_id',$clinic_id);
                 })
             ],
             'attendance_date'=>'bail|sometimes|nullable|date'
