@@ -37,7 +37,7 @@ class Consultation extends Model
             unset($model->status);
 
           if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id)){
-                $attendance=request()->except(
+                /*$attendance=request()->except(
                     [
                         'consultation_given',
                          'service_quantity',
@@ -49,9 +49,10 @@ class Consultation extends Model
                         'user_id',
                         'started_at',
                         'status'
-                    ]);
-                $attendance['patient_id']= $model->patient_id;
-                Attendance::create($attendance);
+                    ]);*/
+
+                //$attendance['patient_id']= $model->patient_id;
+                Attendance::create(request()->all());
           }
         });
 
