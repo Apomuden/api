@@ -36,7 +36,7 @@ class CreateConsultationsTable extends Migration
             $table->timestamps();
 
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');
-            $table->foreign('consultation_service_id')->references('id')->on('clinic_services')->onDelete('restrict');
+            $table->foreign('consultation_service_id')->references('id')->on('services')->onDelete('restrict');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict');
             $table->foreign('sponsorship_type_id')->references('id')->on('sponsorship_types')->onDelete('restrict');
