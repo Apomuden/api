@@ -37,7 +37,7 @@ class Consultation extends Model
             unset($model->status);
 
           if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id))
-           Attendance::create($model);
+           Attendance::create((array)$model);
         });
 
         static::updated(function ($model) {
