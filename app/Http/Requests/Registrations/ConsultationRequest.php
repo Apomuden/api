@@ -16,7 +16,7 @@ class ConsultationRequest extends ApiFormRequest
      *
      * @return bool
      */
-    public function authorize() : bool
+    public function authorize() 
     {
         return true;
     }
@@ -26,7 +26,7 @@ class ConsultationRequest extends ApiFormRequest
      *
      * @return array
      */
-    public function rules() : array
+    public function rules()
     {
         $id = ($this->route('consultation') ?? $this->route('consultationservicerequest')) ?? null;
         $sponsorship_type = (request()->input('sponsorship_type'))??null;

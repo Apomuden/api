@@ -50,6 +50,7 @@ class Consultation extends Model
                         'started_at',
                         'status'
                     ]);
+                $attendance['patient_id']= $model->patient_id;
                 Attendance::create($attendance);
           }
         });
