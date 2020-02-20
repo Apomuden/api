@@ -22,12 +22,13 @@ class ClinicServiceResource extends JsonResource
         $service_category=$this->service_category??null;
         $service_subcategory=$this->service_subcategory??null;
         $service=$this->service??null;
+        if($this->id)
         return [
             'id'=>$this->id??null,
             'clinic_name'=>$clinic->name??null,
             'clinic_id'=>$clinic->id??null,
             'clinic_type_name'=> $clinic_type->name??null,
-            'clinic_type__id'=> $clinic_type->id??null,
+            'clinic_type_id'=> $clinic_type->id??null,
             "service_category_name"=>$service_category->name??null,
             "service_category_id"=> $service_category->id??null,
             "service_subcategory_name"=>$service_subcategory->name??null,
