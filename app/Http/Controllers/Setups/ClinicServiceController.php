@@ -68,7 +68,7 @@ class ClinicServiceController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->find($id);
+        $record=$this->repository->findOrFail($id);
         return ApiResponse::withOk('Clinic service found', new ClinicServiceResource($record));
     }
 
