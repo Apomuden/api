@@ -17,7 +17,7 @@ class ClinicServiceController extends Controller
     protected $repository;
     public function __construct(ClinicService $clinicService)
     {
-        $this->repository = new RepositoryEloquent($clinicService,true,['clinic','main_clinic', 'consultation_service', 'billing_cycle']);
+        $this->repository = new RepositoryEloquent($clinicService,true,['clinic','clinic_type', 'consultation_service', 'billing_cycle']);
     }
     /**
      * Display a listing of the resource.
