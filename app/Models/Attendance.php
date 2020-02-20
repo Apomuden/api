@@ -9,6 +9,8 @@ use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
+
 class Attendance extends Model
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
@@ -60,7 +62,7 @@ class Attendance extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $model=(object) $model;
+           dd(is_array($model));
             //create an attendance
             $repository = new RepositoryEloquent(new FundingType);
             $funding_type = $repository->find($model->funding_type_id);
