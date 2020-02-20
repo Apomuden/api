@@ -34,7 +34,7 @@ class AttendanceRequest extends ApiFormRequest
         return [
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|exists:patients,id',
             'insured'=>'bail|sometimes|nullable|in:YES,NO',
-            'sponsor_id'=> ['bail',$insured=='YES'?'required':'sometime', $insured == 'YES' ? 'required' : 'nullable',
+            'sponsor_id'=> ['bail',$insured=='YES'?'required':'sometimes', $insured == 'YES' ? 'required' : 'nullable',
                Rule::exists('billing_sponsors','id')->where(function($query){
                    $query->where('status','ACTIVE');
                })
