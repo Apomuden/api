@@ -33,7 +33,8 @@ class ClinicServiceRequest extends ApiFormRequest
         $repository=new RepositoryEloquent(new HospitalService);
         $consultation_service=$repository
         ->findWhere(['name'=>'Consultation'])
-        ->orWhere('name','Consultation service')->first();
+        ->orWhere('name','Consultation service')
+        ->first();
         return [
             'clinic_id'=>['bail',($id?'sometimes':'required'),'integer', Rule::exists('clinics', 'id')],
             'service_id'=> ['bail', ($id ? 'sometimes' : 'required'), 'integer',
