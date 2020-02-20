@@ -19,7 +19,7 @@ class ServiceRequest extends ApiFormRequest
     $id=$this->route('service')??null;
 
         return [
-            'description' => 'bail|sometimes|nullable|string',
+            'description' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|'.$this->softUnique('services', 'description',$id),
             'hospital_service_id'=>'bail|sometimes|integer|exists:hospital_services,id',
             'service_category_id'=>'bail|sometimes|integer|exists:service_categories,id',
             'service_subcategory_id'=>'bail|sometimes|nullable|integer|exists:service_subcategories,id',
