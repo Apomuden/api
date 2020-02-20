@@ -31,7 +31,7 @@ class Attendance extends Model
 
         //get patient details
         $repository = new RepositoryEloquent(new Patient);
-        $patient = $repository->find($model->patient_id);
+        $patient = $repository->findOrFail($model->patient_id);
         $attendance->age = Carbon::parse($patient->dob)->age;
 
         $attendance->gender = $model->gender ?? $patient->gender;
@@ -75,7 +75,7 @@ class Attendance extends Model
 
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
-            $patient=$repository->find($model->patient_id);
+            $patient=$repository->findOrFail($model->patient_id);
             $model->age = Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;
