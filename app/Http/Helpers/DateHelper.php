@@ -23,9 +23,11 @@ class DateHelper
     static function toDBDateTime($date){
        return $date? (new DateFormater($date))->toDBDateTime():null;
     }
-    static function hasAttendedToday($patient_id, $clinic_id){
+    static function hasAttendedToday($patient_id, $clinic_id,$service_id){
         $repository = new RepositoryEloquent(new Attendance);
-        return boolval($repository->findWhere(['patient_id' => $patient_id])->where('clinic_id', $clinic_id)
+        return boolval($repository->findWhere(['patient_id' => $patient_id])
+            ->where('clinic_id', $clinic_id)
+            ->where('service_id',$service_id)
             ->whereDate('created_at', Carbon::today())
             ->count());
     }

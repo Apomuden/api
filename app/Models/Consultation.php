@@ -19,6 +19,7 @@ class Consultation extends Model
         parent::boot();
         static::created(function ($model) {
             //create an attendance
+            $service_id= $model->consultation_service_id??null;
             unset($model->consultation_given);
             unset($model->service_quantity);
             unset($model->service_fee);
@@ -30,7 +31,7 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
-          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id))
+          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id))
            Attendance::create($model);
         });
 
