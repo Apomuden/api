@@ -60,6 +60,7 @@ class Attendance extends Model
     {
         parent::boot();
         static::creating(function ($model) {
+            $model=(object) $model;
             //create an attendance
             $repository = new RepositoryEloquent(new FundingType);
             $funding_type = $repository->find($model->funding_type_id);
