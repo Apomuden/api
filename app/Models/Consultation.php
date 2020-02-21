@@ -28,6 +28,7 @@ class Consultation extends Model
             $service_id= $model->consultation_service_id??null;
             $model->sponsor_id=$model->billing_sponsor_id;
             unset($model->billing_sponsor_id);
+            unset($model->card_serial_no);
             unset($model->order_type);
             unset($model->consultation_given);
             unset($model->service_quantity);
