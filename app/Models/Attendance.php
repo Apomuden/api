@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Log;
 class Attendance extends Model
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
-    protected $guarded=[];
-
+    protected $guarded=['id'];
+    
     public static function updateObject($model){
         $attendance=self::find($model->attendance_id);
         //create an attendance
@@ -77,7 +77,6 @@ class Attendance extends Model
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
             $patient=$repository->find($model->patient_id);
-            throw new Exception(json_encode($model));
             $model->age = Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;

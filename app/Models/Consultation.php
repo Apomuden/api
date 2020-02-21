@@ -7,6 +7,7 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use App\Repositories\RepositoryEloquent;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -36,22 +37,10 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
+            throw new Exception(json_encode($model));
+
           if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id)){
-                $attendance=request()->except(
-                    [
-                        'consultation_given',
-                         'service_quantity',
-                        'service_fee',
-                        'member_id',
-                        'ccc',
-                        'staff_id',
-                        'consultation_service_id',
-                        'user_id',
-                        'started_at',
-                        'status'
-                    ]);
-                $attendance['patient_id']= $model->patient_id;
-                Attendance::create($attendance);
+                Attendance::create(request()->all());
           }
         });
 
