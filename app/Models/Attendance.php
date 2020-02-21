@@ -16,7 +16,7 @@ class Attendance extends Model
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded=['id'];
-    
+
     public static function updateObject($model){
         $attendance=self::find($model->attendance_id);
         //create an attendance
@@ -66,6 +66,8 @@ class Attendance extends Model
             //create an attendance
             $repository = new RepositoryEloquent(new FundingType);
             $funding_type = $repository->find($model->funding_type_id);
+            throw new Exception(json_encode($funding_type));
+
             $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
             $model->patient_id = $model->parent_id;
 
