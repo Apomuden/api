@@ -46,7 +46,7 @@ class Attendance extends Model
         $repository = new RepositoryEloquent(new AgeClassification);
         $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUT PATIENT'])->first();
 
-        $age_category = DateHelper::getAgeCategory($age_class->id, $patient->dob);
+        $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
         $attendance->age_group_id = $age_category->age_group_id ?? $attendance->age_group_id;
         $attendance->age_class_id = $age_category->age_classification_id ?? $attendance->age_class_id;
         $attendance->age_category_id = $age_category->id ?? $attendance->age_category_id;
@@ -78,7 +78,7 @@ class Attendance extends Model
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
             $patient=$repository->find($model->patient_id);
-            $model->age = Carbon::parse($patient->dob)->age;
+            $model->age = $model->age??Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;
 
@@ -91,7 +91,7 @@ class Attendance extends Model
             $repository = new RepositoryEloquent(new AgeClassification);
             $age_class=$repository->findWhere(['name'=> 'GHS STATEMENT OF OUTPATIENT'])->first();
 
-            $age_category=DateHelper::getAgeCategory($age_class->id, $patient->dob);
+            $age_category=DateHelper::getAgeCategory($age_class->id, $model->age?DateHelper::getDOB($model->age):$patient->dob);
             $model->age_group_id=$age_category->age_group_id;
             $model->age_class_id=$age_category->age_classification_id;
             $model->age_category_id=$age_category->id;
