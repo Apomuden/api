@@ -78,6 +78,7 @@ class Attendance extends Model
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
             $patient=$repository->find($model->patient_id);
+            throw new Exception(json_encode($patient));
             $model->age = Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;
