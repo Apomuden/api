@@ -68,7 +68,7 @@ class Attendance extends Model
             $funding_type = $repository->find($model->funding_type_id);
 
             $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
-            $model->patient_id = $model->parent_id;
+            //$model->patient_id = $model->parent_id;
 
             //get clinic details
             $repository = new RepositoryEloquent(new Clinic);
@@ -78,7 +78,6 @@ class Attendance extends Model
             //get patient details
             $repository=new RepositoryEloquent(new Patient);
             $patient=$repository->find($model->patient_id);
-            throw new Exception(json_encode($patient));
             $model->age = Carbon::parse($patient->dob)->age;
 
             $model->gender=$model->gender??$patient->gender;
