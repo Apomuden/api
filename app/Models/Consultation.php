@@ -26,6 +26,7 @@ class Consultation extends Model
         static::created(function ($model) {
             //create an attendance
             $service_id= $model->consultation_service_id??null;
+            unset($model->order_type);
             unset($model->consultation_given);
             unset($model->service_quantity);
             unset($model->service_fee);
