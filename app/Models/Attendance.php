@@ -21,41 +21,41 @@ class Attendance extends Model
         $attendance=self::find($model->attendance_id);
         //create an attendance
         $repository = new RepositoryEloquent(new FundingType);
-        $funding_type = $repository->find($model->funding_type_id);
+        $funding_type = $repository->find($model->funding_type_id??$attendance->funding_type_id);
         $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
-        $attendance->patient_id = $model->parent_id;
+        $attendance->patient_id = $model->patient_id ?? $attendance->patient_id;
 
         //get clinic details
         $repository = new RepositoryEloquent(new Clinic);
         $clinic = $repository->find($model->clinic_id);
-        $attendance->clinic_type_id = $clinic->clinic_type_id;
+        $attendance->clinic_type_id = $clinic->clinic_type_id ?? $attendance->clinic_type_id;
 
         //get patient details
         $repository = new RepositoryEloquent(new Patient);
-        $patient = $repository->findOrFail($model->patient_id);
+        $patient = $repository->findOrFail($attendance->patient_id);
         $attendance->age = Carbon::parse($patient->dob)->age;
 
         $attendance->gender = $model->gender ?? $patient->gender;
 
-        $attendance->insured = $insured;
-        $attendance->funding_type_id = $model->funding_type_id ?? null;
-        $attendance->sponsor_id = $model->billing_sponsor_id ?? null;
-        $attendance->sponsorship_type_id = $model->sponsorship_type_id ?? null;
+        $attendance->insured = $insured ?? $attendance->insured;
+        $attendance->funding_type_id = $model->funding_type_id ?? $attendance->funding_type_id;
+        $attendance->sponsor_id = $model->billing_sponsor_id ?? $attendance->sponsor_id;
+        $attendance->sponsorship_type_id = $model->sponsorship_type_id ?? $attendance->sponsorship_type_id;
 
         //age class and group
         $repository = new RepositoryEloquent(new AgeClassification);
         $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUT PATIENT'])->first();
 
         $age_category = DateHelper::getAgeCategory($age_class->id, $patient->dob);
-        $attendance->age_group_id = $age_category->age_group_id;
-        $attendance->age_class_id = $age_category->age_classification_id;
-        $attendance->age_category_id = $age_category->id;
+        $attendance->age_group_id = $age_category->age_group_id ?? $attendance->age_group_id;
+        $attendance->age_class_id = $age_category->age_classification_id ?? $attendance->age_class_id;
+        $attendance->age_category_id = $age_category->id ?? $attendance->age_category_id;
 
         $attendance->patient_status = 'OUT-PATIENT';
 
-        $attendance->request_type = DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD';
+        $attendance->request_type = $model->patient_id && $model->clinic_id? (DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD'): $attendance->request_type;
 
-        $attendance->attendance_date = DateHelper::toDBDate($model->attendance_date);
+        $attendance->attendance_date = DateHelper::toDBDate($model->attendance_date) ?? $attendance->attendance_date;
 
         $attendance->save();
     }
@@ -84,7 +84,7 @@ class Attendance extends Model
 
             $model->insured = $insured;
             $model->funding_type_id = $model->funding_type_id??null;
-            $model->sponsor_id = $model->billing_sponsor_id??null;
+            //$model->sponsor_id = $model->billing_sponsor_id??null;
             $model->sponsorship_type_id = $model->sponsorship_type_id??null;
 
             //age class and group
