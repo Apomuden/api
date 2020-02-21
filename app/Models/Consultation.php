@@ -25,7 +25,7 @@ class Consultation extends Model
         });
         static::created(function ($model) {
             //create an attendance
-            $service_id= $model->consultation_service_id??null;
+            $model->service_id= $model->consultation_service_id??null;
             $model->sponsor_id=$model->billing_sponsor_id;
             unset($model->billing_sponsor_id);
             unset($model->card_serial_no);
@@ -41,7 +41,7 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
-          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id)){
+          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
           }
         });
