@@ -37,6 +37,7 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
+            throw new Exception(json_encode($model));
           if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$service_id)){
                 Attendance::create((array)$model);
           }
