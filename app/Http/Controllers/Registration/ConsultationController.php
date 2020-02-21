@@ -72,7 +72,7 @@ class ConsultationController extends Controller
             unset($clinic_type_id);
         }
         $repo = new RepositoryEloquent(new Consultation);
-        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>$request['attendance_date'])->count();
+        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>$request['attendance_date']])->count();
         if($hasAnUnservedRequest) {
             return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request with the same attendance date']);
         }
