@@ -96,7 +96,7 @@ class Consultation extends Model
 
     public function age_group()
     {
-        return $this->belongsTo(AgeGroup::class);
+        return $this->belongsTo(AgeGroup::class, 'age_group_id');
     }
 
     public function billing_sponsor()
