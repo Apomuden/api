@@ -7,6 +7,7 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,6 +23,20 @@ class Consultation extends Model
         static::creating(function($model){
             $user = Auth::guard('api')->user();
             $model->user_id=$user->id;
+
+            //get patient details
+            $repository = new RepositoryEloquent(new Patient);
+            $patient = $repository->find($model->patient_id);
+            $model->age = Carbon::parse($patient->dob)->age;
+
+            //age class and group
+            $repository = new RepositoryEloquent(new AgeClassification);
+            $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->first();
+
+            $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
+            $model->age_group_id = $age_category->age_group_id??null;
+            //$model->age_class_id = $age_category->age_classification_id;
+            //$model->age_category_id = $age_category->id;
         });
         static::created(function ($model) {
             //create an attendance

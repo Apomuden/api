@@ -37,6 +37,10 @@ class DateHelper
             ->whereYear('created_at',Carbon::today())
             ->count();
     }
+    static function getDOB($years)
+    {
+        return date('Y-m-d', strtotime($years . ' years ago'));
+    }
     static function getAgeCategory($age_class_id,$dob){
 
         if(Carbon::now()->diffInDays(Carbon::parse($dob)) <= 28){
