@@ -72,8 +72,8 @@ class ConsultationController extends Controller
             unset($clinic_type_id);
         }
         $repo = new RepositoryEloquent(new Consultation);
-        $hasAnUnservedRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>$request['attendance_date']])->count();
-        if($hasAnUnservedRequest) {
+        $hasAPendingRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>$request['attendance_date']])->count();
+        if($hasAPendingRequest) {
             return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request with the same attendance date']);
         }
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
