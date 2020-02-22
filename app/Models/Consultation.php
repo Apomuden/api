@@ -56,27 +56,27 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
-          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
+            if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
-          }
+            }
         });
 
         static::updated(function ($model) {
             //update an attendance
             $repository=new RepositoryEloquent(new Attendance);
             $model->attendance_id=$repository
-            ->getModel()
-            ->where('patient_id',$model->patient_id)
-            ->where('clinic_id',$model->clinic_id)
-            ->whereDate('attendance_date',$model->attendance_date)
-            ->lastest()->first()->id??null;
+                    ->getModel()
+                    ->where('patient_id',$model->patient_id)
+                    ->where('clinic_id',$model->clinic_id)
+                    ->whereDate('attendance_date',$model->attendance_date)
+                    ->lastest()->first()->id??null;
 
             Attendance::updateObject($model);
         });
     }
-    public function consultation_service()
+    public function service()
     {
-        return $this->belongsTo(ClinicService::class, 'consultation_service_id');
+        return $this->belongsTo(Service::class, 'consultation_service_id');
     }
 
     public function patient()
