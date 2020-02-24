@@ -30,9 +30,10 @@ class PatientController extends Controller
       //Folder Postfix of patient
       $postfix= $folder_no? substr($folder_no, -1):null;
 
-       unset($this->searchParams['folder_no'],
-       $this->searchParams['rack_no'],
-       $this->searchParams['folder_type']
+       unset(
+           $this->searchParams['folder_no'],
+           $this->searchParams['rack_no'],
+           $this->searchParams['folder_type']
        );
 
        $folderSearch=[];

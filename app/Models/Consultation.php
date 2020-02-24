@@ -65,11 +65,12 @@ class Consultation extends Model
             //update an attendance
             $repository=new RepositoryEloquent(new Attendance);
             $model->attendance_id=$repository
-                    ->getModel()
-                    ->where('patient_id',$model->patient_id)
-                    ->where('clinic_id',$model->clinic_id)
-                    ->whereDate('attendance_date',$model->attendance_date)
-                    ->lastest()->first()->id??null;
+            ->getModel()
+            ->where('patient_id',$model->patient_id)
+            ->where('clinic_id',$model->clinic_id)
+            ->where('service_id', $model->consultation_service_id)
+            ->whereDate('attendance_date',$model->attendance_date)
+            ->lastest()->first()->id??null;
 
             Attendance::updateObject($model);
         });
