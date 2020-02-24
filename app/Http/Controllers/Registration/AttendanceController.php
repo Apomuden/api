@@ -13,10 +13,47 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    protected $repository;
+    protected $repository,$withCallback,$searchParams = [];
     public function __construct(Attendance $clinic)
     {
-        $this->repository = new RepositoryEloquent($clinic);
+        $this->searchParams = \request()->query();
+
+        $folder_no = $this->searchParams['folder_no'] ?? null;
+        $rack_no = $this->searchParams['rack_no'] ?? null;
+        $folder_type = $this->searchParams['folder_type'] ?? null;
+
+        //Folder Postfix of patient
+        $postfix = $folder_no ? substr($folder_no, -1) : null;
+
+        unset($this->searchParams['folder_no'],
+        $this->searchParams['rack_no'],
+        $this->searchParams['folder_type']);
+
+        $folderSearch = [];
+        if ($folder_no)
+            $folderSearch['folder_no'] = '=' . $folder_no;
+
+        if ($postfix && !is_numeric(trim($postfix))) {
+            $this->searchParams['postfix'] = '=' . trim($postfix);
+            $folderSearch['folder_no'] = rtrim($folderSearch['folder_no'], $postfix);
+        }
+
+        if ($rack_no)
+            $folderSearch['rack_no'] = $rack_no;
+
+        if ($folder_type)
+            $folderSearch['folder_type'] = $folder_type;
+
+        if ($folderSearch)
+            $this->withCallback = function ($query) use ($folderSearch) {
+                $query->with(['folders'=>function($query2) use($folderSearch){
+                   $query2->findBy($folderSearch);
+                }]);
+            };
+        if ($this->withCallback)
+            $with['patient'] = $this->withCallback;
+
+        $this->repository = new RepositoryEloquent($clinic,true,$with);
     }
     /**
      * Display a listing of the resource.
@@ -25,6 +62,15 @@ class AttendanceController extends Controller
      */
     public function index()
     {
+        //DB::enableQueryLog();
+        $this->repository->useFindBy = false;
+
+        //Enforce folder search only when folder params are specified
+        if ($this->withCallback)
+            $this->repository->setModel(Attendance::findBy($this->searchParams)->whereHas('patient', $this->withCallback));
+        else
+            $this->repository->setModel(Attendance::findBy($this->searchParams));
+
         return ApiResponse::withOk('Attendance list', AttendanceResource::collection($this->repository->all()));
     }
 

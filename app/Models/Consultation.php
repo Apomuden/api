@@ -68,6 +68,7 @@ class Consultation extends Model
             ->getModel()
             ->where('patient_id',$model->patient_id)
             ->where('clinic_id',$model->clinic_id)
+            ->where('service_id', $model->consultation_service_id)
             ->whereDate('attendance_date',$model->attendance_date)
             ->lastest()->first()->id??null;
 
