@@ -56,9 +56,9 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
-          if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
+            if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
-          }
+            }
         });
 
         static::updated(function ($model) {
@@ -75,9 +75,9 @@ class Consultation extends Model
             Attendance::updateObject($model);
         });
     }
-    public function consultation_service()
+    public function service()
     {
-        return $this->belongsTo(ClinicService::class, 'consultation_service_id');
+        return $this->belongsTo(Service::class, 'consultation_service_id');
     }
 
     public function patient()
