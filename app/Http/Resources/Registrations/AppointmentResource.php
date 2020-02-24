@@ -25,6 +25,7 @@ class AppointmentResource extends JsonResource
                 'doctor_id'=>$doctor->id??null,
                 'attendance_date'=>DateHelper::toDisplayDateTime($this->attendance_date),
                 'entered_by'=>$entry_user->id??null,
+                'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
             ];

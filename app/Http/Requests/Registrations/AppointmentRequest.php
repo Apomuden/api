@@ -36,7 +36,8 @@ class AppointmentRequest extends ApiFormRequest
                     $query->where('status', 'ACTIVE');
                 })
             ],
-            'appointment_date'=>'bail|sometimes|nullable|date'
+            'appointment_date'=>'bail|sometimes|nullable|date',
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }
