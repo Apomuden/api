@@ -46,7 +46,7 @@ class AttendanceController extends Controller
 
         if ($folderSearch)
             $this->withCallback = function ($query) use ($folderSearch) {
-                $query->with(['folders'=>function($query2) use($folderSearch){
+                $query->whereHas(['folders',function($query2) use($folderSearch){
                    $query2->findBy($folderSearch);
                 }]);
             };
