@@ -10,6 +10,7 @@ use App\Models\Attendance;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -18,42 +19,9 @@ class AttendanceController extends Controller
     {
         $this->searchParams = \request()->query();
 
-        $folder_no = $this->searchParams['folder_no'] ?? null;
-        $rack_no = $this->searchParams['rack_no'] ?? null;
-        $folder_type = $this->searchParams['folder_type'] ?? null;
 
-        //Folder Postfix of patient
-        $postfix = $folder_no ? substr($folder_no, -1) : null;
 
-        unset($this->searchParams['folder_no'],
-        $this->searchParams['rack_no'],
-        $this->searchParams['folder_type']);
-
-        $folderSearch = [];
-        if ($folder_no)
-            $folderSearch['folder_no'] = '=' . $folder_no;
-
-        if ($postfix && !is_numeric(trim($postfix))) {
-            //$this->searchParams['postfix'] = '=' . trim($postfix);
-            $folderSearch['folder_no'] = rtrim($folderSearch['folder_no'], $postfix);
-        }
-
-        if ($rack_no)
-            $folderSearch['rack_no'] = $rack_no;
-
-        if ($folder_type)
-            $folderSearch['folder_type'] = $folder_type;
-
-        if ($folderSearch)
-            $this->withCallback = function ($query) use ($folderSearch) {
-                $query->whereHas(['folders',function($query2) use($folderSearch){
-                   $query2->findBy($folderSearch);
-                }]);
-            };
-        if ($this->withCallback)
-            $with['patient'] = $this->withCallback;
-
-        $this->repository = new RepositoryEloquent($clinic,true,$with);
+        $this->repository = new RepositoryEloquent($clinic);
     }
     /**
      * Display a listing of the resource.
@@ -80,12 +48,53 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
+    public function byFolderNo(Request $request){
+        $searchParams = \request()->query();
+
+        $folder_no = $searchParams['folder_no'] ?? null;
+
+
+        //Folder Postfix of patient
+        $postfix = $folder_no ? substr($folder_no, -1) : null;
+
+        unset($searchParams['folder_no'],
+        $searchParams['rack_no'],
+        $searchParams['folder_type']);
+
+
+
+        if ($folder_no)
+            $folderSearch['folder_no'] = '=' . $folder_no;
+
+
+
+        if ($postfix && !is_numeric(trim($postfix))) {
+            //$searchParams['postfix'] = '=' . trim($postfix);
+            $folderSearch['folder_no'] = rtrim($folderSearch['folder_no'], $postfix);
+        }
+        $withCallback = function ($query) use ($folderSearch) {
+            $query->findBy($folderSearch);
+        };
+        //DB::enableQueryLog();
+         $this->repository->setModel(Attendance::findBy($searchParams)->whereHas('patient', function ($query) use ($withCallback,$folderSearch,$postfix) {
+            if($postfix)
+            $query->where('postfix',$postfix)->whereHas('folders', $withCallback);
+            else
+            $query->whereHas('folders', $withCallback);
+        }));
+
+        $records= $this->repository->getModel()->get();
+
+        //return [DB::getQueryLog()];
+        return ApiResponse::withOk('Found Attendances', AttendanceResource::collection($records));
+    }
     public function store(AttendanceRequest $request)
     {
         $response = $this->repository->store($request->all());
 
         return  ApiResponse::withOk('Attendance created', new AttendanceResource($response));
     }
+
 
 
 
