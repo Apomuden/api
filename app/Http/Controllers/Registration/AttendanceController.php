@@ -34,7 +34,7 @@ class AttendanceController extends Controller
             $folderSearch['folder_no'] = '=' . $folder_no;
 
         if ($postfix && !is_numeric(trim($postfix))) {
-            $this->searchParams['postfix'] = '=' . trim($postfix);
+            //$this->searchParams['postfix'] = '=' . trim($postfix);
             $folderSearch['folder_no'] = rtrim($folderSearch['folder_no'], $postfix);
         }
 
