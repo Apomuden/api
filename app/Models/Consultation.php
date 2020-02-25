@@ -67,7 +67,7 @@ class Consultation extends Model
                 'service_quantity',
                 'service_date',
                 //'order_type',
-                'orderer_id',
+                //'orderer_id',
                 'prepaid',
                 'paid_service_price',
                 'paid_service_quantity',
