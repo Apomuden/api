@@ -87,7 +87,7 @@ class ServiceOrderResource extends JsonResource
             'sponsorship_policy_id'=>$sponsorship_policy->id??null,
             'canceller_name'=> $canceller->fullname??null,
             'canceller_id'=> $canceller->id??null,
-            'cancelled_date'=>(string) $this->cancelled_date,
+            'cancelled_date'=> $this->cancelled_date?(string) $this->cancelled_date:null,
             'status'=>$this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
