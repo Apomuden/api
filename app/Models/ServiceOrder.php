@@ -125,13 +125,13 @@ class ServiceOrder extends Model
            $model->hospital_service_id=$service->hospital_service_id;
            $model->service_category_id=$service->service_category_id;
            $model->service_subcategory_id=$service->service_subcategory_id;
-           $model->service_total_amt=$model->service_fee * $model->service_quantity;
+           $model->service_total_amt=($model->service_fee??0) * ($model->service_quantity??0);
            $model->service_date= $model->service_date?Carbon::parse($model->service_date):null;
            $user = Auth::guard('api')->user();
            $model->user_id=$user->id;
 
            $model->prepaid=$model->prepaid??$patient->funding_type->name=='Cash/Prepaid';
-           $model->paid_service_total_amt=$model->paid_service_price * $model->paid_service_quantity;
+           $model->paid_service_total_amt=($model->paid_service_price??0) * ($model->paid_service_quantity??0);
            $model->funding_type_id= $model->funding_type_id??$patient->funding_type_id;
            $model->billing_system_id= $model->billing_system_id??$patient->billing_system_id;
            $model->billing_cycle_id= $model->billing_cycle_id??$patient->billing_cycle_id;
