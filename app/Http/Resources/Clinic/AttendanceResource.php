@@ -24,6 +24,7 @@ class AttendanceResource extends JsonResource
         $billing_sponsor=$this->billing_sponsor;
         $clinic_type=$this->clinic_type;
         $clinic=$this->clinic;
+        $service=$this->service;
         return [
             'id'=>$this->id,
             'folder_no' => (($folder->folder_no ?? null) . ($patient->postfix ?? null)) ?? null,
@@ -38,6 +39,8 @@ class AttendanceResource extends JsonResource
             'patient_status'=>$this->patient_status,
             'request_type'=>$this->request_type,
             'insured'=>$this->insured??null,
+            'service_name'=>$service->description??null,
+            'service_id'=>$service->id??null,
             'funding_type'=>$funding_type->name??null,
             'funding_id'=>$funding_type->id??null,
             'sponsorship_type_name'=>$sponsorship_type->name,

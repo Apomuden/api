@@ -203,6 +203,11 @@ class Patient extends Model
       return $this->belongsTo(SponsorshipType::class);
   }
 
+  public function patient_sponsors()
+  {
+      return $this->hasMany(PatientSponsor::class);
+  }
+
   public function native_language()
   {
       return $this->belongsTo(Language::class,'native_lang_id');
@@ -227,4 +232,6 @@ class Patient extends Model
   {
       return $this->hasMany(Consultation::class);
   }
+
+
 }

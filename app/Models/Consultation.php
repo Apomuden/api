@@ -41,13 +41,10 @@ class Consultation extends Model
         static::created(function ($model) {
             //create an attendance
             $model->service_id= $model->consultation_service_id??null;
-            $model->sponsor_id=$model->billing_sponsor_id;
-            unset($model->billing_sponsor_id);
+
             unset($model->card_serial_no);
             unset($model->order_type);
             unset($model->consultation_given);
-            unset($model->service_quantity);
-            unset($model->service_fee);
             unset($model->member_id);
             unset($model->ccc);
             unset($model->staff_id);
@@ -56,9 +53,44 @@ class Consultation extends Model
             unset($model->started_at);
             unset($model->status);
 
+
+            $model->sponsor_id = $model->billing_sponsor_id;
+
+            ServiceOrder::create($model->only([
+                'patient_id',
+                'clinic_id',
+                'age',
+                'gender',
+                'patient_status',
+                'service_id',
+                'service_fee',
+                'service_quantity',
+                'service_date',
+                'order_type',
+                'orderer_id',
+                'prepaid',
+                'paid_service_price',
+                'paid_service_quantity',
+                'funding_type_id',
+                'billing_system_id',
+                'billing_cycle_id',
+                'payment_style_id',
+                'payment_channel_id',
+                'insured',
+                'billing_sponsor_id'
+            ]));
+
+            unset($model->service_fee);
+            unset($model->service_quantity);
+            unset($model->billing_sponsor_id);
+
+
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
             }
+
+            //Create service request
+
         });
 
         static::updated(function ($model) {
