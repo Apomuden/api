@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Pricing;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Pricing\ServiceOrderRequest;
-use App\Http\Resources\ServiceResource;
+use App\Http\Resources\Clinic\ServiceOrderResource;
 use App\Models\ServiceOrder;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class ServiceOrderController extends Controller
     {
         $records = $this->repository->all('id');
 
-        return ApiResponse::withOk('Service Order List', ServiceResource::collection($records));
+        return ApiResponse::withOk('Service Order List', ServiceOrderResource::collection($records));
     }
 
     /**
@@ -39,7 +39,7 @@ class ServiceOrderController extends Controller
     public function store(ServiceOrderRequest $request)
     {
         $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Service Order',new ServiceResource($record->refresh()));
+        return ApiResponse::withOk('Service Order',new ServiceOrderResource($record->refresh()));
     }
 
     /**
@@ -51,7 +51,7 @@ class ServiceOrderController extends Controller
     public function show($id)
     {
         $record=$this->repository->findOrFail($id);
-        return ApiResponse::withOk('Service Order found', new ServiceResource($record));
+        return ApiResponse::withOk('Service Order found', new ServiceOrderResource($record));
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceOrderController extends Controller
     public function update(ServiceOrderRequest $request, $id)
     {
         $record=$this->repository->update($request->all(),$id);
-        return ApiResponse::withOk('Service Order updated', new ServiceResource($record));
+        return ApiResponse::withOk('Service Order updated', new ServiceOrderResource($record));
     }
 
     /**
