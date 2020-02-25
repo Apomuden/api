@@ -130,6 +130,8 @@ class ServiceOrder extends Model
            $user = Auth::guard('api')->user();
            $model->user_id=$user->id;
 
+           $model->orderer_id= $model->orderer_id?? $model->user_id;
+
            $model->prepaid=$model->prepaid??$patient->funding_type->name=='Cash/Prepaid';
            $model->paid_service_total_amt=($model->paid_service_price??0) * ($model->paid_service_quantity??0);
            $model->funding_type_id= $model->funding_type_id??$patient->funding_type_id;
