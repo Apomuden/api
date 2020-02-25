@@ -16,6 +16,7 @@ use Exception;
 use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route as FacadeRoute;
 
 class ConsultationController extends Controller
@@ -78,6 +79,7 @@ class ConsultationController extends Controller
         }
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
+
 
         return  ApiResponse::withOk( $message, new ConsultationResource($response->refresh()));
     }
