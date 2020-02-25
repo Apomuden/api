@@ -61,17 +61,14 @@ class AttendanceController extends Controller
         $searchParams['rack_no'],
         $searchParams['folder_type']);
 
-
-
         if ($folder_no)
             $folderSearch['folder_no'] = '=' . $folder_no;
-
-
 
         if ($postfix && !is_numeric(trim($postfix))) {
             //$searchParams['postfix'] = '=' . trim($postfix);
             $folderSearch['folder_no'] = rtrim($folderSearch['folder_no'], $postfix);
         }
+        
         $withCallback = function ($query) use ($folderSearch) {
             $query->findBy($folderSearch);
         };
