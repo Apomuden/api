@@ -76,5 +76,9 @@ Route::apiResource('attendance', 'Registration\AttendanceController',[
 
 Route::apiResource('serviceorders', 'Pricing\ServiceOrderController',[
     'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'patient-registry'
+    'component' => 'patient-registry']);
+Route::apiResource('appointments', 'Registration\AppointmentController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'patient-registry'
 ]);
