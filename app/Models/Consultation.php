@@ -76,7 +76,7 @@ class Consultation extends Model
                 'billing_cycle_id',
                 'payment_style_id',
                 'payment_channel_id',
-                'insured',
+                //'insured',
                 'billing_sponsor_id'
             ]));
 
