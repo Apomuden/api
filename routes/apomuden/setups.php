@@ -261,6 +261,12 @@ Route::apiResource('clinicservices', 'Setups\ClinicServiceController',[
     'component'=> 'setup.free.clinics'
 ]);
 
+Route::apiResource('measurements','Setups\MeasurementController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'setup.free.clinics'
+]);
+
 Route::apiResource('agecategories','Setups\AgeCategoryController',[
     //'only'=>['index','show','store','update','delete'],
     'module'=>['records-mgt','sys-mgt'],
