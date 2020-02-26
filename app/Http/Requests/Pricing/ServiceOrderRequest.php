@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\Pricing;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 use Illuminate\Validation\Rule;
 
-class ServiceOrderRequest extends FormRequest
+class ServiceOrderRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
