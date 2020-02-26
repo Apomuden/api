@@ -22,7 +22,24 @@ class AppointmentResource extends JsonResource
             return [
                 'id'=>$this->id,
                 'patient_id'=>$patient->id??null,
+                'patient'=> [
+                    'id'=>$patient->id??null,
+                    'surname'=>$patient->surname??null,
+                    'middlename'=>$patient->middlename??null,
+                    'firstname'=>$patient->firstname??null,
+                    'active_cell'=>$patient->active_cell,
+                    'email'=>$patient->email,
+                    'residential_address'=>$patient->residential_address
+                ],
                 'doctor_id'=>$doctor->id??null,
+                'doctor'=> [
+                    'id'=>$doctor->id??null,
+                    'staff_id'=>$doctor->staff_id??null,
+                    'surname'=>$doctor->surname??null,
+                    'middlename'=>$doctor->middlename??null,
+                    'firstname'=>$doctor->firstname??null,
+                    'active_cell'=>$doctor->active_cell
+                ],
                 'attendance_date'=>DateHelper::toDisplayDateTime($this->attendance_date),
                 'entered_by'=>$entry_user->id??null,
                 'status'=>$this->status,
