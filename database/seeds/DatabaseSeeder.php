@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         //$this->call(PermissionTableSeeder::class);
         // $this->call(CompanySeeder::class);
         // $this->call(AgeGroupTableSeeder::class);
-        $this->call(AgeClassificationTableSeeder::class);
+        //$this->call(AgeClassificationTableSeeder::class);
         // $this->call(sponsorshipTypesSeeder::class);
         // $this->call(billingCycleSeeder::class);
         // $this->call(paymentStyleSeeder::class);
@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
         // $this->call(ServiceCategoriesTableSeeder::class);
         // $this->call(ServiceSubcategoriesTableSeeder::class);
         // $this->call(UsersTableSeeder::class);
+        $this->call(MeasurementsTableSeeder::class);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
