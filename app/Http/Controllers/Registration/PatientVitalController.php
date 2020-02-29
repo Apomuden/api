@@ -40,7 +40,6 @@ class PatientVitalController extends Controller
             return ApiResponse::withOk('Patient Vitals created',new PatientVitalResource($patientVital->refresh()));
         }
         catch(Exception $e){
-            dd(null);
             return ApiResponse::withException($e);
         }
     }
