@@ -19,9 +19,8 @@ class PatientVitalResource extends JsonResource
     public function toArray($request)
     {
         $patient = $this->patient;
-
-        $measurements = $repository->all('unit')->toArray();
-        $repository = new RepositoryEloquent(new Measurement);
+        $repo = new RepositoryEloquent(new Measurement);
+        $measurements = $repo->all('unit')->toArray();
 
         $ms = ['temperature','pulse','systolic_blood_pressure','diastolic_blood_pressure','respiration','weight','height','bmi',
             'oxygen_saturation','fasting_blood_sugar','random_blood_sugar'];
