@@ -19,17 +19,17 @@ class PatientVitalResource extends JsonResource
     public function toArray($request)
     {
         $patient = $this->patient;
-        //$repository = new RepositoryEloquent(new Measurement);
-        //$measurements = (array) $repository->all('reference_name');
-        $measurements=DB::table('measurements')->select('unit','min_value','max_value','reference_name')->get();
-        $measurements=array_map(function($item){
-            return (array) $item;
-        }, (array)$measurements);
+        $repository = new RepositoryEloquent(new Measurement);
+        $measurements = $repository->all('unit')->toArray();
+
         $ms = ['temperature','pulse','systolic_blood_pressure','diastolic_blood_pressure','respiration','weight','height','bmi',
             'oxygen_saturation','fasting_blood_sugar','random_blood_sugar'];
+        $mid = array_column($measurements, 'id');
+        array_multisort($mid, SORT_ASC, $measurements);
+
         foreach ($ms as $m) {
-            $key = array_search($m, array_column($measurements, 'reference_name'), true);
-            $$m = $ms[$key];
+            $valIndex = array_search($m, array_column($measurements, 'reference_name'), true);
+            $$m = json_decode(json_encode($measurements[$valIndex]));
         }
         if(isset($this->id)){
             return [
@@ -42,39 +42,39 @@ class PatientVitalResource extends JsonResource
                 ],
                 'pulse' => [
                     'value'=>$this->pulse,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$pulse->unit??null,
+                    'min_value'=>$pulse->min_value??null,
+                    'max_value'=>$pulse->max_value??null,
                 ],
                 'systolic_blood_pressure' => [
                     'value'=>$this->systolic_blood_pressure,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$systolic_blood_pressure->unit??null,
+                    'min_value'=>$systolic_blood_pressure->min_value??null,
+                    'max_value'=>$systolic_blood_pressure->max_value??null,
                 ],
                 'diastolic_blood_pressure' => [
                     'value'=>$this->diastolic_blood_pressure,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$diastolic_blood_pressure->unit??null,
+                    'min_value'=>$diastolic_blood_pressure->min_value??null,
+                    'max_value'=>$diastolic_blood_pressure->max_value??null,
                 ],
                 'respiration' => [
                     'value'=>$this->respiration,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$respiration->unit??null,
+                    'min_value'=>$respiration->min_value??null,
+                    'max_value'=>$respiration->max_value??null,
                 ],
                 'weight' => [
                     'value'=>$this->weight,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$weight->unit??null,
+                    'min_value'=>$weight->min_value??null,
+                    'max_value'=>$weight->max_value??null,
                 ],
                 'height' => [
                     'value'=>$this->height,
-                    'unit'=>$temperature->unit??null,
-                    'min_value'=>$temperature->min_value??null,
-                    'max_value'=>$temperature->max_value??null,
+                    'unit'=>$height->unit??null,
+                    'min_value'=>$height->min_value??null,
+                    'max_value'=>$height->max_value??null,
                 ],
                 'bmi' => [
                     'value'=>$this->bmi,

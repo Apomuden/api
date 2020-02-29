@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Registration;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
@@ -40,6 +40,7 @@ class PatientVitalController extends Controller
             return ApiResponse::withOk('Patient Vitals created',new PatientVitalResource($patientVital->refresh()));
         }
         catch(Exception $e){
+            dd(null);
             return ApiResponse::withException($e);
         }
     }

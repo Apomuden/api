@@ -16,7 +16,7 @@ class CreatePatientVitalsTable extends Migration
         Schema::create('patient_vitals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('patient_id');
-            $table->foreign('patient_id')->references('id')->references('patients')->onDelete('restrict');
+            $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');
             $table->decimal('temperature', 20, 9)->default(0.00);
             $table->decimal('pulse', 20, 9)->default(0.00);
             $table->decimal('systolic_blood_pressure', 20, 9)->default(0.00);
@@ -28,11 +28,11 @@ class CreatePatientVitalsTable extends Migration
             $table->decimal('oxygen_saturation', 20, 9)->default(0.00)->comment('Oxygen Saturation (SPO2)');
             $table->decimal('fasting_blood_sugar', 20, 9)->default(0.00);
             $table->decimal('random_blood_sugar', 20, 9)->default(0.00);
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->softDeletes();
             $table->timestamps();
-            $table->unique(['patient','deleted_at']);
+            $table->unique(['patient_id','deleted_at']);
         });
     }
 
