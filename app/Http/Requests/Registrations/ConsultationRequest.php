@@ -16,7 +16,7 @@ class ConsultationRequest extends ApiFormRequest
      *
      * @return bool
      */
-    public function authorize() 
+    public function authorize()
     {
         return true;
     }
@@ -68,6 +68,7 @@ class ConsultationRequest extends ApiFormRequest
             'age_group_id'=>'bail|sometimes|nullable|integer|exists:age_groups,id',
             'attendance_date'=>'bail|'.($id?'sometimes':'required').'|date',
             'billing_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:billing_sponsors,id',
+            'patient_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:patient_sponsors,id',
             'member_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,member_id',
             'staff_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,staff_id',
             'card_serial_no'=>'bail|'.(!$id && $sponsorship_type=='government insurance' ? 'required':'sometimes|nullable').'|string|exists:patient_sponsors,card_serial_no',

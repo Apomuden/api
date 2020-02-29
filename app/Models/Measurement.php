@@ -7,7 +7,7 @@ use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class measurement extends Model
+class Measurement extends Model
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];

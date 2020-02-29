@@ -56,6 +56,6 @@ class PatientVitalController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return ApiResponse::withOk('PatientVital deleted successfully');
+        return ApiResponse::withOk('Patient Vital deleted successfully');
     }
 }

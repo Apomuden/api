@@ -21,14 +21,15 @@ class CreatePatientVitalsTable extends Migration
             $table->decimal('pulse', 20, 9)->default(0.00);
             $table->decimal('systolic_blood_pressure', 20, 9)->default(0.00);
             $table->decimal('diastolic_blood_pressure', 20, 9)->default(0.00);
-            $table->decimal('respiratory', 20, 9)->default(0.00);
+            $table->decimal('respiration', 20, 9)->default(0.00);
             $table->decimal('weight', 20, 9)->default(0.00);
             $table->decimal('height', 20, 9)->default(0.00);
-            $table->decimal('bmi', 20, 9)->default(0.00);
-            $table->decimal('spo2', 20, 9)->default(0.00);
+            $table->decimal('bmi', 20, 9)->default(0.00)->comment('Body Mass Index');
+            $table->decimal('oxygen_saturation', 20, 9)->default(0.00)->comment('Oxygen Saturation (SPO2)');
             $table->decimal('fasting_blood_sugar', 20, 9)->default(0.00);
             $table->decimal('random_blood_sugar', 20, 9)->default(0.00);
             $table->string('comment');
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->softDeletes();
             $table->timestamps();
             $table->unique(['patient','deleted_at']);
