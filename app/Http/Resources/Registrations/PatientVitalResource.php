@@ -20,8 +20,8 @@ class PatientVitalResource extends JsonResource
     {
         $patient = $this->patient;
 
-        $repository = new RepositoryEloquent(new Measurement);
         $measurements = $repository->all('unit')->toArray();
+        $repository = new RepositoryEloquent(new Measurement);
 
         $ms = ['temperature','pulse','systolic_blood_pressure','diastolic_blood_pressure','respiration','weight','height','bmi',
             'oxygen_saturation','fasting_blood_sugar','random_blood_sugar'];
