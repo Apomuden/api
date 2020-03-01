@@ -54,26 +54,22 @@ Route::apiResource('patientnextofkins', 'Registration\PatientNextOfKinController
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
-
 Route::apiResource('consultations','Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
-
 Route::apiResource('consultationservicerequests', 'Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'patient-registry'
 ]);
-
 Route::get('attendance/byfolder', 'Registration\AttendanceController@byFolderNo');
 Route::apiResource('attendance', 'Registration\AttendanceController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'patient-registry'
 ]);
-
 Route::apiResource('serviceorders', 'Pricing\ServiceOrderController',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'patient-registry']);
