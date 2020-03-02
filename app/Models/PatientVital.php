@@ -16,9 +16,9 @@ class PatientVital extends Model
     public static function calculateAndReturnBMI($model)
     {
         if($model->height) {
-            $height = ($model->height??$model->getOriginal('height'))??null;
-            $weight = ($model->height??$model->getOriginal('height'))??null;
-            $heightInMeters = ($height * 100); //Converting from cm to m
+            $height = ($model->height??$model->getOriginal('height'))??0;
+            $weight = ($model->weight??$model->getOriginal('weight'))??0;
+            $heightInMeters = ($height * 0.01); //Converting from cm to m
             return (float)($weight / ($heightInMeters ** 2));
         }
         return 0;
