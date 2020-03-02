@@ -19,6 +19,7 @@ class CreateMeasurementsTable extends Migration
             $table->string('unit')->nullable();
             $table->decimal('min_value', 20, 9)->nullable();
             $table->decimal('max_value', 20, 9)->nullable();
+            $table->string('reference_name')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->softDeletes();
             $table->timestamps();

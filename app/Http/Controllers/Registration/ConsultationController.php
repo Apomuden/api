@@ -63,6 +63,10 @@ class ConsultationController extends Controller
                 }
                 unset($sponsorshipType);
             }
+            if (strtolower(trim($request['sponsorship_type']))=='patient') {
+                $request['billing_sponsor_id'] = null;
+                $request['patient_sponsor_id'] = null;
+            }
             unset($request['sponsorship_type']);
         }
         if (isset($request['clinic_id'])) {

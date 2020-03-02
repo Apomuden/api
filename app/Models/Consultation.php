@@ -152,4 +152,9 @@ class Consultation extends Model
         return $this->belongsTo(BillingSponsor::class);
     }
 
+    public function patient_sponsor()
+    {
+        return $this->belongsTo(PatientSponsor::class);
+    }
+
 }

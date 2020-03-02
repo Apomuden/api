@@ -18,7 +18,7 @@ class ProfileResource extends JsonResource
      */
     public function toArray($request)
     {
-        $country=$this->country;
+        $country=$this->country??null;
         $region=$this->region;
         $title=$this->title;
         $id_type=$this->id_type;
