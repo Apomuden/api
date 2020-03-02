@@ -36,7 +36,7 @@ Route::get('regions/{region}/districts',[
     'module'=>NULL,
     'component'=>NULL
 ]);
-Route::apiResource('districts','Setups\DistrictController',['only'=>['index','show','store','update','delete']]);
+Route::apiResource('districts','Setups\DistrictController');
 Route::apiResource('accreditations','Setups\AccreditationController',[
     //'only'=>['index','show','store','update','delete'],
     'module'=>'sys-mgt',
