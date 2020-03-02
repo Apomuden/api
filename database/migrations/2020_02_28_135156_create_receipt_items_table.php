@@ -13,11 +13,11 @@ class CreateReceiptItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('receipt_items', function (Blueprint $table) {
+        /*Schema::create('receipt_items', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('');
             $table->timestamps();
-        });
+        });*/
     }
 
     /**
