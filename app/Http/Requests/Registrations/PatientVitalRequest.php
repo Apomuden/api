@@ -25,7 +25,7 @@ class PatientVitalRequest extends ApiFormRequest
     {
         $id = $this->route('patientvital') ?? null;
         return [
-            'patient_id' => 'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id|'.$this->softUnique('patient_vitals','patient_id',$id),
+            'patient_id' => 'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id|'.$this->softUniqueWith('patient_vitals','patient_id,created_at',$id),
             'temperature' => 'bail|sometimes|nullable|numeric',
             'pulse' => 'bail|sometimes|nullable|numeric',
             'systolic_blood_pressure' => 'bail|sometimes|nullable|numeric',
