@@ -15,7 +15,7 @@ class CreateReceiptItemsTable extends Migration
     {
         Schema::create('receipt_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('')
+            $table->unsignedBigInteger('');
             $table->timestamps();
         });
     }
