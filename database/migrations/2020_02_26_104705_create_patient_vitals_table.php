@@ -32,7 +32,6 @@ class CreatePatientVitalsTable extends Migration
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->softDeletes();
             $table->timestamps();
-            $table->unique(['patient_id','created_at','deleted_at']);
         });
     }
 
