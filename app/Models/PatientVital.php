@@ -14,23 +14,23 @@ class PatientVital extends Model
     use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
 
-    public static function calculateAndSaveBMI($model): void
-    {
-        if($model->height) {
-            $heightInMeters = ($model->height * 0.01); //Converting from cm to m
-            $model->bmi = (float)($model->weight / ($heightInMeters ** 2));
-            $model->save();
-        }
-    }
     public static function boot() : void
     {
         parent::boot();
         static::created(static function($model){
-            self::calculateAndSaveBMI($model);
+            if($model->height) {
+                $heightInMeters = ($model->height * 0.01); //Converting from cm to m
+                $model->bmi = (float)($model->weight / ($heightInMeters ** 2));
+                $model->save();
+            }
         });
 
         static::updated(static function($model){
-            self::calculateAndSaveBMI($model);
+            if($model->height) {
+                $heightInMeters = ($model->height * 0.01); //Converting from cm to m
+                $model->bmi = (float)($model->weight / ($heightInMeters ** 2));
+                $model->save();
+            }
         });
     }
 
