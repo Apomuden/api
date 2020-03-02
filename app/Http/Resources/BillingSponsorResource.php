@@ -32,6 +32,7 @@ class BillingSponsorResource extends JsonResource
                 'alternate_cell'=>$this->alternate_cell,
                 'email1'=>$this->email1,
                 'email2'=>$this->email2,
+                'address'=>$this->address,
                 'website'=>$this->website,
                 'sponsor_code'=>$this->sponsor_code,
                 'status'=>$this->status,
