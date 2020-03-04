@@ -56,7 +56,7 @@ class Attendance extends Model
 
         $attendance->request_type = $model->patient_id && $model->clinic_id? (DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD'): $attendance->request_type;
 
-        $attendance->attendance_date = DateHelper::toDBDate($model->attendance_date) ?? $attendance->attendance_date;
+        $attendance->attendance_date = DateHelper::toDBDateTime($model->attendance_date) ?? $attendance->attendance_date;
 
         $attendance->save();
     }
