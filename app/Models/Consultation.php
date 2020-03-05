@@ -83,6 +83,7 @@ class Consultation extends Model
             unset($model->service_fee);
             unset($model->service_quantity);
             unset($model->billing_sponsor_id);
+            unset($model->patient_sponsor_id);
 
 
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){

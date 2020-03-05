@@ -16,7 +16,7 @@ class AttendanceResource extends JsonResource
     public function toArray($request)
     {
         $patient=$this->patient;
-        $folder = $patient->activefolder;
+        $folder = $patient->activefolder??null;
         $age_class=$this->age_class;
         $age_group=$this->age_group;
         $funding_type=$this->funding_type;
@@ -43,8 +43,8 @@ class AttendanceResource extends JsonResource
             'service_id'=>$service->id??null,
             'funding_type'=>$funding_type->name??null,
             'funding_id'=>$funding_type->id??null,
-            'sponsorship_type_name'=>$sponsorship_type->name,
-            'sponsorship_type_id'=> $sponsorship_type->id,
+            'sponsorship_type_name'=>$sponsorship_type->name??null,
+            'sponsorship_type_id'=> $sponsorship_type->id??null,
             'sponsor_name'=> $billing_sponsor->name??null,
             'sponsor_id'=> $billing_sponsor->id??null,
             'clinic_type_name'=>$clinic_type->name??null,

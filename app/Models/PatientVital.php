@@ -6,7 +6,6 @@ use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientVital extends Model
@@ -14,27 +13,29 @@ class PatientVital extends Model
     use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
 
-    public static function calculateAndSaveBMI($model): void
+    public static function calculateAndReturnBMI($model)
     {
         if($model->height) {
-            $heightInMeters = ($model->height * 0.01); //Converting from cm to m
-            $model->bmi = (float)($model->weight / ($heightInMeters ** 2));
-            $model->save();
+            $height = ($model->height??$model->getOriginal('height'))??0;
+            $weight = ($model->weight??$model->getOriginal('weight'))??0;
+            $heightInMeters = ($height * 0.01); //Converting from cm to m
+            return (float)($weight / ($heightInMeters ** 2));
         }
+        return 0;
     }
-    public static function boot() : void
+    public static function boot()
     {
         parent::boot();
-        static::created(static function($model){
-            self::calculateAndSaveBMI($model);
+        static::creating(function($model){
+            $model->bmi = self::calculateAndReturnBMI($model);
         });
 
-        static::updated(static function($model){
-            self::calculateAndSaveBMI($model);
+        static::updating(function($model){
+            $model->bmi = self::calculateAndReturnBMI($model);
         });
     }
 
-    public function patient(): BelongsTo
+    public function patient()
     {
         return $this->belongsTo(Patient::class);
     }
