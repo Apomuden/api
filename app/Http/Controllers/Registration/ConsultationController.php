@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Registration;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiRequest;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Helpers\Notify;
 use App\Http\Requests\Registrations\ConsultationRequest;
 use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Resources\Registrations\ConsultationCollection;
