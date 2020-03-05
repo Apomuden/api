@@ -86,14 +86,17 @@ class Consultation extends Model
             unset($model->billing_sponsor_id);
             unset($model->patient_sponsor_id);
 
+            //Trigger Notification
+            if ($model->consultant_id)
+                Notify::send('consultation', $model->consultant_id, $model->toArray());
+
+            unset($model->consultant_id);
 
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
             }
 
-            //Trigger Notification
-            if($model->consultant_id)
-            Notify::send('consultation', $model->consultant_id,$model->toArray());
+
 
         });
 
