@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\Notify;
+use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
@@ -88,7 +89,7 @@ class Consultation extends Model
 
             //Trigger Notification
             if ($model->consultant_id)
-                Notify::send('consultation', $model->consultant_id, $model->toArray());
+                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
 
             unset($model->consultant_id);
 
@@ -115,7 +116,7 @@ class Consultation extends Model
 
             //Trigger Notification
             if ($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
-                Notify::send('consultation', $model->consultant_id, $model->toArray());
+                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
         });
     }
     public function service()
