@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
+use App\Http\Helpers\Notify;
+use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
@@ -85,12 +87,17 @@ class Consultation extends Model
             unset($model->billing_sponsor_id);
             unset($model->patient_sponsor_id);
 
+            //Trigger Notification
+            if ($model->consultant_id)
+                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
+
+            unset($model->consultant_id);
 
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
             }
 
-            //Create service request
+
 
         });
 
@@ -106,6 +113,10 @@ class Consultation extends Model
             ->lastest()->first()->id??null;
 
             Attendance::updateObject($model);
+
+            //Trigger Notification
+            if ($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
+                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
         });
     }
     public function service()
