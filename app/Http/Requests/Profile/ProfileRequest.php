@@ -57,7 +57,7 @@ class ProfileRequest extends ApiFormRequest
             'basic' => 'bail|sometimes|numeric',
             'bank_id' => 'bail|sometimes|nullable|exists:banks,id',
             'bank_branch_id' => 'bail|sometimes|nullable|exists:bank_branches,id',
-            'bank_acct_no' => 'bail|sometimes|nullable|numeeric',
+            'bank_acct_no' => 'bail|sometimes|nullable|numeric',
             'staff_category_id' => 'bail|sometimes|nullable|exists:staff_categories,id',
             'prof_body' => 'bail|sometimes|nullable|string',
             'prof_reg_no' => 'bail|sometimes|nullable|string',
