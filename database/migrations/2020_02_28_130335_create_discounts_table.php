@@ -21,8 +21,10 @@ class CreateDiscountsTable extends Migration
             $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict');
             $table->unsignedInteger('sponsorship_type_id');
             $table->foreign('sponsorship_type_id')->references('id')->on('sponsorship_types')->onDelete('restrict');
-            $table->unsignedBigInteger('sponsor_id')->nullable();
-            $table->foreign('sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
+            $table->unsignedBigInteger('billing_sponsor_id')->nullable();
+            $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
+            $table->unsignedBigInteger('patient_sponsor_id')->nullable();
+            $table->foreign('patient_sponsor_id')->references('id')->on('patient_sponsors')->onDelete('restrict');
             $table->string('receipt_number')->nullable();
             $table->decimal('total_bill', 20, 2)->default(0);
             $table->decimal('discount_amount', 20, 2)->default(0);
