@@ -149,7 +149,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(StaffCategory::class);
     }
 
-    public function specialty()
+    public function staff_specialty()
     {
         return $this->belongsTo(StaffSpecialty::class);
     }
