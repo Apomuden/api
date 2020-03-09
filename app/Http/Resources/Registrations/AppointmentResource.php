@@ -27,9 +27,9 @@ class AppointmentResource extends JsonResource
                     'surname'=>$patient->surname??null,
                     'middlename'=>$patient->middlename??null,
                     'firstname'=>$patient->firstname??null,
-                    'active_cell'=>$patient->active_cell,
-                    'email'=>$patient->email,
-                    'residential_address'=>$patient->residential_address
+                    'active_cell'=>$patient->active_cell??null,
+                    'email'=>$patient->email??null,
+                    'residential_address'=>$patient->residential_address??null
                 ],
                 'doctor_id'=>$doctor->id??null,
                 'doctor'=> [
@@ -40,6 +40,12 @@ class AppointmentResource extends JsonResource
                     'firstname'=>$doctor->firstname??null,
                     'active_cell'=>$doctor->active_cell
                 ],
+                'staff_specialty_name'=>$this->staff_specialty->name??null,
+                'staff_specialty_id'=>$this->staff_specialty->id??null,
+                'enquirer_name'=>$this->enquirer_name,
+                'enquirer_phone'=>$this->enquirer_phone,
+                'enquirer_email'=>$this->enquirer_email,
+                'enquirer_residence'=>$this->enquirer_residence,
                 'attendance_date'=>DateHelper::toDisplayDateTime($this->attendance_date),
                 'entered_by'=>$entry_user->id??null,
                 'status'=>$this->status,
