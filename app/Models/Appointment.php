@@ -33,4 +33,8 @@ class Appointment extends Model
     public function clinic_type() {
         return $this->belongsTo(ClinicType::class, 'clinic_type_id');
     }
+
+    public function staff_specialty() {
+        return $this->belongsTo(StaffSpecialty::class, 'staff_specialty_id');
+    }
 }

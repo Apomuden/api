@@ -169,4 +169,9 @@ class Consultation extends Model
         return $this->belongsTo(PatientSponsor::class);
     }
 
+    public function consultant()
+    {
+        return $this->belongsTo(User::class, 'consultant_id');
+    }
+
 }

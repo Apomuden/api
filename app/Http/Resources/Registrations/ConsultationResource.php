@@ -26,6 +26,7 @@ class ConsultationResource extends JsonResource
             $patient_sponsor = $this->patient_sponsor;
             $clinic = $this->clinic;
             $clinic_type = $this->clinic_type;
+            $consultant = $this->consultant;
 
             return [
                 'id' => $this->id,
@@ -33,6 +34,8 @@ class ConsultationResource extends JsonResource
                 'consultation_given'=>$this->consultation_given,
                 'consultation_service_name'=>$clinic_consult_service->name??null,
                 'consultation_service_id'=>$clinic_consult_service->id??null,
+                'consultant_name'=>$consultant->name??null,
+                'consultant_id'=>$consultant->id??null,
                 'clinic_name'=>$clinic->name??null,
                 'clinic_id'=>$clinic->id??null,
                 'clinic_type_name'=>$clinic_type->name??null,
