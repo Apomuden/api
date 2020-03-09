@@ -24,7 +24,7 @@ class CreateAppointmentsTable extends Migration
             $table->string('enquirer_residence')->nullable();
             $table->unsignedBigInteger('clinic_id')->nullable();
             $table->unsignedInteger('clinic_type_id')->nullable();
-            $table->unsignedInteger('staff_specialty_id')->nullable();
+            $table->unsignedBigInteger('staff_specialty_id')->nullable();
             $table->uuid('doctor_id')->nullable();
             $table->uuid('entered_by');
             $table->dateTime('appointment_date')->useCurrent();
