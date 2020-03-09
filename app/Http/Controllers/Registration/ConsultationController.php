@@ -87,7 +87,6 @@ class ConsultationController extends Controller
 
         return  ApiResponse::withOk( $message, new ConsultationResource($response->refresh()));
     }
-
     /**
      * Display the specified resource.
      *
@@ -108,7 +107,6 @@ class ConsultationController extends Controller
             ApiResponse::withOk($message.' Found', new ConsultationResource($consultation))
             : ApiResponse::withNotFound($message.' Not Found');
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -129,7 +127,6 @@ class ConsultationController extends Controller
             return ApiResponse::withException($e);
         }
     }
-
     public function destroy($id)
     {
         $this->repository->delete($id);
