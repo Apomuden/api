@@ -59,6 +59,11 @@ Route::apiResource('consultations','Registration\ConsultationController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
+Route::apiResource('consultingrooms', 'Registration\ConsultingRoomController',[
+    'module'=> 'records-mgt',
+    'component' => 'patient-registry'
+]);
+
 Route::apiResource('consultationservicerequests', 'Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
