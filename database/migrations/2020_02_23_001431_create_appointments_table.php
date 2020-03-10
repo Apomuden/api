@@ -14,6 +14,7 @@ class CreateAppointmentsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('appointments');
         Schema::create('appointments', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('comment')->nullable();
