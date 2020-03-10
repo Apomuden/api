@@ -39,7 +39,7 @@ class CreateAppointmentsTable extends Migration
             $table->foreign('staff_specialty_id')->references('id')->on('staff_specialties')->onDelete('restrict');
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
             $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
-            $table->unique(['patient_id','enquirer_name','appointment_date', 'deleted_at']);
+            $table->unique(['patient_id','enquirer_name','appointment_date', 'deleted_at'],'p_en_ad_deleted_at');
         });
     }
 
