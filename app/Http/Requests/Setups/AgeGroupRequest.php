@@ -15,8 +15,8 @@ class AgeGroupRequest extends ApiFormRequest
             //'duration_type'=>'bail|sometimes|in:YEAR,MONTH',
             'min_age'=>'bail|'.($id?'sometimes':'required').'|min:0,max:100',
             'max_age'=>'bail|sometimes|nullable|min:1',
-            'max_age_unit'=>'bail|sometimes|nullable|in:YEAR,MONTH,DAY',
-            'min_age_unit'=>'bail|sometimes|in:YEAR,MONTH,DAY',
+            'max_age_unit'=>'bail|sometimes|nullable|in:YEAR,MONTH,WEEK,DAY',
+            'min_age_unit'=>'bail|sometimes|in:YEAR,MONTH,WEEK,DAY',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }
