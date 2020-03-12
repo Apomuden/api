@@ -14,8 +14,8 @@ class AddAdditionalFieldsToAgeGroupsTable extends Migration
     public function up()
     {
         Schema::table('age_groups', function (Blueprint $table) {
-            $table->enum('min_age_unit',['DAY','MONTH','YEAR'])->default('YEAR')->after('name');
-            $table->enum('max_age_unit',['DAY','MONTH','YEAR'])->nullable()->after('name');
+            $table->enum('min_age_unit',['DAY','WEEK','MONTH','YEAR'])->default('YEAR')->after('name');
+            $table->enum('max_age_unit',['DAY','WEEK','MONTH','YEAR'])->nullable()->after('name');
             $table->dropColumn('duration_type');
         });
     }
