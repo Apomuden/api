@@ -292,7 +292,7 @@ Route::apiResource('allergyhistorycategories', 'Setups\AllergyHistoryCategoryCon
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
-Route::apiResource('allergyhistory', 'Setups\AllergyHistoryController', [
+Route::apiResource('allergyhistories', 'Setups\AllergyHistoryController', [
     //'only'=>['index','show','store','update'],
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'

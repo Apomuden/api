@@ -31,7 +31,7 @@ class CreateConsultationsTable extends Migration
             $table->dateTime('attendance_date')->useCurrent();
             $table->dateTime('started_at')->nullable();
             $table->dateTime('ended_at')->nullable();
-            $table->enum('status', ['SERVED', 'IN-QUEUE', 'SUSPENDED','INACTIVE'])->default('IN-QUEUE');
+            $table->enum('status', ['SERVED', 'IN-QUEUE', 'SUSPENDED','INACTIVE', 'DISCHARGE', 'FINISH'])->default('IN-QUEUE');
             $table->softDeletes();
             $table->timestamps();
 
