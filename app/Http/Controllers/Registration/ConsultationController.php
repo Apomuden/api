@@ -84,8 +84,7 @@ class ConsultationController extends Controller
         }
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
-
-        return  ApiResponse::withOk( $message, new ConsultationResource($response->refresh()));
+        return  ApiResponse::withOk($message, new ConsultationResource($response->refresh()));
     }
     /**
      * Display the specified resource.

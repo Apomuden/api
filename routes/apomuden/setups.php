@@ -266,6 +266,88 @@ Route::apiResource('measurements','Setups\MeasurementController',[
     'module'=>['records-mgt','sys-mgt'],
     'component'=> 'setup.free.clinics'
 ]);
+//====Consulting Room setup Routes====
+Route::apiResource('illnesstypes', 'Setups\IllnessTypeController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'setup.free.clinics'
+]);
+Route::apiResource('dischargereasons', 'Setups\DischargeReasonController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('complainttypes', 'Setups\ComplaintTypeController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>['records-mgt','sys-mgt'],
+    'component'=> 'setup.free.clinics'
+]);
+Route::apiResource('complaints', 'Setups\ComplaintController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('allergyhistorycategories', 'Setups\AllergyHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('allergyhistory', 'Setups\AllergyHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('familyhistorycategories', 'Setups\FamilyHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('familyhistories', 'Setups\FamilyHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('medicalhistorycategories', 'Setups\MedicalHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('medicalhistories', 'Setups\MedicalHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('medicinehistorycategories', 'Setups\MedicineHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('medicinehistories', 'Setups\MedicineHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('socialhistorycategories', 'Setups\SocialHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('socialhistories', 'Setups\SocialHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('surgicalhistorycategories', 'Setups\SurgicalHistoryCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('surgicalhistories', 'Setups\SurgicalHistoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+//====End of Consulting room setup Routes====
 
 Route::apiResource('agecategories','Setups\AgeCategoryController',[
     //'only'=>['index','show','store','update','delete'],

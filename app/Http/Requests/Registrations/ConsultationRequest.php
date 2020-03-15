@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Patient;
 use App\Models\SponsorshipType;
@@ -29,6 +30,14 @@ class ConsultationRequest extends ApiFormRequest
     public function rules()
     {
         $id = ($this->route('consultation') ?? $this->route('consultationservicerequest')) ?? null;
+
+        $patient_id= request('patient_id')??null;
+        $patient=null;
+        if($patient_id)
+            $patient= (new RepositoryEloquent(new Patient))->find($patient_id);
+        else if ($id)
+            $patient = (new RepositoryEloquent(new Consultation))->find($id)->patient;
+
         $sponsorship_type = (request()->input('sponsorship_type'))??null;
         $clinic_id = (request()->input('clinic_id'))??null;
         if ($sponsorship_type) {
@@ -77,6 +86,19 @@ class ConsultationRequest extends ApiFormRequest
             'ended_at'=>'bail|sometimes|nullable|date',
             'patient_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT',
             'status'=>'bail|sometimes|string|in:COMPLETED,IN-QUEUE,SUSPENDED',
+            'pregnant'=>['bail',' boolean',Rule::requiredIf(function() use($patient){
+                return $patient && $patient->gender=='FEMALE' && $patient->age>=13;
+            })],
+            'illness_type_id'=>['bail','integer','sometimes',Rule::exists('illness_types','id')->where(function($query){
+                $query->where('status','ACTIVE');
+            })],
+            'consulting_room_id'=> ['bail', 'integer', 'sometimes', Rule::exists('consulting_rooms', 'id')->where(function ($query) {
+                $query->where('status', 'ACTIVE');
+            })],
+            'discharge_reason_id'=> ['bail', 'integer', 'sometimes', Rule::exists('discharge_reasons', 'id')->where(function ($query) {
+                $query->where('status', 'ACTIVE');
+            })],
+            'review_date'=>'bail|sometimes|date'
         ];
     }
 }
