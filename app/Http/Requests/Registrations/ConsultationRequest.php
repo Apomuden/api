@@ -34,6 +34,9 @@ class ConsultationRequest extends ApiFormRequest
 
         $patient_id= request('patient_id')??null;
         $patient=null;
+
+        $status=request('status')??null;
+
         if($patient_id)
             $patient= (new RepositoryEloquent(new Patient))->find($patient_id);
         else if ($id)
@@ -95,7 +98,7 @@ class ConsultationRequest extends ApiFormRequest
             'started_at'=>'bail|sometimes|nullable|date',
             'ended_at'=>'bail|sometimes|nullable|date',
             'patient_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT',
-            'status'=>'bail|sometimes|string|in:COMPLETED,IN-QUEUE,SUSPENDED',
+            'status'=> 'bail|sometimes|string|in:COMPLETED,IN-QUEUE,SUSPENDED,DISCHARGE,FINISH',
             'pregnant'=>['bail',' boolean',Rule::requiredIf(function() use($patient){
                 return $patient && $patient->gender=='FEMALE' && $patient->age>=13;
             })],
@@ -105,10 +108,14 @@ class ConsultationRequest extends ApiFormRequest
             'consulting_room_id'=> ['bail', 'integer', 'sometimes', Rule::exists('consulting_rooms', 'id')->where(function ($query) {
                 $query->where('status', 'ACTIVE');
             })],
-            'discharge_reason_id'=> ['bail', 'integer', 'sometimes', Rule::exists('discharge_reasons', 'id')->where(function ($query) {
+            'discharge_reason_id'=> ['bail', 'integer', Rule::requiredIf(function () use ($status) {
+                return $status== 'DISCHARGE';
+            }), Rule::exists('discharge_reasons', 'id')->where(function ($query) {
                 $query->where('status', 'ACTIVE');
             })],
-            'review_date'=>'bail|sometimes|date'
+            'review_date'=>['bail', Rule::requiredIf(function () use ($status) {
+                return $status == 'DISCHARGE';
+            }),'date']
         ];
     }
 }
