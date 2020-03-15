@@ -6,6 +6,7 @@ use App\Http\Requests\ApiFormRequest;
 use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Patient;
+use App\Models\Role;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Validation\Rule;
@@ -55,6 +56,9 @@ class ConsultationRequest extends ApiFormRequest
         $consultation_service = $repository
             ->findWhere(['name' => 'Consultation'])
             ->orWhere('name', 'Consultation service')->first();
+        $repository = new RepositoryEloquent(new Role);
+        $role = $repository->findWhere(['name'=>'Doctor'])->orWhere('name','doctor')
+            ->orWhere('name','DOCTOR')->first();
 
         return [
             'consultation_given'=>'bail|sometimes|nullable|string',
@@ -68,7 +72,13 @@ class ConsultationRequest extends ApiFormRequest
             'consultation_service_id'=> [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
                 Rule::exists('clinic_services', 'service_id')->where(function ($query) use ($clinic_id, $consultation_service) {
-                    $query->where(['hospital_service_id'=> $consultation_service->id??null, 'clinic_id'=>$clinic_id]);
+                    $query->where(['hospital_service_id'=>$consultation_service->id??null, 'clinic_id'=>$clinic_id]);
+                })
+            ],
+            'consultant_id'=> [
+                'bail', 'sometimes', 'nullable', 'integer',
+                Rule::exists('users', 'id')->where(function ($query) use ($role) {
+                    $query->where(['role_id'=>$role->id??null]);
                 })
             ],
             'funding_type_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:funding_types,id',
