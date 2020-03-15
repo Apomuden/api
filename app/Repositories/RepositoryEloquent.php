@@ -88,20 +88,20 @@ class RepositoryEloquent implements IRepository{
          $key=$this->cache_prefix.'->paginate';
 
         if(!$urlSortBy & $this->useCache){
-           $all= Cache::get($key);
+           $all=Cache::get($key);
            if(!$searchParams && $all)
            return $all;
 
            if($this->with)
-           $all=$this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with);
+              $all=$this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with);
            else
-           $all=$this->useActiveTrait?$this->model->active():$this->model;
+              $all=$this->useActiveTrait?$this->model->active():$this->model;
         }
         else{
             if($this->with)
-            $all= ($this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with));
+              $all= ($this->useActiveTrait?$this->model->with($this->with)->active():$this->model->with($this->with));
             else
-            $all= ($this->useActiveTrait?$this->model->active():$this->model);
+              $all= ($this->useActiveTrait?$this->model->active():$this->model);
         }
 
           $all=$all && $sortBy?$all->orderBy($sortBy,$order):$all;

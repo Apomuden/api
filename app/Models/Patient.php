@@ -11,6 +11,7 @@ use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
 use App\Http\Utils\DateFormater;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -116,6 +117,9 @@ class Patient extends Model
   public function title()
   {
       return $this->belongsTo(Title::class);
+  }
+  public function getAgeAttribute(){
+    return  Carbon::parse($this->dob)->age;
   }
   public function getFullNameAttribute()
   {

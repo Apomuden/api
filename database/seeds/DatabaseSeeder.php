@@ -45,7 +45,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(ServiceCategoriesTableSeeder::class);
         // $this->call(ServiceSubcategoriesTableSeeder::class);
         // $this->call(UsersTableSeeder::class);
-        $this->call(MeasurementsTableSeeder::class);
+        //$this->call(MeasurementsTableSeeder::class);
+        $this->call(DischargeReasonsTableSeeder::class);
+        $this->call(illnessTypeTableseeder::class);
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }
