@@ -45,16 +45,10 @@ class AgeClassificationController extends Controller
         }
     }
 
-    public function update(AgeClassificationRequest $AgeClassificationRequest,$AgeClassification){
-        try{
-            $AgeClassification=$this->repository->update($AgeClassificationRequest->all(),$AgeClassification);
+    public function update(AgeClassificationRequest $AgeClassificationRequest,$id){
+            $AgeClassification=$this->repository->update($AgeClassificationRequest->all(),$id);
 
             return ApiResponse::withOk('AgeClassification updated',new AgeClassificationResource($AgeClassification));
-
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
     }
     public function destroy($id)
     {
