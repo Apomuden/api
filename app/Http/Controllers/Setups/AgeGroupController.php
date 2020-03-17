@@ -45,9 +45,9 @@ class AgeGroupController extends Controller
        }
    }
 
-   function update(AgeGroupRequest $AgeGroupRequest,$AgeGroup){
+   function update(AgeGroupRequest $AgeGroupRequest,$id){
        try{
-        $AgeGroup=$this->repository->update($AgeGroupRequest->all(),$AgeGroup);
+        $AgeGroup=$this->repository->update($AgeGroupRequest->all(),$id);
 
         return ApiResponse::withOk('AgeGroup updated',new AgeGroupResource($AgeGroup));
 

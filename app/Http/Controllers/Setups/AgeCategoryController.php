@@ -45,9 +45,9 @@ class AgeCategoryController extends Controller
         }
     }
 
-    public function update(AgeCategoryRequest $AgeCategoryRequest,$AgeCategory){
+    public function update(AgeCategoryRequest $AgeCategoryRequest,$id){
         try{
-            $AgeCategory=$this->repository->update($AgeCategoryRequest->all(),$AgeCategory);
+            $AgeCategory=$this->repository->update($AgeCategoryRequest->all(),$id);
 
             return ApiResponse::withOk('AgeCategory updated',new AgeCategoryResource($AgeCategory));
 
