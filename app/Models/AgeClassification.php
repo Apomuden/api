@@ -11,5 +11,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AgeClassification extends Model
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    protected $guarded = [];
 
 }

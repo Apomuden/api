@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AgeCategory extends Model
 {
     use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
+    protected $guarded = [];
 
     public static function boot()
     {
