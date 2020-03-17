@@ -4,6 +4,7 @@ namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PatientHistoryRequest extends ApiFormRequest
 {
@@ -37,7 +38,9 @@ class PatientHistoryRequest extends ApiFormRequest
             'medicine_history'=>'bail|sometimes|string|nullable',
             'allergies_history'=>'bail|sometimes|string|nullable',
             'family_history'=>'bail|sometimes|string|nullable',
-            'social_history'=>'bail|sometimes|string|nullable'
+            'social_history'=>'bail|sometimes|string|nullable',
+            'consultant_id'=>['bail','sometimes','nullable',Rule::exists('users','id')],
+            'chief_complaint_relation_id'=>'bail|sometimes|nullable:exists:relations,id',
         ];
     }
 }
