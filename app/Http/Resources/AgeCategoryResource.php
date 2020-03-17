@@ -19,6 +19,7 @@ class AgeCategoryResource extends JsonResource
             $age_classification = $this->age_classification ?? null;
             $age_group = $this->age_group ?? null;
             return [
+                'id'=>$this->id,
                 'description' => $this->description,
                 'age_classification_name' => $age_classification->name ?? null,
                 'age_classification_id' => $age_classification->id ?? null,
