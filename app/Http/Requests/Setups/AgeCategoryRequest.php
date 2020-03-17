@@ -25,7 +25,7 @@ class AgeCategoryRequest extends ApiFormRequest
     {
         $id=$this->route('agecategory')??null;
         return [
-            'description' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('age_category','description,age_classification_id',$id),
+            'description' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('age_categories','description,age_classification_id',$id),
             'age_classification_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:age_classifications,id',
             'age_group_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:age_groups,id',
             'min_unit'=>'bail|sometimes|in:DAY,MONTH,YEAR',
