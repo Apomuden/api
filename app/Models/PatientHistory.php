@@ -7,6 +7,7 @@ use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class PatientHistory extends Model
 {
@@ -29,7 +30,7 @@ class PatientHistory extends Model
            $model->clinic_id=$model->clinic_id??$consultation->clinic_id;
            $model->consultation_date= $model->consultation_date??($consultation->started_at??Carbon::today());
            $model->attendance_date=$model->attendance_date??$consultation->attendance_date;
-
+           $model->user_id = Auth::guard('api')->user()->id;
         });
     }
 
@@ -73,5 +74,15 @@ class PatientHistory extends Model
     public function consultation()
     {
         return $this->belongsTo(Consultation::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function chief_complaint_relation()
+    {
+        return $this->belongsTo(User::class, 'chief_complaint_relation_id');
     }
 }

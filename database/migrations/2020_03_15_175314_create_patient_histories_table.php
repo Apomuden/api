@@ -41,6 +41,9 @@ class CreatePatientHistoriesTable extends Migration
             $table->text('family_history')->nullable();
             $table->text('social_history')->nullable();
 
+            $table->uuid('user_id')->nullable()->comment('One who made the entry');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
+
             $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
             $table->foreign('consultant_id')->references('id')->on('users')->onDelete('restrict');
 
@@ -54,6 +57,10 @@ class CreatePatientHistoriesTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
             $table->dateTime('consultation_date');
             $table->dateTime('attendance_date');
+
+            $table->unsignedInteger('chief_complaint_relation_id')->nullable();
+            $table->foreign('chief_complaint_relation_id')->references('id')->on('relationships')->onDelete('restrict');
+
 
             $table->timestamps();
             $table->softDeletes();

@@ -24,6 +24,7 @@ class PatientHistoryResource extends JsonResource
         $clinic = $this->clinic;
         $clinic_type = $this->clinic_type;
         $consultant = $this->consultant;
+        $chief_complaint_relation=$this->chief_complaint_relation;
         return [
             'id'=>$this->id,
             'consultation_id'=>$this->consultation_id,
@@ -46,6 +47,8 @@ class PatientHistoryResource extends JsonResource
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'attendance_date' => DateHelper::toDisplayDateTime($this->attendance_date),
             'patient_status' => $this->patient_status,
+            'chief_complaint_relation_id'=>$this->chief_complaint_relation_id,
+            'chief_complaint_relation_name'=>$chief_complaint_relation->name??null,
             'presenting_complaints'=>$this->presenting_complaints??null,
             'presenting_complaints_history'=>$this->presenting_complaints_history??null,
             'direct_questions'=>$this->direct_questions??null,
