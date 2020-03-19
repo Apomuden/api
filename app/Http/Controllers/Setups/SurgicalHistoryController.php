@@ -9,7 +9,7 @@ use App\Http\Resources\SurgicalHistoryResource;
 use App\Models\SurgicalHistory;
 use App\Repositories\RepositoryEloquent;
 
-class MedicalHistoryController extends Controller
+class SurgicalHistoryController extends Controller
 {
     protected $repository;
     public function __construct(SurgicalHistory $surgicalHistory)
