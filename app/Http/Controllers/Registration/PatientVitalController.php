@@ -38,14 +38,20 @@ class PatientVitalController extends Controller
     {
         $searchParams = \request()->query();
         $attendanceDate = $searchParams['attendance_date']??null;
-        unset($searchParams['attendance_date']);
+        $patientID = $searchParams['patient_id']??null;
+        unset($searchParams['attendance_date'],$searchParams['patient_id']);
 
-        DB::enableQueryLog();
-        $this->repository->setModel(PatientVital::findBy($searchParams)->whereDate('created_at', $attendanceDate));
+        //DB::enableQueryLog();
+        $this->repository->setModel(PatientVital::findBy($searchParams)->where(function ($query) use ($patientID, $attendanceDate) {
+            $query->whereDate('created_at', $attendanceDate);
+            if ($patientID) {
+                $query->where('patient_id', $patientID);
+            }
+        }));
 
         $records= $this->repository->getModel()->get();
         //return [DB::getQueryLog()];
-        return ApiResponse::withOk('Found Attendances', PatientVitalResource::collection($records));
+        return ApiResponse::withOk('Found Patient Vitals', PatientVitalResource::collection($records));
 
     }
 
