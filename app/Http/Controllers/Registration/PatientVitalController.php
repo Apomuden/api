@@ -11,6 +11,7 @@ use App\Models\PatientVital;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PatientVitalController extends Controller
 {
@@ -31,6 +32,21 @@ class PatientVitalController extends Controller
         return $patientVital?
             ApiResponse::withOk('Patient Vitals Found',new PatientVitalResource($patientVital))
             : ApiResponse::withNotFound('Patient Vitals Not Found');
+    }
+
+    public function byAttendanceDate(Request $request)
+    {
+        $searchParams = \request()->query();
+        $attendanceDate = $searchParams['attendance_date']??null;
+        unset($searchParams['attendance_date']);
+
+        DB::enableQueryLog();
+        $this->repository->setModel(PatientVital::findBy($searchParams)->whereDate('created_at', $attendanceDate));
+
+        $records= $this->repository->getModel()->get();
+        //return [DB::getQueryLog()];
+        return ApiResponse::withOk('Found Attendances', PatientVitalResource::collection($records));
+
     }
 
     public function store(PatientVitalRequest $patientVitalRequest){
