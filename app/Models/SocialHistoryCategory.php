@@ -9,4 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SocialHistoryCategory extends Model
 {
     use FindByTrait,SoftDeletes;
+    protected $guarded = [];
+
 }
