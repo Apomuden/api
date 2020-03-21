@@ -19,9 +19,8 @@ class PatientVitalResource extends JsonResource
     public function toArray($request)
     {
         $patient = $this->patient;
-
-        //Eloquent is simply to assist us with caching but in cases like this simple eloquent isnt bad
-        $measurements = Measurement::orderBy('unit')->get()->toArray();
+        //$repo = new RepositoryEloquent(new Measurement);
+        $measurements = Measurement::all()->toArray();
 
         $ms = ['temperature','pulse','systolic_blood_pressure','diastolic_blood_pressure','respiration','weight','height','bmi',
             'oxygen_saturation','fasting_blood_sugar','random_blood_sugar'];
