@@ -13,6 +13,6 @@ class MedicineHistory extends Model
 
     public function medicine_history_category()
     {
-        return $this->belongsTo(MedicalHistoryCategory::class);
+        return $this->belongsTo(MedicineHistoryCategory::class);
     }
 }
