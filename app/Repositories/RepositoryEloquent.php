@@ -5,6 +5,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
+use Exception;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,8 +35,6 @@ class RepositoryEloquent implements IRepository{
 
        unset($searchParams['sortBy']);
        unset($searchParams['order']);
-
-       DB::enableQueryLog();
 
        if($this->useCache){
             $all= Cache::get($key);

@@ -10,4 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SurgicalHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
+
+    public function surgical_history_category()
+    {
+        return $this->belongsTo(SurgicalHistoryCategory::class);
+    }
 }

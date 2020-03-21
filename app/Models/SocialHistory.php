@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SocialHistory extends Model
 {
     use FindByTrait,SoftDeletes;
+
+    public function social_history_category()
+    {
+        return $this->belongsTo(SocialHistoryCategory::class);
+    }
 }
