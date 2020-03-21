@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SocialHistory extends Model
 {
     use FindByTrait,SoftDeletes;
+    protected $guarded = [];
 
     public function social_history_category()
     {

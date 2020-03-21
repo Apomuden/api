@@ -9,4 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ComplaintType extends Model
 {
     use FindByTrait,SoftDeletes;
+    protected $guarded = [];
+
 }

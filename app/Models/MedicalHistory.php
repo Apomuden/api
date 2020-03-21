@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MedicalHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
+    protected $guarded = [];
 
     public function medical_history_category()
     {

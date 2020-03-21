@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FamilyHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
+    protected $guarded = [];
 
     public function family_history_category()
     {

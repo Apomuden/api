@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class PatientHistory extends Model
 {
   use FindByTrait,SortableTrait,SoftDeletes;
+    protected $guarded = [];
 
     public static function boot()
     {
