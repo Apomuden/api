@@ -9,4 +9,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class DischargeReason extends Model
 {
     use FindByTrait,SoftDeletes;
+    protected $guarded = [];
 }
