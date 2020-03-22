@@ -27,7 +27,7 @@ class AllergyHistoryRequest extends ApiFormRequest
         $id=$this->route('allergyhistory')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('allergy_histories', 'name,allergy_history_category_id',$id),
-            'allergy_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:allergy_history_categories,id',
+            'allergy_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exists:allergy_history_categories,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }
