@@ -35,7 +35,7 @@ class ProfileBasicResource extends JsonResource
         $department=$this->department;
         return [
             //'id'=>$this->id,
-            'title'=>$title->name,
+            'title'=>$title->name??null,
             'staff_id'=>$this->staff_id,
             'ssnit_no'=>$this->ssnit_no,
             'tin'=>$this->tin,
@@ -51,8 +51,8 @@ class ProfileBasicResource extends JsonResource
             'hometown_name'=>$hometown->name??null,
             'hometown_id'=>$hometown->id??null,
             'marital'=>$this->marital,
-            'department_name'=>$department->name,
-            'department_id'=>$department->id,
+            'department_name'=>$department->name??null,
+            'department_id'=>$department->id??null,
             'staff_category_name'=>$staff_category->name??null,
             'staff_category_id'=>$staff_category->id??null,
             'staff_type_name'=>$staff_type->name??null,

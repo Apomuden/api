@@ -18,8 +18,8 @@ class FamilyHistoryResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'family_history_category_id'=> $family_history_category->id,
-            'family_history_category_name'=>$family_history_category->name,
+            'family_history_category_id'=> $family_history_category->id??null,
+            'family_history_category_name'=>$family_history_category->name??null,
             'status'=>$this->status,
             'created_at'=>(string) $this->created_at,
             'updated_at'=>(string) $this->updated_at

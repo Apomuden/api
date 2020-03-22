@@ -18,8 +18,8 @@ class MedicineHistoryResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'medicine_history_category_id'=> $medicine_history_category->id,
-            'medicine_history_category_name'=> $medicine_history_category->name,
+            'medicine_history_category_id'=> $medicine_history_category->id??null,
+            'medicine_history_category_name'=> $medicine_history_category->name??null,
             'status'=>$this->status,
             'created_at'=>(string) $this->created_at,
             'updated_at'=>(string) $this->updated_at

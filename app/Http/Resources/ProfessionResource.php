@@ -20,8 +20,8 @@ class ProfessionResource extends JsonResource
             return [
                 'id'=>$this->id,
                 'name'=>$this->name,
-                'staff_category_name'=>$category->name,
-                'staff_category_id'=>$category->id,
+                'staff_category_name'=>$category->name??null,
+                'staff_category_id'=>$category->id??null,
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)

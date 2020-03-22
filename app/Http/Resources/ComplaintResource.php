@@ -18,8 +18,8 @@ class ComplaintResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
-            'complaint_type_id'=>$complaint_type->id,
-            'complaint_type_name'=>$complaint_type->name,
+            'complaint_type_id'=>$complaint_type->id??null,
+            'complaint_type_name'=>$complaint_type->name??null,
             'status'=>$this->status,
             'created_at'=>(string) $this->created_at,
             'updated_at'=>(string) $this->updated_at
