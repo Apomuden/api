@@ -27,7 +27,7 @@ class ComplaintRequest extends ApiFormRequest
         $id=$this->route('complaint')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('complaints', 'name,complaint_type_id',$id),
-            'complaint_type_id'=> 'bail|', ($id ? 'sometimes' : 'required') . '|exits:complaint_types,id',
+            'complaint_type_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:complaint_types,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }

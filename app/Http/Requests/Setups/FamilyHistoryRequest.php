@@ -27,7 +27,7 @@ class FamilyHistoryRequest extends ApiFormRequest
         $id=$this->route('familyhistory')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('family_histories', 'name,family_history_category_id',$id),
-            'family_history_category_id'=> 'bail|', ($id ? 'sometimes' : 'required') . '|exits:family_history_categories,id',
+            'family_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:family_history_categories,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }
