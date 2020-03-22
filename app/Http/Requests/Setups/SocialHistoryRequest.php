@@ -27,7 +27,7 @@ class SocialHistoryRequest extends ApiFormRequest
         $id=$this->route('socialhistory')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('social_histories', 'name,social_history_category_id',$id),
-            'social_history_category_id'=> 'bail|', ($id ? 'sometimes' : 'required') . '|exits:social_history_categories,id',
+            'social_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:social_history_categories,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }

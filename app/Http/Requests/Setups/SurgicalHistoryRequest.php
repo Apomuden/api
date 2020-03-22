@@ -27,7 +27,7 @@ class SurgicalHistoryRequest extends ApiFormRequest
         $id=$this->route('surgicalhistory')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('surgical_histories', 'name,surgical_history_category_id',$id),
-            'surgical_history_category_id'=> 'bail|', ($id ? 'sometimes' : 'required') . '|exits:surgical_history_categories,id',
+            'surgical_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:surgical_history_categories,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }
