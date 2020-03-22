@@ -10,5 +10,4 @@ class SocialHistoryCategory extends Model
 {
     use FindByTrait,SoftDeletes;
     protected $guarded = [];
-
 }

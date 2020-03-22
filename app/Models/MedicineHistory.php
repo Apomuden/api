@@ -11,9 +11,4 @@ class MedicineHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
-
-    public function medicine_history_category()
-    {
-        return $this->belongsTo(MedicineHistoryCategory::class);
-    }
 }

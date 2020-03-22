@@ -10,9 +10,4 @@ class SocialHistory extends Model
 {
     use FindByTrait,SoftDeletes;
     protected $guarded = [];
-
-    public function social_history_category()
-    {
-        return $this->belongsTo(SocialHistoryCategory::class);
-    }
 }

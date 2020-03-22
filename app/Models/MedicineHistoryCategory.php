@@ -11,5 +11,4 @@ class MedicineHistoryCategory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
-
 }

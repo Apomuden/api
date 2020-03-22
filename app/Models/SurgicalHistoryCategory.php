@@ -11,5 +11,4 @@ class SurgicalHistoryCategory extends Model
 {
    use FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
-
 }
