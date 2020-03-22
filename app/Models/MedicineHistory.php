@@ -10,4 +10,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class MedicineHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
+    protected $guarded = [];
 }
