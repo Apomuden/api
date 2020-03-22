@@ -56,24 +56,24 @@ class PatientVitalController extends Controller
     }
 
     public function store(PatientVitalRequest $patientVitalRequest){
-        try{
+        //try{
             $requestData=$patientVitalRequest->all();
             $patientVital=$this->repository->store($requestData);
             return ApiResponse::withOk('Patient Vitals created',new PatientVitalResource($patientVital->refresh()));
-        }
+        /* }
         catch(Exception $e){
             return ApiResponse::withException($e);
-        }
+        } */
     }
 
     public function update(PatientVitalRequest $patientVitalRequest,$patientVital){
-        try{
+        //try{
             $patientVital=$this->repository->update($patientVitalRequest->all(),$patientVital);
             return ApiResponse::withOk('Patient Vitals updated',new PatientVitalResource($patientVital));
-        }
+        /* }
         catch(Exception $e){
             return ApiResponse::withException($e);
-        }
+        } */
     }
     public function destroy($id)
     {

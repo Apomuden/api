@@ -11,4 +11,9 @@ class FamilyHistory extends Model
 {
     use FindByTrait,SortableTrait,SoftDeletes;
     protected $guarded = [];
+
+    public function family_history_category()
+    {
+        return $this->belongsTo(FamilyHistoryCategory::class);
+    }
 }
