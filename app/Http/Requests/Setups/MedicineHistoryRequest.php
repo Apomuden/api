@@ -27,7 +27,7 @@ class MedicineHistoryRequest extends ApiFormRequest
         $id=$this->route('medicinehistory')??null;
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('medicine_histories', 'name,medicine_history_category_id',$id),
-            'medicine_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exits:medicine_history_categories,id',
+            'medicine_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exists:medicine_history_categories,id',
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }
