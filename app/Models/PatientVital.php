@@ -17,9 +17,9 @@ class PatientVital extends Model
     {
         if($model->height) {
             $height = ($model->height??$model->getOriginal('height'))??0;
-            $weight = ($model->weight??$model->getOriginal('weight'))??0;
+            $weight = ($model->weight??$model->getOriginal('weight'))??null;
             $heightInMeters = ($height * 0.01); //Converting from cm to m
-            return (float)($weight / ($heightInMeters ** 2));
+            return ($heightInMeters && $weight)?((float)($weight / ($heightInMeters ** 2))):null;
         }
         return 0;
     }
