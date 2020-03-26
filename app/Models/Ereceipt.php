@@ -12,4 +12,8 @@ class Ereceipt extends Model
     use ActiveTrait,FindByTrait,SoftDeletes;
 
     protected $guarded = [];
+
+    public function service_order() {
+        return $this->morphedByMany(ServiceOrder::class, 'receipt_item');
+    }
 }
