@@ -14,6 +14,6 @@ class PhysicalExaminationType extends Model
 
     public function physical_examination_category()
     {
-        return $this->belongsTo(PhysicalExaminationCategory::class);
+        return $this->belongsTo(PhysicalExaminationCategory::class, 'category_id');
     }
 }

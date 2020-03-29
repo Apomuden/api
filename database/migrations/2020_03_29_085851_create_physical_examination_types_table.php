@@ -16,12 +16,12 @@ class CreatePhysicalExaminationTypesTable extends Migration
         Schema::create('physical_examination_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('physical_examination_category_id');
-            $table->foreign('physical_examination_category_id', 'physical_exam_category_id')->references('id')->on('physical_examination_categories')->onDelete('restrict');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('physical_examination_categories')->onDelete('restrict');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['name', 'physical_examination_category_id'],'unique_physical_exam_type');
+            $table->unique(['name', 'category_id'],'unique_physical_exam_type');
         });
     }
 

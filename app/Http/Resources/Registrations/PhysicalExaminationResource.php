@@ -24,8 +24,8 @@ class PhysicalExaminationResource extends JsonResource
         $clinic_type = $this->clinic_type;
         $consultant = $this->consultant;
 
-        $physical_examination_category=$this->physical_examination_category;
-        $physical_examination_type=$this->physical_examination_type;
+        $category=$this->category;
+        $type=$this->type;
         return [
             'id' => $this->id,
             'consultation_id' => $this->consultation_id,
@@ -50,11 +50,11 @@ class PhysicalExaminationResource extends JsonResource
             'patient_status' => $this->patient_status,
             'exam_status' => $this->exam_status??null,
             'fundings' => $this->fundings??null,
-            'physical_examination_type_id' => $this->physical_examination_type_id,
-            'physical_examination_type_name' => $physical_examination_type->name ?? null,
+            'type_id' => $this->type_id,
+            'type_name' => $type->name ?? null,
 
-            'physical_examination_category_id' => $this->physical_examination_category_id,
-            'physical_examination_category_name' => $physical_examination_category->name ?? null,
+            'category_id' => $this->category_id,
+            'category_name' => $category->name ?? null,
 
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
