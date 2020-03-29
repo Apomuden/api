@@ -18,11 +18,11 @@ class PhysicalExamination extends Model
 
     public function physical_examination_type()
     {
-        return $this->belongsTo(PhysicalExaminationType:: class);
+        return $this->belongsTo(PhysicalExaminationType:: class,'type_id');
     }
     public function physical_examination_category()
     {
-        return $this->belongsTo(PhysicalExaminationCategory:: class);
+        return $this->belongsTo(PhysicalExaminationCategory:: class,'category_id');
     }
 
     public function consultation()
@@ -49,7 +49,7 @@ class PhysicalExamination extends Model
             $model->attendance_date = $model->attendance_date ?? $consultation->attendance_date;
             $model->user_id = Auth::guard('api')->user()->id;
 
-            $model->physical_examination_category_id=PhysicalExaminationType::findOrFail($model->physical_examination_type_id)->physical_examination_category_id;
+            $model->category_id=PhysicalExaminationType::findOrFail($model->type_id)->category_id;
         });
     }
 

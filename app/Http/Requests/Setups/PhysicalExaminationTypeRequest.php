@@ -25,8 +25,8 @@ class PhysicalExaminationTypeRequest extends ApiFormRequest
     {
         $id = $this->route('physicalexaminationcategory') ?? null;
         return [
-            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUniqueWith('physical_examination_types', 'name,physical_examination_category_id', $id),
-            'physical_examination_category_id'=> 'bail|exists:physical_examination_categories,id',
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUniqueWith('physical_examination_types', 'name,category_id', $id),
+            'category_id'=> 'bail|exists:physical_examination_categories,id',
             'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
