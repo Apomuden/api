@@ -35,7 +35,7 @@ class CreatePhysicalExaminationsTable extends Migration
             $table->foreign('physical_examination_type_id')->references('id')->on('physical_examination_types')->onDelete('restrict');
 
             $table->unsignedBigInteger('physical_examination_category_id');
-            $table->foreign('physical_examination_category_id')->references('id')->on('physical_examination_categories')->onDelete('restrict');
+            $table->foreign('physical_examination_category_id', 'physical_exam_category_id')->references('id')->on('physical_examination_categories')->onDelete('restrict');
 
             $table->text('findings')->nullable();
             $table->enum('exam_status',['NORMAL', 'ABNORMAL']);

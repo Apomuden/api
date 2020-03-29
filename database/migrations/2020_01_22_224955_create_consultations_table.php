@@ -28,7 +28,7 @@ class CreateConsultationsTable extends Migration
             $table->uuid('user_id')->comment('The user who made the request');
             $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
             $table->enum('order_type', ['INTERNAL', 'EXTERNAL'])->default('INTERNAL');
-            $table->dateTime('attendance_date')->useCurrent();
+            $table->dateTime('attendance_date');
             $table->dateTime('started_at')->nullable();
             $table->dateTime('ended_at')->nullable();
             $table->enum('status', ['SERVED', 'IN-QUEUE', 'SUSPENDED','INACTIVE', 'DISCHARGE', 'FINISH'])->default('IN-QUEUE');
