@@ -37,6 +37,7 @@ class Consultation extends Model
 
             $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
             $model->age_group_id = $age_category->age_group_id??null;
+            $model->attendance_date=Carbon::today();
             //$model->age_class_id = $age_category->age_classification_id;
             //$model->age_category_id = $age_category->id;
         });
@@ -96,9 +97,6 @@ class Consultation extends Model
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
                 Attendance::create($model->toArray());
             }
-
-
-
         });
 
         static::updated(function ($model) {
