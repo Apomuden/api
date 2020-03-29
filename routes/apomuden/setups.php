@@ -347,6 +347,16 @@ Route::apiResource('surgicalhistories', 'Setups\SurgicalHistoryController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
+Route::apiResource('physicalexaminationcategories', 'Setups\PhysicalExaminationCategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('physicalexaminationtypes', 'Setups\PhysicalExaminationTypeController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
 //====End of Consulting room setup Routes====
 
 Route::apiResource('agecategories','Setups\AgeCategoryController',[

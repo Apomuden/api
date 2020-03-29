@@ -64,6 +64,12 @@ Route::apiResource('patienthistories', 'Registration\PatientHistoryController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
+Route::apiResource('physicalexaminations', 'Registration\PhysicalExaminationController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'records-mgt',
+    'component'=> 'patient-registry'
+]);
+
 Route::apiResource('consultingrooms', 'Registration\ConsultingRoomController',[
     'module'=> 'records-mgt',
     'component' => 'patient-registry'
