@@ -23,6 +23,9 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
         //Pricing
         Route::prefix('pricing')->group(base_path('routes/apomuden/pricing.php'));
 
+        //Accounts
+        Route::prefix('accounts')->group(base_path('routes/apomuden/accounts.php'));
+
         //Registrations
         Route::prefix('registry')->group(base_path('routes/apomuden/registry.php'));
 

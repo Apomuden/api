@@ -4,7 +4,7 @@ namespace App\Http\Resources\Accounts;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReceiptItemResource extends JsonResource
+class AbscondResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
