@@ -4,7 +4,7 @@ namespace App\Http\Requests\Accounts;
 
 use App\Http\Requests\ApiFormRequest;
 
-class ReceiptItemRequest extends ApiFormRequest
+class EreceiptRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

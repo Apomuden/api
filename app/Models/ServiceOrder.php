@@ -17,6 +17,11 @@ class ServiceOrder extends Model
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
     protected $guarded = ['id'];
 
+    public function  ereceipt()
+    {
+        return $this->morphToMany(Ereceipt::class, 'receipt_item');
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

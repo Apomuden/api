@@ -18,7 +18,7 @@ class Discount extends Model
     }
 
     public function sponsorship_type() {
-        return $this->belongsTo(SponsorshipPolicy::class);
+        return $this->belongsTo(SponsorshipType::class);
     }
 
     public function patient_sponsor() {

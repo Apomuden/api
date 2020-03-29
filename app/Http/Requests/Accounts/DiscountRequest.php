@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Accounts;
 
-use App\Http\Requests\ApiFormRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ReceiptItemRequest extends ApiFormRequest
+class DiscountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class ReceiptItemRequest extends ApiFormRequest
      */
     public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**

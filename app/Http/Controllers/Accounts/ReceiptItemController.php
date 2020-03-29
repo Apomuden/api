@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Accounts;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
@@ -47,7 +47,7 @@ class ReceiptItemController extends Controller
     public function update(ReceiptItemRequest $ReceiptItemRequest,$ReceiptItem){
         try{
             $ReceiptItem=$this->repository->update($ReceiptItemRequest->all(),$ReceiptItem);
-            return ApiResponse::withOk('Receipt Items updated',new ReceiptItemResource($ReceiptItem));
+            return ApiResponse::withOk('Receipt Item updated',new ReceiptItemResource($ReceiptItem));
         }
         catch(Exception $e){
             return ApiResponse::withException($e);
