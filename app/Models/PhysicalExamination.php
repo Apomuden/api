@@ -16,11 +16,11 @@ class PhysicalExamination extends Model
 
     protected $guarded = [];
 
-    public function physical_examination_type()
+    public function type()
     {
         return $this->belongsTo(PhysicalExaminationType:: class,'type_id');
     }
-    public function physical_examination_category()
+    public function category()
     {
         return $this->belongsTo(PhysicalExaminationCategory:: class,'category_id');
     }
