@@ -68,7 +68,7 @@ class Attendance extends Model
             $repository = new RepositoryEloquent(new FundingType);
             $funding_type = $repository->find($model->funding_type_id);
 
-            $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
+            $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash / Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
             //$model->patient_id = $model->parent_id;
 
             //get clinic details
@@ -101,7 +101,7 @@ class Attendance extends Model
 
             $model->request_type=DateHelper::isNewAttendance($model->patient_id,$model->clinic_id)?'NEW':'OLD';
 
-            $model->attendance_date=DateHelper::toDBDate($model->attendance_date);
+            $model->attendance_date=DateHelper::toDBDateTime($model->attendance_date);
 
         });
 

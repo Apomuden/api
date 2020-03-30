@@ -32,6 +32,7 @@ class CreateDepositsTable extends Migration
             $table->decimal('deposit_amount',20,2)->default(0);
             $table->decimal('balance',20,2)->default(0);
             $table->mediumText('reason')->nullable();
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
         });

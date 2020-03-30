@@ -2,10 +2,10 @@
 
 namespace App\Http\Resources\Accounts;
 
-use App\Models\ReceiptItem;
+use App\Models\Ereceipt;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReceiptItemCollection extends ResourceCollection
+class EreceiptCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -15,6 +15,6 @@ class ReceiptItemCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return ReceiptItemResource::collection($this->collection);
+        return EreceiptResource::collection($this->collection);
     }
 }

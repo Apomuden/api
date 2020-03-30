@@ -25,7 +25,7 @@ class CreateRefundsTable extends Migration
             $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
             $table->unsignedBigInteger('patient_sponsor_id')->nullable();
             $table->foreign('patient_sponsor_id')->references('id')->on('patient_sponsors')->onDelete('restrict');
-            $table->string('reference');
+            $table->string('reference')->nullable();
             $table->string('receipt_number')->nullable();
             $table->decimal('total_bill', 20, 2)->default(0);
             $table->decimal('refund_amount', 20, 2)->default(0);

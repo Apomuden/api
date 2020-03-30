@@ -28,7 +28,7 @@ class RepositoryEloquent implements IRepository{
    }
 
    // Get all instances of model
-   public function all($sortBy=null)
+   public function all($sortBy=null, $sortOrder='ASC')
    {
        $key=$this->cache_prefix.'->all';
        $searchParams=\request()->query();
@@ -64,7 +64,12 @@ class RepositoryEloquent implements IRepository{
            }
        }
 
-         $all=$all && $sortBy?$all->sortBy($sortBy):$all;
+       if ($sortOrder=='DESC') {
+           $all = $all && $sortBy ? $all->sortByDesc($sortBy) : $all;
+       }
+       else {
+           $all = $all && $sortBy ? $all->sortBy($sortBy) : $all;
+       }
 
 
          return $this->cache($key,$all);
