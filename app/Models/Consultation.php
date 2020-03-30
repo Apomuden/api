@@ -29,13 +29,13 @@ class Consultation extends Model
             //get patient details
             $repository = new RepositoryEloquent(new Patient);
             $patient = $repository->find($model->patient_id);
-            $model->age = Carbon::parse($patient->dob)->age;
+            $model->age = $model->age?? Carbon::parse($patient->dob)->age;
 
             //age class and group
             $repository = new RepositoryEloquent(new AgeClassification);
-            $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->first();
+            $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
-            $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
+            $age_category = DateHelper::getAgeCategory($age_class->id??null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
             $model->age_group_id = $age_category->age_group_id??null;
             $model->attendance_date=Carbon::today();
             //$model->age_class_id = $age_category->age_classification_id;

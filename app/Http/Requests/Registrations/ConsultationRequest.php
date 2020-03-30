@@ -9,6 +9,7 @@ use App\Models\Patient;
 use App\Models\Role;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class ConsultationRequest extends ApiFormRequest
@@ -117,5 +118,20 @@ class ConsultationRequest extends ApiFormRequest
                 return $status == 'DISCHARGE';
             }),'date']
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $all = $this->all();
+            if(isset($all['dob']) && Carbon::parse($all['dob'])>now())
+                $validator->errors()->add('dob', 'dob cannot be greater than today!');
+        });
+
+    }
+
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+        return $data;
     }
 }
