@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\AgeClassification;
 use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Patient;
@@ -125,6 +126,12 @@ class ConsultationRequest extends ApiFormRequest
             $all = $this->all();
             if(isset($all['dob']) && Carbon::parse($all['dob'])>now())
                 $validator->errors()->add('dob', 'dob cannot be greater than today!');
+            else{
+                $repository = new RepositoryEloquent(new AgeClassification);
+                $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
+                if(!$age_class)
+                    $validator->errors()->add('dob', "An age class with name 'GHS STATEMENT OF OUTPATIENT' or 'GHS REPORTS' must be setup!");
+            }
         });
 
     }
