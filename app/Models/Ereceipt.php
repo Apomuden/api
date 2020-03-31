@@ -50,4 +50,9 @@ class Ereceipt extends Model
     public function service_order() {
         return $this->morphedByMany(ServiceOrder::class, 'receipt_item');
     }
+
+    public function deposit() {
+        return $this->morphedByMany(Deposit::class, 'receipt_item')->withPivot(['paid','id']);
+    }
+
 }
