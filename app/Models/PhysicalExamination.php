@@ -33,6 +33,7 @@ class PhysicalExamination extends Model
             $consultation = Consultation::findOrFail($model->consultation_id);
             $model->age = $consultation->patient->age;
             $model->gender = $consultation->patient->gender;
+            $model->patient_id=$consultation->patient_id;
 
             $model->patient_status = $model->patient_status ?? $consultation->patient_status;
             $model->funding_type_id = $model->funding_type_id ?? $consultation->funding_type_id;
