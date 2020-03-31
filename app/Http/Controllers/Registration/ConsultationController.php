@@ -52,7 +52,7 @@ class ConsultationController extends Controller
        ->where('status', 'IN-QUEUE')
        ->get();
       return [
-            'message' => $initialQueue,
+            'message' =>ConsultationResource::collection($initialQueue),
             'event' => 'new-message',
             'subscriber_id' => $consultant_id
         ];
