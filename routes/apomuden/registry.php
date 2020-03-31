@@ -69,6 +69,11 @@ Route::apiResource('patienthistories', 'Registration\PatientHistoryController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
+Route::post('physicalexaminations/multiple', 'Registration\PhysicalExaminationController@storeMultiple',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'records-mgt',
+    'component'=> 'patient-registry'
+]);
 Route::apiResource('physicalexaminations', 'Registration\PhysicalExaminationController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',
