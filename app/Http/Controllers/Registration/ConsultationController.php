@@ -46,6 +46,17 @@ class ConsultationController extends Controller
         return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('attendance_date','DESC')));
     }
 
+    public function getInitialQueue($consultant_id){
+       $initialQueue= $this->repository->getModel()
+       ->where('consultant_id',$consultant_id)
+       ->where('status', 'IN-QUEUE')
+       ->get();
+      return [
+            'message' => $initialQueue,
+            'event' => 'new-message',
+            'subscriber_id' => $consultant_id
+        ];
+    }
     /**
      * Store a newly created resource in storage.
      *
