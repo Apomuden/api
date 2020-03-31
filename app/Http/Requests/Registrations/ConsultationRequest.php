@@ -3,12 +3,14 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\AgeClassification;
 use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Patient;
 use App\Models\Role;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
 
 class ConsultationRequest extends ApiFormRequest
@@ -117,5 +119,26 @@ class ConsultationRequest extends ApiFormRequest
                 return $status == 'DISCHARGE';
             }),'date']
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $all = $this->all();
+            if(isset($all['dob']) && Carbon::parse($all['dob'])>now())
+                $validator->errors()->add('dob', 'dob cannot be greater than today!');
+            else{
+                $repository = new RepositoryEloquent(new AgeClassification);
+                $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
+                if(!$age_class)
+                    $validator->errors()->add('dob', "An age class with name 'GHS STATEMENT OF OUTPATIENT' or 'GHS REPORTS' must be setup!");
+            }
+        });
+
+    }
+
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+        return $data;
     }
 }

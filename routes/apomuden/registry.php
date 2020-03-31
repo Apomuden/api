@@ -54,6 +54,11 @@ Route::apiResource('patientnextofkins', 'Registration\PatientNextOfKinController
     'module' => 'records-mgt',
     'component' => 'patient-registry'
 ]);
+Route::get('consultations/{consultant_id}/queue', 'Registration\ConsultationController@getInitialQueue',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'records-mgt',
+    'component'=> 'patient-registry'
+]);
 Route::apiResource('consultations','Registration\ConsultationController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',

@@ -90,7 +90,7 @@ class Attendance extends Model
 
             //age class and group
             $repository = new RepositoryEloquent(new AgeClassification);
-            $age_class=$repository->findWhere(['name'=> 'GHS STATEMENT OF OUTPATIENT'])->first();
+            $age_class=$repository->findWhere(['name'=> 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
             $age_category=DateHelper::getAgeCategory($age_class->id, $model->age?DateHelper::getDOB($model->age):$patient->dob);
             $model->age_group_id=$age_category->age_group_id;
