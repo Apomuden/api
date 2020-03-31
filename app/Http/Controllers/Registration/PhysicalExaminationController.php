@@ -49,7 +49,7 @@ class PhysicalExaminationController extends Controller
             $record = $this->repository->store($exam);
             $record_ids[]=$record->id;
         }
-        $records=$this->repository->getModel()->whereIn('id',$record_ids)->get();
+        $records=$this->repository->getModel()->whereIn('id',$record_ids)->orderBy('category_id')->get();
         return ApiResponse::withOk('Physical Examinations created',PhysicalExaminationResource::collection($records));
     }
 
