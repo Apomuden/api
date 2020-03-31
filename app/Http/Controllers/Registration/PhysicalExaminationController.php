@@ -40,11 +40,11 @@ class PhysicalExaminationController extends Controller
     }
     public function storeMultiple(PhysicalExaminationMultipleRequest  $request)
     {
-      
+
         $payload= $request->except(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
 
         $record_ids=[];
-        foreach($payload as $exam){
+        foreach($payload['exams'] as $exam){
             $exam=$exam + $request->only(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
             $record = $this->repository->store($exam);
             $record_ids[]=$record->id;
