@@ -15,24 +15,38 @@ class EreceiptResource extends JsonResource
      */
     public function toArray($request)
     {
-        $services = [];
+        $receipt_items = [];
         foreach ($this->service_order as $service_order) {
-            $services[]= [
-                'id'=>$service_order->id,
+            $receipt_items[]= [
+                'id'=>$service_order->pivot->id,
                 'description'=>$service_order->service->description??null,
-                'service_fee'=>$service_order->service_fee??null,
-                'service_quantity'=>$service_order->service_quantity??null,
-                'service_total_amt'=>$service_order->service_total_amt??null,
+                'item_fee'=>$service_order->service_fee??null,
+                'item_quantity'=>$service_order->service_quantity??null,
+                'item_total_amt'=>$service_order->service_total_amt??null,
                 //'prepaid'=>boolval($service_order->prepaid),
                 //'insured'=>boolval($service_order->insured),
-                'service_bill'=>(!$service_order->prepaid && $service_order->insured) ? $service_order->service_total_amt : 0.00
+                'item_bill'=>(!$service_order->prepaid && $service_order->insured) ? $service_order->service_total_amt : 0.00,
+                'item_paid'=>boolval($service_order->pivot->paid??null)
+            ];
+        }
+        foreach ($this->deposit as $deposit) {
+            $receipt_items[]= [
+                'item_id'=>$deposit->pivot->id??null,
+                'description'=>'Deposit'??null,
+                'item_fee'=>null,
+                'item_quantity'=>null,
+                'item_total_amt'=>$deposit->deposit_amount??null,
+                //'prepaid'=>boolval($service_order->prepaid),
+                //'insured'=>boolval($service_order->insured),
+                'item_bill'=>$deposit->deposit_amount??null,
+                'item_paid'=>boolval($deposit->pivot->paid??null)
             ];
         }
         return [
             'id'=>$this->id,
             'patient_id'=>$this->patient_id,
             'patient_status'=>$this->patient_status,
-            'services'=>$services,
+            'receipt_items'=>$receipt_items,
             'total_bill'=>$this->total_bill,
             'amount_paid'=>$this->amount_paid,
             'balance'=>$this->balance,
