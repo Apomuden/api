@@ -30,7 +30,7 @@ class PhysicalExaminationMultipleRequest extends ApiFormRequest
             'consultation_date' => 'bail|sometimes|date',
             'exams' => 'bail|array',
             'exams.*.note'=>'bail|string|sometimes|nullable',
-            'exams.*.category_id'=> 'bail|distinct|exists:physical_examination_categories,id',
+            'exams.*.category_id'=> 'bail|distinct|exists:physical_examination_categories,id|'.$this->softUniqueWith('physical_examinations', 'category_id,consultation_id',null),
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
