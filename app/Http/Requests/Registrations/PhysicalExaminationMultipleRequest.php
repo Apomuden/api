@@ -28,9 +28,9 @@ class PhysicalExaminationMultipleRequest extends ApiFormRequest
             "consultation_id" => 'bail|integer|required|exists:consultations,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-            'exams' => 'bail|array|distinct',
+            'exams' => 'bail|array',
             'exams.*.note'=>'bail|string|sometimes|nullable',
-            'exams.*.category_id'=> 'bail|exists:physical_examination_categories,id',
+            'exams.*.category_id'=> 'bail|distinct|exists:physical_examination_categories,id',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
