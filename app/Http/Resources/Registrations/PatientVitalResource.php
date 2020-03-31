@@ -102,8 +102,8 @@ class PatientVitalResource extends JsonResource
                 ],
                 'comment' => $this->comment,
                 'status' => $this->status,
-                'created_at' => (string) DateHelper::toDisplayDateTime($this->created_at),
-                'updated_at' => (string) DateHelper::toDisplayDateTime($this->updated_at)
+                'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
     }
