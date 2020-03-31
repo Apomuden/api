@@ -29,15 +29,11 @@ class PhysicalExaminationRequest extends ApiFormRequest
             "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-<<<<<<< HEAD
             'note'=>'bail|string|sometimes|nullable',
             'category_id'=> 'bail|exists:physical_examination_categories,id',
-=======
-            'exam_status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:NORMAL,ABNORMAL',
-            'findings'=>'bail|string|sometimes|nullable',
-            'type_id'=> 'bail|sometimes|exists:physical_examination_types,id',
->>>>>>> 0ad869770f1ea0ba55a931c52fb5db7f451f7ba3
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
+
+
 }

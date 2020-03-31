@@ -4,6 +4,7 @@ namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\PhysicalExamination;
 
 class PhysicalExaminationMultipleRequest extends ApiFormRequest
 {
@@ -33,5 +34,25 @@ class PhysicalExaminationMultipleRequest extends ApiFormRequest
             'exams.*.category_id'=> 'bail|distinct|exists:physical_examination_categories,id|'.$this->softUniqueWith('physical_examinations', 'category_id,consultation_id',null),
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $all = $this->all();
+            $errorCounter = 0;
+            foreach ($all['exams'] as $exam) {
+                $exam = (array) $exam;
+                if (PhysicalExamination::where(['consultation_id' => $all['consultation_id'], 'category_id' => $exam['category_id']])->first())
+                    $validator->errors()->add("exams.$errorCounter.category_id", "Physical examination note for exams.$errorCounter.category_id has already been submitted!");
+
+                $errorCounter++;
+            }
+        });
+    }
+
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+        return $data;
     }
 }
