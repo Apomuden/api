@@ -5,7 +5,7 @@ namespace App\Http\Requests\Registrations;
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Validation\Rule;
 
-class PhysicalExaminationRequest extends ApiFormRequest
+class PhysicalExaminationMultipleRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,12 @@ class PhysicalExaminationRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('physicalexamination') ?? null;
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|required|exists:consultations,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-<<<<<<< HEAD
-            'note'=>'bail|string|sometimes|nullable',
-            'category_id'=> 'bail|exists:physical_examination_categories,id',
-=======
-            'exam_status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:NORMAL,ABNORMAL',
-            'findings'=>'bail|string|sometimes|nullable',
-            'type_id'=> 'bail|sometimes|exists:physical_examination_types,id',
->>>>>>> 0ad869770f1ea0ba55a931c52fb5db7f451f7ba3
+            '*.note'=>'bail|string|sometimes|nullable',
+            '*.category_id'=> 'bail|exists:physical_examination_categories,id',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }

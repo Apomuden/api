@@ -31,14 +31,11 @@ class CreatePhysicalExaminationsTable extends Migration
             $table->enum('gender', ['MALE', 'FEMALE', 'BIGENDER']);
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT');
 
-            $table->unsignedBigInteger('type_id');
-            $table->foreign('type_id')->references('id')->on('physical_examination_types')->onDelete('restrict');
 
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id', 'physical_exam_category_id')->references('id')->on('physical_examination_categories')->onDelete('restrict');
 
-            $table->text('findings')->nullable();
-            $table->enum('exam_status',['NORMAL', 'ABNORMAL']);
+            $table->text('note')->nullable();
 
             $table->uuid('user_id')->nullable()->comment('One who made the entry');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');

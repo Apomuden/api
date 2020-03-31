@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Registration;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Registrations\PhysicalExaminationMultipleRequest;
 use App\Http\Requests\Registrations\PhysicalExaminationRequest;
 use App\Http\Resources\Registrations\PhysicalExaminationResource;
 use App\Models\PhysicalExamination;
@@ -36,6 +37,20 @@ class PhysicalExaminationController extends Controller
     {
         $record=$this->repository->store($request->all());
         return ApiResponse::withOk('Physical Examination created',new PhysicalExaminationResource($record));
+    }
+    public function storeMultiple(PhysicalExaminationMultipleRequest  $request)
+    {
+      
+        $payload= $request->except(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
+
+        $record_ids=[];
+        foreach($payload as $exam){
+            $exam=$exam + $request->only(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
+            $record = $this->repository->store($exam);
+            $record_ids[]=$record->id;
+        }
+        $records=$this->repository->getModel()->whereIn('id',$record_ids)->get();
+        return ApiResponse::withOk('Physical Examinations created',PhysicalExaminationResource::collection($records));
     }
 
     /**
