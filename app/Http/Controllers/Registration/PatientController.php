@@ -13,7 +13,9 @@ use App\Models\Patient;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class PatientController extends Controller
 {
@@ -21,7 +23,8 @@ class PatientController extends Controller
     public function __construct()
     {
 
-      $this->searchParams=\request()->query();
+      $this->searchParams=\request()->all();
+
 
       $folder_no=$this->searchParams['folder_no']??null;
       $rack_no=$this->searchParams['rack_no']??null;
@@ -87,8 +90,10 @@ class PatientController extends Controller
     }
     public function index()
     {
-      //DB::enableQueryLog();
-      $this->repository->useFindBy=false;
+      DB::enableQueryLog();
+      //Arr::except($this->searchParams,['folder_no', 'rack_no', 'folder_type']);
+        //Log::info('Filter', $this->searchParams);
+       $this->repository->useFindBy=false;
 
       //Enforce folder search only when folder params are specified
       if($this->withCallback)
@@ -97,7 +102,7 @@ class PatientController extends Controller
         $this->repository->setModel(Patient::findBy($this->searchParams));
 
       $patients=$this->repository->all('surname');
-      //return [DB::getQueryLog()];
+      return [DB::getQueryLog()];
       return ApiResponse::withOk('Patients List',PatientResource::collection($patients));
     }
     public function paginated()
