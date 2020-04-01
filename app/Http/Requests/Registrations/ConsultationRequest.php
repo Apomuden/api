@@ -81,7 +81,7 @@ class ConsultationRequest extends ApiFormRequest
                 })
             ],
             'consultant_id'=> [
-                'bail', 'sometimes', 'nullable', 'integer',
+                'bail', 'sometimes', 'nullable',
                 Rule::exists('users', 'id')->where(function ($query) use ($role) {
                     $query->where(['role_id'=>$role->id??null]);
                 })
