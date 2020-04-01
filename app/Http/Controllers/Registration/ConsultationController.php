@@ -41,8 +41,13 @@ class ConsultationController extends Controller
         $statusParam = $searchParams['status']??null;
         unset($searchParams);
         if ($this->routeName === 'consultationservicerequests.index' && !$statusParam) {
+            DB::enableQueryLog();
+
             $this->repository->setModel(Consultation::where('status', 'IN-QUEUE'));
-            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($this->repository->all('attendance_date','DESC')));
+            $records= $this->repository->all('attendance_date', 'DESC');
+            return [DB::getQueryLog()];
+
+            return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($records));
         }
         return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('attendance_date','DESC')));
     }

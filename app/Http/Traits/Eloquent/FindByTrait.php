@@ -101,7 +101,7 @@ trait FindByTrait
 
 
             if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
-                 if($paramObj->comparator=='=')
+                 if($paramObj->comparator=='=' || ApiRequest::startsWith($paramObj->comparator,'>') || ApiRequest::startsWith($paramObj->comparator, '<'))
                     $query = $query->whereDate($key, $paramObj->comparator, $paramObj->value);
                  else
                     $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
