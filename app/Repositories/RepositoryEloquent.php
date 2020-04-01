@@ -33,6 +33,7 @@ class RepositoryEloquent implements IRepository{
        $key=$this->cache_prefix.'->all';
        $searchParams=\request()->query();
 
+
        unset($searchParams['sortBy']);
        unset($searchParams['order']);
 

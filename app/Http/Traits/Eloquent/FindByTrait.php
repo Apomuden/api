@@ -15,29 +15,32 @@ trait FindByTrait
     private function getComparator($value)
     {
         $paramObj = new stdClass;
-        if (ApiRequest::startsWith(trim($value), '=')) {
-            $paramObj->comparator = '=';
-            $paramObj->value = str_replace('=', '', trim($value));
+
+
+        if (ApiRequest::startsWith(trim($value), '<=')) {
+            $paramObj->comparator = '<=';
+            $paramObj->value = str_replace('<=', '', trim($value));
         }
         else if (ApiRequest::startsWith(trim($value), '<')) {
             $paramObj->comparator = '<';
             $paramObj->value = str_replace('<', '', trim($value));
         }
-        else if (ApiRequest::startsWith(trim($value), '<=')) {
-            $paramObj->comparator = '<=';
-            $paramObj->value = str_replace('<=', '', trim($value));
+        else if (ApiRequest::startsWith(trim($value), '>=')) {
+            $paramObj->comparator = '>=';
+            $paramObj->value = str_replace('>=', '', trim($value));
         }
         else if (ApiRequest::startsWith(trim($value), '>')) {
             $paramObj->comparator = '>';
             $paramObj->value = str_replace('>', '', trim($value));
         }
-        else if (ApiRequest::startsWith(trim($value), '>=')) {
-            $paramObj->comparator = '>=';
-            $paramObj->value = str_replace('>=', '', trim($value));
-        }
+
         else if (ApiRequest::startsWith(trim($value), '!')) {
             $paramObj->comparator = '!=';
             $paramObj->value = str_replace('!', '', trim($value));
+        }
+        else if (ApiRequest::startsWith(trim($value), '=')) {
+            $paramObj->comparator = '=';
+            $paramObj->value = str_replace('=', '', trim($value));
         }
         else {
             $paramObj->comparator = 'like';
@@ -94,6 +97,8 @@ trait FindByTrait
             $value = ApiRequest::sanitize_string($value) ?? null;
 
             $paramObj = $this->getComparator($value);
+
+
 
             if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
                  if($paramObj->comparator=='=')
