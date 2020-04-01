@@ -357,6 +357,16 @@ Route::apiResource('physicalexaminationtypes', 'Setups\PhysicalExaminationTypeCo
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
+Route::apiResource('icd10groupings', 'Setups\Icd10GroupingController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
+Route::apiResource('mohghsgroupings', 'Setups\MohGhsGroupingController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
 //====End of Consulting room setup Routes====
 
 Route::apiResource('agecategories','Setups\AgeCategoryController',[

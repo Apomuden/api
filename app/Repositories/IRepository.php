@@ -1,7 +1,7 @@
 <?php
 namespace App\Repositories;
 interface IRepository{
-    function all();
+    function all($sort,$order);
     function paginate();
     function store(array $data);
 
