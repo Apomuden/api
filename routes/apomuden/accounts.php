@@ -22,5 +22,7 @@ Route::apiResource('absconds','Accounts\AbscondController',[
 Route::apiResource('refunds','Accounts\RefundController',[
     //'only'=>['index','show','store','update'],
     'module'=>'acct-mgt',
-    'component'=>'receipt'
+    'component'=>'refund'
 ]);
+
+Route::get('transactions/{patient_id}/quickdetails/','Accounts\TransactionController@index');
