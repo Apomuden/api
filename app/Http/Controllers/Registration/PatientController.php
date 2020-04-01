@@ -90,7 +90,7 @@ class PatientController extends Controller
     }
     public function index()
     {
-      DB::enableQueryLog();
+      //DB::enableQueryLog();
       //Arr::except($this->searchParams,['folder_no', 'rack_no', 'folder_type']);
         //Log::info('Filter', $this->searchParams);
        $this->repository->useFindBy=false;
@@ -102,7 +102,7 @@ class PatientController extends Controller
         $this->repository->setModel(Patient::findBy($this->searchParams));
 
       $patients=$this->repository->all('surname');
-      return [DB::getQueryLog()];
+      //return [DB::getQueryLog()];
       return ApiResponse::withOk('Patients List',PatientResource::collection($patients));
     }
     public function paginated()
