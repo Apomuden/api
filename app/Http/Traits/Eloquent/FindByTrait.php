@@ -16,10 +16,28 @@ trait FindByTrait
         if (ApiRequest::startsWith(trim($value), '=')) {
             $paramObj->comparator = '=';
             $paramObj->value = str_replace('=', '', trim($value));
-        } else if (ApiRequest::startsWith(trim($value), '!')) {
+        }
+        else if (ApiRequest::startsWith(trim($value), '<')) {
+            $paramObj->comparator = '<';
+            $paramObj->value = str_replace('<', '', trim($value));
+        }
+        else if (ApiRequest::startsWith(trim($value), '<=')) {
+            $paramObj->comparator = '<=';
+            $paramObj->value = str_replace('<=', '', trim($value));
+        }
+        else if (ApiRequest::startsWith(trim($value), '>')) {
+            $paramObj->comparator = '>';
+            $paramObj->value = str_replace('>', '', trim($value));
+        }
+        else if (ApiRequest::startsWith(trim($value), '>=')) {
+            $paramObj->comparator = '>=';
+            $paramObj->value = str_replace('>=', '', trim($value));
+        }
+        else if (ApiRequest::startsWith(trim($value), '!')) {
             $paramObj->comparator = '!=';
             $paramObj->value = str_replace('!', '', trim($value));
-        } else {
+        }
+        else {
             $paramObj->comparator = 'like';
             $paramObj->value = "%{$value}%";
         }
