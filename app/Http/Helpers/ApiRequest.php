@@ -19,11 +19,15 @@ class ApiRequest{
      }
      static function startsWith($string, $start)
      {
+        $string = strtolower($string) ?? null;
+        $start = strtolower($start) ?? null;
         return strrpos($string, $start, -strlen($string)) !== false;
      }
 
      static function endsWith($string, $end)
     {
+        $string=strtolower($string)??null;
+        $end=strtolower($end)??null;
         return ($offset = strlen($string) - strlen($end)) >= 0
             && strpos($string, $end, $offset) !== false;
     }

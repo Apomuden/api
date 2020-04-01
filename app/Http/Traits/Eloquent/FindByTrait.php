@@ -47,6 +47,8 @@ trait FindByTrait
         if ($dateTo)
             $query = $query->whereDate('created_at', '<=', date('Y-m-d', strtotime($dateTo)));
 
+
+
         unset($params['sortBy'], $params['order']);
 
         //Log::debug('Params Type',$params);
@@ -60,6 +62,9 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($first_value);
 
+            if(in_array($first_key,['started_at', 'ended_at'])|| ApiRequest::endsWith($first_key,'date'))
+            $query=$query->whereDate($first_key, $paramObj->comparator, $paramObj->value);
+            else
             $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
             unset($params[0][$first_key], $params[$first_key]);
         }
@@ -70,7 +75,10 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($value);
 
-            $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
+            if (in_array($key, ['started_at', 'ended_at']) || ApiRequest::endsWith($key, 'date'))
+                $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
+            else
+                $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
         }
         return $query;
     }
