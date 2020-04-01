@@ -34,7 +34,7 @@ class CreateServicesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['description','deleted_at']);
-            $table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_service');
+            //$table->unique(['service_category_id', 'service_subcategory_id', 'age_group_id', 'gender', 'patient_status','deleted_at'], 'unique_service');
 
         });
     }

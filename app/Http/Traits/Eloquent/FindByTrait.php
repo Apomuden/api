@@ -3,6 +3,7 @@
 namespace App\Http\Traits;
 
 use App\Http\Helpers\ApiRequest;
+use App\Models\Role;
 use Illuminate\Support\Facades\Log;
 use stdClass;
 
@@ -28,6 +29,11 @@ trait FindByTrait
     public function scopeFindBy($query, array $params)
     {
 
+        if(isset($params['role']))
+        {
+            $params['role_id']=Role::where('name', $params['role'])->first()->id??null;
+            unset($params['role']);
+        }
         $dateFrom = $params['dateFrom'] ?? null;
         $dateTo = $params['dateTo'] ?? null;
 

@@ -16,10 +16,6 @@ class PhysicalExamination extends Model
 
     protected $guarded = [];
 
-    public function type()
-    {
-        return $this->belongsTo(PhysicalExaminationType:: class,'type_id');
-    }
     public function category()
     {
         return $this->belongsTo(PhysicalExaminationCategory:: class,'category_id');
@@ -37,6 +33,7 @@ class PhysicalExamination extends Model
             $consultation = Consultation::findOrFail($model->consultation_id);
             $model->age = $consultation->patient->age;
             $model->gender = $consultation->patient->gender;
+            $model->patient_id=$consultation->patient_id;
 
             $model->patient_status = $model->patient_status ?? $consultation->patient_status;
             $model->funding_type_id = $model->funding_type_id ?? $consultation->funding_type_id;
@@ -48,8 +45,6 @@ class PhysicalExamination extends Model
             $model->consultation_date = $model->consultation_date ?? ($consultation->started_at ?? Carbon::today());
             $model->attendance_date = $model->attendance_date ?? $consultation->attendance_date;
             $model->user_id = Auth::guard('api')->user()->id;
-
-            $model->category_id=PhysicalExaminationType::findOrFail($model->type_id)->category_id;
         });
     }
 
