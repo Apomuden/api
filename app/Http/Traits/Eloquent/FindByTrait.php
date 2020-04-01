@@ -62,7 +62,7 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($first_value);
 
-            if(in_array($first_key,['started_at', 'ended_at'])|| ApiRequest::endsWith($first_key,'date'))
+            if(in_array($first_key,['started_at', 'ended_at','dob'])|| ApiRequest::endsWith($first_key,'date'))
             $query=$query->whereDate($first_key, $paramObj->comparator, $paramObj->value);
             else
             $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
@@ -75,10 +75,18 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($value);
 
-            if (in_array($key, ['started_at', 'ended_at']) || ApiRequest::endsWith($key, 'date'))
-                $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
-            else
-                $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
+            if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
+                 if($paramObj->comparator=='=')
+                    $query = $query->whereDate($key, $paramObj->comparator, $paramObj->value);
+                 else
+                    $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
+            }
+            else{
+                 if($paramObj->comparator == '=')
+                   $query = $query->where($key, $paramObj->comparator, $paramObj->value);
+                 else
+                   $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
+            }
         }
         return $query;
     }
