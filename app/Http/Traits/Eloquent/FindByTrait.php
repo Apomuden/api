@@ -4,6 +4,7 @@ namespace App\Http\Traits;
 
 use App\Http\Helpers\ApiRequest;
 use App\Models\Role;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use stdClass;
@@ -82,7 +83,7 @@ trait FindByTrait
             $paramObj = $this->getComparator($first_value);
 
             if(in_array($first_key,['started_at', 'ended_at','dob'])|| ApiRequest::endsWith($first_key,'date'))
-            $query=$query->where(DB::raw("DATE($first_key)"), $paramObj->comparator, $paramObj->value);
+            $query=$query->whereDate($first_key, $paramObj->comparator, Carbon::parse($paramObj->value)??null);
             else
             $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
             unset($params[0][$first_key], $params[$first_key]);
@@ -96,9 +97,9 @@ trait FindByTrait
 
             if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
                  if($paramObj->comparator=='=')
-                    $query = $query->where(DB::raw("DATE($key)"), $paramObj->comparator, $paramObj->value);
+                    $query = $query->whereDate($key, $paramObj->comparator, Carbon::parse($paramObj->value)??null);
                  else
-                    $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
+                    $query = $query->orWhereDate($key, $paramObj->comparator, Carbon::parse($paramObj->value)??null);
             }
             else{
                  if($paramObj->comparator == '=')
