@@ -36,37 +36,49 @@ class PatientHistory extends Model
         });
 
         static::created(function($model){
+            $summary = PatientHistoriesSummary::find($model->patient_id);
+            $summary = Arr::only($summary->toArray(), [
+                'presenting_complaints_history',
+                'past_medical_history',
+                'surgical_history',
+                'medicine_history',
+                'allergies_history',
+                'family_history',
+                'social_history'
+            ]) + Arr::only($model->toArray(), [
+                'presenting_complaints_history',
+                'past_medical_history',
+                'surgical_history',
+                'medicine_history',
+                'allergies_history',
+                'family_history',
+                'social_history'
+            ]);
+
             PatientHistoriesSummary::where('patient_id', $model->patient_id)
-                ->updateOrCreate(Arr::only(
-                    $model->toArray(),
-                    ['patient_id' => $model->patient_id],
-                    [
-                        'presenting_complaints_history',
-                        'past_medical_history',
-                        'surgical_history',
-                        'medicine_history',
-                        'allergies_history',
-                        'family_history',
-                        'social_history'
-                    ]
-                ));
+                ->updateOrCreate(['patient_id' => $model->patient_id], $summary);
         });
 
         static::updated(function($model){
+           $summary=PatientHistoriesSummary::find($model->patient_id);
+           $summary=Arr::only($summary->toArray(),[
+                'presenting_complaints_history',
+                'past_medical_history',
+                'surgical_history',
+                'medicine_history',
+                'allergies_history',
+                'family_history',
+                'social_history'])+Arr::only($model->toArray(),[
+                'presenting_complaints_history',
+                'past_medical_history',
+                'surgical_history',
+                'medicine_history',
+                'allergies_history',
+                'family_history',
+                'social_history']);
+
             PatientHistoriesSummary::where('patient_id', $model->patient_id)
-                ->updateOrCreate(Arr::only(
-                    $model->toArray(),
-                    ['patient_id'=> $model->patient_id],
-                    [
-                        'presenting_complaints_history',
-                        'past_medical_history',
-                        'surgical_history',
-                        'medicine_history',
-                        'allergies_history',
-                        'family_history',
-                        'social_history'
-                    ]
-                ));
+                ->updateOrCreate(['patient_id' => $model->patient_id],$summary);
         });
     }
 
