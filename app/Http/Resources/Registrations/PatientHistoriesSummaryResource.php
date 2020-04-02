@@ -20,7 +20,6 @@ class PatientHistoriesSummaryResource extends JsonResource
         $funding_type = $this->funding_type;
 
         $sponsorship_type = $this->sponsorship_type;
-        $billing_sponsor = $this->billing_sponsor;
 
 
         return [
@@ -30,8 +29,7 @@ class PatientHistoriesSummaryResource extends JsonResource
             'funding_type_id' => $funding_type->id ?? null,
             'sponsorship_type_name' => $sponsorship_type->name ?? null,
             'sponsorship_type_id' => $sponsorship_type->id ?? null,
-            'billing_sponsor_name' => $billing_sponsor->name ?? null,
-            'billing_sponsor_id' => $billing_sponsor->id ?? null,
+         
             'gender'=>$this->gender,
             'age'=>$this->age,
             'patient_status' => $this->patient_status,
