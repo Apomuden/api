@@ -59,7 +59,7 @@ class PatientHistory extends Model
                 ->updateOrCreate(['patient_id' => $model->patient_id], $summary);
         });
 
-        static::updated(function($model){
+        static::updating(function($model){
            $summary=PatientHistoriesSummary::find($model->patient_id);
            $summary=(Arr::only($summary->toArray(),[
                 'presenting_complaints_history',
