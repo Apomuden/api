@@ -29,11 +29,11 @@ class PatientHistoriesSummaryResource extends JsonResource
             'funding_type_id' => $funding_type->id ?? null,
             'sponsorship_type_name' => $sponsorship_type->name ?? null,
             'sponsorship_type_id' => $sponsorship_type->id ?? null,
-         
+
             'gender'=>$this->gender,
             'age'=>$this->age,
             'patient_status' => $this->patient_status,
-            'presenting_complaints_history'=>$this->presenting_complaints_history??null,
+            //'presenting_complaints_history'=>$this->presenting_complaints_history??null,
             'past_medical_history'=>$this->past_medical_history??null,
             'surgical_history'=>$this->surgical_history??null,
             'medicine_history'=>$this->medicine_history??null,

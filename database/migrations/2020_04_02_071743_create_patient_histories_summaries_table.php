@@ -29,7 +29,7 @@ class CreatePatientHistoriesSummariesTable extends Migration
             $table->enum('gender', ['MALE', 'FEMALE', 'BIGENDER']);
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT');
 
-            $table->text('presenting_complaints_history')->nullable();
+            //$table->text('presenting_complaints_history')->nullable();
             $table->text('past_medical_history')->nullable();
             $table->text('surgical_history')->nullable();
             $table->text('medicine_history')->nullable();

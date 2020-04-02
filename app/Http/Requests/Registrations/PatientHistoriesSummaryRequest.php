@@ -29,7 +29,6 @@ class PatientHistoriesSummaryRequest extends FormRequest
         return [
             "patient_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists,patients,id',
             'patient_status' => 'bail|'. ($id ? 'sometimes' : 'required').'|in:IN-PATIENT,OUT-PATIENT',
-            'presenting_complaints_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
             'past_medical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
             'surgical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
             'medicine_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
