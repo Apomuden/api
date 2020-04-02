@@ -135,9 +135,13 @@ class RepositoryEloquent implements IRepository{
    // update record in the database
    public function update(array $data, $id)
    {
-       $key=$this->cache_prefix.'->find->'.$id;
-       $record = $this->model->findOrFail($id);
-       $record->update($data);
+        $record = $this->model->findOrFail($id);
+
+        foreach ($data as $key => $value) {
+            $record->{$key} = $value;
+        }
+        $record->save();
+        $key=$this->cache_prefix.'->find->'.$id;
 
        //Delete Previous cached value
        $this->deletCache($key);
