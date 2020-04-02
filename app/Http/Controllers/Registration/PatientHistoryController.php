@@ -49,7 +49,7 @@ class PatientHistoryController extends Controller
     public function show($id)
     {
         $record=$this->repository->show($id);
-        return ApiResponse::withOk('Patient history found',new PatientResource($record));
+        return ApiResponse::withOk('Patient history found',new PatientHistoryResource($record));
     }
 
     /**

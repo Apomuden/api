@@ -28,7 +28,6 @@ class ConsultationController extends Controller
     {
         $this->repository = new RepositoryEloquent($consultation);
         $this->routeName = FacadeRoute::currentRouteName();
-
     }
     /**
      * Display a listing of the resource.
@@ -42,11 +41,9 @@ class ConsultationController extends Controller
         unset($searchParams);
         if ($this->routeName === 'consultationservicerequests.index' && !$statusParam) {
             //DB::enableQueryLog();
-
             $this->repository->setModel(Consultation::where('status', 'IN-QUEUE'));
             $records= $this->repository->all('attendance_date', 'DESC');
             //return [DB::getQueryLog()];
-
             return ApiResponse::withOk('Consultation Service Requests list', new ConsultationCollection($records));
         }
         return ApiResponse::withOk('Consultation Service list', new ConsultationCollection($this->repository->all('attendance_date','DESC')));

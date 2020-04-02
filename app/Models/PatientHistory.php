@@ -7,6 +7,7 @@ use App\Http\Traits\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class PatientHistory extends Model
@@ -19,9 +20,9 @@ class PatientHistory extends Model
         parent::boot();
         static::creating(function ($model) {
            $consultation=Consultation::findOrFail($model->consultation_id);
+           $model->patient_id=$consultation->patient_id;
            $model->age=$consultation->patient->age;
            $model->gender=$consultation->patient->gender;
-
            $model->patient_status= $model->patient_status??$consultation->patient_status;
            $model->funding_type_id=$model->funding_type_id??$consultation->funding_type_id;
            $model->sponsorship_type_id=$model->sponsorship_type_id??$consultation->sponsorship_type_id;
@@ -32,6 +33,40 @@ class PatientHistory extends Model
            $model->consultation_date= $model->consultation_date??($consultation->started_at??Carbon::today());
            $model->attendance_date=$model->attendance_date??$consultation->attendance_date;
            $model->user_id = Auth::guard('api')->user()->id;
+        });
+
+        static::created(function($model){
+            PatientHistoriesSummary::where('patient_id', $model->patient_id)
+                ->updateOrCreate(Arr::only(
+                    $model->toArray(),
+                    ['patient_id' => $model->patient_id],
+                    [
+                        'presenting_complaints_history',
+                        'past_medical_history',
+                        'surgical_history',
+                        'medicine_history',
+                        'allergies_history',
+                        'family_history',
+                        'social_history'
+                    ]
+                ));
+        });
+
+        static::updated(function($model){
+            PatientHistoriesSummary::where('patient_id', $model->patient_id)
+                ->updateOrCreate(Arr::only(
+                    $model->toArray(),
+                    ['patient_id'=> $model->patient_id],
+                    [
+                        'presenting_complaints_history',
+                        'past_medical_history',
+                        'surgical_history',
+                        'medicine_history',
+                        'allergies_history',
+                        'family_history',
+                        'social_history'
+                    ]
+                ));
         });
     }
 
