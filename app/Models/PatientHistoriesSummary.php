@@ -18,15 +18,9 @@ class PatientHistoriesSummary extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $consultation = Consultation::findOrFail($model->consultation_id);
-            $model->age = $consultation->patient->age;
-            $model->gender = $consultation->patient->gender;
-
-            $model->patient_status = $model->patient_status ?? $consultation->patient_status;
-            $model->funding_type_id = $model->funding_type_id ?? $consultation->funding_type_id;
-            $model->sponsorship_type_id = $model->sponsorship_type_id ?? $consultation->sponsorship_type_id;
-            $model->billing_sponsor_id = $model->billing_sponsor_id ?? $consultation->billing_sponsor_id;
-
+            $patient = patient::findOrFail($model->patient_id);
+            $model->age = $patient->age;
+            $model->gender = $patient->gender;
             $model->user_id = Auth::guard('api')->user()->id;
         });
     }
@@ -47,17 +41,8 @@ class PatientHistoriesSummary extends Model
         return $this->belongsTo(SponsorshipType::class);
     }
 
-
-    public function billing_sponsor()
-    {
-        return $this->belongsTo(BillingSponsor::class);
-    }
-
-
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-
 }

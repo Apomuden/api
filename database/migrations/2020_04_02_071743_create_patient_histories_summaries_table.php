@@ -24,8 +24,6 @@ class CreatePatientHistoriesSummariesTable extends Migration
             $table->unsignedInteger('sponsorship_type_id')->nullable();
             $table->foreign('sponsorship_type_id')->references('id')->on('sponsorship_types')->onDelete('restrict');
 
-            $table->unsignedBigInteger('billing_sponsor_id')->nullable();
-            $table->foreign('billing_sponsor_id')->references('id')->on('billing_sponsors')->onDelete('restrict');
 
             $table->unsignedInteger('age');
             $table->enum('gender', ['MALE', 'FEMALE', 'BIGENDER']);
