@@ -37,7 +37,7 @@ class PatientHistory extends Model
 
         static::created(function($model){
             $summary = PatientHistoriesSummary::find($model->patient_id);
-            $summary = (Arr::only($summary->toArray(), [
+            $summary = ($summary? Arr::only($summary->toArray(), [
                 'presenting_complaints_history',
                 'past_medical_history',
                 'surgical_history',
@@ -45,7 +45,7 @@ class PatientHistory extends Model
                 'allergies_history',
                 'family_history',
                 'social_history'
-            ])??[]) + Arr::only($model->toArray(), [
+            ]):[])+ Arr::only($model->toArray(), [
                 'presenting_complaints_history',
                 'past_medical_history',
                 'surgical_history',
@@ -61,14 +61,14 @@ class PatientHistory extends Model
 
         static::updating(function($model){
            $summary=PatientHistoriesSummary::find($model->patient_id);
-           $summary=(Arr::only($summary->toArray(),[
+           $summary=($summary?Arr::only($summary->toArray(),[
                 'presenting_complaints_history',
                 'past_medical_history',
                 'surgical_history',
                 'medicine_history',
                 'allergies_history',
                 'family_history',
-                'social_history'])??[])+Arr::only($model->toArray(),[
+                'social_history']):[])+Arr::only($model->toArray(),[
                 'presenting_complaints_history',
                 'past_medical_history',
                 'surgical_history',
