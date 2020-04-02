@@ -19,6 +19,8 @@ class PatientHistoriesSummary extends Model
         parent::boot();
         static::creating(function ($model) {
             $patient = patient::findOrFail($model->patient_id);
+            $model->funding_type_id=$patient->funding_type_id;
+            $model->sponsorship_type_id=$patient->sponsorship_type_id;
             $model->age = $patient->age;
             $model->gender = $patient->gender;
             $model->user_id = Auth::guard('api')->user()->id;
