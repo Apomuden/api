@@ -61,7 +61,7 @@ class PatientHistoriesSummaryController extends Controller
      */
     public function update(PatientHistoriesSummaryRequest $request, $id)
     {
-        $record=$this->repository->getModel()->where('patient_id',$id)->update($request->all());
+        $record=$this->repository->getModel()->where('patient_id',$id)->firstOrFail()->update($request->all());
         return ApiResponse::withOk('patient histories summary updated',new PatientHistoriesSummaryResource($record->refresh()));
     }
 
