@@ -126,16 +126,10 @@ class ConsultationController extends Controller
      */
     public function update(ConsultationRequest $request, $consultation)
     {
-        try{
 
             $consultation = $this->repository->update($request->all(), $consultation);
 
             return ApiResponse::withOk('Consultation Service updated', new ConsultationResource($consultation));
-
-        }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        }
     }
     public function destroy($id)
     {
