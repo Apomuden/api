@@ -95,6 +95,7 @@ class Consultation extends Model
             unset($model->consultant_id);
 
             if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
+                 unset($model->pregnant);
                 Attendance::create($model->toArray());
             }
         });
