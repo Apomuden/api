@@ -109,7 +109,7 @@ class Consultation extends Model
             ->where('clinic_id',$model->clinic_id)
             ->where('service_id', $model->consultation_service_id)
             ->whereDate('attendance_date',$model->attendance_date)
-            ->lastest()->first()->id??null;
+            ->orderBy('created_at','desc')->first()->id??null;
 
             Attendance::updateObject($model);
 
