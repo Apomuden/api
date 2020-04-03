@@ -101,8 +101,8 @@ class ConsultationRequest extends ApiFormRequest
             'ended_at'=>'bail|sometimes|nullable|date',
             'patient_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT',
             'status'=> 'bail|sometimes|string|in:COMPLETED,IN-QUEUE,SUSPENDED,DISCHARGE,FINISH',
-            'pregnant'=>['bail',' boolean',Rule::requiredIf(function() use($patient){
-                return $patient && $patient->gender=='FEMALE' && $patient->age>=13;
+            'pregnant'=>['bail',' boolean',Rule::requiredIf(function() use($patient,$id){
+                return !$id && $patient && $patient->gender=='FEMALE' && $patient->age>=13;
             })],
             'illness_type_id'=>['bail','integer','sometimes',Rule::exists('illness_types','id')->where(function($query){
                 $query->where('status','ACTIVE');
