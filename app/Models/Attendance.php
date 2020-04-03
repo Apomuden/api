@@ -19,7 +19,7 @@ class Attendance extends Model
 
     public static function updateObject($model){
         $attendance=self::find($model->attendance_id);
-        $attendance->service_id= $model->consultation_service_id??$attendance->service_id;
+        $attendance->service_id= ($model->consultation_service_id??$attendance->service_id)??null;
         //create an attendance
         $repository = new RepositoryEloquent(new FundingType);
         $funding_type = $repository->find($model->funding_type_id??$attendance->funding_type_id);
