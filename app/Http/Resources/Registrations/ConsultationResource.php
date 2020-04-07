@@ -52,6 +52,8 @@ class ConsultationResource extends JsonResource
                 'patient_sponsor_id'=>$patient_sponsor->id??null,
                 'age_class_id'=>$this->age_class_id??null,
                 'age_class_name' => $age_class->name ?? null,
+                'user_name'=>$this->user->fullname??null,
+                'user_id'=>$this->user_id??null,
                 'service_quantity'=>$this->service_quantity,
                 'service_fee'=>$this->service_fee,
                 'age_group'=>$age_group->name??null,
