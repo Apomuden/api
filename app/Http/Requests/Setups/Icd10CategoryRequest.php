@@ -4,7 +4,7 @@ namespace App\Http\Requests\Setups;
 
 use App\Http\Requests\ApiFormRequest;
 
-class MohGhsGroupingRequest extends ApiFormRequest
+class Icd10CategoryRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,10 +23,9 @@ class MohGhsGroupingRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('mohghsgrouping') ?? null;
+        $id=$this->route('icd10category')??null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('moh_ghs_groupings','name',$id),
-            'moh_grouping_code'=>'bail|sometimes|nullable|'.$this->softUnique('moh_ghs_groupings', 'moh_grouping_code',$id),
+            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('icd10_categories','name',$id),
             'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
         ];
     }

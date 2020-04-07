@@ -78,6 +78,8 @@ class PhysicalExaminationController extends Controller
         return ApiResponse::withOk('Physical Examination updated',new PhysicalExaminationResource($record));
     }
 
+    
+
     /**
      * Remove the specified resource from storage.
      *

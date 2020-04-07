@@ -38,8 +38,8 @@ class Consultation extends Model
             $age_category = DateHelper::getAgeCategory($age_class->id??null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
             $model->age_group_id = $age_category->age_group_id??null;
             $model->attendance_date=$model->attendance_date??Carbon::now();
-            //$model->age_class_id = $age_category->age_classification_id;
-            //$model->age_category_id = $age_category->id;
+            $model->age_class_id = $age_category->age_classification_id;
+            $model->age_category_id = $age_category->id;
         });
         static::created(function ($model) {
             //create an attendance
@@ -117,6 +117,15 @@ class Consultation extends Model
             if ($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
                 Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
         });
+    }
+    public function age_class()
+    {
+        return $this->belongsTo(AgeClassification::class);
+    }
+
+    public function age_category()
+    {
+        return $this->belongsTo(AgeCategory::class);
     }
     public function service()
     {

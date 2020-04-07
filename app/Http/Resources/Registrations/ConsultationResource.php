@@ -17,7 +17,6 @@ class ConsultationResource extends JsonResource
     {
         if (isset($this->id)) {
             $clinic_consult_service = $this->service;
-            $user = $this->user;
             $patient = $this->patient;
             $funding_type = $this->funding_type;
             $age_group = $this->age_group;
@@ -27,6 +26,7 @@ class ConsultationResource extends JsonResource
             $clinic = $this->clinic;
             $clinic_type = $this->clinic_type;
             $consultant = $this->consultant;
+            $age_class=$this->age_class;
 
             return [
                 'id' => $this->id,
@@ -50,8 +50,8 @@ class ConsultationResource extends JsonResource
                 'billing_sponsor_id'=>$billing_sponsor->id??null,
                 'patient_sponsor_name'=>$patient_sponsor->name??null,
                 'patient_sponsor_id'=>$patient_sponsor->id??null,
-                //'user_name'=>$user->fullname??null,
-                //'user_id'=>$user->id??null,
+                'age_class_id'=>$this->age_class_id??null,
+                'age_class_name' => $age_class->name ?? null,
                 'service_quantity'=>$this->service_quantity,
                 'service_fee'=>$this->service_fee,
                 'age_group'=>$age_group->name??null,

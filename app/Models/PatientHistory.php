@@ -55,8 +55,7 @@ class PatientHistory extends Model
                 'social_history'
             ]);
 
-            PatientHistoriesSummary::where('patient_id', $model->patient_id)
-                ->updateOrCreate(['patient_id' => $model->patient_id], $summary);
+            PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->patient_id], $summary);
         });
 
         static::updating(function($model){
@@ -77,8 +76,7 @@ class PatientHistory extends Model
                 'family_history',
                 'social_history']);
 
-            PatientHistoriesSummary::where('patient_id', $model->patient_id)
-                ->updateOrCreate(['patient_id' => $model->patient_id],$summary);
+            PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->patient_id],$summary);
         });
     }
 

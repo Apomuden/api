@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Setups\Icd10GroupingRequest;
-use App\Http\Resources\Icd10GroupingResource;
-use App\Models\Icd10Grouping;
+use App\Http\Requests\Setups\Icd10CategoryRequest;
+use App\Http\Resources\GeneralResource;
+use App\Models\Icd10Category;
 use App\Repositories\RepositoryEloquent;
 
-class Icd10GroupingController extends Controller
+class Icd10CategoryController extends Controller
 {
     protected $repository;
-    public function __construct(Icd10Grouping $icd10Grouping)
+    public function __construct(Icd10Category $icd10Category)
     {
-        $this->repository = new RepositoryEloquent($icd10Grouping);
+        $this->repository = new RepositoryEloquent($icd10Category);
     }
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class Icd10GroupingController extends Controller
     public function index()
     {
         $records = $this->repository->all('name');
-        return ApiResponse::withOk('Icd10 Grouping list', Icd10GroupingResource::collection($records));
+        return ApiResponse::withOk('Icd10 Category list', GeneralResource::collection($records));
     }
 
     /**
@@ -33,10 +33,10 @@ class Icd10GroupingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Icd10GroupingRequest $request)
+    public function store(Icd10CategoryRequest $request)
     {
         $record = $this->repository->store($request->all());
-        return ApiResponse::withOk('Icd10 Grouping Created', new Icd10GroupingResource($record));
+        return ApiResponse::withOk('Icd10 Category Created', new GeneralResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class Icd10GroupingController extends Controller
     public function show($id)
     {
         $record = $this->repository->find($id);
-        return ApiResponse::withOk('Icd10 Grouping found', new Icd10GroupingResource($record));
+        return ApiResponse::withOk('Icd10 Category found', new GeneralResource($record));
     }
 
     /**
@@ -58,10 +58,10 @@ class Icd10GroupingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Icd10GroupingRequest $request, $id)
+    public function update(Icd10CategoryRequest $request, $id)
     {
         $record = $this->repository->update($request->all(), $id);
-        return ApiResponse::withOk('Icd10 Grouping updated', new Icd10GroupingResource($record));
+        return ApiResponse::withOk('Icd10 Category updated', new GeneralResource($record));
     }
 
     /**
@@ -73,6 +73,6 @@ class Icd10GroupingController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return ApiResponse::withOk('Icd10 Grouping deleted');
+        return ApiResponse::withOk('Icd10 Category deleted');
     }
 }
