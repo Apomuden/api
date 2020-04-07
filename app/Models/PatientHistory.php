@@ -38,45 +38,32 @@ class PatientHistory extends Model
 
         static::created(function($model){
             $summary = PatientHistoriesSummary::find($model->patient_id);
-            $summary = ($summary? Arr::only($summary->toArray(), [
+            $summary = [
                 //'presenting_complaints_history',
-                'past_medical_history',
-                'surgical_history',
-                'medicine_history',
-                'allergies_history',
-                'family_history',
-                'social_history'
-            ]):[])+ Arr::only($model->toArray(), [
-                //'presenting_complaints_history',
-                'past_medical_history',
-                'surgical_history',
-                'medicine_history',
-                'allergies_history',
-                'family_history',
-                'social_history'
-            ]);
+                'past_medical_history' => $model->past_medical_history ?? ($summary->past_medical_history ?? null),
+                'surgical_history' => $model->surgical_history ?? ($summary->surgical_history ?? null),
+                'medicine_history' => $model->medicine_history ?? ($summary->medicine_history ?? null),
+                'allergies_history' => $model->allergies_history ?? ($summary->allergies_history ?? null),
+                'family_history' => $model->family_history ?? ($summary->family_history ?? null),
+                'social_history' => $model->social_history ?? ($summary->social_history ?? null)
+            ];
 
             PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->patient_id], $summary);
         });
 
         static::updating(function($model){
            $summary=PatientHistoriesSummary::find($model->getOriginal('patient_id'));
-           $summary=($summary?Arr::only($summary->toArray(),[
+
+           $summary= [
                 //'presenting_complaints_history',
-                'past_medical_history',
-                'surgical_history',
-                'medicine_history',
-                'allergies_history',
-                'family_history',
-                'social_history']):[])+Arr::only($model->toArray(),[
-                //'presenting_complaints_history',
-                'past_medical_history',
-                'surgical_history',
-                'medicine_history',
-                'allergies_history',
-                'family_history',
-                'social_history']);
-            Log::critical('Summary',$summary);
+                'past_medical_history'=> $model->past_medical_history ?? ($summary->past_medical_history ?? null),
+                'surgical_history'=> $model->surgical_history ?? ($summary->surgical_history ?? null),
+                'medicine_history'=> $model->medicine_history ?? ($summary->medicine_history ?? null),
+                'allergies_history'=> $model->allergies_history ?? ($summary->allergies_history ?? null),
+                'family_history'=> $model->family_history ?? ($summary->family_history ?? null),
+                'social_history'=> $model->social_history ?? ($summary->social_history ?? null)
+            ];
+
             PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->getOriginal('patient_id')],$summary);
         });
     }
