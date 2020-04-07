@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PatientHistory extends Model
 {
@@ -75,7 +76,7 @@ class PatientHistory extends Model
                 'allergies_history',
                 'family_history',
                 'social_history']);
-
+            Log::critical('Summary',$summary);
             PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->getOriginal('patient_id')],$summary);
         });
     }
