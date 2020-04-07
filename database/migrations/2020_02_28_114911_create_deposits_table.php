@@ -13,6 +13,7 @@ class CreateDepositsTable extends Migration
      */
     public function up()
     {
+        //$this->down();
         Schema::create('deposits', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('patient_id');

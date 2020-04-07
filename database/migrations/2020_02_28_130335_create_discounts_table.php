@@ -28,8 +28,10 @@ class CreateDiscountsTable extends Migration
             $table->string('receipt_number')->nullable();
             $table->decimal('total_bill', 20, 2)->default(0);
             $table->decimal('discount_amount', 20, 2)->default(0);
+            $table->decimal('discount_percentage', 20, 2)->default(0);
             $table->decimal('balance', 20, 2)->default(0);
             $table->mediumText('reason')->nullable();
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
         });
