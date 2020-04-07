@@ -362,6 +362,11 @@ Route::apiResource('icd10groupings', 'Setups\Icd10GroupingController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
+Route::apiResource('icd10categories', 'Setups\Icd10CategoryController', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
 Route::apiResource('mohghsgroupings', 'Setups\MohGhsGroupingController', [
     //'only'=>['index','show','store','update'],
     'module' => ['records-mgt', 'sys-mgt'],

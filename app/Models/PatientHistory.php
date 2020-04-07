@@ -59,7 +59,7 @@ class PatientHistory extends Model
         });
 
         static::updating(function($model){
-           $summary=PatientHistoriesSummary::find($model->patient_id);
+           $summary=PatientHistoriesSummary::find($model->getOriginal('patient_id'));
            $summary=($summary?Arr::only($summary->toArray(),[
                 //'presenting_complaints_history',
                 'past_medical_history',
@@ -76,7 +76,7 @@ class PatientHistory extends Model
                 'family_history',
                 'social_history']);
 
-            PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->patient_id],$summary);
+            PatientHistoriesSummary::updateOrCreate(['patient_id' => $model->getOriginal('patient_id')],$summary);
         });
     }
 
