@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Registrations;
 
+use App\Http\Requests\ApiFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class PatientHistoriesSummaryRequest extends FormRequest
+class PatientHistoriesSummaryRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +28,7 @@ class PatientHistoriesSummaryRequest extends FormRequest
         $id = $this->route('patienthistorysummary') ?? null;
 
         return [
-            "patient_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:patients,id',
+            "patient_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:patients,id|'.$this->softUnique('patient_histories_summaries','patient_id',$id),
             'patient_status' => 'bail|'. ($id ? 'sometimes' : 'required').'|in:IN-PATIENT,OUT-PATIENT',
             'past_medical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
             'surgical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
