@@ -27,7 +27,7 @@ class PatientHistoriesSummaryRequest extends FormRequest
         $id = $this->route('patienthistorysummary') ?? null;
 
         return [
-            "patient_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists,patients,id',
+            "patient_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:patients,id',
             'patient_status' => 'bail|'. ($id ? 'sometimes' : 'required').'|in:IN-PATIENT,OUT-PATIENT',
             'past_medical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
             'surgical_history' => 'bail|'. ($id ? 'sometimes' : 'required').'|string|nullable',
