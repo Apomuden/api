@@ -85,7 +85,8 @@ Route::apiResource('physicalexaminations', 'Registration\PhysicalExaminationCont
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
-/* Route::post('diagnoses/multiple', 'Registration\DiagnosisController@storeMultiple', [
+/*
+Route::post('diagnoses/multiple', 'Registration\DiagnosisController@storeMultiple', [
     //'only'=>['index','show','store','update'],
     'module' => 'records-mgt',
     'component' => 'patient-registry'
@@ -95,7 +96,6 @@ Route::apiResource('diagnoses', 'Registration\DiagnosisController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]); */
-
 Route::apiResource('consultingrooms', 'Registration\ConsultingRoomController',[
     'module'=> 'records-mgt',
     'component' => 'patient-registry'
