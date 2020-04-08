@@ -29,7 +29,7 @@ class CreatePatientVitalsTable extends Migration
             $table->decimal('fasting_blood_sugar', 20, 2)->nullable();
             $table->decimal('random_blood_sugar', 20, 2)->nullable();
             $table->longText('comment')->nullable();
-            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+            $table->enum('status',['IN-QUEUE','ACTIVE','INACTIVE'])->default('IN-QUEUE');
             $table->softDeletes();
             $table->timestamps();
         });

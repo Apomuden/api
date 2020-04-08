@@ -1,9 +1,0 @@
-[2020-01-29 20:43:55] local.ERROR: SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `users` where `username` = hmwpb and `users`.`deleted_at` is null limit 1)  
-[2020-01-29 20:44:34] local.ERROR: SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `users` where `username` = hmwpb and `users`.`deleted_at` is null limit 1)  
-[2020-01-29 20:47:52] local.ERROR: SQLSTATE[HY000] [2002] Connection refused (SQL: select * from `users` where `username` = hmwpb and `users`.`deleted_at` is null limit 1)  
-[2020-01-29 20:53:53] local.ERROR: Undefined index: sponsorship_type_id  
-[2020-01-29 20:54:20] local.ERROR: Undefined index: sponsorship_type_id  
-[2020-01-29 21:24:09] local.ERROR: Undefined index: sponsorship_type_id  
-[2020-01-29 21:28:36] local.ERROR: Undefined index: sponsorship_type_id  
-[2020-01-29 22:14:03] local.ERROR: Undefined index: sponsorship_type_id  
-[2020-01-29 22:20:31] local.ERROR: Undefined index: sponsorship_type_id  

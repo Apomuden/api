@@ -38,7 +38,7 @@ class PatientVitalRequest extends ApiFormRequest
             'fasting_blood_sugar' => 'bail|sometimes|nullable|numeric',
             'random_blood_sugar' => 'bail|sometimes|nullable|numeric',
             'comment' => 'bail|sometimes|nullable|string',
-            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE',
+            'status' => 'bail|sometimes|in:IN-QUEUE,ACTIVE,INACTIVE',
         ];
     }
 }
