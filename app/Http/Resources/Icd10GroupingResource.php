@@ -20,8 +20,8 @@ class Icd10GroupingResource extends JsonResource
                 'id'=>$this->id,
                 'name'=>$this->name,
                 'icd10_grouping_code'=>$this->icd10_grouping_code,
-                'icd10category_id'=>$this->icd10category_id,
-                'icd10category_name'=>$icd10category->name??null,
+                'icd10_category_id'=>$this->icd10_category_id,
+                'icd10_category_name'=>$icd10category->name??null,
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)

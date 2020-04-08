@@ -33,7 +33,7 @@ class DiseaseRequest extends ApiFormRequest
             'icd10_grouping_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:icd10_groupings,id',
             'icd10_category_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:icd10_categories,id',
             'illness_type_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:illness_types,id',
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'status'=>'bail|sometime|in:ACTIVE,INACTIVE'
         ];
     }
 }
