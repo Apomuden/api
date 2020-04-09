@@ -30,7 +30,8 @@ class AddAgeGroupIdToDiseasesTable extends Migration
         Schema::table('diseases', function (Blueprint $table) {
           $table->dropForeign(['age_group_id']);
           $table->dropColumn('age_group_id');
-          $table->dropIndex('gender');
+          $table->dropIndex(['gender']);
+          $table->dropColumn('gender');
         });
     }
 }
