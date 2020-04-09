@@ -70,7 +70,7 @@ class ConsultationRequest extends ApiFormRequest
             'order_type'=>'bail|'.($id?'sometimes':'required').'|string|in:INTERNAL,EXTERNAL',
             'service_quantity'=>'bail|'.($id?'sometimes':'required').'|numeric|min:1',
             'service_fee'=>'bail|'.($id?'sometimes':'required_unless:order_type,EXTERNAL').'|numeric',
-            'age'=>'bail|'.($id?'sometimes':'required').'|integer|min:1',
+            'age'=>'bail|'.($id?'sometimes':'required').'|integer|min:0',
             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id',
             'user_id'=>'bail|sometimes|nullable|integer|exists:users, id',
             'clinic_id'=>['bail', ($id ? 'sometimes' : 'required'), 'integer','exists:clinics,id'],
