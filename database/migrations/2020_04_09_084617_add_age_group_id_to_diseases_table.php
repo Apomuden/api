@@ -16,6 +16,7 @@ class AddAgeGroupIdToDiseasesTable extends Migration
         Schema::table('diseases', function (Blueprint $table) {
             $table->unsignedInteger('age_group_id')->after('illness_type_id')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('restrict');
+            $table->set('gender',['MALE','FEMALE'])->after('age_group_id')->default('MALE,FEMALE')->index();
         });
     }
 
@@ -29,6 +30,7 @@ class AddAgeGroupIdToDiseasesTable extends Migration
         Schema::table('diseases', function (Blueprint $table) {
           $table->dropForeign(['age_group_id']);
           $table->dropColumn('age_group_id');
+          $table->dropIndex('gender');
         });
     }
 }
