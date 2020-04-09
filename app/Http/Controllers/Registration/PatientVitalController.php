@@ -34,15 +34,16 @@ class PatientVitalController extends Controller
             : ApiResponse::withNotFound('Patient Vitals Not Found');
     }
 
-    public function byAttendanceDate(Request $request)
+    public function byAttendanceDate($attendanceDate)
     {
         $searchParams = \request()->query();
-        $attendanceDate = $searchParams['attendance_date']??null;
+        $attendanceDate = $attendanceDate??null;
         $patientID = $searchParams['patient_id']??null;
         unset($searchParams['attendance_date'],$searchParams['patient_id']);
 
         //DB::enableQueryLog();
         $this->repository->setModel(PatientVital::findBy($searchParams)->where(function ($query) use ($patientID, $attendanceDate) {
+
             $query->whereDate('created_at', $attendanceDate);
             if ($patientID) {
                 $query->where('patient_id', $patientID);

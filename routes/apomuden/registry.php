@@ -123,7 +123,7 @@ Route::apiResource('appointments', 'Registration\AppointmentController',[
     'component'=> 'patient-registry'
 ]);
 
-Route::get('patientvitals/byattendancedate', 'Registration\PatientVitalController@byAttendanceDate');
+Route::get('patientvitals/byattendancedate/{attendanceDate}', 'Registration\PatientVitalController@byAttendanceDate');
 Route::apiResource('patientvitals', 'Registration\PatientVitalController',[
     //'only'=>['index','show','store','update'],
     'module'=>['records-mgt','sys-mgt'],
