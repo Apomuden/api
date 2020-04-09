@@ -52,7 +52,6 @@ class DiagnosisResource extends JsonResource
             'adult_tariff'=>$this->adult_tariff??null,
             'child_gdrg'=>$this->child_gdrg??null,
             'child_tariff'=>$this->child_tariff??null,
-            'patient_diagnoses'=>$this->patient_diagnoses??null,
             'remarks'=>$this->remarks??null,
 
             'diagnosis_type'=>$this->diagnosis_type,

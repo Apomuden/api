@@ -31,9 +31,8 @@ class DiagnosisMultipleRequest extends ApiFormRequest
             "diagnoses.*.disease_id" => 'bail|integer|distinct|' . ($id ? 'sometimes' : 'required') . '|exists:diseases,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-            'diagnoses.*.patient_diagnoses'=>'bail|string|'. ($id ? 'sometimes' : 'required'),
             'diagnoses.*.diagnosis_type'=> 'bail|string|'. ($id ? 'sometimes' : 'required').'|in:CONFIRM,PROVISIONAL,ADDITIONAL',
-            'diagnoses.*.diagnosis_status'=> 'bail|'. ($id ? 'sometimes' : 'required').'|nullable|in:NEW,OLD',
+            'diagnoses.*.diagnosis_status'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:NEW,OLD',
             'diagnoses.*.remarks'=> 'bail|sometimes|nullable',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
