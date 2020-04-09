@@ -22,7 +22,7 @@ class Diagnosis extends Model
         parent::boot();
         static::creating(function($model){
             $consultation = Consultation::findOrFail($model->consultation_id);
-            $model->age = $consultation->patient->age;
+            $model->age = $consultation->age;
             $model->gender = $consultation->patient->gender;
             $model->patient_id = $consultation->patient_id;
 
@@ -50,17 +50,17 @@ class Diagnosis extends Model
             $model->age_group_id=$consultation->age_group_id;
 
          if($consultation->sponsorship_type->name== 'Government Insurance'){
-             $model->adult_gdrg=$model->age >18 ?$disease->adult_gdrg:0.00;
-             $model->child_gdrg= $model->age < 18 ?$disease->child_gdrg:0.00;
+             $model->adult_gdrg=$model->age >12 ?$disease->adult_gdrg:0.00;
+             $model->child_gdrg= $model->age < 12 ?$disease->child_gdrg:0.00;
 
-             $model->adult_tariff = $model->age > 18 ? $disease->adult_tariff : 0.00;
-             $model->child_gdrg = $model->age > 18 ? $disease->child_gdrg : 0.00;
+             $model->adult_tariff = $model->age > 12 ? $disease->adult_tariff : 0.00;
+             $model->child_gdrg = $model->age > 12 ? $disease->child_gdrg : 0.00;
          }
 
         });
 
         static::updating(function ($model) {
-            
+
         });
     }
     public function disease()

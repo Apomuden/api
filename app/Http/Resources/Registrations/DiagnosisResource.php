@@ -58,7 +58,7 @@ class DiagnosisResource extends JsonResource
             'diagnosis_status'=>$this->diagnosis_status,
 
 
-            'consultant_name' => $consultant->name ?? null,
+            'consultant_name' => $consultant->fullname ?? null,
             'consultant_id' => $consultant->id ?? null,
             'clinic_name' => $clinic->name ?? null,
             'clinic_id' => $clinic->id ?? null,
