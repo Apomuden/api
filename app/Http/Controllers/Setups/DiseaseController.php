@@ -37,7 +37,7 @@ class DiseaseController extends Controller
     public function store(DiseaseRequest $request)
     {
         $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Disease created',new DiseaseResource($record));
+        return ApiResponse::withOk('Disease created',new DiseaseResource($record->refresh()));
     }
 
     /**

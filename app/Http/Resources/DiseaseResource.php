@@ -30,6 +30,8 @@ class DiseaseResource extends JsonResource
                 'icd10_category_name'=>$this->icd10_category->name??null,
                 'illness_type_id'=>$this->illness_type->id??null,
                 'illness_type_name'=>$this->illness_type->name??null,
+                'age_group_id'=>$this->age_group_id,
+                'age_group_name'=>$this->age_group->name??null,
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)

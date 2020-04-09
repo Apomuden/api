@@ -114,7 +114,7 @@ class Consultation extends Model
             Attendance::updateObject($model);
 
             //Trigger Notification
-            if ($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
+            if($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
                 Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
         });
     }

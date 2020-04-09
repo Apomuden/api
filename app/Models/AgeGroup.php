@@ -22,4 +22,8 @@ class AgeGroup extends Model
         return $this->hasMany(Consultation::class);
     }
 
+    public function age_group_()
+    {
+        return $this->belongsTo(AgeGroup::class);
+    }
 }
