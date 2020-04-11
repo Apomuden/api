@@ -74,6 +74,6 @@ class DiseaseController extends Controller
     public function destroy($id)
     {
         $record = $this->repository->delete($id);
-        return ApiResponse::withOk('Disease deleted', new DiseaseResource($record));
+        return ApiResponse::withOk('Disease deleted');
     }
 }
