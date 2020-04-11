@@ -17,10 +17,21 @@ class CreateInvestigationsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('restrict');
-            $table->unsignedBigInteger('clinic_id');
-            $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
+
+            $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
+            $table->foreign('consultant_id')->references('id')->on('users')->onDelete('restrict');
+
+            $table->unsignedBigInteger('consultation_id');
+            $table->foreign('consultation_id')->references('id')->on('consultations')->onDelete('restrict');
+
             $table->unsignedInteger('clinic_type_id');
             $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
+
+            $table->unsignedBigInteger('clinic_id');
+            $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
+            $table->dateTime('consultation_date');
+            $table->dateTime('attendance_date');
+
             $table->unsignedInteger('age');
             $table->enum('gender', ['MALE', 'FEMALE', 'BIGENDER']);
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT', 'WALK-IN'])->default('OUT-PATIENT');
@@ -50,7 +61,7 @@ class CreateInvestigationsTable extends Migration
             $table->unsignedDecimal('postpaid_total',20,2)->default(0.00);
 
             $table->timestamps();
-            
+
             $table->softDeletes();
         });
     }

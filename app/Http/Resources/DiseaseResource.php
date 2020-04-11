@@ -20,8 +20,11 @@ class DiseaseResource extends JsonResource
                 'id'=>$this->id,
                 'name'=>$this->name,
                 'disease_code'=>$this->disease_code,
+                
                 'moh_ghs_grouping_id'=>$this->moh_ghs_grouping->id??null,
                 'moh_ghs_grouping_name'=>$this->moh_ghs_grouping->name??null,
+                'moh_grouping_code'=>$this->moh_grouping_code??null,
+
                 'icd10_code'=>$this->icd10_code??null,
                 'icd10_grouping_id'=>$this->icd10_grouping->id??null,
                 'icd10_grouping_name'=>$this->icd10_grouping->name??null,
@@ -45,7 +48,7 @@ class DiseaseResource extends JsonResource
                 'gender'=>$this->gender??null,
 
                 'status'=>$this->status,
-                
+
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
             ];

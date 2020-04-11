@@ -8,7 +8,6 @@ use App\Http\Requests\Setups\DiseaseRequest;
 use App\Http\Resources\DiseaseResource;
 use App\Models\Disease;
 use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
 
 class DiseaseController extends Controller
 {
@@ -73,7 +72,7 @@ class DiseaseController extends Controller
      */
     public function destroy($id)
     {
-        $record = $this->repository->delete($id);
+        $this->repository->delete($id);
         return ApiResponse::withOk('Disease deleted');
     }
 }
