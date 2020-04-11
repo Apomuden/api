@@ -33,4 +33,9 @@ class Disease extends Model
     {
         return $this->belongsTo(IllnessType::class);
     }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class, 'age_group_id');
+    }
 }
