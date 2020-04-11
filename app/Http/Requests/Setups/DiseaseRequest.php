@@ -35,7 +35,7 @@ class DiseaseRequest extends ApiFormRequest
             'illness_type_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:illness_types,id',
             'age_group_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:age_groups,id',
             'gender'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE',
-            'status'=>'bail|sometime|in:ACTIVE,INACTIVE'
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }
