@@ -29,6 +29,8 @@ class DiagnosisResource extends JsonResource
             'disease_id'=>$this->disease_id,
             'disease_name'=>$this->disease->name??null,
 
+            'consultation_id'=>$this->consultation_id,
+
             'disease_code'=>$this->disease_code??null,
 
             'icd10_code'=>$this->icd10_code??null,

@@ -152,7 +152,7 @@ class ServiceOrder extends Model
 
            $policy=$patient->patient_sponsors()->whereHas('sponsorship_policy',function($query){
                   $query->where('status','ACTIVE');
-           })->orderBy('priority', 'desc')->first();
+           })->orderBy('priority', 'asc')->first();
 
            $model->sponsorship_policy_id=$model->sponsorship_policy_id??($policy->sponsorship_policy_id??null);
         });
