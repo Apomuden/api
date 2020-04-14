@@ -5,11 +5,10 @@ namespace App\Http\Requests\Registrations;
 use App\Http\Requests\ApiFormRequest;
 use App\Models\HospitalService;
 use App\Models\Role;
-use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Validation\Rule;
 
-class InvestigationRequest extends ApiFormRequest
+class ProcedureRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,13 +27,13 @@ class InvestigationRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('investigation') ?? null;
+        $id = $this->route('procudure') ?? null;
 
         $repository = new RepositoryEloquent(new HospitalService);
 
-        $investigation_service = $repository
-            ->findWhere(['name' => 'Investigation'])
-            ->orWhere('name', 'Investigations')->first();
+        $procedure_service = $repository
+            ->findWhere(['name' => 'Procudure'])
+            ->orWhere('name', 'Surgery')->first();
 
         $repository = new RepositoryEloquent(new Role);
         $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'doctor')
@@ -68,8 +67,8 @@ class InvestigationRequest extends ApiFormRequest
 
             'service_id' => [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
-                Rule::exists('services', 'id')->where(function ($query) use ($investigation_service) {
-                    $query->where(['hospital_service_id' => $investigation_service->id]);
+                Rule::exists('services', 'id')->where(function ($query) use ($procedure_service) {
+                    $query->where(['hospital_service_id' => $procedure_service->id]);
                 })
             ],
             'consultant_id' => [
@@ -84,18 +83,18 @@ class InvestigationRequest extends ApiFormRequest
             ]
         ];
     }
-
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
             $all = $this->all();
 
-            if (isset($all['billing_sponsor_id'])) {
-                $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
+                if (isset($all['billing_sponsor_id'])) {
+                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
 
-                if (!$patient_sponsor)
-                    $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
-            }
+                    if (!$patient_sponsor)
+                        $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
+                }
+
         });
     }
 
@@ -104,4 +103,5 @@ class InvestigationRequest extends ApiFormRequest
         $data = parent::all($keys);
         return $data;
     }
+
 }
