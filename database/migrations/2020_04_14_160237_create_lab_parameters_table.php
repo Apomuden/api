@@ -16,6 +16,7 @@ class CreateLabParametersTable extends Migration
         Schema::create('lab_parameters', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->string('description')->nullable();
             $table->enum('value_type',['Text','Number'])->default('Number');
             $table->string('unit');
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE')->index();

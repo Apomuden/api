@@ -18,6 +18,7 @@ class LabParameterResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->name,
+            'description'=>$this->description??null,
             'value_type'=>$this->value_type,
             'unit'=>$this->unit,
             'status'=>$this->status,

@@ -97,7 +97,8 @@ class ComponentsTableSeeder extends Seeder
             array('id' => '85', 'parent_tag' => 'acct-mgt', 'name' => 'Service Prices', 'tag' => 'setup.serviceprices', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
             array('id' => '86', 'parent_tag' => NULL, 'name' => 'Dashboard Staff Categories', 'tag' => 'dasboard.staffcategories', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
             array('id' => '87', 'parent_tag' => 'records-mgt', 'name' => 'ID Types', 'tag' => 'setup.free.idtypes', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
-            array('id' => '88', 'parent_tag' => 'records-mgt', 'name' => 'Clinics', 'tag' => 'setup.free.clinics', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL)
+            array('id' => '88', 'parent_tag' => 'records-mgt', 'name' => 'Clinics', 'tag' => 'setup.free.clinics', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
+            array('id' => '89', 'parent_tag' => 'lab-mgt', 'name' => 'Lab Parameters', 'tag' => 'setup.free.labparameters', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL)
         );
 
         Component::insert($components);
