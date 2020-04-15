@@ -80,11 +80,11 @@ class CreateInvestigationsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
 
             $table->dateTime('cancelled_date')->nullable();
-            
+
             $table->uuid('canceller_id')->comment('The user who is cancelling the payment')->nullable();
             $table->foreign('canceller_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->enum('status',['IN-QUEUE','COMPLETED','CANCELLED'])->default('IN-QUEUE');
+            $table->enum('status',['IN-QUEUE','ACTIVE','COMPLETED','APPROVED','CANCELLED'])->default('IN-QUEUE');
             $table->timestamps();
 
             $table->softDeletes();

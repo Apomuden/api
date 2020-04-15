@@ -101,6 +101,11 @@ Route::apiResource('investigations', 'Registration\InvestigationController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
+Route::post('procedures/multiple', 'Registration\ProcedureController@storeMultiple',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'records-mgt',
+    'component'=> 'patient-registry'
+]);
 Route::apiResource('procedures', 'Registration\ProcedureController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',

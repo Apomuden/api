@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
+use App\LabParameter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -41,4 +42,8 @@ class Service extends Model
         return $this->belongsTo(AgeGroup::class);
     }
 
+    public function lab_parameters()
+    {
+        return $this->belongsToMany(LabParameter::class, 'lab_service_parameters');
+    }
 }

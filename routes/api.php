@@ -25,12 +25,14 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
 
         //Accounts
         Route::prefix('accounts')->group(base_path('routes/apomuden/accounts.php'));
-
+        //Lab
+        Route::prefix('labs')->group(base_path('routes/apomuden/labs.php'));
         //Registrations
         Route::prefix('registry')->group(base_path('routes/apomuden/registry.php'));
 
         //Setups
         Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
+
     });
   Route::group(['prefix' => 'utils'], function () {
     //FileResolver
