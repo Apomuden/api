@@ -27,8 +27,8 @@ class DiseaseRequest extends ApiFormRequest
         return [
             'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('diseases','name',$id),
             'disease_code'=>'bail|sometimes|nullable|'.$this->softUnique('diseases', 'disease_code',$id),
-            'icd10_code'=>'bail|'. ($id ? 'sometimes' : 'required').'|'.$this->softUnique('diseases', 'icd10_code',$id),
-            'moh_grouping_code'=>'bail|'. ($id ? 'sometimes' : 'required').'|'.$this->softUnique('diseases', 'moh_grouping_code',$id),
+            'icd10_code'=>'bail|sometimes|'.$this->softUnique('diseases', 'icd10_code',$id),
+            'moh_grouping_code'=> 'bail|sometimes|'.$this->softUnique('diseases', 'moh_grouping_code',$id),
             'moh_ghs_grouping_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:moh_ghs_groupings,id',
             'icd10_grouping_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:icd10_groupings,id',
             'icd10_category_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:icd10_categories,id',

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInvestigationsTable extends Migration
+class CreateProceduresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateInvestigationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('investigations', function (Blueprint $table) {
+        Schema::create('procedures', function (Blueprint $table) {
             $table->bigIncrements('id');
 
             $table->unsignedBigInteger('patient_id');
@@ -59,7 +59,7 @@ class CreateInvestigationsTable extends Migration
             $table->unsignedBigInteger('service_id');
             $table->foreign('service_id')->references('id')->on('services')->onDelete('restrict');
 
-            $table->enum('order_type',['INTERNAL', 'EXTERNAL']);
+            $table->enum('order_type', ['INTERNAL', 'EXTERNAL']);
 
             $table->unsignedInteger('funding_type_id');
             $table->foreign('funding_type_id')->references('id')->on('funding_types')->onDelete('restrict');
@@ -73,8 +73,8 @@ class CreateInvestigationsTable extends Migration
             $table->unsignedBigInteger('sponsorship_policy_id')->nullable();
             $table->foreign('sponsorship_policy_id')->references('id')->on('sponsorship_policies')->onDelete('restrict');
 
-            $table->unsignedDecimal('prepaid_total',20,2)->default(0.00);
-            $table->unsignedDecimal('postpaid_total',20,2)->default(0.00);
+            $table->unsignedDecimal('prepaid_total', 20, 2)->default(0.00);
+            $table->unsignedDecimal('postpaid_total', 20, 2)->default(0.00);
 
             $table->uuid('user_id')->nullable()->comment('One who made the entry');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
@@ -84,7 +84,7 @@ class CreateInvestigationsTable extends Migration
             $table->uuid('canceller_id')->comment('The user who is cancelling the payment')->nullable();
             $table->foreign('canceller_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->enum('status',['IN-QUEUE','ACTIVE','COMPLETED','APPROVED','CANCELLED'])->default('IN-QUEUE');
+            $table->enum('status', ['IN-QUEUE', 'ACTIVE', 'COMPLETED', 'APPROVED', 'CANCELLED'])->default('IN-QUEUE');
             $table->timestamps();
 
             $table->softDeletes();
@@ -98,6 +98,6 @@ class CreateInvestigationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('investigations');
+        Schema::dropIfExists('procedures');
     }
 }

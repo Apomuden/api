@@ -33,8 +33,8 @@ class ServiceResource extends JsonResource
                 'age_group_id'=>$age_group->id??null,
                 'gender'=>$this->gender,
                 'patient_status'=>$this->patient_status,
-                'prepaid_amount'=>$this->prepaid_amount,
-                'postpaid_amount'=>$this->postpaid_amount,
+                'prepaid_amount'=>round($this->prepaid_amount,2),
+                'postpaid_amount'=>round($this->postpaid_amount,2),
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)

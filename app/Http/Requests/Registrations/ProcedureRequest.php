@@ -3,25 +3,20 @@
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
-use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Role;
-use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Validation\Rule;
 
-class InvestigationMultipleRequest extends ApiFormRequest
+class ProcedureRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-
-    private $consultation;
     public function authorize()
     {
-        $this->consultation= Consultation::find(request('consultation_id'));
         return true;
     }
 
@@ -32,39 +27,48 @@ class InvestigationMultipleRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('investigation') ?? null;
+        $id = $this->route('procudure') ?? null;
 
         $repository = new RepositoryEloquent(new HospitalService);
 
-        $investigation_service = $repository
-            ->findWhere(['name' => 'Investigation'])
-            ->orWhere('name', 'Investigations')->first();
+        $procedure_service = $repository
+            ->findWhere(['name' => 'Procudure'])
+            ->orWhere('name', 'Surgery')->first();
 
         $repository = new RepositoryEloquent(new Role);
-
         $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'doctor')
             ->orWhere('name', 'DOCTOR')->first();
 
+      /*   $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
+
+        if($sponsorship_type)
+            $sponsorship_type = $sponsorship_type ? strtolower($sponsorship_type) : null;
+        else {
+            $sponsorship_type_id = (request()->input('sponsorship_type_id')) ?? null;
+            if ($sponsorship_type_id) {
+                $repository = new RepositoryEloquent(new SponsorshipType);
+                $sponsorship_type = $repository->find($sponsorship_type_id)->name ?? null;
+                $sponsorship_type = $sponsorship_type ? strtolower($sponsorship_type) : null;
+            }
+        } */
 
         return [
             "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
-            'funding_type_id' => 'bail|sometimes|nullable|exists:funding_types,id',
+            'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-            'investigations' => 'bail|required|array',
-            'investigations.*.cancelled_date' => 'bail|sometimes|date',
-            'investigations.*.order_type'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',
-            'investigations.*.funding_type_id' => 'bail|sometimes|integer|exists:funding_types,id',
+            'cancelled_date' => 'bail|sometimes|date',
+            'order_type'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',
+            'funding_type_id' => 'bail|sometimes|integer|exists:funding_types,id',
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
 
-            'investigations.*.billing_sponsor_id' => 'bail|sometimes|nullable|exists:billing_sponsors,id',
+            'billing_sponsor_id' => 'bail|sometimes|integer|exists:billing_sponsors,id',
 
-            'investigations.*.service_id' => [
+            'service_id' => [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
-                'distinct',
-                Rule::exists('services', 'id')->where(function ($query) use ($investigation_service) {
-                    $query->where(['hospital_service_id' => $investigation_service->id]);
+                Rule::exists('services', 'id')->where(function ($query) use ($procedure_service) {
+                    $query->where(['hospital_service_id' => $procedure_service->id]);
                 })
             ],
             'consultant_id' => [
@@ -73,7 +77,7 @@ class InvestigationMultipleRequest extends ApiFormRequest
                     $query->where(['role_id' => $role->id ?? null]);
                 })
             ],
-            'investigations.*.canceller_id' => [
+            'canceller_id' => [
                 'bail', 'sometimes', 'nullable',
                 'exists:users,id'
             ]
@@ -83,21 +87,14 @@ class InvestigationMultipleRequest extends ApiFormRequest
     {
         $validator->after(function ($validator) {
             $all = $this->all();
-            $errorCounter = 0;
 
-            foreach ($all['investigations'] as $investigation) {
-
-                $investigation=(array)$investigation;
-
-                if(isset($investigation['billing_sponsor_id'])){
-                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $investigation['billing_sponsor_id'])->first()??null;
+                if (isset($all['billing_sponsor_id'])) {
+                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
 
                     if (!$patient_sponsor)
-                        $validator->errors()->add("billing_sponsor_id", "Selected Investigations.$errorCounter.billing_sponsor_id is not a valid sponsor of the patient!");
-
-                    $errorCounter++;
+                        $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
                 }
-            }
+
         });
     }
 

@@ -16,9 +16,9 @@ class CreateDiseasesTable extends Migration
         Schema::create('diseases', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->index();
-            $table->string('disease_code')->nullable()->index();
-            $table->string('icd10_code')->index();
-            $table->string('icd10_grouping_code')->index();
+            $table->string('disease_code')->index()->nullable();
+            $table->string('icd10_code')->index()->nullable();
+            $table->string('icd10_grouping_code')->index()->nullable();
 
             $table->string('adult_gdrg')->nullable();
             $table->unsignedDecimal('adult_tariff',20,2)->default(0.00);
@@ -37,7 +37,7 @@ class CreateDiseasesTable extends Migration
             $table->unsignedBigInteger('moh_ghs_grouping_id');
             $table->foreign('moh_ghs_grouping_id')->references('id')->on('moh_ghs_groupings')->onDelete('restrict');
 
-            $table->string('moh_grouping_code')->index();
+            $table->string('moh_grouping_code')->index()->nullable();
 
             $table->unsignedInteger('illness_type_id');
             $table->foreign('illness_type_id')->references('id')->on('illness_types')->onDelete('restrict');
