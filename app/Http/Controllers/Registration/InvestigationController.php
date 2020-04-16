@@ -45,10 +45,10 @@ class InvestigationController extends Controller
     public function storeMultiple(InvestigationMultipleRequest $request)
     {
         DB::beginTransaction();
-        $Investigations = $request->Investigations;
+        $Investigations = $request->investigations;
         $Investigations_ids = [];
         foreach ($Investigations as $diagnose) {
-            $record = $this->repository->store($request->except('Investigations') + (array) $diagnose);
+            $record = $this->repository->store($request->except('investigations') + (array) $diagnose);
             $Investigations_ids[] = $record->id;
         }
 

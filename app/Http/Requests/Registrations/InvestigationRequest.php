@@ -55,7 +55,7 @@ class InvestigationRequest extends ApiFormRequest
 
         return [
             "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
-            'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
+            'funding_type_id' => 'bail|sometimes|nullable|exists:funding_types,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
             'cancelled_date' => 'bail|sometimes|date',
@@ -64,7 +64,7 @@ class InvestigationRequest extends ApiFormRequest
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
 
-            'billing_sponsor_id' => 'bail|sometimes|integer|exists:billing_sponsors,id',
+            'billing_sponsor_id' => 'bail|sometimes|nullable|exists:billing_sponsors,id',
 
             'service_id' => [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
@@ -94,7 +94,7 @@ class InvestigationRequest extends ApiFormRequest
                 $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
 
                 if (!$patient_sponsor)
-                    $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
+                    $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is not a valid sponsor of the patient!");
             }
         });
     }
