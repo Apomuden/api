@@ -23,8 +23,13 @@ class LabParameterRangeResource extends JsonResource
             'min_value'=>$this->min_value,
             'max_comparator'=>$this->max_comparator,
             'max_value'=>$this->max_value,
-            'age_group_id'=>$this->age_group_id,
-            'age_group_name'=>$this->age_group->name,
+
+            'min_age'=>$this->min_age,
+            'min_age_unit'=>$this->min_age_unit,
+
+            'max_age'=>$this->max_age,
+            'max_age_unit'=>$this->max_age_unit,
+            
             'gender'=>$this->gender,
             'status'=>$this->status
         ];

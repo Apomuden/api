@@ -25,17 +25,18 @@ class CreateLabParameterRangesTable extends Migration
 
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE')->index();
 
-            $table->unsignedInteger('min_age')->default(0);
-            $table->
-            $table->unsignedInteger('age_group_id')->nullable();
-            $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('restrict');
+            $table->unsignedInteger('min_age')->nullable();
+            $table->enum('min_age_unit',['DAY', 'WEEK', 'MONTH', 'YEAR'])->nullable();
+
+            $table->unsignedInteger('max_age')->nullable();
+            $table->enum('max_age_unit',['DAY', 'WEEK', 'MONTH', 'YEAR'])->nullable();
 
             $table->set('gender',['MALE','FEMALE'])->default('MALE,FEMALE');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['flag', 'lab_parameter_id', 'age_group_id','gender'],'Unique_lab_param_range');
+            $table->unique(['flag', 'lab_parameter_id', 'min_age', 'min_age_unit', 'max_age', 'max_age_unit','gender'],'Unique_lab_param_range');
         });
     }
 

@@ -32,7 +32,13 @@ class LabParameterRangeRequest extends ApiFormRequest
             'min_value'=>'bail|numeric',
             'max_comparator'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:>,>=,<,<=,=',
             'max_value'=>'bail|numeric',
-            'age_group_id' => 'bail|sometimes|nullable|integer|exists:age_groups,id',
+
+            'min_age' => 'bail|sometimes|nullable|integer|numeric|min:0',
+            'min_age_unit' => 'bail|sometimes|nullable|string|in:DAY,WEEK,MONTH,YEAR',
+
+            'max_age' => 'bail|sometimes|nullable|integer|numeric|min:0',
+            'max_age_unit' => 'bail|sometimes|nullable|string|in:DAY,WEEK,MONTH,YEAR',
+            
             'gender'=>'bail|'. ($id ? 'sometimes' : 'required').'|set:MALE,FEMALE',
             'status'=>'bail|string|in:ACTIVE,INACTIVE'
         ];
