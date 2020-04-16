@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use App\Http\Traits\SortableTrait;
-use App\LabParameter;
+use App\Models\LabParameter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,7 +35,6 @@ class Service extends Model
     {
         return $this->belongsTo(ServiceSubcategory::class);
     }
-
 
     public function age_group()
     {

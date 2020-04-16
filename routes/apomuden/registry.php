@@ -96,6 +96,11 @@ Route::apiResource('diagnoses', 'Registration\DiagnosisController',[
     'module'=>'records-mgt',
     'component'=> 'patient-registry'
 ]);
+Route::post('investigations/multiple', 'Registration\InvestigationController@storeMultiple', [
+    //'only'=>['index','show','store','update'],
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
 Route::apiResource('investigations', 'Registration\InvestigationController',[
     //'only'=>['index','show','store','update'],
     'module'=>'records-mgt',
