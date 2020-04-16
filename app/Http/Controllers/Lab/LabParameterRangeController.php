@@ -4,19 +4,18 @@ namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Lab\LabParameterRequest;
-use App\Http\Resources\Lab\LabParameterResource;
-use App\Models\LabParameter;
+use App\Http\Requests\Lab\LabParameterRangeRequest;
+use App\Http\Resources\Lab\LabParameterRangeResource;
+use App\Models\LabParameterRange;
 use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
 
-class LabParameterController extends Controller
+class LabParameterRangeController extends Controller
 {
     protected $repository;
 
-    public function __construct(LabParameter $labParameter)
+    public function __construct(LabParameterRange $labParameterRange)
     {
-        $this->repository = new RepositoryEloquent($labParameter);
+        $this->repository = new RepositoryEloquent($labParameterRange);
     }
 
     /**
@@ -27,7 +26,7 @@ class LabParameterController extends Controller
     public function index()
     {
         $records=$this->repository->all('name');
-        return ApiResponse::withOk('Lab paramters list',LabParameterResource::collection($records));
+        return ApiResponse::withOk('Lab Parameter Ranges list',LabParameterRangeResource::collection($records));
     }
 
     /**
@@ -36,10 +35,10 @@ class LabParameterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LabParameterRequest $request)
+    public function store(LabParameterRangeRequest $request)
     {
         $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Lab paramter created',new LabParameterResource($record));
+        return ApiResponse::withOk('Lab parameter Range created',new LabParameterRangeResource($record));
     }
 
     /**
@@ -51,7 +50,7 @@ class LabParameterController extends Controller
     public function show($id)
     {
         $record = $this->repository->findOrFail($id);
-        return ApiResponse::withOk('Lab paramter found', new LabParameterResource($record));
+        return ApiResponse::withOk('Lab parameter Range found', new LabParameterRangeResource($record));
     }
 
     /**
@@ -61,10 +60,10 @@ class LabParameterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LabParameterRequest $request, $id)
+    public function update(LabParameterRangeRequest $request, $id)
     {
         $record = $this->repository->update($request->all(),$id);
-        return ApiResponse::withOk('Lab paramter updated', new LabParameterResource($record));
+        return ApiResponse::withOk('Lab parameter Range updated', new LabParameterRangeResource($record));
     }
 
     /**
@@ -76,6 +75,6 @@ class LabParameterController extends Controller
     public function destroy($id)
     {
        $this->repository->delete($id);
-        return ApiResponse::withOk('Lab paramter deleted');
+        return ApiResponse::withOk('Lab parameter Range deleted');
     }
 }

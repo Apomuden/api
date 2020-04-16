@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Http\Traits\FindByTrait;
-use App\LabParameter;
+use App\Models\LabParameter;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
@@ -19,5 +19,10 @@ class LabParameterRange extends Model
     public function lab_parameter()
     {
         return $this->belongsTo(LabParameter::class);
+    }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class);
     }
 }

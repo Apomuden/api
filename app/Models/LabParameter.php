@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Http\Traits\FindByTrait;
 use App\Models\LabParameterRange;
