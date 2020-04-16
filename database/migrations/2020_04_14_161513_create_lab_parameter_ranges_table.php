@@ -36,7 +36,7 @@ class CreateLabParameterRangesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['flag', 'lab_parameter_id', 'min_age', 'min_age_unit', 'max_age', 'max_age_unit','gender'],'Unique_lab_param_range');
+            $table->unique(['flag', 'lab_parameter_id', 'min_age', 'min_age_unit', 'max_age', 'max_age_unit','gender','deleted_at'],'Unique_lab_param_range');
         });
     }
 
