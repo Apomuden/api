@@ -19,19 +19,19 @@ class ProductTypeTableSeeder extends Seeder
         DB::statement('truncate table product_types');
         ProductType::query()->insert([
             [
-                "id"=>1,
-                "name"=>"DRUG",
-                "status"=>"ACTIVE",
-                "created_at"=> Carbon::now(),
-                "updated_at"=> Carbon::now()
-            ],
-            [
                 "id"=>2,
                 "name"=>"NON-DRUG",
                 "status"=>"ACTIVE",
                 "created_at"=> Carbon::now(),
                 "updated_at"=> Carbon::now()
             ],
+            [
+                "id"=>1,
+                "name"=>"DRUG",
+                "status"=>"ACTIVE",
+                "created_at"=> Carbon::now(),
+                "updated_at"=> Carbon::now()
+            ]
         ]);
         Schema::enableForeignKeyConstraints();
     }
