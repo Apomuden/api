@@ -35,8 +35,8 @@ class DepositController extends Controller
 
     public function store(DepositRequest $DepositRequest){
         if (strtolower(trim($DepositRequest['sponsorship_type']))=='patient') {
-            $request['billing_sponsor_id'] = null;
-            $request['patient_sponsor_id'] = null;
+            $DepositRequest['billing_sponsor_id'] = null;
+            $DepositRequest['patient_sponsor_id'] = null;
         }
         try{
             $requestData=$DepositRequest->all();

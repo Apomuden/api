@@ -34,6 +34,10 @@ class DiscountController extends Controller
     }
 
     public function store(DiscountRequest $DiscountRequest){
+        if (strtolower(trim($DiscountRequest['sponsorship_type']))=='patient') {
+            $DiscountRequest['billing_sponsor_id'] = null;
+            $DiscountRequest['patient_sponsor_id'] = null;
+        }
         try{
             $requestData=$DiscountRequest->all();
             $Discount=$this->repository->store($requestData);
