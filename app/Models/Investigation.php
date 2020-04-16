@@ -68,7 +68,7 @@ class Investigation extends Model
 
 
             if($model->order_type== 'INTERNAL'){
-                if (!$model->billing_sponsor_id && ucwords($patient->funding_type->name) == 'Cash/Prepaid'){
+                if (ucwords($patient->funding_type->name) == 'Cash/Prepaid'){
                     $model->billing_sponsor_id=null;
                      $model->sponsorship_type_id= $patient->funding_type->sponsorship_type_id;
                     $model->prepaid_total = $service->prepaid_amount;

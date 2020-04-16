@@ -25,6 +25,8 @@ class CreateLabParameterRangesTable extends Migration
 
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE')->index();
 
+            $table->unsignedInteger('min_age')->default(0);
+            $table->
             $table->unsignedInteger('age_group_id')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('restrict');
 
