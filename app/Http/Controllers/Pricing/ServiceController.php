@@ -63,17 +63,18 @@ class ServiceController extends Controller
         return ApiResponse::withOk('Lab parameters list',LabParameterResource::collection($service->lab_parameters()->orderBy('name')->get()));
     }
 
-    public function labParametersStore(LabServiceParameterRequest $request){
-        $service = $this->repository->findOrFail($request->service_id);
-        $service->lab_parameters()->syncWithoutDetaching(['service_id'=> $request->service_id, 'lab_parameter_id'=> $request->lab_paramter_id]);
-        return ApiResponse::withOk('Lab parameter created',new LabParameterResource($service->lab_parameters()->where('lab_parameter_id', $request->lab_paramter_id)->first()));
+    public function labParametersStore(LabServiceParameterRequest $request,$service_id){
+        $service = $this->repository->findOrFail($service_id);
+        $service->lab_parameters()->syncWithoutDetaching($request->parameters);
+
+        return ApiResponse::withOk('Lab parameter created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->get()));
     }
 
-    public function labParametersDelete(LabServiceParameterRequest $request)
+    public function labParametersDelete(LabServiceParameterRequest $request,$service_id)
     {
-        $service = $this->repository->findOrFail($request->service_id);
-        $service->lab_parameters()->detach(['service_id' => $request->service_id, 'lab_parameter_id' => $request->lab_paramter_id]);
-        return ApiResponse::withOk('Lab parameter created', new LabParameterResource($service->lab_parameters()->where('lab_parameter_id', $request->lab_paramter_id)->first()));
+        $service = $this->repository->findOrFail($service_id);
+        $service->lab_parameters()->detach($request->parameters);
+        return ApiResponse::withOk('Lab parameters deleted Successfully');
     }
 
     /**

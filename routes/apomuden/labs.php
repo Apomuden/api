@@ -4,6 +4,10 @@ Route::post('services/{service_id}/parameters', 'Pricing\ServiceController@labPa
     'module' => ['records-mgt', 'lab-mgt'],
     'component' => 'setup.free.labparameters'
 ]);
+Route::delete('services/{service_id}/parameters', 'Pricing\ServiceController@labParametersDelete', [
+    'module' => ['records-mgt', 'lab-mgt'],
+    'component' => 'setup.free.labparameters'
+]);
 Route::get('services/{service_id}/parameters', 'Pricing\ServiceController@labParametersList', [
     'module' => ['records-mgt', 'lab-mgt'],
     'component' => 'setup.free.labparameters'

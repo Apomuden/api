@@ -28,10 +28,10 @@ class LabParameterRangeRequest extends ApiFormRequest
         return [
             'lab_parameter_id'=> 'bail|'.($id?'sometimes':'required').'|integer|exists:lab_parameters,id|'.$this->softUniqueWith('lab_parameter_ranges', 'flag,lab_parameter_id,min_age,min_age_unit,max_age,max_age_unit,gender',$id),
             'flag'=>'bail|sometimes|nullable|string',
-            'min_comparator'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:>,>=,<,<=,=',
-            'min_value'=>'bail|numeric',
-            'max_comparator'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:>,>=,<,<=,=',
-            'max_value'=>'bail|numeric',
+            'min_comparator'=> 'bail|sometimes|nullable|in:>,>=,<,<=,=',
+            'min_value'=> 'bail|sometimes|nullable|numeric',
+            'max_comparator'=> 'bail|sometimes|nullable|in:>,>=,<,<=,=',
+            'max_value'=> 'bail|sometimes|nullable|numeric',
 
             'min_age' => 'bail|sometimes|nullable|integer|numeric|min:0',
             'min_age_unit' => 'bail|sometimes|nullable|string|in:DAY,WEEK,MONTH,YEAR',

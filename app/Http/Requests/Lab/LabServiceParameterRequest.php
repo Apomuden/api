@@ -27,13 +27,31 @@ class LabServiceParameterRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $investigation_service =HospitalService::where('name', 'Investigation')
-            ->orWhere('name', 'Investigations')->where()->first();
         return [
-            'service_id' => ['bail','required',Rule::exists('services','id')->where(function($query) use($investigation_service){
-                $query->where('hospital_service_id', $investigation_service->id);
-            })],
-            'lab_parameter_id' => 'bail|required|string|exists:lab_parameters,id'
+            'parameters'=>'bail|array',
+            'parameters.*' => 'bail|required|distinct|exists:lab_parameters,id'
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            //$all = $this->all();
+            $investigation_service = Service::find(request('service_id'))->hospital_service ?? null;
+            if(!in_array(ucwords($investigation_service->name),['Investigation', 'Investigations']))
+                $validator->errors()->add("service_id", "Selected service_id is not a valid investigation service!");
+        });
+    }
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+
+        $all=[];
+        
+        foreach($data['parameters'] as $parameter)
+          $all[$parameter]=['created_at'=>now(),'updated_at'=>now()];
+
+        $data['parameters']=$all;
+
+        return $data;
     }
 }
