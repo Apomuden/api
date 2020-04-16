@@ -20,6 +20,9 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
 
 //Authenticated Routes
     Route::group(['middleware'=>['role.auth']],function () {
+        //Pharmacy
+        Route::prefix('pharmacy')->group(base_path('routes/apomuden/pharmacy.php'));
+
         //Pricing
         Route::prefix('pricing')->group(base_path('routes/apomuden/pricing.php'));
 
@@ -32,9 +35,6 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
 
         //Setups
         Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
-
-        //Pharmacy
-        Route::prefix('pharmacy')->group(base_path('routes/apomuden/pharmacy.php'));
     });
   Route::group(['prefix' => 'utils'], function () {
     //FileResolver
