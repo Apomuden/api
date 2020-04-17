@@ -5,6 +5,7 @@ namespace App\Models;
 //use Illuminate\Database\Eloquent\Model;
 
 use App\Http\Helpers\DateHelper;
+use ReflectionClass;
 
 class Transaction
 {
@@ -12,23 +13,30 @@ class Transaction
         $total_deposit_amount = $this->deposit($patient_id);
         $total_discount_amount = $this->discount($patient_id);
         $services = $this->service_order($patient_id);
+        $reflect = new ReflectionClass($services[0]??$services);
+        $reflect = $reflect->getShortName();
         //dd($services);
         $items = [];
         $total_bill = 0;
+
         foreach ($services as $service) {
             //dd($service);
-            $total_bill+=((double)($service->service_total_amt??null));
+            $total_bill+=((double)(($service->insured && $service->prepaid)?0:$service->service_total_amt));
             $items[] = [
                 'description'=>$service->service->description??null,
                 'service_type'=>$service->hospital_service->name??null,
-                'unit_fee'=>$service->service_fee??null,
+                'unit_fee'=>number_format($service->service_fee??0, 2),
                 'total_quantity'=>$service->service_quantity??null,
-                'total_amount_due'=>$service->service_total_amt??null,
-                'service_date'=>DateHelper::toDisplayDateTime($service->service_date)
+                'insured'=>boolval($service->insured)?'YES':'NO',
+                'prepaid'=>boolval($service->prepaid)?'YES':'NO',
+                'total_amount'=>number_format($service->service_total_amt??0, 2),
+                'total_amount_due'=>($service->insured && !$service->prepaid)?0:$service->service_total_amt,
+                'service_date'=>DateHelper::toDisplayDateTime($service->service_date),
+                'transaction_update_id'=>$reflect.'::'.$service->id
             ];
         }
         $refund_amount = $total_deposit_amount-$total_bill;
-        $total_bill_due = $total_bill - $total_deposit_amount;
+        $total_bill_due = $total_bill - $total_deposit_amount - $total_discount_amount;
         return [
             'services' => $items,
             'total_bill'=>number_format($total_bill,2),

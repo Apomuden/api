@@ -21,20 +21,20 @@ class TransactionController extends Controller
      * Display a listing of the resource.
      *
      */
-    public function index($patient_id)
+
+    public function index() {
+
+    }
+
+    public function quickDetails($patient_id)
     {
         $repo = $this->repository->buildTransactionDetails($patient_id);
         return ApiResponse::withOk('Quick Transaction Details', new TransactionResource($repo));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function createReceipt($patient_id)
     {
-        //
+
     }
 
     /**
@@ -55,17 +55,6 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Transaction $transaction)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaction $transaction)
     {
         //
     }
