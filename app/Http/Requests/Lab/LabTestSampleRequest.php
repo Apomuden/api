@@ -27,10 +27,10 @@ class LabTestSampleRequest extends ApiFormRequest
         $id=$this->route('sample');
         return [
             'sample_code'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('lab_test_samples','sample_code',$id),
-            'investigation_id'=>'bail|'. ($id ? 'sometimes' : 'required').'|exits:investigations,id',
+            'investigation_id'=>'bail|'. ($id ? 'sometimes' : 'required').'|exists:investigations,id',
             'lab_sample_type_id'=> 'bail|'. ($id ? 'sometimes' : 'required').'|exists:lab_sample_types,id',
-            
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

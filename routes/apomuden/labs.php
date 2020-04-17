@@ -20,7 +20,15 @@ Route::apiResource('parameters', 'Lab\LabParameterController', [
     'module' => 'lab-mgt',
     'component' => 'setup.free.labparameters'
 ]);
+Route::get('sampletypes/{sample_type_id}/newcode', 'Lab\LabSampleTypeController@sampleCode', [
+    'module' => 'lab-mgt',
+    'component' => 'setup.free.labparameters'
+]);
 Route::apiResource('sampletypes', 'Lab\LabSampleTypeController', [
+    'module' => 'lab-mgt',
+    'component' => 'setup.free.labparameters'
+]);
+Route::apiResource('samples', 'Lab\LabTestSampleController', [
     'module' => 'lab-mgt',
     'component' => 'setup.free.labparameters'
 ]);

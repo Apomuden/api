@@ -5,24 +5,20 @@ namespace App\Http\Controllers\Lab;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Helpers\IDGenerator;
-use App\Http\Requests\Lab\LabParameterRequest;
-use App\Http\Requests\Lab\LabSampleTypeRequest;
-use App\Http\Resources\Lab\LabSampleTypeResource;
-use App\Models\LabSampleType;
+use App\Http\Requests\Lab\LabTestSampleRequest;
+use App\Http\Resources\Lab\labTestSampleResource;
+use App\Models\LabTestSample;
 use App\Repositories\RepositoryEloquent;
 
-class LabSampleTypeController extends Controller
+class LabTestSampleController extends Controller
 {
     protected $repository;
 
-    public function __construct(LabSampleType $labSampleType)
+    public function __construct(LabTestSample $labSample)
     {
-        $this->repository = new RepositoryEloquent($labSampleType);
+        $this->repository = new RepositoryEloquent($labSample);
     }
-    public function sampleCode($sample_type_id)
-    {
-        return ApiResponse::withOk('New Sample Code', IDGenerator::getNewSampleCode($sample_type_id));
-    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,8 +27,9 @@ class LabSampleTypeController extends Controller
     public function index()
     {
         $records=$this->repository->all('name');
-        return ApiResponse::withOk('Lab Sample type list',LabSampleTypeResource::collection($records));
+        return ApiResponse::withOk('Lab Test Sample list',labTestSampleResource::collection($records));
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,10 +37,10 @@ class LabSampleTypeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LabSampleTypeRequest $request)
+    public function store(LabTestSampleRequest $request)
     {
         $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Lab Sample type created',new LabSampleTypeResource($record));
+        return ApiResponse::withOk('Lab Test Sample created',new labTestSampleResource($record->refresh()));
     }
 
     /**
@@ -55,7 +52,7 @@ class LabSampleTypeController extends Controller
     public function show($id)
     {
         $record = $this->repository->findOrFail($id);
-        return ApiResponse::withOk('Lab Sample type found', new LabSampleTypeResource($record));
+        return ApiResponse::withOk('Lab Test Sample found', new labTestSampleResource($record));
     }
 
     /**
@@ -65,10 +62,10 @@ class LabSampleTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LabSampleTypeRequest $request, $id)
+    public function update(LabTestSampleRequest $request, $id)
     {
         $record = $this->repository->update($request->all(),$id);
-        return ApiResponse::withOk('Lab Sample type updated', new LabSampleTypeResource($record));
+        return ApiResponse::withOk('Lab Test Sample updated', new labTestSampleResource($record));
     }
 
     /**
@@ -80,6 +77,6 @@ class LabSampleTypeController extends Controller
     public function destroy($id)
     {
        $this->repository->delete($id);
-        return ApiResponse::withOk('Lab Sample type deleted');
+        return ApiResponse::withOk('Lab Test Sample deleted');
     }
 }
