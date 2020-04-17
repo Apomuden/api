@@ -18,6 +18,7 @@ class CreateLabServiceParametersTable extends Migration
             $table->foreign('service_id')->references('id')->on('services')->onDelete('restrict');
             $table->unsignedBigInteger('lab_parameter_id');
             $table->foreign('lab_parameter_id')->references('id')->on('lab_parameters')->onDelete('restrict');
+            $table->unsignedInteger('order')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
         });

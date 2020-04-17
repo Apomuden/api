@@ -22,7 +22,7 @@ class Patient extends Model
 {
   use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
   protected $guarded = [];
-
+  private $age_unit;
   public static function boot()
   {
         parent::boot();
@@ -121,6 +121,33 @@ class Patient extends Model
   public function getAgeAttribute(){
     return  Carbon::parse($this->dob)->age;
   }
+
+  public function getAbsAgeAttribute(){
+      if($age=Carbon::parse($this->dob)->diffInYears(Carbon::now())){
+            $this->age_unit = 'YEAR';
+            return $age;
+      }
+      elseif($age = Carbon::parse($this->dob)->diffInMonths(Carbon::now())){
+            $this->age_unit = 'MONTH';
+            return $age;
+      }
+      elseif($age = Carbon::parse($this->dob)->diffInWeeks(Carbon::now())){
+            $this->age_unit = 'WEEK';
+            return $age;
+      }
+      else {
+          $this->age_unit = 'DAY';
+          return Carbon::parse($this->dob)->diffInDays(Carbon::now());
+      }
+  }
+
+  public function getAgeUnitAttribute(){
+      if(!$this->age_unit)
+      $this->absage;
+
+      return $this->age_unit;
+  }
+
   public function getFullNameAttribute()
   {
     return ucwords(trim($this->firstname.' '.$this->middlename).' '.$this->surname);

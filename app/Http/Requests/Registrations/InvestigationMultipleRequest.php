@@ -47,9 +47,10 @@ class InvestigationMultipleRequest extends ApiFormRequest
 
 
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|' . ($id||request('patient_status')== 'WALK-IN' ? 'sometimes' : 'required').'|exists:consultations,id',
+            'patient_id' => 'bail|'.($id || request('patient_status') != 'WALK-IN'?'sometimes':'required').'|exists:patients,id',
             'funding_type_id' => 'bail|sometimes|nullable|exists:funding_types,id',
-            'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
+            'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultation_date' => 'bail|sometimes|date',
             'investigations' => 'bail|required|array',
             'investigations.*.cancelled_date' => 'bail|sometimes|date',
@@ -58,7 +59,7 @@ class InvestigationMultipleRequest extends ApiFormRequest
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
 
-            'investigations.*.billing_sponsor_id' => 'bail|sometimes|nullable|exists:billing_sponsors,id',
+            'investigations.*.billing_sponsor_id' => 'bail|'.($id||request('patient_status') != 'WALK-IN'? 'sometimes|nullable':'required').'|exists:billing_sponsors,id',
 
             'investigations.*.service_id' => [
                 'bail', ($id ? 'sometimes' : 'required'), 'integer',
