@@ -39,6 +39,7 @@ class ProductsRequest extends ApiFormRequest
             'strength_equivalent' => 'bail|sometimes|nullable|string',
             'gender'=>'bail|sometimes|in:MALE,FEMALE,BOTH',
             'nhis_cover'=>'bail|sometimes|in:YES,NO',
+            'nhis_code'=>'bail|sometimes|nullable|string',
             'expires'=>'bail|sometimes|in:YES,NO',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
