@@ -100,15 +100,33 @@ class IDGenerator{
            return $hospital->folder_id_prefix.sprintf('%0'.$hospital->digits_after_folder_prefix.'d',$number).$hospital->folder_id_seperator.$yearMonth;
     }
 
-    static function getNewSampleCode($sample_type_id){
-        $code= implode('-', str_split(substr(strtoupper(md5(microtime() . rand(1000, 9999))), 0, 10), 5));
-        $sample_type=LabSampleType::findOrFail($sample_type_id);
+    static function getNewSampleCode($investigation_id){
 
-        $code= ($sample_type->prefix?$sample_type->prefix.'-':'').$code;
+        $lastSample=LabTestSample::where('investigation_id',$investigation_id)->latest('created_at')->firstOrFail();
 
-        if(LabTestSample::where('sample_code',$code)->first())
+        $sample_type = LabSampleType::find($lastSample->lab_sample_type_id??null);
+
+        $code=null;
+
+        if($lastSample && $sample_type){
+            $codeParts = explode('-', $lastSample->sample_code);
+            $number = end($codeParts);
+
+            if(is_numeric($number) && $lastSample->investigation_id!=$investigation_id)
+             $number++;
+
+            $lastSample->sample_code=str_replace($number, sprintf('%04d', $number), $lastSample->sample_code);
+
+            $code=str_replace($codeParts[0], $sample_type->prefix, $lastSample->sample_code);
+        }
+        else if($sample_type){
+            $code =date('y').'-'.date('m').'-'. sprintf('%04d', 1);
+            $code = ($sample_type->prefix ? $sample_type->prefix . '-' : '') . $code;
+        }
+
+       /*  if(LabTestSample::where('sample_code',$code)->first())
         return self::getNewSampleCode($sample_type_id);
-        else
+        else */
         return $code;
     }
 }

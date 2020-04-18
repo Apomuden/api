@@ -19,9 +19,9 @@ class LabSampleTypeController extends Controller
     {
         $this->repository = new RepositoryEloquent($labSampleType);
     }
-    public function sampleCode($sample_type_id)
+    public function sampleCode($investigation_id)
     {
-        return ApiResponse::withOk('New Sample Code', IDGenerator::getNewSampleCode($sample_type_id));
+        return ApiResponse::withOk('New Sample Code', IDGenerator::getNewSampleCode($investigation_id));
     }
     /**
      * Display a listing of the resource.
