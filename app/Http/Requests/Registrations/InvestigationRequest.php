@@ -54,9 +54,11 @@ class InvestigationRequest extends ApiFormRequest
         } */
 
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id|| request('patient_status') == 'WALK-IN' ? 'sometimes' : 'required').'|exists:consultations,id',
+            'patient_id' => 'bail|' . ($id || request('patient_status') != 'WALK-IN' ? 'sometimes' : 'required') . '|exists:patients,id',
+
             'funding_type_id' => 'bail|sometimes|nullable|exists:funding_types,id',
-            'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
+            'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultation_date' => 'bail|sometimes|date',
             'cancelled_date' => 'bail|sometimes|date',
             'order_type'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',

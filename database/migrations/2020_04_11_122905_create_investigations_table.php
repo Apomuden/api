@@ -22,16 +22,16 @@ class CreateInvestigationsTable extends Migration
             $table->uuid('consultant_id')->nullable()->comment('The doctor to whom the consultation service is assigned-user_id');
             $table->foreign('consultant_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->unsignedBigInteger('consultation_id');
+            $table->unsignedBigInteger('consultation_id')->nullable();
             $table->foreign('consultation_id')->references('id')->on('consultations')->onDelete('restrict');
 
-            $table->unsignedInteger('clinic_type_id');
+            $table->unsignedInteger('clinic_type_id')->nullable();
             $table->foreign('clinic_type_id')->references('id')->on('clinic_types')->onDelete('restrict');
 
-            $table->unsignedBigInteger('clinic_id');
+            $table->unsignedBigInteger('clinic_id')->nullable();
             $table->foreign('clinic_id')->references('id')->on('clinics')->onDelete('restrict');
 
-            $table->dateTime('consultation_date');
+            $table->dateTime('consultation_date')->nullable();
 
             $table->unsignedInteger('age');
 

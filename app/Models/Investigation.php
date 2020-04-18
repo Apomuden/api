@@ -19,17 +19,18 @@ class Investigation extends Model
         parent::boot();
         static::creating(function ($model) {
             $consultationEloquent = new RepositoryEloquent(new Consultation);
-            $consultation = $consultationEloquent->findOrFail($model->consultation_id);
+            $consultation = $consultationEloquent->find($model->consultation_id);
 
-            $model->clinic_type_id = $consultation->clinic_type_id;
-            $model->clinic_id = $consultation->clinic_id;
+            $model->clinic_type_id = $consultation->clinic_type_id??null;
+            $model->clinic_id = $consultation->clinic_id??null;
 
-            $patient =$consultation->patient;
+            $patient =$consultation->patient??Patient::findOrFail($model->patient_id);
             $model->patient_id=$patient->id;
 
             if(request('billing_sponsor_id')){
                 $billing_sponsor=BillingSponsor::findOrFail($model->billing_sponsor_id);
                 $patient->sponsorship_type= $billing_sponsor->sponsorship_type;
+                $patient->funding_type=FundingType::where('name',$patient->sponsorship_type->name??null)->first()??$patient->funding_type;
             }
             else{
                 $billing_sponsor=$consultation->billing_sponsor;
@@ -125,17 +126,19 @@ class Investigation extends Model
             $original = $model->getOriginal();
 
             $consultationEloquent = new RepositoryEloquent(new Consultation);
-            $consultation = $consultationEloquent->findOrFail($model->consultation_id??$original->id);
+            $consultation = $consultationEloquent->find($model->consultation_id??$original->id);
 
-            $model->clinic_type_id = $consultation->clinic_type_id;
-            $model->clinic_id = $consultation->clinic_id;
+            $model->clinic_type_id = $consultation->clinic_type_id??null;
+            $model->clinic_id = $consultation->clinic_id??null;
 
-            $patient = $consultation->patient;
+            $patient = $consultation->patient ?? Patient::findOrFail($model->patient_id);
             $model->patient_id = $patient->id;
 
             if (request('billing_sponsor_id')) {
                 $sponsorship_type = BillingSponsor::findOrFail($model->billing_sponsor_id);
                 $patient->sponsorship_type = $sponsorship_type;
+                $patient->funding_type = FundingType::where('name', $patient->sponsorship_type->name ?? null)->first() ?? $patient->funding_type;
+
             }
 
             if (request('funding_type_id'))

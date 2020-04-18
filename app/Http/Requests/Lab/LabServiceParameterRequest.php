@@ -29,7 +29,8 @@ class LabServiceParameterRequest extends ApiFormRequest
     {
         return [
             'parameters'=>'bail|array',
-            'parameters.*' => 'bail|required|distinct|exists:lab_parameters,id'
+            'parameters.*.id' => 'bail|required|distinct|exists:lab_parameters,id',
+            'parameters.*.order' => 'bail|required|distinct|integer|numeric|min:1'
         ];
     }
     public function withValidator($validator)
@@ -46,9 +47,9 @@ class LabServiceParameterRequest extends ApiFormRequest
         $data = parent::all($keys);
 
         $all=[];
-        
+
         foreach($data['parameters'] as $parameter)
-          $all[$parameter]=['created_at'=>now(),'updated_at'=>now()];
+          $all[$parameter['id']]=['order'=>$parameter['order'],'created_at'=>now(),'updated_at'=>now()];
 
         $data['parameters']=$all;
 

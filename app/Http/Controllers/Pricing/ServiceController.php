@@ -60,14 +60,14 @@ class ServiceController extends Controller
 
     public function labParametersList($service_id){
         $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Lab parameters list',LabParameterResource::collection($service->lab_parameters()->orderBy('name')->get()));
+        return ApiResponse::withOk('Lab parameters list',LabParameterResource::collection($service->lab_parameters()->orderBy('lab_service_parameters.order')->get()));
     }
 
     public function labParametersStore(LabServiceParameterRequest $request,$service_id){
         $service = $this->repository->findOrFail($service_id);
         $service->lab_parameters()->syncWithoutDetaching($request->parameters);
 
-        return ApiResponse::withOk('Lab parameter created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->get()));
+        return ApiResponse::withOk('Lab parameter created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->orderBy('lab_service_parameters.order')->get()));
     }
 
     public function labParametersDelete(LabServiceParameterRequest $request,$service_id)

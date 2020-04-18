@@ -3,6 +3,8 @@ namespace App\Http\Helpers;
 
 use App\Models\Folder;
 use App\Models\Hospital;
+use App\Models\LabSampleType;
+use App\Models\LabTestSample;
 use App\Models\Patient;
 use App\Models\User;
 use App\Repositories\HospitalEloquent;
@@ -96,5 +98,17 @@ class IDGenerator{
            $number=is_numeric($number)?intval($number)+1:1;
 
            return $hospital->folder_id_prefix.sprintf('%0'.$hospital->digits_after_folder_prefix.'d',$number).$hospital->folder_id_seperator.$yearMonth;
+    }
+
+    static function getNewSampleCode($sample_type_id){
+        $code= implode('-', str_split(substr(strtoupper(md5(microtime() . rand(1000, 9999))), 0, 10), 5));
+        $sample_type=LabSampleType::findOrFail($sample_type_id);
+
+        $code= ($sample_type->prefix?$sample_type->prefix.'-':'').$code;
+
+        if(LabTestSample::where('sample_code',$code)->first())
+        return self::getNewSampleCode($sample_type_id);
+        else
+        return $code;
     }
 }
