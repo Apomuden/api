@@ -88,7 +88,7 @@ class Investigation extends Model
         });
 
         static::created(function($model){
-            $model->service_fee=$model->prepaid_total??$model->postpaid_total;
+            $model->service_fee=($model->prepaid_total??$model->postpaid_total)??0.00;
             $model->service_quantity=1;
             $model->service_date=$model->created_at;
             $model->prepaid= boolval($model->prepaid_total);

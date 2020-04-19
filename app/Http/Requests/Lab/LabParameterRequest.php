@@ -33,4 +33,4 @@ class LabParameterRequest extends ApiFormRequest
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
-}
+} 

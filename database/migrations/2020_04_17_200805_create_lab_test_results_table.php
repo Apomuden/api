@@ -30,6 +30,8 @@ class CreateLabTestResultsTable extends Migration
             $table->enum('value_type',['Text', 'Number']);
             $table->string('test_value');
 
+            $table->unsignedInteger('parameter_order');
+
             $table->unsignedBigInteger('lab_parameter_range_id')->nullable();
             $table->foreign('lab_parameter_range_id')->references('id')->on('lab_parameter_ranges')->onDelete('restrict');
 

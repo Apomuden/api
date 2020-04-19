@@ -31,6 +31,10 @@ class LabTestSample extends Model
             $model->patient_id = $investigation->patient_id;
 
         });
+        static::created(function($model){
+            $model->investigation->status = 'SAMPLE-TAKEN';
+            $model->investigation->save();
+        });
 
         static::updating(function ($model) {
             if($model->investigation_id){

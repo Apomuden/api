@@ -16,6 +16,9 @@ class RolesTableSeeder extends Seeder
             ['name' => 'Admin'],
             ['name' => 'Nurse'],
             ['name' => 'Doctor'],
+            ['name' => 'Lab Technologist'],
+            ['name' => 'Lab Technician'],
+            ['name' => 'Biomedical Scientist']
         ]);
     }
 }
