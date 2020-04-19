@@ -100,33 +100,30 @@ class IDGenerator{
            return $hospital->folder_id_prefix.sprintf('%0'.$hospital->digits_after_folder_prefix.'d',$number).$hospital->folder_id_seperator.$yearMonth;
     }
 
-    static function getNewSampleCode($investigation_id){
+    static function getNewSampleCode($investigation_id,$sample_type_id){
 
-        $lastSample=LabTestSample::where('investigation_id',$investigation_id)->latest('created_at')->firstOrFail();
+        $lastSample = LabTestSample::where('investigation_id', $investigation_id)->latest('created_at')->first();
 
-        $sample_type = LabSampleType::find($lastSample->lab_sample_type_id??null);
+        $sample_type = LabSampleType::findOrFail($sample_type_id);
 
-        $code=null;
-
-        if($lastSample && $sample_type){
-            $codeParts = explode('-', $lastSample->sample_code);
-            $number = end($codeParts);
-
-            if(is_numeric($number) && $lastSample->investigation_id!=$investigation_id)
-             $number++;
-
-            $lastSample->sample_code=str_replace($number, sprintf('%04d', $number), $lastSample->sample_code);
-
-            $code=str_replace($codeParts[0], $sample_type->prefix, $lastSample->sample_code);
+        if($lastSample){
+            $codePosfix = substr($lastSample->sample_code, 3, strlen($lastSample->sample_code));
+            $code= $sample_type->prefix.$codePosfix;
         }
-        else if($sample_type){
-            $code =date('y').'-'.date('m').'-'. sprintf('%04d', 1);
-            $code = ($sample_type->prefix ? $sample_type->prefix . '-' : '') . $code;
+        else{
+
+            $lastSample=LabTestSample::whereRaw('SUBSTRING(sample_code, 4, 4)=?',[date('ym')])->where('lab_sample_type_id',$sample_type_id)->latest('created_at')->first();
+
+            if($lastSample){
+                $number = substr($lastSample->sample_code ?? null, 7, strlen($lastSample->sample_code ?? null));
+                $code= str_replace($number, sprintf('%05d', is_numeric($number)?($number+1):1), $lastSample->sample_code);
+            }
+            else{
+                $code = date('y') . date('m') . sprintf('%05d', 1);
+                $code = ($sample_type->prefix??null) . $code;
+            }
         }
 
-       /*  if(LabTestSample::where('sample_code',$code)->first())
-        return self::getNewSampleCode($sample_type_id);
-        else */
         return $code;
     }
 }

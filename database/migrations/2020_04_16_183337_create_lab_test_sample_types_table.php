@@ -16,7 +16,7 @@ class CreateLabTestSampleTypesTable extends Migration
         Schema::create('lab_sample_types', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->string('prefix')->nullable();
+            $table->string('prefix',3)->nullable();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE')->index();
             $table->timestamps();
             $table->softDeletes();
