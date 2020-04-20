@@ -21,6 +21,7 @@ class LabParameterRangeResource extends JsonResource
             'lab_parameter_name'=>$this->lab_parameter->name,
             'lab_parameter_description'=>$this->lab_parameter->description,
             'flag'=>$this->flag,
+            'text_value'=>$this->text_value,
             'min_comparator'=>$this->min_comparator,
             'min_value'=>$this->min_value,
             'max_comparator'=>$this->max_comparator,

@@ -141,6 +141,19 @@ class Patient extends Model
       }
   }
 
+  public function ageByUnit(string $age_unit){
+      switch($age_unit){
+          case 'YEAR':
+            return Carbon::parse($this->dob)->diffInYears(Carbon::now());
+          case 'MONTH':
+            return Carbon::parse($this->dob)->diffInMonths(Carbon::now());
+          case 'WEEK':
+            return Carbon::parse($this->dob)->diffInWeeks(Carbon::now());
+          case 'DAY':
+            return Carbon::parse($this->dob)->diffInDays(Carbon::now());
+      }
+  }
+
   public function getAgeUnitAttribute(){
       if(!$this->age_unit)
       $this->absage;

@@ -26,21 +26,16 @@ class labTestResultResource extends JsonResource
             'age_group' => $patient->age_group->name ?? null,
             'age' => $this->investigation->age ?? null,
             'patient_status' => $this->investigation->patient_status ?? null,
-
             'investigation_id'=>$this->investigation_id,
             'consultation_id'=>$this->investigation->consultation_id??null,
             'hospital_service_name' => $this->service->hospital_service->name,
             'hospital_service_id' => $this->service->hospital_service->id,
-
             'service_category_name' => $this->service->service_category->name??null,
             'service_category_id' => $this->service->service_category->id??null,
-
             'service_subcategory_name' => $this->service->service_subcategory->name ?? null,
             'service_subcategory_id' => $this->service->service_subcategory->id ?? null,
-
             'service_name' => $this->service->description ?? null,
             'service_id' => $this->service->id ?? null,
-
             'lab_parameter_id'=>$this->lab_parameter_id,
             'lab_parameter_name'=>$this->lab_parameter_name??null,
             'lab_parameter_description'=>$this->lab_parameter_description??null,
@@ -49,6 +44,7 @@ class labTestResultResource extends JsonResource
             'parameter_order'=>$this->parameter_order??null,
             'lab_parameter_range_id'=>$this->lab_parameter_range_id??null,
             'flag'=>$this->flag ??null,
+            'range_text_value'=>$this->range_text_value ??null,
             'min_comparator'=>$this->min_comparator  ??null,
             'min_value'=>$this->min_value  ??null,
             'max_comparator'=>$this->max_comparator   ??null,
@@ -57,7 +53,6 @@ class labTestResultResource extends JsonResource
             'min_age_unit'=>$this->min_age_unit   ??null,
             'max_age'=>$this->max_age   ??null,
             'max_age_unit'=>$this->max_age_unit    ??null,
-
             'technician_id'=>$this->technician_id,
             'technician_name'=>$this->technician->fullname??null,
             'user_id'=>$this->user_id,

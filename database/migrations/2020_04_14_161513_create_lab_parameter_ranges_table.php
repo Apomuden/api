@@ -23,6 +23,8 @@ class CreateLabParameterRangesTable extends Migration
             $table->enum('max_comparator',['>', '>=','<','<=', '='])->nullable();
             $table->unsignedDecimal('max_value',10,2)->nullable();
 
+            $table->string('text_value')->nullable();
+
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE')->index();
 
             $table->unsignedInteger('min_age')->nullable();
@@ -36,7 +38,7 @@ class CreateLabParameterRangesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['flag', 'lab_parameter_id', 'min_age', 'min_age_unit', 'max_age', 'max_age_unit','gender','deleted_at'],'Unique_lab_param_range');
+            $table->unique(['flag', 'lab_parameter_id', 'text_value', 'min_age', 'min_age_unit', 'max_age', 'max_age_unit','gender','deleted_at'],'Unique_lab_param_range');
         });
     }
 

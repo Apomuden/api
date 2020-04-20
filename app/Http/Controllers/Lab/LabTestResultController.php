@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Lab\LabResultRequest;
+use App\Http\Resources\Lab\labTestResultResource;
 use App\Models\LabTestResult;
 use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
 
 class LabTestResultController extends Controller
 {
@@ -22,7 +24,8 @@ class LabTestResultController extends Controller
      */
     public function index()
     {
-        //
+        $records=$this->repository->all('created_at');
+        return ApiResponse::withOk('Lab results list',labTestResultResource::collection($records));
     }
 
     /**
@@ -31,9 +34,10 @@ class LabTestResultController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(LabResultRequest $request)
     {
-        //
+        $record=$this->repository->store($request->all());
+        return ApiResponse::withOk('Lab result created',new labTestResultResource($record->refresh()));
     }
 
     /**
@@ -44,7 +48,8 @@ class LabTestResultController extends Controller
      */
     public function show($id)
     {
-        //
+        $record = $this->repository->find($id);
+        return ApiResponse::withOk('Lab result found', new labTestResultResource($record));
     }
 
     /**
@@ -54,9 +59,10 @@ class LabTestResultController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(LabResultRequest $request, $id)
     {
-        //
+        $record = $this->repository->update($request->all(),$id);
+        return ApiResponse::withOk('Lab result updated', new labTestResultResource($record));
     }
 
     /**
@@ -67,6 +73,7 @@ class LabTestResultController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Lab result deleted');
     }
 }

@@ -36,6 +36,8 @@ class CreateLabTestResultsTable extends Migration
             $table->foreign('lab_parameter_range_id')->references('id')->on('lab_parameter_ranges')->onDelete('restrict');
 
             $table->string('flag')->nullable();
+            $table->string('range_text_value')->nullable();
+            
             $table->enum('min_comparator',['>', '>=', '<', '<=', '='])->nullable();
             $table->unsignedDecimal('min_value',10,2)->nullable();
 

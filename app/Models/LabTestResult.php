@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LabTestResult extends Model
 {
@@ -38,11 +39,16 @@ class LabTestResult extends Model
                 $model->flag =$range->flag;
                 $model->min_comparator =$range->min_comparator;
                 $model->min_value =$range->min_value;
-                $model->min_value =$range->min_value;
-                $model->max_comparator =$range->max_comparator;
                 $model->max_value =$range->max_value;
-                $model->min_age =$range->min_age;
-                $model->parameter_order = $investigation->service->lab_parameters()->where('lab_parameter_id', $model->lab_parameter_id)->first()->pivote->order;
+                $model->max_comparator =$range->max_comparator;
+                $model->min_age = $range->min_age;
+                $model->max_age = $range->max_age;
+                $model->min_age_unit = $range->min_age_unit;
+                $model->max_age_unit = $range->max_age_unit;
+                $model->range_text_value = $range->text_value;
+
+                $model->parameter_order = $investigation->service->lab_parameters()->where('lab_parameter_id', $lab_parameter->id)->first()->pivot->order;
+
             }
 
 
@@ -63,7 +69,7 @@ class LabTestResult extends Model
             $model->patient_status = $model->patient_status ?? $investigation->patient_status;
 
             $serviceEloquent = new RepositoryEloquent(new Service);
-            $service = $serviceEloquent->findOrFail($model->service_id);
+            $service = $serviceEloquent->findOrFail($investigation->service_id);
 
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
@@ -119,7 +125,7 @@ class LabTestResult extends Model
                 $model->patient_status = $model->patient_status ?? $investigation->patient_status;
 
                 $serviceEloquent = new RepositoryEloquent(new Service);
-                $service = $serviceEloquent->findOrFail($model->service_id);
+                $service = $serviceEloquent->findOrFail($investigation->service_id);
 
                 $model->hospital_service_id = $service->hospital_service_id;
                 $model->service_category_id = $service->service_category_id;
@@ -158,12 +164,16 @@ class LabTestResult extends Model
                 $model->flag = $range->flag;
                 $model->min_comparator = $range->min_comparator;
                 $model->min_value = $range->min_value;
-                $model->min_value = $range->min_value;
+                $model->max_value = $range->max_value;
                 $model->max_comparator = $range->max_comparator;
                 $model->max_value = $range->max_value;
                 $model->min_age = $range->min_age;
+                $model->max_age = $range->max_age;
+                $model->min_age_unit = $range->min_age_unit;
+                $model->max_age_unit = $range->max_age_unit;
+                $model->range_text_value=$range->text_value;
 
-                $model->parameter_order= $investigation->service->lab_parameters()->where('lab_parameter_id', $model->lab_parameter_id)->first()->pivote->order;
+                $model->parameter_order= $investigation->service->lab_parameters()->where('lab_parameter_id', $lab_parameter->id)->first()->pivot->order;
             }
 
 
@@ -174,27 +184,110 @@ class LabTestResult extends Model
        if($this->test_value && $this->lab_parameter_id && $this->patient_id){
           $patient=Patient::withTrashed()->findOrFail($this->patient_id);
           $ranges=LabParameterRange::where('lab_parameter_id',$this->lab_parameter_id)->orderBy('max_value')->get();
+
           foreach($ranges as $range){
               $expression=null;
-            if($range->min_comparator && $range->min_value)
-                $expression="$this->test_value $range->min_comparator $range->min_value && ";
-            if($range->max_comparator && $range->max_value)
-                $expression.="$this->test_value $range->max_comparator $range->max_value";
-
-            if($patient->abs_age && $patient->age_unit){
-                if($range->min_age && $range->min_age_unit)
-                   $expression .= "$this->$patient->abs_age>=$range->min_age && ";
-                if($range->max_age && $range->max_age_unit)
-                   $expression .= "$this->$patient->abs_age<=$range->max_age ";
+            if ($patient->abs_age && $patient->age_unit) {
+                if ($range->min_age && $range->min_age_unit)
+                        $expression .= $patient->ageByUnit($range->min_age_unit) . ' >= ' . $range->min_age . ' && ';
+                if ($range->max_age && $range->max_age_unit)
+                        $expression .= $patient->ageByUnit($range->max_age_unit) . ' <= ' . $range->max_age . ' && ';
+            }
+            if($range->lab_parameter->value_type== 'Text')
+                $expression.=strtolower(trim($this->test_value)).' = '. strtolower(trim($range->text_value));
+            else{
+                if($range->min_comparator && $range->min_value)
+                    $expression="$this->test_value $range->min_comparator $range->min_value && ";
+                if($range->max_comparator && $range->max_value)
+                    $expression.="$this->test_value $range->max_comparator $range->max_value";
             }
 
-            $expression=rtrim($expression, ' && ');
+                $expression = rtrim($expression, ' && ');
+                $inRange = eval("return $expression;");
+                if ($inRange)
+                    return $range;
 
-            $inRange=eval("return $expression;");
-            if($inRange)
-            //return $range;
-            return $expression;
           }
        }
+    }
+
+    public function hospital_service()
+    {
+        return $this->belongsTo(HospitalService::class);
+    }
+
+    public function service_category()
+    {
+        return $this->belongsTo(ServiceCategory::class);
+    }
+
+    public function service_subcategory()
+    {
+        return $this->belongsTo(ServiceSubcategory::class);
+    }
+
+    public function service()
+    {
+        return $this->belongsTo(Service::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function funding_type()
+    {
+        return $this->belongsTo(FundingType::class);
+    }
+
+    public function sponsorship_type()
+    {
+        return $this->belongsTo(SponsorshipType::class);
+    }
+
+    public function billing_sponsor()
+    {
+        return $this->belongsTo(BillingSponsor::class);
+    }
+
+    public function sponsorship_policy()
+    {
+        return $this->belongsTo(SponsorshipPolicy::class);
+    }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class);
+    }
+
+    public function age_category()
+    {
+        return $this->belongsTo(AgeCategory::class);
+    }
+
+    public function age_classification()
+    {
+        return $this->belongsTo(AgeClassification::class, 'age_class_id');
+    }
+
+    public function canceller()
+    {
+        return $this->belongsTo(User::class, 'canceller_id');
+    }
+
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class);
+    }
+
+    public function investigation()
+    {
+        return $this->belongsTo(Investigation::class);
+    }
+
+    public function technician()
+    {
+        return $this->belongsTo(User::class);
     }
 }

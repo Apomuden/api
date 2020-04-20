@@ -30,5 +30,9 @@ Route::apiResource('sampletypes', 'Lab\LabSampleTypeController', [
 ]);
 Route::apiResource('samples', 'Lab\LabTestSampleController', [
     'module' => 'lab-mgt',
-    'component' => 'setup.free.labparameters'
+    'component' => 'labsamples'
+]);
+Route::apiResource('results', 'Lab\LabTestResultController', [
+    'module' => 'lab-mgt',
+    'component' => 'labresults'
 ]);
