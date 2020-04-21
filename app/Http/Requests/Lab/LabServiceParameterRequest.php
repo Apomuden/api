@@ -6,6 +6,7 @@ use App\Http\Requests\ApiFormRequest;
 use App\Models\HospitalService;
 use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class LabServiceParameterRequest extends ApiFormRequest
@@ -48,10 +49,16 @@ class LabServiceParameterRequest extends ApiFormRequest
 
         $all=[];
 
-        foreach($data['parameters'] as $parameter)
-          $all[$parameter['id']]=['order'=>$parameter['order'],'created_at'=>now(),'updated_at'=>now()];
 
-        $data['parameters']=$all;
+            foreach ($data['parameters'] as $parameter){
+                if (Request::isMethod('post')){
+                    $all[$parameter['id']] = ['order' => $parameter['order'], 'created_at' => now(), 'updated_at' => now()];
+                }
+                else{
+                    $all[$parameter['id']]= $parameter['id'];
+                }
+            }
+           $data['parameters'] = $all;
 
         return $data;
     }
