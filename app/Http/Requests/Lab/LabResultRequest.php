@@ -4,6 +4,7 @@ namespace App\Http\Requests\Lab;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\Investigation;
+use App\Models\LabTestResult;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,8 +18,10 @@ class LabResultRequest extends ApiFormRequest
      *
      * @return bool
      */
+    private $id;
     public function authorize()
     {
+        $this->id = $this->route('result');
         return true;
     }
 
@@ -29,13 +32,13 @@ class LabResultRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('result');
+
 
 
         return [
-             'investigation_id'=>'bail|'.($id?'sometimes':'required').'|exists:investigations,id|'.$this->softUnique('lab_test_results', 'investigation_id',$id),
-             'lab_parameter_id'=>['bail', ($id ? 'sometimes' : 'required'), 'exists:lab_parameters,id', $this->softUniqueWith('lab_test_results', 'investigation_id,lab_parameter_id', $id)],
-             'test_value'=>'bail|'. ($id ? 'sometimes' : 'required'),
+             'investigation_id'=>'bail|'.($this->id?'sometimes':'required').'|exists:investigations,id',
+             'lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'), 'exists:lab_parameters,id'],
+             'test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
              'technician_id'=>['bail','sometimes','nullable'],
               'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
              'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
@@ -50,8 +53,16 @@ class LabResultRequest extends ApiFormRequest
                 $lab_parameter=Investigation::find($all['investigation_id'])->service->lab_parameters()->where('lab_parameter_id', $all['lab_parameter_id'])->first();
 
                 if (!$lab_parameter)
-                    $validator->errors()->add("lab_parameter_id", "Selected lab_parameter_id is does not belong to the specified investigation's lab service!");
+                    $validator->errors()->add("lab_parameter_id", "Selected lab_parameter_id does not belong to the specified investigation's lab service!");
             }
+
+            if(!$this->id){
+                $labResult = LabTestResult::where(['investigation_id'=> $all['investigation_id'], 'lab_parameter_id'=> $all['lab_parameter_id']])->first();
+
+                if(isset($labResult->test_value) && $labResult->test_value)
+                    $validator->errors()->add("test_value", "Test value  for {$labResult->lab_parameter_name} for investigation_id: {$labResult->investigation_id} already exists!");
+            }
+
 
             if(isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name,['Lab Technician', 'Lab Technologist', 'Biomedical Scientist']))
                 $validator->errors()->add("technician_id", "Selected technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");

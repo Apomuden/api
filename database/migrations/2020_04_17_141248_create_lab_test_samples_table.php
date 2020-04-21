@@ -33,7 +33,7 @@ class CreateLabTestSamplesTable extends Migration
             $table->foreign('technician_id')->references('id')->on('users')->onDelete('restrict');
             $table->uuid('user_id')->comment('one who made the entry');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('restrict');
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('status', ['ACTIVE', 'INACTIVE','CANCELLED', 'APPROVED'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
         });

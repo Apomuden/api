@@ -25,10 +25,10 @@ class CreateLabTestResultsTable extends Migration
             $table->unsignedBigInteger('lab_parameter_id');
             $table->foreign('lab_parameter_id')->references('id')->on('lab_parameters')->onDelete('restrict');
 
-            $table->string('lab_parameter_name');
-            $table->string('lab_parameter_description');
-            $table->enum('value_type',['Text', 'Number']);
-            $table->string('test_value');
+            $table->string('lab_parameter_name')->nullable();
+            $table->string('lab_parameter_description')->nullable();
+            $table->enum('value_type',['Text', 'Number'])->nullable();
+            $table->string('test_value')->nullable();
 
             $table->unsignedInteger('parameter_order');
 
@@ -37,7 +37,7 @@ class CreateLabTestResultsTable extends Migration
 
             $table->string('flag')->nullable();
             $table->string('range_text_value')->nullable();
-            
+
             $table->enum('min_comparator',['>', '>=', '<', '<=', '='])->nullable();
             $table->unsignedDecimal('min_value',10,2)->nullable();
 
@@ -104,10 +104,10 @@ class CreateLabTestResultsTable extends Migration
             $table->uuid('canceller_id')->comment('The user who is cancelling the payment')->nullable();
             $table->foreign('canceller_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->dateTime('test_date');
+            $table->dateTime('test_date')->nullable();
 
             $table->timestamps();
-            $table->enum('status', ['ACTIVE','INACTIVE','CANCELLED'])->default('ACTIVE');
+            $table->enum('status', ['ACTIVE','INACTIVE','CANCELLED','APPROVED'])->default('ACTIVE');
             $table->softDeletes();
         });
     }

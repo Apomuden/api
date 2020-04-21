@@ -32,8 +32,7 @@ class LabTestSample extends Model
 
         });
         static::created(function($model){
-            $model->investigation->status = 'SAMPLE-TAKEN';
-            $model->investigation->save();
+            $model->investigation->update(['status'=> 'SAMPLE-TAKEN']);
         });
 
         static::updating(function ($model) {

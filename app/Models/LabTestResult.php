@@ -26,36 +26,33 @@ class LabTestResult extends Model
             $patient=$investigation->patient;
             $model->patient_id = $patient->id;
 
-
             $model->billing_sponsor_id = $investigation->billing_sponsor_id;
 
-            if(request('lab_parameter_id')){
+            if($model->lab_parameter_id){
                 $lab_parameter=LabParameter::findOrFail($model->lab_parameter_id);
                 $model->lab_parameter_name =$lab_parameter->name;
                 $model->lab_parameter_description =$lab_parameter->description;
                 $model->value_type =$lab_parameter->value_type;
                 $range= $model->compute_range;
-                $model->lab_parameter_range_id=$range->id;
-                $model->flag =$range->flag;
-                $model->min_comparator =$range->min_comparator;
-                $model->min_value =$range->min_value;
-                $model->max_value =$range->max_value;
-                $model->max_comparator =$range->max_comparator;
-                $model->min_age = $range->min_age;
-                $model->max_age = $range->max_age;
-                $model->min_age_unit = $range->min_age_unit;
-                $model->max_age_unit = $range->max_age_unit;
-                $model->range_text_value = $range->text_value;
+                $model->lab_parameter_range_id=$range->id??null;
+                $model->flag =$range->flag??null;
+                $model->min_comparator =$range->min_comparator??null;
+                $model->min_value =$range->min_value??null;
+                $model->max_value =$range->max_value??null;
+                $model->max_comparator =$range->max_comparator??null;
+                $model->min_age = $range->min_age??null;
+                $model->max_age = $range->max_age??null;
+                $model->min_age_unit = $range->min_age_unit??null;
+                $model->max_age_unit = $range->max_age_unit??null;
+                $model->range_text_value = $range->text_value??null;
 
                 $model->parameter_order = $investigation->service->lab_parameters()->where('lab_parameter_id', $lab_parameter->id)->first()->pivot->order;
 
             }
-
-
             $user = Auth::guard('api')->user();
             if($model->status== 'CANCELLED')
             {
-                $model->canceller_id= $model->canceller_id??$user->id;
+                $model->canceller_id= $user->id;
                 $model->cancelled_date = $model->cancelled_date??Carbon::today();
             }
 
@@ -100,8 +97,18 @@ class LabTestResult extends Model
             })->orderBy('priority', 'asc')->first();
 
             $model->sponsorship_policy_id = $model->postpaid_total ? ($policy->sponsorship_policy_id ?? null) : null;
+
         });
 
+        static::created(function($model){
+            $model->seedParams();
+            $model->resultsCompleted();
+            if($model->status=='APPROVED' && !$model->investigation->status='CANCELLED')
+            {
+                $model->investigation->lab_test_samples()->update(['status'=> 'APPROVED']);
+                $model->investigation->update(['status' => 'APPROVED']);
+            }
+        });
         static::updating(function ($model) {
 
             $user = Auth::guard('api')->user();
@@ -147,35 +154,51 @@ class LabTestResult extends Model
 
                 $policy = $investigation->patient->patient_sponsors()->whereHas('sponsorship_policy', function ($query) {
                     $query->where('status', 'ACTIVE');
-                })->orderBy('priority', 'asc')->first();
+                })->orderBy('priority', 'asc')->first()??null;
 
                 $model->sponsorship_policy_id = $model->postpaid_total ? ($policy->sponsorship_policy_id ?? null) : null;
             }
             else
             $investigation=$model->investigation;
 
-            if (request('lab_parameter_id')) {
+            if ($model->lab_parameter_id) {
                 $lab_parameter = LabParameter::findOrFail($model->lab_parameter_id);
                 $model->lab_parameter_name = $lab_parameter->name;
                 $model->lab_parameter_description = $lab_parameter->description;
                 $model->value_type = $lab_parameter->value_type;
                 $range = $model->compute_range;
-                $model->lab_parameter_range_id = $range->id;
-                $model->flag = $range->flag;
-                $model->min_comparator = $range->min_comparator;
-                $model->min_value = $range->min_value;
-                $model->max_value = $range->max_value;
-                $model->max_comparator = $range->max_comparator;
-                $model->max_value = $range->max_value;
-                $model->min_age = $range->min_age;
-                $model->max_age = $range->max_age;
-                $model->min_age_unit = $range->min_age_unit;
-                $model->max_age_unit = $range->max_age_unit;
-                $model->range_text_value=$range->text_value;
+                $model->lab_parameter_range_id = $range->id??null;
+                $model->flag = $range->flag??null;
+                $model->min_comparator = $range->min_comparator??null;
+                $model->min_value = $range->min_value??null;
+                $model->max_value = $range->max_value??null;
+                $model->max_comparator = $range->max_comparator??null;
+                $model->max_value = $range->max_value??null;
+                $model->min_age = $range->min_age??null;
+                $model->max_age = $range->max_age??null;
+                $model->min_age_unit = $range->min_age_unit??null;
+                $model->max_age_unit = $range->max_age_unit??null;
+                $model->range_text_value=$range->text_value??null;
 
                 $model->parameter_order= $investigation->service->lab_parameters()->where('lab_parameter_id', $lab_parameter->id)->first()->pivot->order;
             }
 
+            if ($model->status == 'APPROVED' && !$model->getOriginal('approval_date') && !$model->investigation->status = 'CANCELLED') {
+                $model->investigation->lab_test_samples()->update(['status' => 'APPROVED']);
+                $model->investigation->update(['status' => 'APPROVED']);
+                $model->approver_id=$user->id;
+                $model->approval_date=Carbon::today();
+            }
+            elseif ($model->status == 'CANCELLED') {
+                    $model->canceller_id = $user->id;
+                    $model->cancelled_date = $model->cancelled_date ?? Carbon::today();
+                }
+
+        });
+
+        static::updated(function ($model) {
+            $model->seedParams();
+            $model->resultsCompleted();
 
         });
     }
@@ -285,9 +308,29 @@ class LabTestResult extends Model
     {
         return $this->belongsTo(Investigation::class);
     }
-
     public function technician()
     {
         return $this->belongsTo(User::class);
     }
+
+
+    public function seedParams(){
+       $parameters= $this->service->lab_parameters()->orderBy('lab_service_parameters.order')->get();
+       foreach($parameters as $parameter){
+           self::firstOrCreate([
+                'investigation_id'=>$this->investigation_id,
+                'lab_parameter_id'=>$parameter->id,
+           ],[
+                'patient_id'=>$this->patient_id
+           ]);
+       }
+    }
+
+    public function resultsCompleted(){
+        $parameters = $this->service->lab_parameters()->orderBy('lab_service_parameters.order')->get();
+
+        if($parameters->count()==self::whereNotIn('status',['APPROVED', 'CANCELLED', 'RESULTS-TAKEN'])->count())
+           $this->investigation->update(['status'=> 'RESULTS-TAKEN']);
+    }
+
 }

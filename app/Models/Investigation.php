@@ -27,7 +27,7 @@ class Investigation extends Model
             $patient =$consultation->patient??Patient::findOrFail($model->patient_id);
             $model->patient_id=$patient->id;
 
-            if(request('billing_sponsor_id')){
+            if($model->billing_sponsor_id){
                 $billing_sponsor=BillingSponsor::findOrFail($model->billing_sponsor_id);
                 $patient->sponsorship_type= $billing_sponsor->sponsorship_type;
                 $patient->funding_type=FundingType::where('name',$patient->sponsorship_type->name??null)->first()??$patient->funding_type;
@@ -37,7 +37,7 @@ class Investigation extends Model
                 $model->billing_sponsor_id = $model->billing_sponsor_id ?? $consultation->billing_sponsor_id;
             }
 
-            if(request('funding_type_id')){
+            if($model->funding_type_id){
                 $patient->funding_type=FundingType::findOrFail($model->funding_type_id);
             }
 
@@ -134,14 +134,14 @@ class Investigation extends Model
             $patient = $consultation->patient ?? Patient::findOrFail($model->patient_id);
             $model->patient_id = $patient->id;
 
-            if (request('billing_sponsor_id')) {
+            if ($model->billing_sponsor_id) {
                 $sponsorship_type = BillingSponsor::findOrFail($model->billing_sponsor_id);
                 $patient->sponsorship_type = $sponsorship_type;
                 $patient->funding_type = FundingType::where('name', $patient->sponsorship_type->name ?? null)->first() ?? $patient->funding_type;
 
             }
 
-            if (request('funding_type_id'))
+            if ($model->funding_type_id)
                 $patient->funding_type = FundingType::findOrFail($model->funding_type_id);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
@@ -178,7 +178,7 @@ class Investigation extends Model
                     $query->where('status', 'ACTIVE');
                 })->orderBy('priority', 'asc')->first();
 
-                $model->sponsorship_policy_id = $policy->sponsorship_policy_id ?? $original->sponsorship_policy_id;
+                $model->sponsorship_policy_id = $policy->sponsorship_policy_id ?? ($original->sponsorship_policy_id??null);
             }
 
             $model->cancelled_date=$model->canceller_id?($model->cancelled_date??Carbon::today()):null;
@@ -270,5 +270,15 @@ class Investigation extends Model
     public function canceller()
     {
         return $this->belongsTo(User::class, 'canceller_id');
+    }
+
+    public function lab_test_results()
+    {
+        return $this->hasMany(LabTestResult::class);
+    }
+
+    public function lab_test_samples()
+    {
+        return $this->hasMany(LabTestSample::class);
     }
 }

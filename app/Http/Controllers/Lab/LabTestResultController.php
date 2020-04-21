@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Lab;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Lab\LabResultMultipleRequest;
 use App\Http\Requests\Lab\LabResultRequest;
 use App\Http\Resources\Lab\labTestResultResource;
 use App\Models\LabTestResult;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Support\Facades\DB;
 
 class LabTestResultController extends Controller
 {
@@ -25,6 +27,7 @@ class LabTestResultController extends Controller
     public function index()
     {
         $records=$this->repository->all('created_at');
+
         return ApiResponse::withOk('Lab results list',labTestResultResource::collection($records));
     }
 
@@ -36,8 +39,31 @@ class LabTestResultController extends Controller
      */
     public function store(LabResultRequest $request)
     {
-        $record=$this->repository->store($request->all());
+        $record=LabTestResult::updateOrCreate([
+            'investigation_id' => $request->investigation_id,
+            'lab_parameter_id' => $request->lab_parameter_id,
+        ],$request->except(['investigation_id', 'lab_parameter_id']));
+
         return ApiResponse::withOk('Lab result created',new labTestResultResource($record->refresh()));
+    }
+
+    public function storeMultiple(LabResultMultipleRequest $request)
+    {
+        DB::beginTransaction();
+        $results = $request->results;
+        $results_ids = [];
+        foreach ($results as $result) {
+            $result=(array) $result;
+            $record = LabTestResult::updateOrCreate([
+                'investigation_id' => $request->investigation_id,
+                'lab_parameter_id' => $result['lab_parameter_id'],
+            ], $request->except(['investigation_id', 'results'])+$result);
+
+            $results_ids[] = $record->id;
+        }
+        DB::commit();
+        $records = $this->repository->getModel()->whereIn('id', $results_ids)->get();
+        return ApiResponse::withOk('Lab results created', labTestResultResource::collection($records));
     }
 
     /**

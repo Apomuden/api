@@ -83,7 +83,8 @@ class InvestigationRequest extends ApiFormRequest
             'canceller_id' => [
                 'bail', 'sometimes', 'nullable',
                 'exists:users,id'
-            ]
+            ],
+            'status'=> 'bail|in:IN-QUEUE,CANCELLED,ACTIVE'
         ];
     }
 

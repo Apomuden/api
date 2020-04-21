@@ -32,6 +32,10 @@ Route::apiResource('samples', 'Lab\LabTestSampleController', [
     'module' => 'lab-mgt',
     'component' => 'labsamples'
 ]);
+Route::post('results/multiple', 'Lab\LabTestResultController@storeMultiple', [
+    'module' => 'lab-mgt',
+    'component' => 'labresults'
+]);
 Route::apiResource('results', 'Lab\LabTestResultController', [
     'module' => 'lab-mgt',
     'component' => 'labresults'

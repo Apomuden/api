@@ -84,7 +84,7 @@ class CreateInvestigationsTable extends Migration
             $table->uuid('canceller_id')->comment('The user who is cancelling the payment')->nullable();
             $table->foreign('canceller_id')->references('id')->on('users')->onDelete('restrict');
 
-            $table->enum('status',['IN-QUEUE','ACTIVE','COMPLETED','APPROVED','CANCELLED', 'SAMPLE-TAKEN'])->default('IN-QUEUE');
+            $table->enum('status',['IN-QUEUE','ACTIVE','APPROVED','CANCELLED', 'SAMPLE-TAKEN', 'RESULTS-TAKEN'])->default('IN-QUEUE');
             $table->timestamps();
 
             $table->softDeletes();
