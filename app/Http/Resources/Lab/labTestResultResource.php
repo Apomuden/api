@@ -23,8 +23,15 @@ class labTestResultResource extends JsonResource
             'patient_title' => $patient->title->name ?? null,
             'patient_name' => $patient->fullname ?? null,
             'gender' => $this->investigation->gender ?? null,
-            'age_group' => $patient->age_group->name ?? null,
             'age' => $this->investigation->age ?? null,
+            'age_group' => $this->age_group->name ?? null,
+
+            'age_category' => $this->age_category->name ?? null,
+            'age_category_id' => $this->age_category_id ?? null,
+
+            'age_class_name' => $this->age_classification->name ?? null,
+            'age_class_id' => $this->age_class_id ?? null,
+
             'patient_status' => $this->investigation->patient_status ?? null,
             'investigation_id'=>$this->investigation_id,
             'consultation_id'=>$this->investigation->consultation_id??null,

@@ -26,7 +26,7 @@ class LabTestResultController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('created_at');
+        $records=$this->repository->all('parameter_order');
 
         return ApiResponse::withOk('Lab results list',labTestResultResource::collection($records));
     }
@@ -62,7 +62,7 @@ class LabTestResultController extends Controller
             $results_ids[] = $record->id;
         }
         DB::commit();
-        $records = $this->repository->getModel()->whereIn('id', $results_ids)->get();
+        $records = $this->repository->getModel()->whereIn('id', $results_ids)->orderBy('parameter_order')->get();
         return ApiResponse::withOk('Lab results created', labTestResultResource::collection($records));
     }
 
