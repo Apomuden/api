@@ -97,9 +97,7 @@ class LabTestResult extends Model
             })->orderBy('priority', 'asc')->first();
 
             $model->sponsorship_policy_id = $model->postpaid_total ? ($policy->sponsorship_policy_id ?? null) : null;
-
         });
-
         static::created(function($model){
             $model->seedParams();
             $model->resultsCompleted();
@@ -222,13 +220,18 @@ class LabTestResult extends Model
                 if($range->min_comparator && $range->min_value)
                     $expression="$this->test_value $range->min_comparator $range->min_value && ";
                 if($range->max_comparator && $range->max_value)
-                    $expression.="$this->test_value $range->max_comparator $range->max_value";
+                    $expression.="$this->test_value $range->max_comparator $range->max_value && ";
+            }
+
+            if($range->gender){
+                  $genders= explode(',', $range->gender);
+                    $expression .= in_array((strtoupper($this->gender) ?? strtoupper($patient->gender)), $genders)?'true':'false' . " && ";
             }
 
                 $expression = rtrim($expression, ' && ');
                 $inRange = eval("return $expression;");
                 if ($inRange)
-                    return $range;
+                   return $range;
 
           }
        }
@@ -325,12 +328,10 @@ class LabTestResult extends Model
            ]);
        }
     }
-
     public function resultsCompleted(){
         $parameters = $this->service->lab_parameters()->orderBy('lab_service_parameters.order')->get();
 
         if($parameters->count()==self::whereNotIn('status',['APPROVED', 'CANCELLED', 'RESULTS-TAKEN'])->count())
            $this->investigation->update(['status'=> 'RESULTS-TAKEN']);
     }
-
 }
