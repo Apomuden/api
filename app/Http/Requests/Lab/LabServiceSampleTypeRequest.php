@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class LabServiceParameterRequest extends ApiFormRequest
+class LabServiceSampleTypeRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,9 +29,9 @@ class LabServiceParameterRequest extends ApiFormRequest
     public function rules()
     {
         return [
-            'parameters'=>'bail|array',
-            'parameters.*.id' => 'bail|required|distinct|exists:lab_parameters,id',
-            'parameters.*.order' => 'bail|required|distinct|integer|numeric|min:1'
+            'sample_types'=>'bail|array',
+            'sample_types.*.id' => 'bail|required|distinct|exists:lab_sample_types,id',
+            'sample_types.*.order' => 'bail|required|distinct|integer|numeric|min:1'
         ];
     }
     public function withValidator($validator)
@@ -49,7 +49,7 @@ class LabServiceParameterRequest extends ApiFormRequest
 
         $all=[];
 
-            foreach ($data['parameters'] as $parameter){
+            foreach ($data['sample_types'] as $parameter){
                 if (Request::isMethod('post')){
                     $all[$parameter['id']] = ['order' => $parameter['order'], 'created_at' => now(), 'updated_at' => now()];
                 }
@@ -57,7 +57,7 @@ class LabServiceParameterRequest extends ApiFormRequest
                     $all[$parameter['id']]= $parameter['id'];
                 }
             }
-           $data['parameters'] = $all;
+           $data['sample_types'] = $all;
 
         return $data;
     }

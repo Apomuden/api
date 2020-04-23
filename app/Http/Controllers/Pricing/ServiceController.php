@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Pricing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Lab\LabSampleTypeRequest;
 use App\Http\Requests\Lab\LabServiceParameterRequest;
+use App\Http\Requests\Lab\LabServiceSampleTypeRequest;
 use App\Http\Requests\Pricing\ServiceRequest;
 use App\Http\Resources\Lab\LabParameterResource;
+use App\Http\Resources\Lab\LabSampleTypeResource;
 use App\Http\Resources\ServiceCollection;
 use App\Http\Resources\ServiceResource;
 use App\Models\LabParameter;
@@ -62,19 +65,38 @@ class ServiceController extends Controller
         $service = $this->repository->findOrFail($service_id);
         return ApiResponse::withOk('Lab parameters list',LabParameterResource::collection($service->lab_parameters()->orderBy('lab_service_parameters.order')->get()));
     }
+    public function labSampleTypesList($service_id){
+        $service = $this->repository->findOrFail($service_id);
+        return ApiResponse::withOk('Lab sample types list',LabSampleTypeResource::collection($service->lab_sample_types()->orderBy('lab_service_sample_types.order')->get()));
+    }
 
     public function labParametersStore(LabServiceParameterRequest $request,$service_id){
         $service = $this->repository->findOrFail($service_id);
         $service->lab_parameters()->syncWithoutDetaching($request->parameters);
 
-        return ApiResponse::withOk('Lab parameter created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->orderBy('lab_service_parameters.order')->get()));
+        return ApiResponse::withOk('Lab parameter(s) created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->orderBy('lab_service_parameters.order')->get()));
+    }
+
+    public function labSampleTypesStore(LabServiceSampleTypeRequest $request, $service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->lab_sample_types()->syncWithoutDetaching($request->sample_types);
+
+        return ApiResponse::withOk('Lab sample type(s) created', LabSampleTypeResource::collection($service->lab_sample_types()->whereIn('id', array_keys($request->sample_types))->orderBy('lab_service_sample_types.order')->get()));
     }
 
     public function labParametersDelete(LabServiceParameterRequest $request,$service_id)
     {
         $service = $this->repository->findOrFail($service_id);
         $service->lab_parameters()->detach($request->parameters);
-        return ApiResponse::withOk('Lab parameters deleted Successfully');
+        return ApiResponse::withOk('Lab parameter(s) deleted Successfully');
+    }
+
+    public function labSampleTypesDelete(LabServiceSampleTypeRequest $request,$service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->lab_sample_types()->detach($request->sample_types);
+        return ApiResponse::withOk('Lab sample type(s) deleted Successfully');
     }
 
     /**

@@ -45,4 +45,8 @@ class Service extends Model
     {
         return $this->belongsToMany(LabParameter::class, 'lab_service_parameters')->withPivot(['order','created_at', 'updated_at']);
     }
+    public function lab_sample_types()
+    {
+        return $this->belongsToMany(LabSampleType::class, 'lab_service_sample_types')->withPivot(['order','created_at', 'updated_at']);
+    }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Lab;
 
 use App\Http\Requests\ApiFormRequest;
+use App\Models\Investigation;
+use App\Models\Service;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LabTestSampleRequest extends ApiFormRequest
@@ -32,5 +34,24 @@ class LabTestSampleRequest extends ApiFormRequest
 
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $all = $this->all();
+
+            if($all['investigation_id'] && $all['lab_sample_type_id']){
+                $sample_type = Investigation::find($all['investigation_id'])->service->lab_sample_types()->where('lab_sample_type_id', $all['lab_sample_type_id'])->first();
+
+                if (!$sample_type)
+                    $validator->errors()->add("lab_sample_type_id", "Selected lab_sample_type_id does not belong to the specified investigation service!");
+            }
+
+        });
+    }
+    public function all($keys = null)
+    {
+        return parent::all($keys);
+
     }
 }
