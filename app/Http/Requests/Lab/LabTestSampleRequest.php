@@ -5,6 +5,7 @@ namespace App\Http\Requests\Lab;
 use App\Http\Requests\ApiFormRequest;
 use App\Models\Investigation;
 use App\Models\Service;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LabTestSampleRequest extends ApiFormRequest
@@ -28,10 +29,9 @@ class LabTestSampleRequest extends ApiFormRequest
     {
         $id=$this->route('sample');
         return [
-            'sample_code'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('lab_test_samples','sample_code',$id),
+            'sample_code'=>'bail|'.($id?'sometimes':'required'),
             'investigation_id'=>'bail|'. ($id ? 'sometimes' : 'required').'|exists:investigations,id',
             'lab_sample_type_id'=> 'bail|'. ($id ? 'sometimes' : 'required').'|exists:lab_sample_types,id',
-
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
@@ -46,6 +46,9 @@ class LabTestSampleRequest extends ApiFormRequest
                 if (!$sample_type)
                     $validator->errors()->add("lab_sample_type_id", "Selected lab_sample_type_id does not belong to the specified investigation service!");
             }
+
+            if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist']))
+                $validator->errors()->add("technician_id", "Selected technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
 
         });
     }

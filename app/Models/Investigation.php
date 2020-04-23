@@ -163,7 +163,7 @@ class Investigation extends Model
             $user = Auth::guard('api')->user();
             $model->user_id = $user->id;
 
-            $model->billing_sponsor_id= $model->billing_sponsor_id?? $original->billing_sponsor_id;
+            $model->billing_sponsor_id= $model->billing_sponsor_id?? ($original->billing_sponsor_id??null);
             if ($model->order_type == 'INTERNAL') {
                 if (ucwords($patient->funding_type->name) == 'Cash/Prepaid') {
                     $model->billing_sponsor_id = null;

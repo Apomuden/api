@@ -40,6 +40,10 @@ Route::apiResource('sampletypes', 'Lab\LabSampleTypeController', [
     'module' => 'lab-mgt',
     'component' => 'setup.free.labparameters'
 ]);
+Route::post('samples/multiple', 'Lab\LabTestSampleController@storeMultiple', [
+    'module' => 'lab-mgt',
+    'component' => 'labsamples'
+]);
 Route::apiResource('samples', 'Lab\LabTestSampleController', [
     'module' => 'lab-mgt',
     'component' => 'labsamples'

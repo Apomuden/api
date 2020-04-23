@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LabTestSample extends Model
 {
@@ -26,13 +27,18 @@ class LabTestSample extends Model
 
             $model->user_id=$user->id;
 
-            $investigation=Investigation::findOrFail($model->investigation_id);
+            $investigation=$model->investigation;
             $model->service_id=$investigation->service_id;
             $model->patient_id = $investigation->patient_id;
 
+            Log::critical('investigation',$model->toArray());
+
+            $model->lab_sample_type_order=$investigation->service->lab_sample_types()->where('lab_sample_type_id',$model->lab_sample_type_id)->firstOrFail()->pivot->order;
+
         });
         static::created(function($model){
-            $model->investigation->update(['status'=> 'SAMPLE-TAKEN']);
+            $model->investigation->status= 'SAMPLE-TAKEN';
+            $model->investigation->save();
         });
 
         static::updating(function ($model) {
@@ -40,6 +46,7 @@ class LabTestSample extends Model
                 $investigation = Investigation::findOrFail($model->investigation_id);
                 $model->service_id = $investigation->service_id;
                 $model->patient_id=$investigation->patient_id;
+                $model->lab_sample_type_order = $investigation->service->lab_sample_types()->where('lab_sample_type_id', $model->lab_sample_type_id)->firstOrFail()->pivot->order;
             }
 
             $user = Auth::guard('api')->user();
