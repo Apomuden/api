@@ -3,84 +3,59 @@
 namespace App\Http\Controllers\Pharmacy;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Pharmacy\StoreRequest;
+use App\Http\Resources\Pharmacy\StoreCollection;
+use App\Http\Resources\Pharmacy\StoreResource;
 use App\Models\Store;
+use App\Repositories\RepositoryEloquent;
+use Exception;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    protected $repository;
+
+    public function __construct(Store $Store)
     {
-        //
+        $this->repository= new RepositoryEloquent($Store);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+    public function index(){
+
+        return ApiResponse::withOk('Product Forms list',new StoreCollection($this->repository->all('name')));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function show($Store){
+        $Store=$this->repository->show($Store);
+        return $Store?
+            ApiResponse::withOk('Product Form Found',new StoreResource($Store))
+            : ApiResponse::withNotFound('Product Form Not Found');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Store $store)
-    {
-        //
+    public function store(StoreRequest $StoreRequest){
+        try{
+            $requestData=$StoreRequest->all();
+            $Store=$this->repository->store($requestData);
+            return ApiResponse::withOk('Product Form created',new StoreResource($Store->refresh()));
+        }
+        catch(Exception $e){
+            return ApiResponse::withException($e);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Store $store)
-    {
-        //
+    public function update(StoreRequest $StoreRequest,$Store){
+        try{
+            $Store=$this->repository->update($StoreRequest->all(),$Store);
+            return ApiResponse::withOk('Product Form updated',new StoreResource($Store));
+        }
+        catch(Exception $e){
+            return ApiResponse::withException($e);
+        }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Store $store)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Store  $store
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Store $store)
-    {
-        //
+        $this->repository->delete($id);
+        return ApiResponse::withOk('Product Form deleted successfully');
     }
 }
