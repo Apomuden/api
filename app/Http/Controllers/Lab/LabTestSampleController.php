@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Lab;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Helpers\IDGenerator;
+use App\Http\Requests\Lab\LabTestSampleMultipleRequest;
 use App\Http\Requests\Lab\LabTestSampleRequest;
 use App\Http\Resources\Lab\labTestSampleResource;
 use App\Models\LabTestSample;
@@ -41,6 +42,27 @@ class LabTestSampleController extends Controller
     {
         $record=$this->repository->store($request->all());
         return ApiResponse::withOk('Lab Test Sample created',new labTestSampleResource($record->refresh()));
+    }
+    public function storeMultiple(LabTestSampleMultipleRequest $request)
+    {
+        $tests=$request->tests;
+        $record_ids=[];
+        foreach($tests as $test){
+            $test=(array) $test;
+
+            $samples=(array)$test['samples'];
+            foreach($samples as $sample){
+                $sample=(array) $sample;
+                $payload= $sample+['investigation_id'=>$test['investigation_id']];
+
+                if(isset($request->technician_id))
+                $payload['technician_id']= $request->technician_id;
+
+                $record = $this->repository->store($payload);
+                $record_ids[]=$record->id;
+            }
+        }
+        return ApiResponse::withOk('Lab Test Sample created',labTestSampleResource::collection($this->repository->getModel()->whereIn('id',$record_ids)->orderBy('lab_sample_type_order')->get()));
     }
 
     /**
