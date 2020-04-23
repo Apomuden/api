@@ -43,6 +43,7 @@ class labTestSampleResource extends JsonResource
             'sample_code'=>$this->sample_code,
             'lab_sample_type_id'=>$this->lab_sample_type_id,
             'lab_sample_type_name'=>$this->lab_sample_type->name??null,
+            'lab_sample_type_order'=>$this->lab_sample_type_order??null,
             'technician_id'=>$this->technician_id,
             'technician_name'=>$this->technician->fullname??null,
             'user_id'=>$this->user_id,
