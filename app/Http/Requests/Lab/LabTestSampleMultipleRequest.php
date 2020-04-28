@@ -63,7 +63,7 @@ class LabTestSampleMultipleRequest extends ApiFormRequest
 
                     $sampleCounter++;
                 }
-                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist']))
+                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist', 'Dev']))
                     $validator->errors()->add("technician_id", "Selected technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
                 $testCounter++;
             }

@@ -65,7 +65,7 @@ class LabResultMultipleRequest extends ApiFormRequest
                         $validator->errors()->add("test_value", "Test value  for {$labResult->lab_parameter_name} for results.{$errorCounter}.investigation_id: {$labResult->investigation_id} already exists!");
                 }
 
-                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist']))
+                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist','Dev']))
                     $validator->errors()->add("technician_id", "Selected results.{$errorCounter}.technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
 
                 $errorCounter++;

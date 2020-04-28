@@ -36,8 +36,7 @@ class ProcedureRequest extends ApiFormRequest
             ->orWhere('name', 'Surgery')->first();
 
         $repository = new RepositoryEloquent(new Role);
-        $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'doctor')
-            ->orWhere('name', 'DOCTOR')->first();
+        $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'DEV')->first();
 
       /*   $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
 

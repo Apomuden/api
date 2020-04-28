@@ -41,8 +41,8 @@ class ProcedureMultipleRequest extends ApiFormRequest
 
         $repository = new RepositoryEloquent(new Role);
 
-        $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'doctor')
-            ->orWhere('name', 'DOCTOR')->first();
+        $role = $repository->findWhere(['name' => 'Doctor'])
+            ->orWhere('name', 'DEV')->first();
 
 
         return [

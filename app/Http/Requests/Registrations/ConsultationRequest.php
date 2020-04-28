@@ -62,8 +62,8 @@ class ConsultationRequest extends ApiFormRequest
             ->findWhere(['name' => 'Consultation'])
             ->orWhere('name', 'Consultation service')->first();
         $repository = new RepositoryEloquent(new Role);
-        $role = $repository->findWhere(['name'=>'Doctor'])->orWhere('name','doctor')
-            ->orWhere('name','DOCTOR')->first();
+        $role = $repository->findWhere(['name'=>'Doctor'])
+            ->orWhere('name', 'DEV')->first();
 
         return [
             'consultation_given'=>'bail|sometimes|nullable|string',
