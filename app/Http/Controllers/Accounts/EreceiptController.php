@@ -34,6 +34,7 @@ class EreceiptController extends Controller
     }
 
     public function store(EreceiptRequest $EreceiptRequest){
+        /*
         try{
             $requestData=$EreceiptRequest->all();
             $Ereceipt=$this->repository->store($requestData);
@@ -41,7 +42,7 @@ class EreceiptController extends Controller
         }
         catch(Exception $e){
             return ApiResponse::withException($e);
-        }
+        }*/
     }
 
     public function update(EreceiptRequest $EreceiptRequest,$Ereceipt){

@@ -47,6 +47,7 @@ class EreceiptResource extends JsonResource
             'patient_id'=>$this->patient_id,
             'patient_status'=>$this->patient_status,
             'receipt_items'=>$receipt_items,
+            'previous_bill'=>$this->previous_bill,
             'total_bill'=>$this->total_bill,
             'amount_paid'=>$this->amount_paid,
             'balance'=>$this->balance,

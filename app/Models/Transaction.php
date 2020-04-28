@@ -12,6 +12,7 @@ class Transaction
     public function buildTransactionDetails($patient_id):array {
         $total_deposit_amount = $this->deposit($patient_id);
         $total_discount_amount = $this->discount($patient_id);
+        $abscond_amount = $this->abscond($patient_id);
         $services = $this->service_order($patient_id);
         $reflect = new ReflectionClass($services[0]??$services);
         $reflect = $reflect->getShortName();
@@ -39,6 +40,7 @@ class Transaction
         $total_bill_due = $total_bill - $total_deposit_amount - $total_discount_amount;
         return [
             'services' => $items,
+            'outstanding_bill'=>number_format($abscond_amount, 2),
             'total_bill'=>number_format($total_bill,2),
             'total_deposit_amount'=>number_format($total_deposit_amount,2),
             'total_discount_amount'=>number_format($total_discount_amount,2),
@@ -53,6 +55,10 @@ class Transaction
 
     public function deposit($patient_id, $status='ACTIVE') {
         return Deposit::query()->where(['patient_id'=>$patient_id,'status'=>$status])->sum('deposit_amount');
+    }
+
+    public function abscond($patient_id, $status='ACTIVE') {
+        return Deposit::query()->where(['patient_id'=>$patient_id,'status'=>$status])->sum('abscond_amount');
     }
 
     public function discount($patient_id) {

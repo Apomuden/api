@@ -32,3 +32,15 @@ Route::apiResource('medicineroutes','Pharmacy\MedicineRouteController',[
     'module'=>null,
     'component'=>'medicineroutes'
 ]);
+
+Route::apiResource('stores','Pharmacy\StoreController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>null,
+    'component'=>'stores'
+]);
+
+Route::apiResource('storeusers','Pharmacy\StoreUserController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>null,
+    'component'=>'storeusers'
+]);
