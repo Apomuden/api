@@ -43,7 +43,7 @@ class DepositRequest extends ApiFormRequest
             'payment_channel_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:payment_channels,id',
             'deposit_amount'=>'bail|'.($id?'sometimes':'required').'|numeric|min:1',
             'reason'=>'bail|sometimes|nullable|string',
-            'status'=>'bail|sometimes|nullable|string',
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
 }

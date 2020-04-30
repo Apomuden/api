@@ -14,6 +14,19 @@ class Ereceipt extends Model
 
     protected $guarded = ['id'];
 
+    public static function boot() {
+        parent::boot();
+        static::creating(function($model){
+            $model->amount_paid = $model->amount_paid??$model->total_bill??0;
+            $model->balance = ($model->total_bill??0.00) - $model->amount_paid;
+        });
+
+        static::updating(function($model){
+            $model->amount_paid = (($model->amount_paid??$model->getOriginal('amount_paid'))??$model->total_bill)??0;
+            $model->balance = ($model->total_bill??0.00) - $model->amount_paid;
+        });
+    }
+
     public static function getLastReceipt($columns='') {
         return Ereceipt::all($columns)->last()??null;
     }

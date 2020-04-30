@@ -18,6 +18,7 @@ class CreateEreceiptsTable extends Migration
             $table->unsignedBigInteger('patient_id');
             $table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT', 'WALK-IN'])->default('OUT-PATIENT');
             $table->string('receipt_number')->unique();
+            $table->decimal('outstanding_bill', 20, 2)->default(0);
             $table->decimal('total_bill', 20, 2)->default(0);
             $table->decimal('amount_paid',20,2)->default(0);
             $table->decimal('balance',20,2)->default(0);
