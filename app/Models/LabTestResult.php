@@ -203,7 +203,11 @@ class LabTestResult extends Model
 
     public function getComputeRangeAttribute(){
        if($this->test_value && $this->lab_parameter_id && $this->patient_id){
+
           $patient=Patient::withTrashed()->findOrFail($this->patient_id);
+          if($this->gender)
+          $patient->gender=$this->gender;
+
           $ranges=LabParameterRange::where('lab_parameter_id',$this->lab_parameter_id)->orderBy('max_value')->get();
 
           foreach($ranges as $range){
@@ -215,7 +219,7 @@ class LabTestResult extends Model
                         $expression .= $patient->ageByUnit($range->max_age_unit) . ' <= ' . $range->max_age . ' && ';
             }
             if($range->lab_parameter->value_type== 'Text')
-                $expression.=strtolower(trim($this->test_value)).' = '. strtolower(trim($range->text_value));
+                $expression.=(strtolower(trim($this->test_value))==strtolower(trim($range->text_value))?'true':'false'). ' && ';
             else{
                 if($range->min_comparator && $range->min_value)
                     $expression="$this->test_value $range->min_comparator $range->min_value && ";
@@ -225,11 +229,11 @@ class LabTestResult extends Model
 
             if($range->gender){
                   $genders= explode(',', $range->gender);
-                    $expression .= in_array((strtoupper($this->gender) ?? strtoupper($patient->gender)), $genders)?'true':'false' . " && ";
+                  $expression .= (in_array(strtoupper($patient->gender), $genders)?'true':'false') . " && ";
             }
-
                 $expression = rtrim($expression, ' && ');
-                $inRange = eval("return $expression;");
+                //Log::critical('Expression',[$expression]);
+                $inRange = eval("return $expression ;");
                 if ($inRange)
                    return $range;
 

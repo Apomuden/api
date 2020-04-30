@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Registrations;
+namespace App\Http\Resources\Lab;
 
 use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InvestigationResource extends JsonResource
+class InvestigationResultHierarchicalResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class InvestigationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $patient = $this->patient??null;
-        $folder = $patient->activefolder??null;
+        $patient = $this->patient;
+        $folder = $patient->activefolder ?? null;
         $hospital_service = $this->hospital_service;
         $service_category = $this->service_category;
         $service_subcategory = $this->service_subcategory;
@@ -31,7 +31,7 @@ class InvestigationResource extends JsonResource
         $clinic = $this->clinic;
         $consultant = $this->consultant;
 
-        $canceller=$this->canceller;
+        $canceller = $this->canceller;
 
         return [
             'id' => $this->id,
@@ -98,11 +98,11 @@ class InvestigationResource extends JsonResource
 
             'cancelled_date' => $this->cancelled_date ? (string) $this->cancelled_date : null,
 
-
             'status' => $this->status,
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
+            'results'=>labTestResultSimpleResource::collection($this->lab_test_results)
         ];
     }
 }
