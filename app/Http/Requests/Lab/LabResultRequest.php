@@ -40,7 +40,7 @@ class LabResultRequest extends ApiFormRequest
              'lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'), 'exists:lab_parameters,id'],
              'test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
              'technician_id'=>['bail','sometimes','nullable'],
-             'test_date'=>'bail|'. ($this->id ? 'sometimes|nullable' : 'required').'|date',
+             'test_date'=>'bail|sometimes|nullable|date',
             'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
              'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
         ];

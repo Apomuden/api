@@ -37,7 +37,7 @@ class LabResultMultipleRequest extends ApiFormRequest
             'results' => 'bail|required|array',
              'results.*.lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'),'distinct', 'exists:lab_parameters,id'],
             'results.*.test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
-            'results.*.test_date' => 'bail|' . ($this->id ? 'sometimes|nullable' : 'required') . '|date',
+            'results.*.test_date' => 'bail|sometimes|nullable|date',
             'technician_id'=>['bail','sometimes','nullable'],
             'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'results.*.status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
