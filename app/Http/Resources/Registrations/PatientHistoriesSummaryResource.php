@@ -17,9 +17,9 @@ class PatientHistoriesSummaryResource extends JsonResource
     {
 
         $patient = $this->patient??null;
-        $funding_type = $this->funding_type;
+        $funding_type = $this->funding_type??null;
 
-        $sponsorship_type = $this->sponsorship_type;
+        $sponsorship_type = $this->sponsorship_type??null;
 
 
         return [
