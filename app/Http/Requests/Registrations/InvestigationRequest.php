@@ -84,7 +84,7 @@ class InvestigationRequest extends ApiFormRequest
                 'bail', 'sometimes', 'nullable',
                 'exists:users,id'
             ],
-            'status'=> 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED, SAMPLE-TAKEN, RESULTS-TAKEN'
+            'status'=> 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED,SAMPLE-TAKEN,RESULTS-TAKEN'
         ];
     }
 
