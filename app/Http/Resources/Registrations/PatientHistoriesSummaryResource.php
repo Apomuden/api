@@ -16,7 +16,7 @@ class PatientHistoriesSummaryResource extends JsonResource
     public function toArray($request)
     {
 
-        $patient = $this->patient;
+        $patient = $this->patient??null;
         $funding_type = $this->funding_type;
 
         $sponsorship_type = $this->sponsorship_type;
