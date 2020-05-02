@@ -21,7 +21,7 @@ class PatientHistoriesSummaryResource extends JsonResource
 
         $sponsorship_type = $this->sponsorship_type??null;
 
-
+        if($patient)
         return [
             'id' => $patient->id ?? null,
             'patient_name' => $patient->fullname ?? null,
