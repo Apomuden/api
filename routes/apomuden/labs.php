@@ -36,6 +36,17 @@ Route::get('investigations/{investigation_id}/samplestypes/{sample_type_id}/newc
     'module' => 'lab-mgt',
     'component' => 'setup.free.labparameters'
 ]);
+Route::get('investigations/{investigation_id}/results', 'Registration\InvestigationController@hierarchyShow', [
+    //'only'=>['index','show','store','update'],
+    'module' => 'lab-mgt',
+    'component' => 'setup.free.labparameters'
+]);
+Route::get('investigations/results', 'Registration\InvestigationController@hierarchyIndex', [
+    //'only'=>['index','show','store','update'],
+    'module' => 'records-mgt',
+    'component' => 'patient-registry'
+]);
+
 Route::apiResource('sampletypes', 'Lab\LabSampleTypeController', [
     'module' => 'lab-mgt',
     'component' => 'setup.free.labparameters'

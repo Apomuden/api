@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\InvestigationRequest;
 use App\Http\Requests\Registrations\InvestigationMultipleRequest;
+use App\Http\Resources\Lab\InvestigationResultHierarchicalResource;
 use App\Http\Resources\Registrations\InvestigationResource;
 use App\Models\Investigation;
 use App\Repositories\RepositoryEloquent;
@@ -17,7 +18,7 @@ class InvestigationController extends Controller
     protected $repository;
     public function __construct(Investigation $investigation)
     {
-        $this->repository = new RepositoryEloquent($investigation);
+        $this->repository = new RepositoryEloquent($investigation,true, 'lab_test_results');
     }
     /**
      * Display a listing of the resource.
@@ -26,10 +27,19 @@ class InvestigationController extends Controller
      */
     public function index()
     {
+
         $records = $this->repository->all('created_at');
         return ApiResponse::withOk('Investigations list', InvestigationResource::collection($records));
     }
 
+    public function hierarchyIndex(){
+        $records = $this->repository->all('created_at');
+        return ApiResponse::withOk('Investigations results list', InvestigationResultHierarchicalResource::collection($records));
+    }
+    public function hierarchyShow($investigation_id){
+        $record = $this->repository->find($investigation_id);
+        return ApiResponse::withOk('Investigations results found',new InvestigationResultHierarchicalResource($record));
+    }
     /**
      * Store a newly created resource in storage.
      *

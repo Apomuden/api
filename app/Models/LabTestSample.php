@@ -81,6 +81,11 @@ class LabTestSample extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function approver()
+    {
+        return $this->belongsTo(User::class,'approver_id');
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);

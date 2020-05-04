@@ -40,7 +40,8 @@ class LabResultRequest extends ApiFormRequest
              'lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'), 'exists:lab_parameters,id'],
              'test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
              'technician_id'=>['bail','sometimes','nullable'],
-              'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
+             'test_date'=>'bail|sometimes|nullable|date',
+            'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
              'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
         ];
     }
@@ -64,7 +65,7 @@ class LabResultRequest extends ApiFormRequest
             }
 
 
-            if(isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name,['Lab Technician', 'Lab Technologist', 'Biomedical Scientist']))
+            if(isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name,['Lab Technician', 'Lab Technologist', 'Biomedical Scientist', 'Dev']))
                 $validator->errors()->add("technician_id", "Selected technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
         });
     }

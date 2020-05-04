@@ -10,6 +10,7 @@ use App\Http\Requests\Lab\LabTestSampleRequest;
 use App\Http\Resources\Lab\labTestSampleResource;
 use App\Models\LabTestSample;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Support\Facades\Artisan;
 
 class LabTestSampleController extends Controller
 {
@@ -62,6 +63,7 @@ class LabTestSampleController extends Controller
                 $record_ids[]=$record->id;
             }
         }
+        Artisan::call('cache:clear');
         return ApiResponse::withOk('Lab Test Sample created',labTestSampleResource::collection($this->repository->getModel()->whereIn('id',$record_ids)->orderBy('lab_sample_type_order')->get()));
     }
 

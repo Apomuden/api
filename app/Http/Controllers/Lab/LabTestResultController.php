@@ -9,6 +9,7 @@ use App\Http\Requests\Lab\LabResultRequest;
 use App\Http\Resources\Lab\labTestResultResource;
 use App\Models\LabTestResult;
 use App\Repositories\RepositoryEloquent;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 
 class LabTestResultController extends Controller
@@ -43,7 +44,7 @@ class LabTestResultController extends Controller
             'investigation_id' => $request->investigation_id,
             'lab_parameter_id' => $request->lab_parameter_id,
         ],$request->except(['investigation_id', 'lab_parameter_id']));
-
+        Artisan::call('cache:clear');
         return ApiResponse::withOk('Lab result created',new labTestResultResource($record->refresh()));
     }
 
@@ -63,6 +64,7 @@ class LabTestResultController extends Controller
         }
         DB::commit();
         $records = $this->repository->getModel()->whereIn('id', $results_ids)->orderBy('parameter_order')->get();
+        Artisan::call('cache:clear');
         return ApiResponse::withOk('Lab results created', labTestResultResource::collection($records));
     }
 

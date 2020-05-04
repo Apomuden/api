@@ -15,7 +15,7 @@ class InvestigationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $patient = $this->patient;
+        $patient = $this->patient??null;
         $folder = $patient->activefolder??null;
         $hospital_service = $this->hospital_service;
         $service_category = $this->service_category;

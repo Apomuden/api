@@ -37,8 +37,12 @@ class InvestigationRequest extends ApiFormRequest
             ->orWhere('name', 'Investigations')->first();
 
         $repository = new RepositoryEloquent(new Role);
-        $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'doctor')
-            ->orWhere('name', 'DOCTOR')->first();
+        $roles = $repository->findWhere(['name' => 'Doctor'])
+            ->orWhere('name', 'DEV')->get();
+        $roleIds=[];
+        foreach($roles as $role){
+            $roleIds[]=$role->id;
+        }
 
       /*   $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
 
@@ -76,15 +80,15 @@ class InvestigationRequest extends ApiFormRequest
             ],
             'consultant_id' => [
                 'bail', 'sometimes', 'nullable',
-                Rule::exists('users', 'id')->where(function ($query) use ($role) {
-                    $query->where(['role_id' => $role->id ?? null]);
+                Rule::exists('users', 'id')->where(function ($query) use ($roleIds) {
+                    $query->whereIn('role_id',$roleIds);
                 })
             ],
             'canceller_id' => [
                 'bail', 'sometimes', 'nullable',
                 'exists:users,id'
             ],
-            'status'=> 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED, SAMPLE-TAKEN, RESULTS-TAKEN'
+            'status'=> 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED,SAMPLE-TAKEN,RESULTS-TAKEN'
         ];
     }
 

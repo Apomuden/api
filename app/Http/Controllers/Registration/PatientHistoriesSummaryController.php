@@ -49,6 +49,9 @@ class PatientHistoriesSummaryController extends Controller
     public function show($id)
     {
         $record=$this->repository->getModel()->where('patient_id',$id)->first();
+        if(!$record)
+            return ApiResponse::withNotFound('Patient histories summary not found');
+        else
         return ApiResponse::withOk('Patient histories summary found',new PatientHistoriesSummaryResource($record));
     }
 
@@ -61,7 +64,7 @@ class PatientHistoriesSummaryController extends Controller
      */
     public function update(PatientHistoriesSummaryRequest $request, $id)
     {
-        $record=$this->repository->getModel()->where('patient_id',$id)->firstOrFail()->update($request->all());
+        $record=$this->repository->getModel()->where('patient_id',$id)->update($request->all());
         return ApiResponse::withOk('patient histories summary updated',new PatientHistoriesSummaryResource($record->refresh()));
     }
 
