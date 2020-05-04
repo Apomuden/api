@@ -58,7 +58,7 @@ class Transaction
     }
 
     public function abscond($patient_id, $status='ACTIVE') {
-        return Deposit::query()->where(['patient_id'=>$patient_id,'status'=>$status])->sum('abscond_amount');
+        return Abscond::query()->where(['patient_id'=>$patient_id,'status'=>$status])->sum('abscond_amount');
     }
 
     public function discount($patient_id) {
