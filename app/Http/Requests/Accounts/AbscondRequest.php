@@ -42,6 +42,7 @@ class AbscondRequest extends ApiFormRequest
             'patient_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:patient_sponsors,id',
             'total_bill'=>'bail|sometimes|nullable|numeric|min:1',
             'abscond_amount'=>'bail|sometimes|nullable|numeric|min:1',
+            'receipt_number'=>'bail|'.($id?'sometimes':'required').'|exists:ereceipts,receipt_number',
             'abscond_date'=>'bail|sometimes|date',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
         ];

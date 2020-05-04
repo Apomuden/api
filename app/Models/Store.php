@@ -11,4 +11,10 @@ class Store extends Model
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
+
+    public function store_activities()
+    {
+        return $this->hasOne(StoreActivity::class);
+    }
+
 }

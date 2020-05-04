@@ -37,6 +37,10 @@ Route::apiResource('stores','Pharmacy\StoreController',[
     //'only'=>['index','show','store','update'],
     'module'=>null,
     'component'=>'stores'
+]);Route::apiResource('stores','Pharmacy\StoreController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>null,
+    'component'=>'stores'
 ]);
 
 Route::apiResource('storeusers','Pharmacy\StoreUserController',[

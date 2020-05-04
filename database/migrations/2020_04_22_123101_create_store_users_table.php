@@ -15,7 +15,11 @@ class CreateStoreUsersTable extends Migration
     {
         Schema::create('store_users', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->uuid('user_id');
+            $table->unsignedBigInteger('store_id');
             $table->timestamps();
+            $table->softDeletes();
+            $table->unique(['user_id','store_id']);
         });
     }
 
