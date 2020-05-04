@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Pharmacy;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class StoreActivityRequest extends FormRequest
+class StoreActivityRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreActivityRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,15 @@ class StoreActivityRequest extends FormRequest
      */
     public function rules()
     {
+        $id=$this->route('product')??null;
         return [
-            //
+            'store_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:stores,id',
+            'purchasing_from_suppliers'=>'bail|sometimes|boolean',
+            'receiving_from_suppliers'=>'bail|sometimes|boolean',
+            'issuing_requested_product'=>'bail|sometimes|boolean',
+            'requesting_products_from_stores'=>'bail|sometimes|boolean',
+            'receiving_issued_products'=>'bail|sometimes|boolean',
+            'direct_engagement_with_patient'=>'bail|sometimes|boolean'
         ];
     }
 }

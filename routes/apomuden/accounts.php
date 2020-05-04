@@ -25,5 +25,5 @@ Route::apiResource('refunds','Accounts\RefundController',[
     'component'=>'refund'
 ]);
 
-Route::get('transactions/patients/{patient_id}/quickdetails/','Accounts\TransactionController@quickDetails');
+Route::get('transaction/patients/{patient_id}/quickdetails','Accounts\TransactionController@quickDetails');
 Route::post('transaction/ereceipt','Accounts\TransactionController@createReceipt');
