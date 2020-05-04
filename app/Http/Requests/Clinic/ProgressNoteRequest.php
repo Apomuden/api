@@ -8,7 +8,7 @@ use App\Repositories\RepositoryEloquent;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class TreatmentPlanNoteRequest extends ApiFormRequest
+class ProgressNoteRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,12 +27,12 @@ class TreatmentPlanNoteRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('treatmentplan');
+        $id=$this->route('progressnote');
 
         $repository = new RepositoryEloquent(new Role);
 
-        $roles = $repository->findWhere(['name' => 'Dev'])
-            ->orWhereIn('name', ['Nurse','Doctor'])->get();
+        $roles = $repository->findWhere(['name' => 'Nurse'])
+            ->orWhere('name', 'DEV')->get();
 
         $roleIds = [];
         foreach ($roles as $role) {
@@ -51,6 +51,7 @@ class TreatmentPlanNoteRequest extends ApiFormRequest
                 $query->whereIn('role_id', $roleIds);
             })],
             'status'=>'bail|'. ($id ? 'sometimes' : 'required'). '|in:ACTIVE,INACTIVE,CANCELLED',
+            'delivery_date'. ($id ? 'sometimes' : 'required').'|date',
             'notes'=>'bail|'. ($id ? 'sometimes' : 'required').'|string'
         ];
     }

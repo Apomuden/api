@@ -45,7 +45,7 @@ class PhysicianNoteRequest extends ApiFormRequest
             }),'|exists:consultations,id'],
             'patient_id'=>['bail',Rule::requiredIf(function() use($id){
                 return !($id && request('consultation_id'));
-            }),'exists:patiients,id'],
+            }),'exists:patients,id'],
             'patient_status'=>'bail|'.($id?'sometimes':'required').'|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultant_id'=>['bail', ($id ? 'sometimes' : 'required'),Rule::exists('users','id')->where(function($query) use($roleIds){
                 $query->whereIn('role_id', $roleIds);

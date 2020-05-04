@@ -16,7 +16,6 @@ trait FindByTrait
     {
         $paramObj = new stdClass;
 
-
         if (ApiRequest::startsWith(trim($value), '<=')) {
             $paramObj->comparator = '<=';
             $paramObj->value = str_replace('<=', '', trim($value));

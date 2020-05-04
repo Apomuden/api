@@ -19,7 +19,6 @@ class NursingNoteRequest extends ApiFormRequest
     {
         return true;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -27,7 +26,7 @@ class NursingNoteRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('physiciannote');
+        $id=$this->route('nursingnote');
 
         $repository = new RepositoryEloquent(new Role);
 
@@ -38,14 +37,13 @@ class NursingNoteRequest extends ApiFormRequest
         foreach ($roles as $role) {
             $roleIds[] = $role->id;
         }
-
         return [
             'consultation_id'=>['bail|', Rule::requiredIf(function () use ($id) {
                 return !($id && request('patient_id'));
             }),'|exists:consultations,id'],
             'patient_id'=>['bail',Rule::requiredIf(function() use($id){
                 return !($id && request('consultation_id'));
-            }),'exists:patiients,id'],
+            }),'exists:patients,id'],
             'patient_status'=>'bail|'.($id?'sometimes':'required').'|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultant_id'=>['bail', ($id ? 'sometimes' : 'required'),Rule::exists('users','id')->where(function($query) use($roleIds){
                 $query->whereIn('role_id', $roleIds);

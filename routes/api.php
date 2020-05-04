@@ -33,6 +33,9 @@ Route::prefix('auth')->group(base_path('routes/apomuden/users.php'));
         //Registrations
         Route::prefix('registry')->group(base_path('routes/apomuden/registry.php'));
 
+        //Clinical Notes
+        Route::prefix('note')->group(base_path('routes/apomuden/notes.php'));
+
         //Setups
         Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
     });
