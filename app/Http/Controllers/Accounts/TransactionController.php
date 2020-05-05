@@ -47,16 +47,14 @@ class TransactionController extends Controller
                     $item_type = $itemDetails[0] ?? null;
                     $item_type = $item_type ? '\\App\\Models\\' . $item_type : null;
                     $item_id = $itemDetails[1] ?? null;
-                    if ($item_type) {
-                        $repo = new RepositoryEloquent(new $item_type);
-                        $repo->update(['status' => ($item['status'] ?? 'FULL-PAYMENT')], $item_id);
-                    } else {
-                        continue;
-                    }
+
+                    $repo = $item_type::query()->find($item_id);
+                    $repo->update(['status' => ($item['status'] ?? 'FULL-PAYMENT')]);
+                    //dd(get_class($repo));
                     $receiptItem = new ReceiptItem;
                     $receiptItem->ereceipt_id = $receipt['ereceipt_id'] ?? null;
                     $receiptItem->receipt_item_id = $item_id;
-                    $receiptItem->receipt_item_type = 'App\\Models\\' . $item_type;
+                    $receiptItem->receipt_item_type = get_class($repo);
                     $receiptItem->save();
                 }
 
@@ -68,16 +66,15 @@ class TransactionController extends Controller
 
                 $Deposit = Deposit::query()->where('patient_id', $transactionRequest['patient_id']);
                 $Deposit->update(['status'=>'INACTIVE']);
-
+                DB::commit();
 
                 $repo = new RepositoryEloquent(new Ereceipt);
-                $repo = $repo->show($receipt['receipt_id'] ?? null);
-                DB::commit();
+                $repo = $repo->show($receipt['ereceipt_id'] ?? null);
                 return ApiResponse::withOk('Patient E-Receipt Created', new EreceiptResource($repo));
             }
         }
         catch (\Exception $exception) {
-            DB::rollBack();
+            //DB::rollBack();
             dd($exception);
         }
     }

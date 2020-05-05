@@ -25,10 +25,10 @@ class EreceiptResource extends JsonResource
                 'item_fee'=>$service_order->service_fee??null,
                 'item_quantity'=>$service_order->service_quantity??null,
                 'item_total_amt'=>$service_order->service_total_amt??null,
-                //'prepaid'=>boolval($service_order->prepaid),
-                //'insured'=>boolval($service_order->insured),
-                'item_bill'=>(!$service_order->prepaid && $service_order->insured) ? $service_order->service_total_amt : 0.00,
-                'item_paid'=>boolval($service_order->pivot->paid??null)
+                'prepaid'=>boolval($service_order->prepaid)?'YES':'NO',
+                'insured'=>boolval($service_order->insured)?'YES':'NO',
+                'item_bill'=>(!$service_order->prepaid && $service_order->insured) ? 0.00:$service_order->service_total_amt,
+                //'item_paid'=>boolval($service_order->pivot->paid??null)
             ];
         }
         foreach ($deposits as $deposit) {
@@ -41,7 +41,7 @@ class EreceiptResource extends JsonResource
                 //'prepaid'=>boolval($service_order->prepaid),
                 //'insured'=>boolval($service_order->insured),
                 'item_bill'=>$deposit->deposit_amount??null,
-                'item_paid'=>boolval($deposit->pivot->paid??null)
+                //'paid'=>$deposit->pivot->paid?'YES':'NO'
             ];
         }
         return [
