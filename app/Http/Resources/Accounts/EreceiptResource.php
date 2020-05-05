@@ -16,7 +16,9 @@ class EreceiptResource extends JsonResource
     public function toArray($request)
     {
         $receipt_items = [];
-        foreach ($this->service_order as $service_order) {
+        $service_orders = $this->service_order??[];
+        $deposits = $this->deposit??[];
+        foreach ($service_orders as $service_order) {
             $receipt_items[]= [
                 'id'=>$service_order->pivot->id,
                 'description'=>$service_order->service->description??null,
@@ -29,7 +31,7 @@ class EreceiptResource extends JsonResource
                 'item_paid'=>boolval($service_order->pivot->paid??null)
             ];
         }
-        foreach ($this->deposit as $deposit) {
+        foreach ($deposits as $deposit) {
             $receipt_items[]= [
                 'item_id'=>$deposit->pivot->id??null,
                 'description'=>'Deposit'??null,

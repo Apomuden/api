@@ -161,27 +161,27 @@ class ServiceOrder extends Model
             $original= $model->getOriginal();
 
             $clinicEloquent = new RepositoryEloquent(new Clinic);
-            $clinic = $clinicEloquent->find($model->clinic_id)?? $original->clinic;
+            $clinic = $clinicEloquent->find($model->clinic_id)?? ($original->clinic??null);
             $model->clinic_type_id = $clinic->clinic_type_id;
 
             $patientEloquent = new RepositoryEloquent(new Patient);
-            $patient = $patientEloquent->find($model->patient_id)?? $original->patient;
+            $patient = $patientEloquent->find($model->patient_id)?? ($original->patient??null);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
             $model->gender = $model->gender ?? $patient->gender;
             $serviceEloquent = new RepositoryEloquent(new Service);
-            $service = $serviceEloquent->find($model->service_id)?? $original->service;
+            $service = $serviceEloquent->find($model->service_id)?? ($original->service??null);
 
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
-            $model->service_total_amt = ($model->service_fee??$original->service_fee) * ($model->service_quantity??$original->service_quantity);
-            $model->service_date = $model->service_date ? Carbon::parse($model->service_date) : ($original->service_date);
+            $model->service_total_amt = (($model->service_fee??$original->service_fee)??0) * (($model->service_quantity??$original->service_quantity)??0);
+            $model->service_date = $model->service_date ? Carbon::parse($model->service_date??null) : ($original->service_date??null);
             //$user = Auth::guard('api')->user();
             //$model->user_id = $user->id;
 
-            $model->prepaid = ($model->prepaid??$original->prepaid) ?? $patient->funding_type->name == 'Cash/Prepaid';
-            $model->paid_service_total_amt = ($model->paid_service_price??$original->paid_service_price) * ($model->paid_service_quantity??$original->paid_service_quantity);
+            $model->prepaid = ($model->prepaid??($original->prepaid??null)) ?? $patient->funding_type->name == 'Cash/Prepaid';
+            $model->paid_service_total_amt = ($model->paid_service_price??($original->paid_service_price)??null) * ($model->paid_service_quantity??($original->paid_service_quantity)??null);
             $model->funding_type_id = $model->funding_type_id ?? $patient->funding_type_id;
             $model->billing_system_id = $model->billing_system_id ?? $patient->billing_system_id;
             $model->billing_cycle_id = $model->billing_cycle_id ?? $patient->billing_cycle_id;
@@ -189,9 +189,9 @@ class ServiceOrder extends Model
             $model->payment_channel_id = $model->payment_channel_id ?? $patient->payment_channel_id;
 
             $sponsorEloquent = new RepositoryEloquent(new BillingSponsor);
-            $sponsor = $sponsorEloquent->find($model->billing_sponsor_id)??$original->billing_sponsor;
-            $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? $original->sponsorship_type_id;
-            $model->cancelled_date = $model->canceller_id ? Carbon::today() : $original->cancelled_date;
+            $sponsor = $sponsorEloquent->find($model->billing_sponsor_id)??($original->billing_sponsor??null);
+            $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? ($original->sponsorship_type_id)??null;
+            $model->cancelled_date = $model->canceller_id ? Carbon::today() : ($original->cancelled_date??null);
         });
     }
 }
