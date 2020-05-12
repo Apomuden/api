@@ -42,7 +42,7 @@ class DiscountRequest extends FormRequest
             'billing_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:billing_sponsors,id',
             'patient_sponsor_id'=>'bail|'.($id || ($sponsorship_type=='patient' || $sponsorship_type=='government insurance') ?'sometimes|nullable':'required').'|integer|exists:patient_sponsors,id',
             'total_bill'=>'bail|'.(($id || !$discount_percentage) ?'sometimes':'required').'|numeric|min:0',
-            'receipt_number'=>'bail|'.($id?'sometimes':'required').'|exists:ereceipts,receipt_number',
+            'receipt_number'=>'bail|sometimes|nullable|exists:ereceipts,receipt_number',
             'discount_amount'=>'bail|'.(($id || $discount_percentage)?'sometimes':'required').'|numeric|min:0',
             'discount_percentage'=>'bail|sometimes|numeric|min:0|max:100',
             'balance'=>'bail|'.($id?'sometimes':'required').'|numeric',
