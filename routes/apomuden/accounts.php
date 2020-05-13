@@ -16,7 +16,7 @@ Route::apiResource('deposits','Accounts\DepositController',[
 Route::apiResource('discounts','Accounts\DiscountController',[
     //'only'=>['index','show','store','update'],
     'module'=>'acct-mgt',
-    'component'=>'discounts'
+    'component'=>'discount'
 ]);
 
 Route::apiResource('absconds','Accounts\AbscondController',[
