@@ -18,7 +18,8 @@ class CreateConsultationQuestionOptionsTable extends Migration
             $table->unsignedBigInteger('consultation_question_id');
             $table->foreign('consultation_question_id')->references('id')
                 ->on('consultation_questions')->onDelete('restrict');
-            $table->string('value')->nullable();
+            $table->string('value');
+            $table->set('gender', ['MALE', 'FEMALE'])->default('MALE,FEMALE');
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
 
             $table->timestamps();

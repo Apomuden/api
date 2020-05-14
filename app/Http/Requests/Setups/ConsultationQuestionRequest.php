@@ -23,7 +23,7 @@ class ConsultationQuestionRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('consultation_question');
+        $id = $this->route('consultationquestion');
         return [
             'question' => 'bail|' . ($id ? 'sometimes' : 'required')
                 . '|string|' . $this->softUnique('consultation_questions', 'question', $id),

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Setups;
+namespace App\Http\Controllers\Registration;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
-use App\Http\Requests\Setups\ConsultationQuestionResponsesRequest;
-use App\Http\Resources\ConsultationQuestionResponseResource;
+use App\Http\Requests\Registrations\ConsultationQuestionResponsesRequest;
+use App\Http\Resources\Registrations\ConsultationQuestionResponseResource;
 use App\Models\ConsultationQuestionResponse;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\Artisan;

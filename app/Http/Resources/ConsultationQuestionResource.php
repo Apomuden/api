@@ -24,7 +24,6 @@ class ConsultationQuestionResource extends JsonResource
             'question' => $this->question,
             'gender' => $this->gender,
             'value_type' => $this->value_type,
-            'unit' => $this->unit,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),

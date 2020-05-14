@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed value
  * @property mixed updated_at
  * @property mixed status
+ * @property mixed gender
  */
 class ConsultationQuestionOptionResource extends JsonResource
 {
@@ -21,7 +22,8 @@ class ConsultationQuestionOptionResource extends JsonResource
             'id' => $this->id,
             'consultation_question_id' => $this->consultation_question_id,
             'consultation_question' => $this->consultation_question->question,
-            'text_value' => $this->value,
+            'value' => $this->value,
+            'gender' => $this->gender,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),

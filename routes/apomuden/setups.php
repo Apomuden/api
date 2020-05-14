@@ -269,20 +269,12 @@ Route::apiResource('measurements', 'Setups\MeasurementController', [
 ]);
 //====Consulting Room setup Routes====
 
-Route::apiResource('consultation-questions', 'Setups\ConsultationQuestionsController', [
-    //'only'=>['index','show','store','update'],
+Route::apiResource('consultationquestions', 'Setups\ConsultationQuestionsController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
 
-Route::apiResource('consultation-question-options', 'Setups\ConsultationQuestionOptionsController', [
-    //'only'=>['index','show','store','update'],
-    'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'setup.free.clinics'
-]);
-
-Route::apiResource('consultation-question-responses', 'Setups\ConsultationQuestionResponsesController', [
-    //'only'=>['index','show','store','update'],
+Route::apiResource('consultationquestionoptions', 'Setups\ConsultationQuestionOptionsController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);

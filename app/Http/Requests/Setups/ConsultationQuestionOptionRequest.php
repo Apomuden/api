@@ -23,12 +23,12 @@ class ConsultationQuestionOptionRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('option');
+        $id = $this->route('consultationquestionoption');
         return [
             'consultation_question_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:consultation_questions,id|'
                 . $this->softUniqueWith('consultation_question_options', 'value,consultation_question_id,gender', $id),
-
             'value' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE',
             'status' => 'bail|string|in:ACTIVE,INACTIVE'
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Setups;
+namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\ConsultationQuestionResponse;
@@ -17,7 +17,7 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
 
     public function authorize()
     {
-        $this->id = $this->route('response');
+        $this->id = $this->route('consultationquestionresponse');
         return true;
     }
 
