@@ -51,7 +51,7 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             $data = parent::all();
 
-            if (array_key_exists('consultant_id', $data) && isset($data['consultant_id'])) {
+            if (isset($data['consultant_id'])) {
                 $consultant = User::find($data['consultant_id']);
                 if (isset($consultant) && !in_array($consultant->role->name, ['Doctor', 'Physician', 'Dev']))
                     $validator->errors()->add('consultant_id', 'the id provided is not of a consultant');
@@ -61,10 +61,10 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
             // skip rest of validation cos single updates don't have responses field
             if ($this->isUpdate) return;
 
-            if (!array_key_exists('responses', $data)) return;
+            if (!isset($data['responses']) || !isset($data['consultation_id'])) return;
             foreach ($data['responses'] as $response) {
-
                 $response = (array)$response;
+                if (!isset($response['consultation_question_id'])) continue;
                 $res = ConsultationQuestionResponse::where(['consultation_id' => $data['consultation_id'],
                     'consultation_question_id' => $response['consultation_question_id']])->first();
 
