@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Registration;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\ConsultationQuestionResponsesRequest;
+use App\Http\Resources\Registrations\ConsultationGroupedQuestionResponseResource;
 use App\Http\Resources\Registrations\ConsultationQuestionResponseResource;
+use App\Models\Consultation;
 use App\Models\ConsultationQuestionResponse;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\Artisan;
@@ -20,11 +22,18 @@ class ConsultationQuestionResponsesController extends Controller
         $this->repository = new RepositoryEloquent($response);
     }
 
-    public function index()
+    public function index(ConsultationQuestionResponsesRequest $request, Consultation $consultation)
     {
-        $records = $this->repository->all();
-
-        return ApiResponse::withOk('Question response list', ConsultationQuestionResponseResource::collection($records));
+        if (isset($request->consultation_id)) {
+            $consultationRepo = new RepositoryEloquent($consultation);
+            $record = $consultationRepo->findOrFail($request->consultation_id);
+            return ApiResponse::withOk('Grouped response list',
+                new ConsultationGroupedQuestionResponseResource($record));
+        } else {
+            $records = $this->repository->all('id', 'ASC');
+            return ApiResponse::withOk('Question response list',
+                ConsultationQuestionResponseResource::collection($records));
+        }
     }
 
     public function store(ConsultationQuestionResponsesRequest $request)
