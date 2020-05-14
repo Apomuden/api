@@ -27,21 +27,22 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
      */
     public function rules()
     {
+        if ($this->method() == self::METHOD_GET) return [];
         $this->isUpdate = $this->method() == self::METHOD_PUT;
         return [
             // common rule
             'consultation_id' => 'bail|' . ($this->isUpdate ? 'sometimes' : 'required') . '|exists:consultations,id',
+            'response_date' => 'bail|' . ($this->isUpdate ? 'sometimes' : 'required') . '|date',
+            'consultant_id' => 'bail|sometimes|nullable',
+            'patient_id' => 'bail|' . ($this->isUpdate ? 'sometimes' : 'required') . '|exists:patients,id',
 
             // rule for single update
             'consultation_question_id' => 'bail|sometimes|exists:consultation_questions,id',
-            'response_date' => 'bail|sometimes|date',
 
             // validation for bulk posting
             'responses' => 'bail|' . ($this->isUpdate ? 'sometimes' : 'required') . '|array',
             'responses.*.consultation_question_id' => ['bail', 'required', 'distinct', 'exists:consultation_questions,id'],
-            'responses.*.response' => 'bail|required',
-            'responses.*.response_date' => 'bail|date',
-            'consultant_id' => 'bail|sometimes|nullable',
+            'responses.*.response' => 'bail|sometimes|nullable',
         ];
     }
 
