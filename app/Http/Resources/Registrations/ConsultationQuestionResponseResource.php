@@ -37,7 +37,7 @@ class ConsultationQuestionResponseResource extends JsonResource
             'value_type' => $this->consultation_question->value_type,
             'response' => $this->response,
             'consultant_id' => $this->consultant_id,
-            'consultant_name' => $this->consultant->fullname,
+            'consultant_name' => $this->consultant->fullname ?? null,
             'response_date' => $this->response_date ? DateHelper::toDisplayDateTime($this->response_date) : null,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
