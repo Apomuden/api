@@ -49,7 +49,7 @@ class ConsultationQuestionResponsesController extends Controller
 
     public function show($id)
     {
-        $record = $this->repository->find($id);
+        $record = $this->repository->findOrFail($id);
         return ApiResponse::withOk('Response found', new ConsultationQuestionResponseResource($record));
     }
 

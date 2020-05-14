@@ -152,6 +152,7 @@ Route::apiResource('patientvitals', 'Registration\PatientVitalController',[
     'component'=> 'patient-registry'
 ]);
 
+Route::put('consultationquestionresponses/{id}', 'Registration\ConsultationQuestionResponsesController@update');
 Route::apiResource('consultationquestionresponses', 'Registration\ConsultationQuestionResponsesController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
