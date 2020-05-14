@@ -27,7 +27,7 @@ class ConsultationQuestionRequest extends ApiFormRequest
         return [
             'question' => 'bail|' . ($id ? 'sometimes' : 'required')
                 . '|string|' . $this->softUnique('consultation_questions', 'question', $id),
-            'value_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:Text,Number,True/False/Select',
+            'value_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:Text,Number,True/False,Select',
             'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
