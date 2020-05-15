@@ -22,18 +22,29 @@ class ConsultationQuestionResponsesController extends Controller
         $this->repository = new RepositoryEloquent($response);
     }
 
-    public function index(ConsultationQuestionResponsesRequest $request, Consultation $consultation)
+    public function index()
     {
-        if (isset($request->consultation_id)) {
-            $consultationRepo = new RepositoryEloquent($consultation);
-            $record = $consultationRepo->findOrFail($request->consultation_id);
-            return ApiResponse::withOk('Grouped response list',
-                new ConsultationGroupedQuestionResponseResource($record));
-        } else {
-            $records = $this->repository->all('id', 'ASC');
-            return ApiResponse::withOk('Question response list',
-                ConsultationQuestionResponseResource::collection($records));
-        }
+        $records = $this->repository->all('id', 'ASC');
+        return ApiResponse::withOk('Question response list',
+            ConsultationQuestionResponseResource::collection($records));
+    }
+
+    // group responses by consultation
+    public function showConsultGroupedResponses(Consultation $consultation)
+    {
+        $consultationRepo = new RepositoryEloquent($consultation);
+        $consultations = $consultationRepo->all();
+        // check if there are responses for these consultations
+        $existingResponses = $this->repository->getModel()->whereIn('consultation_id', $consultations->modelKeys())->get();
+        // throw 404 if no consultation has a response
+        if (count($existingResponses) == 0) return ApiResponse::withNotFound('Nothing found');
+
+        // filter only consultations that have responses for display
+        $consultationsWithResponse = $consultations->filter(function ($r) use ($existingResponses) {
+            return $existingResponses->contains('consultation_id', $r->id);
+        });
+        return ApiResponse::withOk('Grouped response list',
+            ConsultationGroupedQuestionResponseResource::collection($consultationsWithResponse));
     }
 
     public function store(ConsultationQuestionResponsesRequest $request)
@@ -60,6 +71,14 @@ class ConsultationQuestionResponsesController extends Controller
     {
         $record = $this->repository->findOrFail($id);
         return ApiResponse::withOk('Response found', new ConsultationQuestionResponseResource($record));
+    }
+
+    // show responses belonging to this consultation with $id
+    public function showConsultResponses($id, Consultation $consultation)
+    {
+        $consultationRepo = new RepositoryEloquent($consultation);
+        $record = $consultationRepo->findOrFail($id);
+        return ApiResponse::withOk('Response found', new ConsultationGroupedQuestionResponseResource($record));
     }
 
     public function update(ConsultationQuestionResponsesRequest $request, $id)

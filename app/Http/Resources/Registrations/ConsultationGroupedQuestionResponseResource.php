@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Registrations;
 
+use App\Http\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -23,7 +24,7 @@ class ConsultationGroupedQuestionResponseResource extends JsonResource
             $consultant = $responses->resource[0]->toArray($responses->resource[0])['consultant_name'];
         return [
             'consultation_id' => $this->id,
-            'consultation_date' => $this->attendance_date,
+            'consultation_date' => DateHelper::toDisplayDateTime($this->attendance_date),
             'consultant_name' => $consultant,
             'responses' => $responses
         ];

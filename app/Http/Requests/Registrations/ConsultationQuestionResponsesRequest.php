@@ -10,6 +10,7 @@ use App\Models\User;
  * @property mixed consultation_id
  * @property mixed consultation_question_id
  * @property mixed responses
+ * @property mixed group boolean value to toggle grouping responses by consultation
  */
 class ConsultationQuestionResponsesRequest extends ApiFormRequest
 {
