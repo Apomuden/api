@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Traits;
+namespace App\Http\Traits\Eloquent;
 
 use App\Http\Helpers\ApiRequest;
 

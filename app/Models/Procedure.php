@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StaffNextOfKin extends Model
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
     public function user()
@@ -19,7 +19,6 @@ class StaffNextOfKin extends Model
 
     public function relationship()
     {
-        return $this->belongsTo(Relationship::class,'relation_id');
+        return $this->belongsTo(Relationship::class, 'relation_id');
     }
-
 }

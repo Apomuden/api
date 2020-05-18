@@ -2,27 +2,27 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientSponsor extends Model
 {
-    use ActiveTrait,FindByTrait,SortableTrait,SoftDeletes;
+    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];
 
     public static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            if($model->benefit_type=='SELF')
-            $model->relation_id=null;
+            if ($model->benefit_type == 'SELF')
+                $model->relation_id = null;
         });
 
         static::updating(function ($model) {
-            if ($model->benefit_type=='SELF')
+            if ($model->benefit_type == 'SELF')
                 $model->relation_id = null;
         });
     }
@@ -53,7 +53,7 @@ class PatientSponsor extends Model
 
     public function relationship()
     {
-        return $this->belongsTo(Relationship::class,'relation_id');
+        return $this->belongsTo(Relationship::class, 'relation_id');
     }
 
     public function company()

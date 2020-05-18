@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -20,10 +20,9 @@ class TreatmentPlanNote extends Model
         static::creating(function ($model) {
             $user = Auth::guard('api')->user();
 
-            $model->user_id= $user->id;
-            if($model->status== 'CANCELLED')
-            {
-                $model->cancelled_date=now();
+            $model->user_id = $user->id;
+            if ($model->status == 'CANCELLED') {
+                $model->cancelled_date = now();
                 $user = Auth::guard('api')->user();
                 $model->canceller_id = $user->id;
             }
@@ -32,9 +31,8 @@ class TreatmentPlanNote extends Model
             $user = Auth::guard('api')->user();
 
             $model->user_id = $user->id;
-            if($model->status== 'CANCELLED' && $model->getOriginal('status')!= 'CANCELLED')
-            {
-                $model->cancelled_date=now();
+            if ($model->status == 'CANCELLED' && $model->getOriginal('status') != 'CANCELLED') {
+                $model->cancelled_date = now();
                 $model->canceller_id = $user->id;
             }
         });

@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Module extends Model
 {
-    use ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
     public function components()
@@ -29,7 +29,7 @@ class Module extends Model
         return $this->belongsToMany(User::class, 'component_user')->distinct();
     }
 
-   /* public function roles()
+    /* public function roles()
    {
       return $this->hasManyThrough(
           Role::class,
@@ -41,5 +41,4 @@ class Module extends Model
 
         )->distinct();
    } */
-
 }

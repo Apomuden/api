@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +18,7 @@ class PhysicalExamination extends Model
 
     public function category()
     {
-        return $this->belongsTo(PhysicalExaminationCategory:: class,'category_id');
+        return $this->belongsTo(PhysicalExaminationCategory::class, 'category_id');
     }
 
     public function consultation()
@@ -33,7 +33,7 @@ class PhysicalExamination extends Model
             $consultation = Consultation::findOrFail($model->consultation_id);
             $model->age = $consultation->patient->age;
             $model->gender = $consultation->patient->gender;
-            $model->patient_id=$consultation->patient_id;
+            $model->patient_id = $consultation->patient_id;
 
             $model->patient_status = $model->patient_status ?? $consultation->patient_status;
             $model->funding_type_id = $model->funding_type_id ?? $consultation->funding_type_id;

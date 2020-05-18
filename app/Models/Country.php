@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
 {
-    use ActiveTrait,FindByTrait;
+    use ActiveTrait, FindByTrait;
     protected $guarded = [];
 
     public function regions()
@@ -18,6 +18,6 @@ class Country extends Model
 
     public function users()
     {
-        return $this->hasMany(Country::class,'origin_country_id');
+        return $this->hasMany(Country::class, 'origin_country_id');
     }
 }

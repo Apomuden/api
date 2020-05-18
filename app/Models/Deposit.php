@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deposit extends Model
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait, FindByTrait, SoftDeletes;
 
     protected $guarded = [];
     public $receiptItemType = 'deposit';
@@ -18,10 +18,10 @@ class Deposit extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-            $receipt = $model->only(['patient_id','patient_status']);
+            $receipt = $model->only(['patient_id', 'patient_status']);
             $receipt = Ereceipt::createReceipt($receipt);
             //dd($receipt);
-            $model->receipt_number = $receipt['receipt_number']??null;
+            $model->receipt_number = $receipt['receipt_number'] ?? null;
             unset($receipt);
             //dd($model);
         });
@@ -30,9 +30,9 @@ class Deposit extends Model
             $receiptItem = $model->only(['receipt_number']);
             unset($receiptItem['receipt_number']);
             $receiptItem = new ReceiptItem;
-            $receiptItem->ereceipt_id = Ereceipt::getLastReceipt('id')->id??null;
-            $receiptItem->receipt_item_id = $model->id??null;
-            $receiptItem->receipt_item_type = get_class($model)??null;
+            $receiptItem->ereceipt_id = Ereceipt::getLastReceipt('id')->id ?? null;
+            $receiptItem->receipt_item_id = $model->id ?? null;
+            $receiptItem->receipt_item_type = get_class($model) ?? null;
             $receiptItem->save();
         });
     }
@@ -42,27 +42,33 @@ class Deposit extends Model
         return $this->morphToMany(Ereceipt::class, 'receipt_item');
     }
 
-    public function patient_sponsor() {
+    public function patient_sponsor()
+    {
         return $this->belongsTo(PatientSponsor::class);
     }
 
-    public function billing_sponsor() {
+    public function billing_sponsor()
+    {
         return $this->belongsTo(BillingSponsor::class);
     }
 
-    public function patient() {
+    public function patient()
+    {
         return $this->belongsTo(Patient::class);
     }
 
-    public function sponsorship_type() {
+    public function sponsorship_type()
+    {
         return $this->belongsTo(SponsorshipType::class);
     }
 
-    public function funding_type() {
+    public function funding_type()
+    {
         return $this->belongsTo(FundingType::class);
     }
 
-    public function payment_channel() {
+    public function payment_channel()
+    {
         return $this->belongsTo(PaymentChannel::class);
     }
 }

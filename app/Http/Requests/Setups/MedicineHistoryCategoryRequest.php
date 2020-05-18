@@ -5,7 +5,7 @@ namespace App\Http\Requests\Setups;
 use App\Http\Requests\ApiFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
-class medicineHistoryCategoryRequest extends ApiFormRequest
+class MedicineHistoryCategoryRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

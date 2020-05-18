@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\Notify;
 use App\Http\Resources\Registrations\ConsultationResource;
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Exception;
@@ -22,28 +22,28 @@ class Consultation extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function($model){
+        static::creating(function ($model) {
             $user = Auth::guard('api')->user();
-            $model->user_id=$user->id;
+            $model->user_id = $user->id;
 
             //get patient details
             $repository = new RepositoryEloquent(new Patient);
             $patient = $repository->find($model->patient_id);
-            $model->age = $model->age?? Carbon::parse($patient->dob)->age;
+            $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
             //age class and group
             $repository = new RepositoryEloquent(new AgeClassification);
             $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
-            $age_category = DateHelper::getAgeCategory($age_class->id??null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
-            $model->age_group_id = $age_category->age_group_id??null;
-            $model->attendance_date=$model->attendance_date??Carbon::now();
+            $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
+            $model->age_group_id = $age_category->age_group_id ?? null;
+            $model->attendance_date = $model->attendance_date ?? Carbon::now();
             $model->age_class_id = $age_category->age_classification_id;
             $model->age_category_id = $age_category->id;
         });
         static::created(function ($model) {
             //create an attendance
-            $model->service_id= $model->consultation_service_id??null;
+            $model->service_id = $model->consultation_service_id ?? null;
 
             unset($model->card_serial_no);
             unset($model->order_type);
@@ -90,32 +90,32 @@ class Consultation extends Model
 
             //Trigger Notification
             if ($model->consultant_id)
-                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
+                Notify::send('consultation', $model->consultant_id, new ConsultationResource($model));
 
             unset($model->consultant_id);
 
-            if(!DateHelper::hasAttendedToday($model->patient_id,$model->clinic_id,$model->service_id)){
-                 unset($model->pregnant);
+            if (!DateHelper::hasAttendedToday($model->patient_id, $model->clinic_id, $model->service_id)) {
+                unset($model->pregnant);
                 Attendance::create($model->toArray());
             }
         });
 
         static::updated(function ($model) {
             //update an attendance
-            $repository=new RepositoryEloquent(new Attendance);
-            $model->attendance_id=$repository
-            ->getModel()
-            ->where('patient_id',$model->patient_id??$model->getOriginal('patient_id'))
-            ->where('clinic_id',$model->clinic_id?? $model->getOriginal('clinic_id'))
-            ->where('service_id', $model->consultation_service_id?? $model->getOriginal('consultation_service_id'))
-            ->whereDate('attendance_date', Carbon::parse($model->attendance_date?? $model->getOriginal('attendance_date')))
-            ->orderBy('created_at','desc')->first()->id??null;
+            $repository = new RepositoryEloquent(new Attendance);
+            $model->attendance_id = $repository
+                ->getModel()
+                ->where('patient_id', $model->patient_id ?? $model->getOriginal('patient_id'))
+                ->where('clinic_id', $model->clinic_id ?? $model->getOriginal('clinic_id'))
+                ->where('service_id', $model->consultation_service_id ?? $model->getOriginal('consultation_service_id'))
+                ->whereDate('attendance_date', Carbon::parse($model->attendance_date ?? $model->getOriginal('attendance_date')))
+                ->orderBy('created_at', 'desc')->first()->id ?? null;
 
             Attendance::updateObject($model);
 
             //Trigger Notification
-            if($model->consultant_id && $model->consultant_id!= $model->getOriginal('consultant_id'))
-                Notify::send('consultation', $model->consultant_id,new ConsultationResource($model));
+            if ($model->consultant_id && $model->consultant_id != $model->getOriginal('consultant_id'))
+                Notify::send('consultation', $model->consultant_id, new ConsultationResource($model));
         });
     }
     public function age_class()
@@ -181,5 +181,4 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class, 'consultant_id');
     }
-
 }

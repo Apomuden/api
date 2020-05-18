@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Models\LabParameter;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;

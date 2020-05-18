@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Traits;
+namespace App\Http\Traits\Resources;
 trait PaginationTrait
 {
     function paginateLinks(){

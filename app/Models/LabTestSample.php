@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Models\LabParameterRange;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
@@ -22,30 +22,29 @@ class LabTestSample extends Model
         parent::boot();
         static::creating(function ($model) {
             $user = Auth::guard('api')->user();
-            if(!$model->technician_id)
-            $model->technician_id=$user->id;
+            if (!$model->technician_id)
+                $model->technician_id = $user->id;
 
-            $model->user_id=$user->id;
+            $model->user_id = $user->id;
 
-            $investigation=$model->investigation;
-            $model->service_id=$investigation->service_id;
+            $investigation = $model->investigation;
+            $model->service_id = $investigation->service_id;
             $model->patient_id = $investigation->patient_id;
 
-            Log::critical('investigation',$model->toArray());
+            Log::critical('investigation', $model->toArray());
 
-            $model->lab_sample_type_order=$investigation->service->lab_sample_types()->where('lab_sample_type_id',$model->lab_sample_type_id)->firstOrFail()->pivot->order;
-
+            $model->lab_sample_type_order = $investigation->service->lab_sample_types()->where('lab_sample_type_id', $model->lab_sample_type_id)->firstOrFail()->pivot->order;
         });
-        static::created(function($model){
-            $model->investigation->status= 'SAMPLE-TAKEN';
+        static::created(function ($model) {
+            $model->investigation->status = 'SAMPLE-TAKEN';
             $model->investigation->save();
         });
 
         static::updating(function ($model) {
-            if($model->investigation_id){
+            if ($model->investigation_id) {
                 $investigation = Investigation::findOrFail($model->investigation_id);
                 $model->service_id = $investigation->service_id;
-                $model->patient_id=$investigation->patient_id;
+                $model->patient_id = $investigation->patient_id;
                 $model->lab_sample_type_order = $investigation->service->lab_sample_types()->where('lab_sample_type_id', $model->lab_sample_type_id)->firstOrFail()->pivot->order;
             }
 
@@ -53,7 +52,7 @@ class LabTestSample extends Model
             if (!$model->technician_id)
                 $model->technician_id = $user->id;
 
-                $model->user_id = $user->id;
+            $model->user_id = $user->id;
         });
     }
     public function lab_sample_type()
@@ -83,7 +82,7 @@ class LabTestSample extends Model
 
     public function approver()
     {
-        return $this->belongsTo(User::class,'approver_id');
+        return $this->belongsTo(User::class, 'approver_id');
     }
 
     public function patient()
