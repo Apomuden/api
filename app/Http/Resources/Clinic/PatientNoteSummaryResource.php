@@ -25,7 +25,6 @@ class PatientNoteSummaryResource extends JsonResource
         $billing_sponsor = $this->billing_sponsor??null;
         $sponsorship_policy = $this->sponsorship_policy??null;
 
-
         return isset($this->id)?[
             'patient_id' => $this->patient_id,
             'folder_no' => (($folder->folder_no ?? null) . ($patient->postfix ?? null)) ?? null,
