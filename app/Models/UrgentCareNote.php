@@ -17,7 +17,19 @@ class UrgentCareNote extends Model
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];
 
+    public function age_class()
+    {
+        return $this->belongsTo(AgeClassification::class, 'age_class_id');
+    }
 
+    public function age_category()
+    {
+        return $this->belongsTo(AgeCategory::class);
+    }
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class, 'age_group_id');
+    }
     public function consultation()
     {
         return $this->belongsTo(Consultation::class);
@@ -46,9 +58,8 @@ class UrgentCareNote extends Model
             $model->clinic_type_id = $consultation->clinic_type_id ?? null;
             $model->clinic_id = $consultation->clinic_id ?? null;
 
-            $patient = $consultation->patient ?? $model->patient;
-            $model->patient_id = $patient->id;
-            $model->gender=$consultation->gender??$patient->gender;
+            $patient =$model->patient;
+            $model->gender=$patient->gender;
 
             if($consultation){
                 $model->billing_sponsor_id = $consultation->billing_sponsor_id;
@@ -77,11 +88,13 @@ class UrgentCareNote extends Model
                 $model->age_class_id = $age_category->age_classification_id;
                 $model->age_category_id = $age_category->id;
             }
-
             if ($model->status == 'CANCELLED') {
                 $model->cancelled_date = now();
                 $model->canceller_id = $user->id;
             }
+        });
+        static::created(function($model){
+               PatientClinicalNoteSummary::updateSummary($model);
         });
         static::updating(function ($model) {
             $user = Auth::guard('api')->user();
@@ -89,8 +102,7 @@ class UrgentCareNote extends Model
             if ($model->isDirty('consultation_id')) {
                 $consultation = $model->consultation;
                 $model->patient_id = $consultation->patient_id;
-                $patient = $consultation->patient;
-                $model->gender = $consultation->gender;
+                $model->gender = $consultation->patient->gender;
                 $model->clinic_type_id = $consultation->clinic_type_id ?? null;
                 $model->clinic_id = $consultation->clinic_id ?? null;
 
@@ -126,6 +138,9 @@ class UrgentCareNote extends Model
                 $model->cancelled_date = now();
                 $model->canceller_id = $user->id;
             }
+        });
+        static::updated(function ($model) {
+            PatientClinicalNoteSummary::updateSummary($model);
         });
     }
 }

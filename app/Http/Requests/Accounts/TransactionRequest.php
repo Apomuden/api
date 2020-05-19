@@ -26,6 +26,7 @@ class TransactionRequest extends ApiFormRequest
         return [
             'patient_id'=>'bail|required|exists:patients,id',
             'patient_status'=>'bail|required|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
+            'services'=>'bail|required|array',
             'services.*.transaction_update_id'=>'bail|required|string',
             'services.*.status'=>'bail|sometimes|in:PENDING,PART-PAYMENT,FULL-PAYMENT,CANCELLED,ABSCOND,REFUNDED',
             'outstanding_bill'=>'bail|numeric|min:0',

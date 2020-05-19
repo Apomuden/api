@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests\Pharmacy;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\ApiFormRequest;
 
-class StoreRequest extends FormRequest
+class StoreRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,10 @@ class StoreRequest extends FormRequest
      */
     public function rules()
     {
+        $id=$this->route('store')??null;
         return [
-            //
+            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('stores','name',$id),
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

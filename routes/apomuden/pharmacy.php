@@ -37,10 +37,12 @@ Route::apiResource('stores','Pharmacy\StoreController',[
     //'only'=>['index','show','store','update'],
     'module'=>null,
     'component'=>'stores'
-]);Route::apiResource('stores','Pharmacy\StoreController',[
+]);
+
+Route::apiResource('storeactivities','Pharmacy\StoreActivityController',[
     //'only'=>['index','show','store','update'],
     'module'=>null,
-    'component'=>'stores'
+    'component'=>'storeactivities'
 ]);
 
 Route::apiResource('storeusers','Pharmacy\StoreUserController',[

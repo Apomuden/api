@@ -17,6 +17,7 @@ class CreateStoreUsersTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('user_id');
             $table->unsignedBigInteger('store_id');
+            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['user_id','store_id']);

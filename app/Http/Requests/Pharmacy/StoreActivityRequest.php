@@ -23,9 +23,9 @@ class StoreActivityRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('product')??null;
+        $id=$this->route('storeactivity')??null;
         return [
-            'store_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:stores,id',
+            'store_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:stores,id|'.$this->softUnique('storeactivities','store_id',$id),
             'purchasing_from_suppliers'=>'bail|sometimes|boolean',
             'receiving_from_suppliers'=>'bail|sometimes|boolean',
             'issuing_requested_product'=>'bail|sometimes|boolean',

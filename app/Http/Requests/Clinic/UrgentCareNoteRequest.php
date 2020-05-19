@@ -40,7 +40,7 @@ class UrgentCareNoteRequest extends ApiFormRequest
 
         return [
             'consultation_id'=>['bail', Rule::requiredIf(function () use ($id) {
-                return !($id && request('patient_id'));
+                return (!$id && !request('patient_id'));
             }),'exists:consultations,id'],
             'patient_id'=>['bail',Rule::requiredIf(function() use($id){
                 return (!$id && !request('consultation_id'));

@@ -10,7 +10,6 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use App\Http\Traits\Eloquent\SortableTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +17,9 @@ use Illuminate\Support\Facades\Auth;
 class Consultation extends Model
 {
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
+
     protected $guarded = [];
+
     public static function boot()
     {
         parent::boot();
@@ -104,12 +105,12 @@ class Consultation extends Model
             //update an attendance
             $repository = new RepositoryEloquent(new Attendance);
             $model->attendance_id = $repository
-                ->getModel()
-                ->where('patient_id', $model->patient_id ?? $model->getOriginal('patient_id'))
-                ->where('clinic_id', $model->clinic_id ?? $model->getOriginal('clinic_id'))
-                ->where('service_id', $model->consultation_service_id ?? $model->getOriginal('consultation_service_id'))
-                ->whereDate('attendance_date', Carbon::parse($model->attendance_date ?? $model->getOriginal('attendance_date')))
-                ->orderBy('created_at', 'desc')->first()->id ?? null;
+                    ->getModel()
+                    ->where('patient_id', $model->patient_id ?? $model->getOriginal('patient_id'))
+                    ->where('clinic_id', $model->clinic_id ?? $model->getOriginal('clinic_id'))
+                    ->where('service_id', $model->consultation_service_id ?? $model->getOriginal('consultation_service_id'))
+                    ->whereDate('attendance_date', Carbon::parse($model->attendance_date ?? $model->getOriginal('attendance_date')))
+                    ->orderBy('created_at', 'desc')->first()->id ?? null;
 
             Attendance::updateObject($model);
 
@@ -118,6 +119,7 @@ class Consultation extends Model
                 Notify::send('consultation', $model->consultant_id, new ConsultationResource($model));
         });
     }
+
     public function age_class()
     {
         return $this->belongsTo(AgeClassification::class);
@@ -127,6 +129,7 @@ class Consultation extends Model
     {
         return $this->belongsTo(AgeCategory::class);
     }
+
     public function service()
     {
         return $this->belongsTo(Service::class, 'consultation_service_id');
@@ -181,4 +184,10 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class, 'consultant_id');
     }
+
+    public function responses()
+    {
+        return $this->hasMany(ConsultationQuestionResponse::class);
+    }
+
 }

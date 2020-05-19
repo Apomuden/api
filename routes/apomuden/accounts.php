@@ -13,6 +13,12 @@ Route::apiResource('deposits','Accounts\DepositController',[
     'component'=>'deposit'
 ]);
 
+Route::apiResource('discounts','Accounts\DiscountController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'acct-mgt',
+    'component'=>'discount'
+]);
+
 Route::apiResource('absconds','Accounts\AbscondController',[
     //'only'=>['index','show','store','update'],
     'module'=>'acct-mgt',

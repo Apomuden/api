@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStoresTable extends Migration
+class CreateConsultationQuestionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateStoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('stores', function (Blueprint $table) {
+        Schema::create('consultation_questions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
+            $table->string('question');
+            $table->set('gender', ['MALE', 'FEMALE'])->default('MALE,FEMALE');
+            $table->enum('value_type', ['Text', 'Number', 'True/False', 'Select'])->default('Text');
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['name','deleted_at']);
+            $table->unique(['question', 'deleted_at']);
         });
     }
 
@@ -30,6 +31,6 @@ class CreateStoresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stores');
+        Schema::dropIfExists('consultation_questions');
     }
 }
