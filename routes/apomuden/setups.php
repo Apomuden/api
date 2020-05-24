@@ -411,3 +411,11 @@ Route::apiResource('majordiagnosticcategories', 'Setups\MajorDiagnosticCategoryC
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'
 ]);
+Route::apiResource('nhisgdrgservicetariff', 'Setups\NhisGdrgServiceTariffController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::apiResource('nhisgdrgservicecoverage', 'Setups\NhisGdrgServiceCoverageController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);

@@ -16,7 +16,7 @@ class MajorDiagnosticCategoryRequest extends ApiFormRequest
             'hospital_service_id'=>'bail|'. ($id ? 'sometimes' : 'required'). '|exists:hospital_services,id',
             'patient_status'=>'bail|'. ($id ? 'sometimes' : 'required'). '|set:OUT-PATIENT,IN-PATIENT',
             'gender'=>'bail|'. ($id ? 'sometimes' : 'required'). '|set:MALE,FEMALE,BIGENDER',
-            'age_group_id'=>'bail|'. ($id ? 'sometimes' : 'required'). '|exits:age_groups,id',
+            'age_group_id'=>'bail|'. ($id ? 'sometimes' : 'required'). '|exists:age_groups,id',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

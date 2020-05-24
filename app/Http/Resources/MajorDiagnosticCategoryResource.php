@@ -18,7 +18,7 @@ class MajorDiagnosticCategoryResource extends JsonResource
         if(isset($this->id)){
             return [
                 'id'=>$this->id,
-                'desciption'=>$this->desciption,
+                'desciption'=>$this->description,
                 'mdc_code'=>$this->mdc_code,
                 'hospital_service_id'=>$this->hospital_service_id,
                 'hospital_service_name'=>$this->hospital_service->name,
