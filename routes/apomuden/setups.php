@@ -278,6 +278,11 @@ Route::apiResource('consultationquestionoptions', 'Setups\ConsultationQuestionOp
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
+Route::post('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
+Route::put('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
+Route::get('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@questionsList');
+Route::delete('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@detachQuestions');
+
 
 Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsController', [
     'module' => 'sys-mgt',

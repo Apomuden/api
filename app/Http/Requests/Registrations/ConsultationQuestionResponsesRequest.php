@@ -28,7 +28,6 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
      */
     public function rules()
     {
-        if ($this->method() == self::METHOD_GET) return [];
         $this->isUpdate = $this->method() == self::METHOD_PUT;
         return [
             // common rule

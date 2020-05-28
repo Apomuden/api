@@ -5,16 +5,16 @@ namespace App\Models;
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
 use App\Http\Traits\Eloquent\SortableTrait;
-use App\Models\LabParameter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
+
     protected $guarded = [];
 
-    public function  getDisplayNameAttribute()
+    public function getDisplayNameAttribute()
     {
         if ($this->description)
             return $this->description;
@@ -46,6 +46,7 @@ class Service extends Model
     {
         return $this->belongsToMany(LabParameter::class, 'lab_service_parameters')->withPivot(['order', 'created_at', 'updated_at']);
     }
+
     public function lab_sample_types()
     {
         return $this->belongsToMany(LabSampleType::class, 'lab_service_sample_types')->withPivot(['order', 'created_at', 'updated_at']);
@@ -54,5 +55,10 @@ class Service extends Model
     public function consultation_components()
     {
         return $this->belongsToMany(ConsultationComponent::class, 'services_consultation_components')->withPivot(['order', 'created_at', 'updated_at']);
+    }
+
+    public function consultation_questions()
+    {
+        return $this->belongsToMany(ConsultationQuestion::class, 'services_consultation_questions')->withPivot(['order', 'created_at', 'updated_at']);
     }
 }
