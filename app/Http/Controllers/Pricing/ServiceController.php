@@ -24,14 +24,16 @@ class ServiceController extends Controller
 {
     protected $repository;
 
-    public function __construct(Service $service){
-          $this->repository=new RepositoryEloquent($service);
+    public function __construct(Service $service)
+    {
+        $this->repository = new RepositoryEloquent($service);
     }
+
     public function index()
     {
-       $services=$this->repository->all('description');
+        $services = $this->repository->all('description');
 
-       return ApiResponse::withOk('Service List',new ServiceCollection($services));
+        return ApiResponse::withOk('Service List', new ServiceCollection($services));
     }
 
     /* public function search(){
@@ -43,41 +45,45 @@ class ServiceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(ServiceRequest $request)
     {
-       $servicePrice=$this->repository->store($request->all());
-       return ApiResponse::withOk('Service created',new ServiceResource($servicePrice->refresh()));
+        $servicePrice = $this->repository->store($request->all());
+        return ApiResponse::withOk('Service created', new ServiceResource($servicePrice->refresh()));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($serviceprice)
     {
-        $servicePrice=$this->repository->find($serviceprice);
-        return ApiResponse::withOk('Found service',new ServiceResource($servicePrice));
+        $servicePrice = $this->repository->find($serviceprice);
+        return ApiResponse::withOk('Found service', new ServiceResource($servicePrice));
     }
 
-    public function labParametersList($service_id){
+    public function labParametersList($service_id)
+    {
         $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Lab parameters list',LabParameterResource::collection($service->lab_parameters()->orderBy('lab_service_parameters.order')->get()));
-    }
-    public function labSampleTypesList($service_id){
-        $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Lab sample types list',LabSampleTypeResource::collection($service->lab_sample_types()->orderBy('lab_service_sample_types.order')->get()));
+        return ApiResponse::withOk('Lab parameters list', LabParameterResource::collection($service->lab_parameters()->orderBy('lab_service_parameters.order')->get()));
     }
 
-    public function labParametersStore(LabServiceParameterRequest $request,$service_id){
+    public function labSampleTypesList($service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        return ApiResponse::withOk('Lab sample types list', LabSampleTypeResource::collection($service->lab_sample_types()->orderBy('lab_service_sample_types.order')->get()));
+    }
+
+    public function labParametersStore(LabServiceParameterRequest $request, $service_id)
+    {
         $service = $this->repository->findOrFail($service_id);
         $service->lab_parameters()->syncWithoutDetaching($request->parameters);
 
-        return ApiResponse::withOk('Lab parameter(s) created',LabParameterResource::collection($service->lab_parameters()->whereIn('id',array_keys($request->parameters))->orderBy('lab_service_parameters.order')->get()));
+        return ApiResponse::withOk('Lab parameter(s) created', LabParameterResource::collection($service->lab_parameters()->whereIn('id', array_keys($request->parameters))->orderBy('lab_service_parameters.order')->get()));
     }
 
     public function labSampleTypesStore(LabServiceSampleTypeRequest $request, $service_id)
@@ -88,14 +94,14 @@ class ServiceController extends Controller
         return ApiResponse::withOk('Lab sample type(s) created', LabSampleTypeResource::collection($service->lab_sample_types()->whereIn('id', array_keys($request->sample_types))->orderBy('lab_service_sample_types.order')->get()));
     }
 
-    public function labParametersDelete(LabServiceParameterRequest $request,$service_id)
+    public function labParametersDelete(LabServiceParameterRequest $request, $service_id)
     {
         $service = $this->repository->findOrFail($service_id);
         $service->lab_parameters()->detach($request->parameters);
         return ApiResponse::withOk('Lab parameter(s) deleted Successfully');
     }
 
-    public function labSampleTypesDelete(LabServiceSampleTypeRequest $request,$service_id)
+    public function labSampleTypesDelete(LabServiceSampleTypeRequest $request, $service_id)
     {
         $service = $this->repository->findOrFail($service_id);
         $service->lab_sample_types()->detach($request->sample_types);
@@ -105,20 +111,20 @@ class ServiceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ServiceRequest $request,$serviceprice)
+    public function update(ServiceRequest $request, $serviceprice)
     {
-       $servicePrice=$this->repository->update($request->all(),$serviceprice);
-       return ApiResponse::withOk('Found service updated',new ServiceResource($servicePrice));
+        $servicePrice = $this->repository->update($request->all(), $serviceprice);
+        return ApiResponse::withOk('Found service updated', new ServiceResource($servicePrice));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
