@@ -279,6 +279,11 @@ Route::apiResource('consultationquestionoptions', 'Setups\ConsultationQuestionOp
     'component' => 'setup.free.clinics'
 ]);
 
+Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsController', [
+    'module' => 'sys-mgt',
+    'component' => 'setup.facility'
+]);
+
 Route::apiResource('illnesstypes', 'Setups\IllnessTypeController', [
     //'only'=>['index','show','store','update'],
     'module' => ['records-mgt', 'sys-mgt'],
