@@ -283,6 +283,10 @@ Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsContr
     'module' => 'sys-mgt',
     'component' => 'setup.facility'
 ]);
+Route::post('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
+Route::put('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
+Route::get('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@componentsList');
+Route::delete('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@detachComponents');
 
 Route::apiResource('illnesstypes', 'Setups\IllnessTypeController', [
     //'only'=>['index','show','store','update'],
