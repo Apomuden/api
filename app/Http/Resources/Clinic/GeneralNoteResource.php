@@ -18,7 +18,7 @@ class GeneralNoteResource extends JsonResource
         $patient = $this->patient ?? null;
         $folder = $patient->activefolder ?? null;
 
-        $user = $this->user;
+        $user = $this->user??null;
         $funding_type = $this->funding_type??null;
 
         $sponsorship_type = $this->sponsorship_type??null;
@@ -29,7 +29,7 @@ class GeneralNoteResource extends JsonResource
         $consultant = $this->consultant??null;
         $canceller = $this->canceller??null;
 
-        return [
+        return isset($this->id)?[
             'id' => $this->id,
             'folder_no' => (($folder->folder_no ?? null) . ($patient->postfix ?? null)) ?? null,
             'patient_title' => $patient->title->name ?? null,
@@ -37,10 +37,10 @@ class GeneralNoteResource extends JsonResource
             'gender' => $this->gender ?? null,
             'age_group' => $this->age_group->name ?? null,
 
-            'age_category' => $this->age_category->name ?? null,
+            'age_category' => $this->age_category->description ?? null,
             'age_category_id' => $this->age_category_id ?? null,
 
-            'age_class_name' => $this->age_classification->name ?? null,
+            'age_class_name' => $this->age_class->name ?? null,
             'age_class_id' => $this->age_class_id ?? null,
 
             'consultation_id' => $this->consultation_id,
@@ -56,8 +56,8 @@ class GeneralNoteResource extends JsonResource
             'clinic_name' => $clinic->name ?? null,
             'clinic_id' => $clinic->id ?? null,
 
-            'user_name' => $user->fullname,
-            'user_id' => $user->id,
+            'user_name' => $user->fullname??null,
+            'user_id' => $user->id??null,
 
             'funding_type_name' => $funding_type->name ?? null,
             'funding_type_id' => $funding_type->id ?? null,
@@ -83,6 +83,6 @@ class GeneralNoteResource extends JsonResource
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-        ];
+        ]:null;
     }
 }

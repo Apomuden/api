@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,15 +43,15 @@ class ClinicService extends Model
     {
         parent::boot();
         static::creating(function ($model) {
-           $repository=new RepositoryEloquent(new Service);
-           $service=$repository->find($model->service_id);
-           $model->hospital_service_id=$service->hospital_service_id;
-           $model->service_category_id=$service->service_category_id;
-           $model->service_subcategory_id=$service->service_subcategory_id;
+            $repository = new RepositoryEloquent(new Service);
+            $service = $repository->find($model->service_id);
+            $model->hospital_service_id = $service->hospital_service_id;
+            $model->service_category_id = $service->service_category_id;
+            $model->service_subcategory_id = $service->service_subcategory_id;
 
-           $repository = new RepositoryEloquent(new Clinic);
-           $clinic = $repository->find($model->clinic_id);
-           $model->clinic_type_id=$clinic->clinic_type_id;
+            $repository = new RepositoryEloquent(new Clinic);
+            $clinic = $repository->find($model->clinic_id);
+            $model->clinic_type_id = $clinic->clinic_type_id;
         });
 
         static::updating(function ($model) {

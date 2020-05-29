@@ -33,7 +33,13 @@ class HospitalRequest extends ApiFormRequest
             'region_id'=>"bail|sometimes|nullable|exists:regions,id",
             'postal_address'=>'bail|sometimes|nullable|string',
             'gps_location'=>'bail|sometimes|nullable',
-            'ownership_type'=>'bail|sometimes|in:PRIVATE,MISSION,GOVERNMENT'
+            'ownership_type'=>'bail|sometimes|in:PRIVATE,MISSION,GOVERNMENT',
+            'nhis_provider_level_id'=> 'bail|sometimes|nullable|exists:nhis_provider_levels,id',
+            'nhis_authorization_code'=>'bail|nullable|sometimes',
+            'nhis_provider_no'=>'bail|nullable|sometimes',
+            'nhis_claim_submission_mode'=> 'bail|nullable|sometimes|in:PRINTING,ELECTRONIC',
+            'claim_manager_name'=> 'bail|nullable|sometimes|string',
+            'claim_manager_signature'=> 'bail|nullable|sometimes|file64:jpeg,jpg,png'
         ];
 
 

@@ -31,7 +31,7 @@ class UrgentCareNoteRequest extends ApiFormRequest
         $repository = new RepositoryEloquent(new Role);
 
         $roles = $repository->findWhere(['name' => 'Nurse'])
-            ->orWhere('name', 'DEV')->get();
+            ->orWhere('name', 'DEV')->orWhere('name', 'Doctor')->get();
 
         $roleIds = [];
         foreach ($roles as $role) {
@@ -39,18 +39,17 @@ class UrgentCareNoteRequest extends ApiFormRequest
         }
 
         return [
-            'consultation_id'=>['bail|', Rule::requiredIf(function () use ($id) {
-                return !($id && request('patient_id'));
-            }),'|exists:consultations,id'],
+            'consultation_id'=>['bail', Rule::requiredIf(function () use ($id) {
+                return (!$id && !request('patient_id'));
+            }),'exists:consultations,id'],
             'patient_id'=>['bail',Rule::requiredIf(function() use($id){
-                return !($id && request('consultation_id'));
-            }),'exists:patients,id'],
+                return (!$id && !request('consultation_id'));
+            }),Rule::exists('patients','id')],
             'patient_status'=>'bail|'.($id?'sometimes':'required').'|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultant_id'=>['bail', ($id ? 'sometimes' : 'required'),Rule::exists('users','id')->where(function($query) use($roleIds){
                 $query->whereIn('role_id', $roleIds);
             })],
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required'). '|in:ACTIVE,INACTIVE,CANCELLED',
-            'delivery_date'. ($id ? 'sometimes' : 'required').'|date',
+            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED',
             'notes'=>'bail|'. ($id ? 'sometimes' : 'required').'|string'
         ];
     }

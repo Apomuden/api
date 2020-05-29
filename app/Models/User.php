@@ -6,9 +6,9 @@ use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
 use App\Http\Helpers\Security;
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable,ActiveTrait,SortableTrait,FindByTrait,SoftDeletes;
+    use Notifiable, ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
 
     protected $guarded = [];
 
@@ -38,7 +38,7 @@ class User extends Authenticatable implements JWTSubject
     }
     public function getFullNameAttribute()
     {
-      return ucwords(trim($this->firstname.' '.$this->middlename).' '.$this->surname);
+        return ucwords(trim($this->firstname . ' ' . $this->middlename) . ' ' . $this->surname);
     }
 
     public function components()
@@ -48,7 +48,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function modules()
     {
-        return $this->belongsToMany(Module::class,'component_user')->distinct();
+        return $this->belongsToMany(Module::class, 'component_user')->distinct();
     }
 
     public function consultation()
@@ -59,36 +59,34 @@ class User extends Authenticatable implements JWTSubject
     public static function boot()
     {
         parent::boot();
-        static::creating(function($model)
-        {
-            $model->id=Str::uuid();
-            $model->password=Security::getNewPasswordHash($model->password,$model->id);
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+            $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
-            $model->dob=DateHelper::toDBDate($model->dob);
+            $model->dob = DateHelper::toDBDate($model->dob);
 
             //get the associated staff type
-            $StaffType=StaffType::findOrFail($model->staff_type_id);
-            $model->expires =$StaffType->validity_days?true:false;
-            $model->expiry_date =$StaffType->validity_days?Carbon::now()->addDays($StaffType->validity_days):null;
+            $StaffType = StaffType::findOrFail($model->staff_type_id);
+            $model->expires = $StaffType->validity_days ? true : false;
+            $model->expiry_date = $StaffType->validity_days ? Carbon::now()->addDays($StaffType->validity_days) : null;
 
-            $model->staff_id=IDGenerator::getNewStaffID();
+            $model->staff_id = IDGenerator::getNewStaffID();
 
-            $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
-            $model->photo=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
+            $model->signature = FileResolver::base64ToFile($model->signature, $model->username, 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
+            $model->photo = FileResolver::base64ToFile($model->signature, $model->username, 'users' . DIRECTORY_SEPARATOR . 'photos') ?? null;
         });
 
-        static::updating(function($model){
-            $model->dob=DateHelper::toDBDate($model->dob);
+        static::updating(function ($model) {
+            $model->dob = DateHelper::toDBDate($model->dob);
 
             $original_password = $model->getOriginal('password');
 
-            if(isset($model->password) && $original_password!=$model->password)
-            $model->password=Security::getNewPasswordHash($model->password,$model->id);
+            if (isset($model->password) && $original_password != $model->password)
+                $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
 
-            $model->signature=FileResolver::base64ToFile($model->signature,$model->username,'users'.DIRECTORY_SEPARATOR.'signatures')??null;
-            $model->photo=FileResolver::base64ToFile($model->photo,$model->username,'users'.DIRECTORY_SEPARATOR.'photos')??null;
-
+            $model->signature = FileResolver::base64ToFile($model->signature, $model->username, 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
+            $model->photo = FileResolver::base64ToFile($model->photo, $model->username, 'users' . DIRECTORY_SEPARATOR . 'photos') ?? null;
         });
     }
     /**
@@ -156,16 +154,16 @@ class User extends Authenticatable implements JWTSubject
 
     public function country()
     {
-        return $this->belongsTo(Country::class,'origin_country_id');
+        return $this->belongsTo(Country::class, 'origin_country_id');
     }
     public function region()
     {
-        return $this->belongsTo(Region::class,'origin_region_id');
+        return $this->belongsTo(Region::class, 'origin_region_id');
     }
 
     public function hometown()
     {
-        return $this->belongsTo(Town::class,'hometown_id');
+        return $this->belongsTo(Town::class, 'hometown_id');
     }
 
     public function bank()
@@ -202,26 +200,29 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(PasswordReset::class);
     }
-    static function getCategorySummary(){
-        return self::select('staff_category_id',DB::raw('count(*) as total'))->groupBy('staff_category_id')->whereHas('staff_category')->get();
+    static function getCategorySummary()
+    {
+        return self::select('staff_category_id', DB::raw('count(*) as total'))->groupBy('staff_category_id')->whereHas('staff_category')->get();
     }
 
-    public function detachModules($modules){
-        foreach($modules as $module){
+    public function detachModules($modules)
+    {
+        foreach ($modules as $module) {
             ComponentUser::where('user_id', $this->id)
                 ->where('module_id', $module)
                 ->delete();
         }
         $this->deleteCache();
     }
-    public function syncModules($modules,$detach=false){
+    public function syncModules($modules, $detach = false)
+    {
         $payload = [];
-        foreach($modules as $module){
-            $module=(object) $module;
-          $components = Module::with('components')->where('id',$module->id)->first()->components;
-           foreach($components as $component){
+        foreach ($modules as $module) {
+            $module = (object) $module;
+            $components = Module::with('components')->where('id', $module->id)->first()->components;
+            foreach ($components as $component) {
 
-                if(isset($module->all)){
+                if (isset($module->all)) {
                     $payload[$component->id] = [
                         'all' => $module->all ?? false,
                         'add' => $module->all ?? false,
@@ -233,7 +234,7 @@ class User extends Authenticatable implements JWTSubject
                     ];
                 }
 
-                $payload[$component->id]['module_id']= $module->id;
+                $payload[$component->id]['module_id'] = $module->id;
                 if (isset($module->add))
                     $payload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
                 if (isset($module->view))
@@ -250,18 +251,19 @@ class User extends Authenticatable implements JWTSubject
 
                 if (isset($module->print))
                     $payload[$component->id]['print'] = $module->all ? $module->all : ($module->print ?? false);
-           }
+            }
         }
         $this->components()->sync($payload, $detach);
         $this->deleteCache();
-     }
-      public function syncComponents($components,$detach=false){
-           $payload=[];
-           $components=$components;
-           foreach($components as $component){
-                    $component=(object) $component;
-                    $dbcomponent= ComponentModule::where('component_id', $component->id)->first();
-              if(!$dbcomponent)
+    }
+    public function syncComponents($components, $detach = false)
+    {
+        $payload = [];
+        $components = $components;
+        foreach ($components as $component) {
+            $component = (object) $component;
+            $dbcomponent = ComponentModule::where('component_id', $component->id)->first();
+            if (!$dbcomponent)
                 continue;
 
             if (isset($component->all)) {
@@ -276,7 +278,7 @@ class User extends Authenticatable implements JWTSubject
                 ];
             }
 
-            $payload[$component->id]['module_id']=$dbcomponent->module_id;
+            $payload[$component->id]['module_id'] = $dbcomponent->module_id;
 
             if (isset($component->add))
                 $payload[$component->id]['add'] = $component->all ? $component->all : ($component->add ?? false);
@@ -294,23 +296,25 @@ class User extends Authenticatable implements JWTSubject
 
             if (isset($component->print))
                 $payload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
-           }
-           $this->components()->sync($payload,$detach);
-          $this->deleteCache();
-     }
+        }
+        $this->components()->sync($payload, $detach);
+        $this->deleteCache();
+    }
 
-     public function detachComponents($components){
-        foreach($components as  $component){
-            ComponentUser::where('component_id',$component)
-                           ->where('user_id',$this->id)
-                           ->delete();
+    public function detachComponents($components)
+    {
+        foreach ($components as  $component) {
+            ComponentUser::where('component_id', $component)
+                ->where('user_id', $this->id)
+                ->delete();
         }
 
         $this->deleteCache();
-     }
+    }
 
-     private function deleteCache(){
-            $key = 'components->user->' . $this->id;
-            Cache::forget($key);
-     }
+    private function deleteCache()
+    {
+        $key = 'components->user->' . $this->id;
+        Cache::forget($key);
+    }
 }

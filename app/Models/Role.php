@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class Role extends Model
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
     public function components()
@@ -25,28 +25,30 @@ class Role extends Model
         return $this->hasMany(User::class);
     }
 
-   public function modules()
-   {
-       return $this->hasManyThrough(
-           Module::class,
-           ComponentRole::class,
+    public function modules()
+    {
+        return $this->hasManyThrough(
+            Module::class,
+            ComponentRole::class,
             'role_id',
             'id'
-       );
-   }
+        );
+    }
 
-    public function synComponentToUsers($components,$detach=false){
-        $users=$this->users;
-        foreach($users as $user){
-            $user->syncComponents($components,$detach);
+    public function synComponentToUsers($components, $detach = false)
+    {
+        $users = $this->users;
+        foreach ($users as $user) {
+            $user->syncComponents($components, $detach);
         }
     }
 
-    public function detachModules($modules,$cascade=false){
-          foreach($modules as $module){
-             $component= ComponentRole::where('role_id',$this->id)
-                             ->where('module_id',$module)
-                             ->delete();
+    public function detachModules($modules, $cascade = false)
+    {
+        foreach ($modules as $module) {
+            $component = ComponentRole::where('role_id', $this->id)
+                ->where('module_id', $module)
+                ->delete();
 
 
             if ($cascade) {
@@ -57,32 +59,33 @@ class Role extends Model
                         ->delete();
                 }
             }
-          }
+        }
     }
-    public function syncModules($modules,$detach=false){
-       $syncPayload=[];
-       $payload=[];
+    public function syncModules($modules, $detach = false)
+    {
+        $syncPayload = [];
+        $payload = [];
 
-       $modules=$modules;
-       foreach($modules as $module){
-           $module=(object) $module;
-          $dbModule = Module::with('components')->where('id', $module->id)->first();
-          $components= $dbModule->components;
-          foreach($components as $component){
+        $modules = $modules;
+        foreach ($modules as $module) {
+            $module = (object) $module;
+            $dbModule = Module::with('components')->where('id', $module->id)->first();
+            $components = $dbModule->components;
+            foreach ($components as $component) {
 
-            if(isset($module->all)){
-                $syncPayload[$component->id] = [
-                    'all' => $module->all??false,
-                    'add' => $module->all??false,
-                    'view' => $module->all??false,
-                    'edit' => $module->all??false,
-                    'delete' => $module->all??false,
-                    'update' => $module->all??false,
-                    'print' => $module->all??false
-                ];
-            }
+                if (isset($module->all)) {
+                    $syncPayload[$component->id] = [
+                        'all' => $module->all ?? false,
+                        'add' => $module->all ?? false,
+                        'view' => $module->all ?? false,
+                        'edit' => $module->all ?? false,
+                        'delete' => $module->all ?? false,
+                        'update' => $module->all ?? false,
+                        'print' => $module->all ?? false
+                    ];
+                }
 
-                $syncPayload[$component->id]['module_id']= $module->id;
+                $syncPayload[$component->id]['module_id'] = $module->id;
                 if (isset($module->add))
                     $syncPayload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
                 if (isset($module->view))
@@ -118,34 +121,34 @@ class Role extends Model
                 if (isset($module->print))
                     $componentPayload['print'] = $module->all ? $module->all : ($module->print ?? false);
 
-                $payload[]=$componentPayload;
-          }
-       }
-       $this->components()->sync($syncPayload,$detach);
-       $this->synComponentToUsers($payload,$detach);
+                $payload[] = $componentPayload;
+            }
+        }
+        $this->components()->sync($syncPayload, $detach);
+        $this->synComponentToUsers($payload, $detach);
     }
 
-     public function syncComponents($components,$detach=false){
+    public function syncComponents($components, $detach = false)
+    {
         $syncPayload = [];
         $payload = [];
 
-           foreach($components as $component){
-               $component=(object) $component;
-                $dbcomponent= ComponentModule::where('component_id', $component->id)->first();
-                if(!$dbcomponent)
-                  continue;
+        foreach ($components as $component) {
+            $component = (object) $component;
+            $dbcomponent = ComponentModule::where('component_id', $component->id)->first();
+            if (!$dbcomponent)
+                continue;
 
-            if (isset($component->all)){
-                $syncPayload[$component->id] =[
-                    'all'=> $component->all??false,
-                    'add'=> $component->all??false,
-                    'view'=>$component->all??false,
-                    'edit'=>$component->all??false,
-                    'update'=>$component->all??false,
-                    'delete'=>$component->all??false,
-                    'print'=>$component->all??false,
+            if (isset($component->all)) {
+                $syncPayload[$component->id] = [
+                    'all' => $component->all ?? false,
+                    'add' => $component->all ?? false,
+                    'view' => $component->all ?? false,
+                    'edit' => $component->all ?? false,
+                    'update' => $component->all ?? false,
+                    'delete' => $component->all ?? false,
+                    'print' => $component->all ?? false,
                 ];
-
             }
 
             $syncPayload[$component->id]['module_id'] = $dbcomponent->module_id;
@@ -164,7 +167,7 @@ class Role extends Model
                 $syncPayload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
 
 
-            $componentPayload['id']=$component->id;
+            $componentPayload['id'] = $component->id;
             if (isset($component->all))
                 $componentPayload['all'] =  ($component->all ?? false);
             if (isset($component->add))
@@ -180,15 +183,15 @@ class Role extends Model
             if (isset($component->print))
                 $componentPayload['print'] = $component->all ? $component->all : ($component->print ?? false);
 
-            $payload[]=$componentPayload;
-         }
+            $payload[] = $componentPayload;
+        }
         $this->components()->sync($syncPayload, $detach);
         $this->synComponentToUsers($payload, $detach);
-     }
+    }
     public function detachComponents($components, $cascade = false)
     {
         foreach ($components as $component) {
-             ComponentRole::where('role_id', $this->id)
+            ComponentRole::where('role_id', $this->id)
                 ->where('component_id', $component)
                 ->delete();
 

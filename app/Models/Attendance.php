@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Exception;
@@ -15,14 +15,15 @@ use Illuminate\Support\Facades\Log;
 class Attendance extends Model
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
-    protected $guarded=['id'];
+    protected $guarded = ['id'];
 
-    public static function updateObject($model){
-        $attendance=self::find($model->attendance_id);
-        $attendance->service_id= ($model->consultation_service_id??$attendance->service_id)??null;
+    public static function updateObject($model)
+    {
+        $attendance = self::find($model->attendance_id);
+        $attendance->service_id = ($model->consultation_service_id ?? $attendance->service_id) ?? null;
         //create an attendance
         $repository = new RepositoryEloquent(new FundingType);
-        $funding_type = $repository->find($model->funding_type_id??$attendance->funding_type_id);
+        $funding_type = $repository->find($model->funding_type_id ?? $attendance->funding_type_id);
         $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
         $attendance->patient_id = $model->patient_id ?? $attendance->patient_id;
 
@@ -54,7 +55,7 @@ class Attendance extends Model
 
         $attendance->patient_status = 'OUT-PATIENT';
 
-        $attendance->request_type = $model->patient_id && $model->clinic_id? (DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD'): $attendance->request_type;
+        $attendance->request_type = $model->patient_id && $model->clinic_id ? (DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD') : $attendance->request_type;
 
         $attendance->attendance_date = DateHelper::toDBDateTime($model->attendance_date) ?? $attendance->attendance_date;
 
@@ -73,36 +74,35 @@ class Attendance extends Model
 
             //get clinic details
             $repository = new RepositoryEloquent(new Clinic);
-            $clinic=$repository->find($model->clinic_id);
-            $model->clinic_type_id=$clinic->clinic_type_id;
+            $clinic = $repository->find($model->clinic_id);
+            $model->clinic_type_id = $clinic->clinic_type_id;
 
             //get patient details
-            $repository=new RepositoryEloquent(new Patient);
-            $patient=$repository->find($model->patient_id);
-            $model->age = $model->age??Carbon::parse($patient->dob)->age;
+            $repository = new RepositoryEloquent(new Patient);
+            $patient = $repository->find($model->patient_id);
+            $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
-            $model->gender=$model->gender??$patient->gender;
+            $model->gender = $model->gender ?? $patient->gender;
 
             $model->insured = $insured;
-            $model->funding_type_id = $model->funding_type_id??null;
+            $model->funding_type_id = $model->funding_type_id ?? null;
             //$model->sponsor_id = $model->billing_sponsor_id??null;
-            $model->sponsorship_type_id = $model->sponsorship_type_id??null;
+            $model->sponsorship_type_id = $model->sponsorship_type_id ?? null;
 
             //age class and group
             $repository = new RepositoryEloquent(new AgeClassification);
-            $age_class=$repository->findWhere(['name'=> 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
+            $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
-            $age_category=DateHelper::getAgeCategory($age_class->id, $model->age?DateHelper::getDOB($model->age):$patient->dob);
-            $model->age_group_id=$age_category->age_group_id;
-            $model->age_class_id=$age_category->age_classification_id;
-            $model->age_category_id=$age_category->id;
+            $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
+            $model->age_group_id = $age_category->age_group_id;
+            $model->age_class_id = $age_category->age_classification_id;
+            $model->age_category_id = $age_category->id;
 
-            $model->patient_status= 'OUT-PATIENT';
+            $model->patient_status = 'OUT-PATIENT';
 
-            $model->request_type=DateHelper::isNewAttendance($model->patient_id,$model->clinic_id)?'NEW':'OLD';
+            $model->request_type = DateHelper::isNewAttendance($model->patient_id, $model->clinic_id) ? 'NEW' : 'OLD';
 
-            $model->attendance_date=DateHelper::toDBDateTime($model->attendance_date);
-
+            $model->attendance_date = DateHelper::toDBDateTime($model->attendance_date);
         });
 
         static::updating(function ($model) {
@@ -140,7 +140,7 @@ class Attendance extends Model
 
     public function billing_sponsor()
     {
-        return $this->belongsTo(BillingSponsor::class,'sponsor_id');
+        return $this->belongsTo(BillingSponsor::class, 'sponsor_id');
     }
     public function clinic_type()
     {

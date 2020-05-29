@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Resources\Lab;
+namespace App\Http\Requests\Lab;
 
 use App\Http\Helpers\DateHelper;
+use App\Http\Resources\Lab\labTestResultSimpleResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InvestigationResultHierarchicalResource extends JsonResource

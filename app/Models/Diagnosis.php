@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +20,7 @@ class Diagnosis extends Model
     public static function boot()
     {
         parent::boot();
-        static::creating(function($model){
+        static::creating(function ($model) {
             $consultation = Consultation::findOrFail($model->consultation_id);
             $model->age = $consultation->age;
             $model->gender = $consultation->patient->gender;
@@ -37,30 +37,28 @@ class Diagnosis extends Model
             $model->attendance_date = $model->attendance_date ?? $consultation->attendance_date;
             $model->user_id = Auth::guard('api')->user()->id;
 
-            $disease=Disease::findOrFail($model->disease_id);
-            $model->disease_code=$disease->disease_code;
-            $model->icd10_code=$disease->icd10_code;
-            $model->icd10_grouping_code=$disease->icd10_grouping_code;
-            $model->moh_grouping_code=$disease->moh_grouping_code;
-            $model->illness_type_id=$disease->illness_type_id;
-            $model->moh_ghs_grouping_id=$disease->moh_ghs_grouping_id;
-            $model->icd10_category_id=$disease->icd10_category_id;
-            $model->icd10_grouping_id=$disease->icd10_grouping_id;
+            $disease = Disease::findOrFail($model->disease_id);
+            $model->disease_code = $disease->disease_code;
+            $model->icd10_code = $disease->icd10_code;
+            $model->icd10_grouping_code = $disease->icd10_grouping_code;
+            $model->moh_grouping_code = $disease->moh_grouping_code;
+            $model->illness_type_id = $disease->illness_type_id;
+            $model->moh_ghs_grouping_id = $disease->moh_ghs_grouping_id;
+            $model->icd10_category_id = $disease->icd10_category_id;
+            $model->icd10_grouping_id = $disease->icd10_grouping_id;
 
-            $model->age_group_id=$consultation->age_group_id;
+            $model->age_group_id = $consultation->age_group_id;
 
-         if($consultation->sponsorship_type->name== 'Government Insurance'){
-             $model->adult_gdrg=$model->age >12 ?$disease->adult_gdrg:0.00;
-             $model->child_gdrg= $model->age < 12 ?$disease->child_gdrg:0.00;
+            if ($consultation->sponsorship_type->name == 'Government Insurance') {
+                $model->adult_gdrg = $model->age > 12 ? $disease->adult_gdrg : 0.00;
+                $model->child_gdrg = $model->age < 12 ? $disease->child_gdrg : 0.00;
 
-             $model->adult_tariff = $model->age > 12 ? $disease->adult_tariff : 0.00;
-             $model->child_gdrg = $model->age > 12 ? $disease->child_gdrg : 0.00;
-         }
-
+                $model->adult_tariff = $model->age > 12 ? $disease->adult_tariff : 0.00;
+                $model->child_gdrg = $model->age > 12 ? $disease->child_gdrg : 0.00;
+            }
         });
 
         static::updating(function ($model) {
-
         });
     }
     public function disease()

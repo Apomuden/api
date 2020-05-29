@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('admissionnotes', 'Registration\LabTestResultController', [
+Route::apiResource('admissionnotes', 'Registration\AdmissionNoteController', [
     'module' => 'ipd-mgt',
     'component' => 'ipd-clinical-notes'
 ]);
@@ -38,6 +38,12 @@ Route::apiResource('treatmentplannotes', 'Registration\TreatmentPlanController',
 ]);
 
 Route::apiResource('urgentcarenotes', 'Registration\UrgentCareNoteController', [
+    'module' => 'ipd-mgt',
+    'component' => 'ipd-clinical-notes'
+]);
+
+Route::apiResource('patientnotesummaries','Registration\PatientNoteSummaryController',[
+    'except' => ['store', 'update'],
     'module' => 'ipd-mgt',
     'component' => 'ipd-clinical-notes'
 ]);

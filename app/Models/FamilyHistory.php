@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use App\Http\Traits\FindByTrait;
-use App\Http\Traits\SortableTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FamilyHistory extends Model
 {
-    use FindByTrait,SortableTrait,SoftDeletes;
+    use FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];
 
     public function family_history_category()

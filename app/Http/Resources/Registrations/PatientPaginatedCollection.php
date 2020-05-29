@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Registrations;
 
-use App\Http\Traits\PaginationTrait;
+use App\Http\Traits\Resources\PaginationTrait;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PatientPaginatedCollection extends ResourceCollection
