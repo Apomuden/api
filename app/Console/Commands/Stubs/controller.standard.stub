@@ -1,0 +1,62 @@
+<?php
+
+namespace DummyNamespace;
+
+use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Http\RequestsUserDefinedNameSpaceDummyClassRequest; //TODO: Make Sure to change to the correct Request namespace
+use App\Http\ResourcesUserDefinedNameSpaceDummyClassCollection; //TODO: Make Sure to change to the correct Collection namespace
+use App\Http\ResourcesUserDefinedNameSpaceDummyClassResource; //TODO: Make Sure to change to the correct Resource namespace
+use App\Models\DummyClass; //TODO: Make Sure to change to the correct Model namespace
+use App\Repositories\RepositoryEloquent;
+use Exception;
+use Illuminate\Http\Request;
+
+class DummyClassController extends Controller
+{
+    protected $repository;
+
+    public function __construct(DummyClass $DummyClass)
+    {
+        $this->repository= new RepositoryEloquent($DummyClass);
+    }
+
+    public function index(){
+
+        return ApiResponse::withOk('DummyClasss list',new DummyClassCollection($this->repository->all('name')));
+    }
+
+    public function show($DummyClass){
+        $DummyClass=$this->repository->show($DummyClass);
+        return $DummyClass?
+            ApiResponse::withOk('DummyClass Found',new DummyClassResource($DummyClass))
+            : ApiResponse::withNotFound('DummyClass Not Found');
+    }
+
+    public function store(DummyClassRequest $DummyClassRequest){
+        try{
+            $requestData=$DummyClassRequest->all();
+            $DummyClass=$this->repository->store($requestData);
+            return ApiResponse::withOk('DummyClass created',new DummyClassResource($DummyClass->refresh()));
+        }
+        catch(Exception $e){
+            return ApiResponse::withException($e);
+        }
+    }
+
+    public function update(DummyClassRequest $DummyClassRequest,$DummyClass){
+        try{
+            $DummyClass=$this->repository->update($DummyClassRequest->all(),$DummyClass);
+            return ApiResponse::withOk('DummyClass updated',new DummyClassResource($DummyClass));
+        }
+        catch(Exception $e){
+            return ApiResponse::withException($e);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $this->repository->delete($id);
+        return ApiResponse::withOk('DummyClass deleted successfully');
+    }
+}

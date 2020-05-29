@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Models;
+namespace DummyNamespace;
 
 use App\Http\Traits\ActiveTrait;
 use App\Http\Traits\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductForm extends Model
+class DummyClass extends Model
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];
 
-    public function product_type() {
-        return $this->belongsTo(ProductType::class);
-    }
 }
