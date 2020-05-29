@@ -12,8 +12,8 @@ class ProductForm extends Model
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
-    public function product_category()
-    {
-        return $this->belongsTo(ProductCategory::class);
+    public function product_type() {
+        return $this->belongsTo(ProductType::class);
     }
+
 }

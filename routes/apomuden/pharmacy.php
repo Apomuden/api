@@ -50,3 +50,12 @@ Route::apiResource('storeusers','Pharmacy\StoreUserController',[
     'module'=>null,
     'component'=>'storeusers'
 ]);
+
+
+Route::post('stockadjustments/approvals','Pharmacy\StockAdjustmentController@approve');
+Route::get('stockadjustments/approvals','Pharmacy\StockAdjustmentController@getApprovals');
+Route::apiResource('stockadjustments','Pharmacy\StockAdjustmentController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>null,
+    'component'=>'stockadjustments'
+]);

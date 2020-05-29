@@ -4,7 +4,7 @@ namespace App\Http\Requests\Pharmacy;
 
 use App\Http\Requests\ApiFormRequest;
 
-class ProductFormRequest extends ApiFormRequest
+class StockRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,12 +23,8 @@ class ProductFormRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('productform')??null;
-
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('product_forms','name',$id),
-            'product_type_id'=>'bail|'.($id?'sometimes':'required').'|exists:product_types,id',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            //
         ];
     }
 }
