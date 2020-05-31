@@ -8,9 +8,11 @@ use App\Http\Requests\Lab\LabSampleTypeRequest;
 use App\Http\Requests\Lab\LabServiceParameterRequest;
 use App\Http\Requests\Lab\LabServiceSampleTypeRequest;
 use App\Http\Requests\Pricing\ServiceRequest;
+use App\Http\Requests\Setups\ConsultationServiceComponentsRequest;
 use App\Http\Resources\Lab\LabParameterResource;
 use App\Http\Resources\Lab\LabSampleTypeResource;
 use App\Http\Resources\ServiceCollection;
+use App\Http\Resources\ServiceConsultationComponentResource;
 use App\Http\Resources\ServiceResource;
 use App\Models\LabParameter;
 use App\Models\Service;
@@ -122,5 +124,31 @@ class ServiceController extends Controller
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Service deleted successfully');
+    }
+
+
+    ////////////////////////////
+    // consultation components
+    public function componentsList($service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
+            ->orderBy('services_consultation_components.order')->get()));
+    }
+
+    public function saveComponents(ConsultationServiceComponentsRequest $request, $service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->consultation_components()->syncWithoutDetaching($request->components);
+
+        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
+            ->whereIn('id', array_keys($request->components))->orderBy('services_consultation_components.order')->get()));
+    }
+
+    public function detachComponents(ConsultationServiceComponentsRequest $request, $service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->consultation_components()->detach($request->components);
+        return ApiResponse::withOk('Components detached');
     }
 }

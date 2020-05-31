@@ -50,4 +50,9 @@ class Service extends Model
     {
         return $this->belongsToMany(LabSampleType::class, 'lab_service_sample_types')->withPivot(['order', 'created_at', 'updated_at']);
     }
+
+    public function consultation_components()
+    {
+        return $this->belongsToMany(ConsultationComponent::class, 'services_consultation_components')->withPivot(['order', 'created_at', 'updated_at']);
+    }
 }
