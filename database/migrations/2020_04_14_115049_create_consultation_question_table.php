@@ -18,6 +18,7 @@ class CreateConsultationQuestionTable extends Migration
             $table->string('question');
             $table->set('gender', ['MALE', 'FEMALE'])->default('MALE,FEMALE');
             $table->enum('value_type', ['Text', 'Number', 'True/False', 'Select'])->default('Text');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
             $table->unique(['question', 'deleted_at']);

@@ -11,8 +11,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed status
  * @property mixed created_at
  * @property mixed updated_at
+ * @property mixed question
+ * @property mixed gender
+ * @property mixed value_type
  */
-class ServiceConsultationComponentResource extends JsonResource
+class ServiceConsultationQuestionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,12 +28,13 @@ class ServiceConsultationComponentResource extends JsonResource
         $pivot = $this->pivot ?? null;
         $data = [
             'id' => $this->id,
-            'name' => $this->name,
+            'question' => $this->question,
+            'gender' => $this->gender,
+            'value_type' => $this->value_type,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($pivot->created_at ?? $this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($pivot->updated_at ?? $this->updated_at)
         ];
-
         if ($pivot)
             $data['order'] = $pivot->order;
 
