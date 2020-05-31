@@ -33,7 +33,7 @@ class ProductsRequest extends ApiFormRequest
             'medicine_route_id'=>'bail|'.($id?'sometimes':'required').'|exists:medicine_routes,id',
             'product_category_id'=>'bail|'.($id?'sometimes':'required').'|exists:product_categories,id',
             'age_group_id'=>'bail|'.($id?'sometimes':'required').'|exists:age_groups,id',
-            'maximum_form_issue_unit' => 'bail|sometimes|nullable|string',
+            'minimum_form_issue_unit' => 'bail|sometimes|nullable|string',
             'default_minimum_dosage' => 'bail|sometimes|nullable|string',
             'package_maximum_issue' => 'bail|sometimes|nullable|string',
             'strength_equivalent' => 'bail|sometimes|nullable|string',

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductFormsTable extends Migration
+class CreateNhisProviderLevelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateProductFormsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_forms', function (Blueprint $table) {
+        Schema::create('nhis_provider_levels', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('product_type_id');
-            $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +30,6 @@ class CreateProductFormsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_forms');
+        Schema::dropIfExists('nhis_provider_levels');
     }
 }

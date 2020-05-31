@@ -416,3 +416,20 @@ Route::apiResource('ageclassifications', 'Setups\AgeClassificationController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.agegroups'
 ]);
+
+Route::apiResource('nhisproviderlevels', 'Setups\NhisProviderLevelController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::apiResource('majordiagnosticcategories', 'Setups\MajorDiagnosticCategoryController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::apiResource('nhisgdrgservicetariff', 'Setups\NhisGdrgServiceTariffController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::apiResource('nhisgdrgservicecoverage', 'Setups\NhisGdrgServiceCoverageController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
