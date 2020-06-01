@@ -34,7 +34,7 @@ class CreateStockAdjustmentProductsTable extends Migration
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
             //$table->foreign('stock_adjustment_id')->references('id')->on('stock_adjustments')->onDelete('restrict');
-            $table->foreign('reference_number')->references('id')->on('stock_adjustments')->onDelete('restrict');
+            //$table->foreign('reference_number')->references('id')->on('stock_adjustments')->onDelete('restrict');
         });
     }
 

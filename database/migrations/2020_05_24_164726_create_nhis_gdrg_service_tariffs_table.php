@@ -17,14 +17,13 @@ class CreateNhisGdrgServiceTariffsTable extends Migration
             $table->bigIncrements('id');
             $table->string('gdrg_code');
             $table->string('gdrg_service_name');
-            $table->unsignedDecimal('primary_with_catering',20,2)->default(0.00);
-            $table->unsignedDecimal('primary_no_catering',20,2)->default(0.00);
-            $table->unsignedDecimal('secondary_with_catering',20,2)->default(0.00);
-            $table->unsignedDecimal('secondary_no_catering',20,2)->default(0.00);
-            $table->unsignedDecimal('tertiary_with_catering',20,2)->default(0.00);
-            $table->unsignedDecimal('tertiary_no_catering',20,2)->default(0.00);
+
+            $table->unsignedBigInteger('nhis_provider_level_id');
+            $table->foreign('nhis_provider_level_id')->references('id')->on('nhis_provider_levels')->onDelete('restrict');
+
             $table->unsignedBigInteger('major_diagnostic_category_id');
             $table->foreign('major_diagnostic_category_id')->references('id')->on('major_diagnostic_categories');
+
             $table->string('mdc_code');
             $table->unsignedInteger('hospital_service_id');
             $table->foreign('hospital_service_id')->references('id')->on('hospital_services')->onDelete('restrict');

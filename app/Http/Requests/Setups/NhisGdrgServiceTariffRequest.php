@@ -13,12 +13,7 @@ class NhisGdrgServiceTariffRequest extends ApiFormRequest
         return [
             'gdrg_code' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('nhis_gdrg_service_tariffs', 'gdrg_code',$id),
             'gdrg_service_name'=>'bail|'. ($id ? 'sometimes' : 'required').'|'.$this->softUnique('nhis_gdrg_service_tariffs', 'gdrg_service_name',$id),
-            'primary_with_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
-            'primary_no_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
-            'secondary_with_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
-            'secondary_no_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
-            'tertiary_with_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
-            'tertiary_no_catering'=>'bail|'. ($id ? 'sometimes' : 'required'). '|numeric|min:0',
+            'nhis_provider_level_id'=>'bail|'. ($id ? 'sometimes' : 'required'). '|exists:nhis_provider_levels,id',
             'major_diagnostic_category_id'=>'bail|'. ($id ? 'sometimes' : 'required'). '|exists:major_diagnostic_categories,id',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
