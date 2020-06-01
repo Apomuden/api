@@ -26,6 +26,10 @@ class NhisGdrgServiceTariff extends Model
     {
         return $this->belongsTo(MajorDiagnosticCategory::class);
     }
+    public function nhis_provider_level()
+    {
+        return $this->belongsTo(NhisProviderLevel::class);
+    }
 
     public static function boot()
     {
