@@ -36,8 +36,8 @@ class DiseaseRequest extends ApiFormRequest
             'age_group_id'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|exismoh_grouping_codets:age_groups,id',
             'gender'=> 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
-            'adult_tariff'=>'bail|numeric|min:0',
-            'child_tariff'=>'bail|numeric|min:0',
+            'adult_tariff'=>'bail|somtimes|numeric|min:0',
+            'child_tariff'=>'bail|sometimes|numeric|min:0',
             'adult_gdrg'=>'bail|sometimes|nullable',
             'child_gdrg'=> 'bail|sometimes|nullable'
         ];
