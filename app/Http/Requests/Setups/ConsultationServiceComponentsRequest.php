@@ -4,13 +4,6 @@ namespace App\Http\Requests\Setups;
 
 use App\Http\Requests\ApiFormRequest;
 use App\Models\ClinicService;
-use App\Models\ConsultationQuestionResponse;
-use App\Models\HospitalService;
-use App\Models\Service;
-use App\Models\User;
-use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 
 /**
  * @property array components
@@ -40,7 +33,7 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $clinic = Service::find(request('service_id'));
+            $clinic = ClinicService::find(request('service_id'));
 
             if (is_null($clinic))
                 $validator->errors()->add("Service id", "The id in path is not valid");

@@ -23,17 +23,12 @@ class ServiceConsultationComponentResource extends JsonResource
     public function toArray($request)
     {
         $pivot = $this->pivot ?? null;
-        $data = [
+        return [
             'id' => $this->id,
             'name' => $this->name,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($pivot->created_at ?? $this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($pivot->updated_at ?? $this->updated_at)
         ];
-
-        if ($pivot)
-            $data['order'] = $pivot->order;
-
-        return $data;
     }
 }
