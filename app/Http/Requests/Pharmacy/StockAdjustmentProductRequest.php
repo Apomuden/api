@@ -34,7 +34,7 @@ class StockAdjustmentProductRequest extends ApiFormRequest
             'approved_quantity' =>'bail|'.($id?'sometimes':'required').'|numeric|min:0',
             'unit_cost' =>'bail|'.($id?'sometimes':'required').'|numeric|min:0',
             'adjustment_reason' =>'bail|'.($id?'sometimes':'required').'|string',
-            'adjustment_type' =>'bail|sometimes|in:INCREASE,DECREASE',
+            'adjustment_type' =>'bail|sometimes|in:INCREASE,DECREASE'
         ];
     }
 }
