@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Clinic\ClinicServiceMultipleRequest;
 use App\Http\Requests\Clinic\ClinicServiceRequest;
+use App\Http\Requests\Setups\ConsultationServiceComponentsRequest;
+use App\Http\Requests\Setups\ConsultationServiceQuestionsRequest;
 use App\Http\Resources\ClinicServiceResource;
+use App\Http\Resources\ServiceConsultationComponentResource;
+use App\Http\Resources\ServiceConsultationQuestionResource;
 use App\Models\ClinicService;
 use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClinicServiceController extends Controller
@@ -95,5 +98,41 @@ class ClinicServiceController extends Controller
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Clinic service deleted');
+    }
+
+    /////////////////////
+    // consultation components
+    public function componentsList($service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        return ApiResponse::withOk('Components list',
+            ServiceConsultationComponentResource::collection($service->consultation_components()->get()));
+    }
+
+    public function saveComponents(ConsultationServiceComponentsRequest $request, $service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->consultation_components()->sync($request->components);
+
+        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
+            ->whereIn('id', array_keys($request->components))->get()));
+    }
+
+    // consultation questions
+
+    public function questionsList($service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
+            ->orderBy('clinic_services_consultation_questions.order')->get()));
+    }
+
+    public function saveQuestions(ConsultationServiceQuestionsRequest $request, $service_id)
+    {
+        $service = $this->repository->findOrFail($service_id);
+        $service->consultation_questions()->sync($request->questions);
+
+        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
+            ->whereIn('id', array_keys($request->questions))->orderBy('clinic_services_consultation_questions.order')->get()));
     }
 }
