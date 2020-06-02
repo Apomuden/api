@@ -23,6 +23,8 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
      */
     public function rules()
     {
+        if (sizeof($this->request->get("questions")) == 0)
+            return [];
         return [
             'questions' => 'bail|required|array',
             'questions.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_questions,id'],

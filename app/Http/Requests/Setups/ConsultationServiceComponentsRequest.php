@@ -38,7 +38,7 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
             $clinic = ClinicService::find(request('service_id'));
 
             if (is_null($clinic))
-                $validator->errors()->add("Service id", "The id in path is not valid");
+                $validator->errors()->add("Service id", "The id in path is not a Consultation service");
         });
     }
 
