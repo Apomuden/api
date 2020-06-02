@@ -21,7 +21,6 @@ class CreateServicesConsultationComponentsTable extends Migration
                 ->on('clinic_services')->onDelete('restrict');
             $table->foreign('consultation_component_id', 'consultation_component_foreign')->references('id')
                 ->on('consultation_components')->onDelete('restrict');
-            $table->unsignedInteger('order')->default(0)->index();
             $table->timestamps();
             $table->softDeletes();
         });

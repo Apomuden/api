@@ -32,8 +32,8 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
     {
         return [
             'components' => 'bail|required|array',
-            'components.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_components,id'],
-            'components.*.order' => 'bail|required|distinct|integer|min:1'
+            'components.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_components,id'
+            ]
         ];
     }
 
@@ -43,7 +43,7 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
             $clinic = Service::find(request('service_id'));
 
             if (is_null($clinic))
-                $validator->errors()->add("Service id", "The id in path is not a Consultation service!");
+                $validator->errors()->add("Service id", "The id in path is not valid");
         });
     }
 
@@ -54,10 +54,7 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
         $all = [];
 
         foreach ($data['components'] as $component) {
-            if ($this->method() == self::METHOD_DELETE)
-                $all[$component['id']] = $component['id'];
-            else
-                $all[$component['id']] = ['order' => $component['order']];
+            $all[$component['id']] = [];
         }
         $data['components'] = $all;
 

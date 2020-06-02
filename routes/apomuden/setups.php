@@ -281,7 +281,6 @@ Route::apiResource('consultationquestionoptions', 'Setups\ConsultationQuestionOp
 Route::post('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
 Route::put('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
 Route::get('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@questionsList');
-Route::delete('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@detachQuestions');
 
 
 Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsController', [
@@ -291,7 +290,6 @@ Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsContr
 Route::post('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
 Route::put('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
 Route::get('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@componentsList');
-Route::delete('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@detachComponents');
 
 Route::apiResource('illnesstypes', 'Setups\IllnessTypeController', [
     //'only'=>['index','show','store','update'],
