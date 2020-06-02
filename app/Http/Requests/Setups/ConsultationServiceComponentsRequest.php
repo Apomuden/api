@@ -23,6 +23,8 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
      */
     public function rules()
     {
+        if (sizeof($this->request->get("components")) == 0)
+            return [];
         return [
             'components' => 'bail|required|array',
             'components.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_components,id'
