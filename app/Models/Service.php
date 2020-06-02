@@ -54,7 +54,7 @@ class Service extends Model
 
     public function consultation_components()
     {
-        return $this->belongsToMany(ConsultationComponent::class, 'services_consultation_components')->withPivot(['order', 'created_at', 'updated_at']);
+        return $this->belongsToMany(ConsultationComponent::class, 'services_consultation_components')->withPivot(['created_at', 'updated_at']);
     }
 
     public function consultation_questions()

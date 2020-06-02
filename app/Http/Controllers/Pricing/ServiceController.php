@@ -139,26 +139,18 @@ class ServiceController extends Controller
     public function componentsList($service_id)
     {
         $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
-            ->orderBy('services_consultation_components.order')->get()));
+        return ApiResponse::withOk('Components list',
+            ServiceConsultationComponentResource::collection($service->consultation_components()->get()));
     }
 
     public function saveComponents(ConsultationServiceComponentsRequest $request, $service_id)
     {
         $service = $this->repository->findOrFail($service_id);
-        $service->consultation_components()->syncWithoutDetaching($request->components);
+        $service->consultation_components()->sync($request->components);
 
         return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
-            ->whereIn('id', array_keys($request->components))->orderBy('services_consultation_components.order')->get()));
+            ->whereIn('id', array_keys($request->components))->get()));
     }
-
-    public function detachComponents(ConsultationServiceComponentsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_components()->detach($request->components);
-        return ApiResponse::withOk('Components detached');
-    }
-
 
     // consultation questions
 
@@ -172,16 +164,9 @@ class ServiceController extends Controller
     public function saveQuestions(ConsultationServiceQuestionsRequest $request, $service_id)
     {
         $service = $this->repository->findOrFail($service_id);
-        $service->consultation_questions()->syncWithoutDetaching($request->questions);
+        $service->consultation_questions()->sync($request->questions);
 
         return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
             ->whereIn('id', array_keys($request->questions))->orderBy('services_consultation_questions.order')->get()));
-    }
-
-    public function detachQuestions(ConsultationServiceQuestionsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_questions()->detach($request->questions);
-        return ApiResponse::withOk('Components detached');
     }
 }
