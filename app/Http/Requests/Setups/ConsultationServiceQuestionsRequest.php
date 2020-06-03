@@ -3,7 +3,7 @@
 namespace App\Http\Requests\Setups;
 
 use App\Http\Requests\ApiFormRequest;
-use App\Models\Service;
+use App\Models\ClinicService;
 
 /**
  * @property array questions
@@ -23,6 +23,8 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
      */
     public function rules()
     {
+        if (sizeof($this->request->get("questions")) == 0)
+            return [];
         return [
             'questions' => 'bail|required|array',
             'questions.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_questions,id'],
@@ -33,7 +35,7 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            $clinic = Service::find(request('service_id'));
+            $clinic = ClinicService::find(request('service_id'));
 
             if (is_null($clinic))
                 $validator->errors()->add("Service id", "The id in path is not a Consultation service!");

@@ -297,20 +297,18 @@ Route::apiResource('consultationquestionoptions', 'Setups\ConsultationQuestionOp
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
-Route::post('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
-Route::put('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@saveQuestions');
-Route::get('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@questionsList');
-Route::delete('clinicservices/{service_id}/consultationquestions', 'Pricing\ServiceController@detachQuestions');
+Route::post('clinicservices/{service_id}/consultationquestions', 'Setups\ClinicServiceController@saveQuestions');
+Route::put('clinicservices/{service_id}/consultationquestions', 'Setups\ClinicServiceController@saveQuestions');
+Route::get('clinicservices/{service_id}/consultationquestions', 'Setups\ClinicServiceController@questionsList');
 
 
 Route::apiResource('consultationcomponents', 'Setups\ConsultationComponentsController', [
     'module' => 'sys-mgt',
     'component' => 'setup.facility'
 ]);
-Route::post('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
-Route::put('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@saveComponents');
-Route::get('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@componentsList');
-Route::delete('clinicservices/{service_id}/consultationcomponents', 'Pricing\ServiceController@detachComponents');
+Route::post('clinicservices/{service_id}/consultationcomponents', 'Setups\ClinicServiceController@saveComponents');
+Route::put('clinicservices/{service_id}/consultationcomponents', 'Setups\ClinicServiceController@saveComponents');
+Route::get('clinicservices/{service_id}/consultationcomponents', 'Setups\ClinicServiceController@componentsList');
 
 Route::apiResource('illnesstypes', 'Setups\IllnessTypeController', [
     //'only'=>['index','show','store','update'],

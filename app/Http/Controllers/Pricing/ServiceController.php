@@ -6,19 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Lab\LabServiceParameterRequest;
 use App\Http\Requests\Lab\LabServiceSampleTypeRequest;
-use App\Http\Requests\Setups\ConsultationServiceQuestionsRequest;
 use App\Http\Requests\Pricing\ServiceRequest;
-use App\Http\Requests\Setups\ConsultationServiceComponentsRequest;
 use App\Http\Resources\Lab\LabParameterResource;
 use App\Http\Resources\Lab\LabSampleTypeResource;
-use App\Http\Resources\ServiceConsultationQuestionResource;
 use App\Http\Resources\ServiceCollection;
-use App\Http\Resources\ServiceConsultationComponentResource;
 use App\Http\Resources\ServiceResource;
-use App\Models\LabParameter;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
-use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
@@ -131,57 +125,5 @@ class ServiceController extends Controller
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Service deleted successfully');
-    }
-
-
-    ////////////////////////////
-    // consultation components
-    public function componentsList($service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
-            ->orderBy('services_consultation_components.order')->get()));
-    }
-
-    public function saveComponents(ConsultationServiceComponentsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_components()->syncWithoutDetaching($request->components);
-
-        return ApiResponse::withOk('Components list', ServiceConsultationComponentResource::collection($service->consultation_components()
-            ->whereIn('id', array_keys($request->components))->orderBy('services_consultation_components.order')->get()));
-    }
-
-    public function detachComponents(ConsultationServiceComponentsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_components()->detach($request->components);
-        return ApiResponse::withOk('Components detached');
-    }
-
-
-    // consultation questions
-
-    public function questionsList($service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
-            ->orderBy('services_consultation_questions.order')->get()));
-    }
-
-    public function saveQuestions(ConsultationServiceQuestionsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_questions()->syncWithoutDetaching($request->questions);
-
-        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
-            ->whereIn('id', array_keys($request->questions))->orderBy('services_consultation_questions.order')->get()));
-    }
-
-    public function detachQuestions(ConsultationServiceQuestionsRequest $request, $service_id)
-    {
-        $service = $this->repository->findOrFail($service_id);
-        $service->consultation_questions()->detach($request->questions);
-        return ApiResponse::withOk('Components detached');
     }
 }

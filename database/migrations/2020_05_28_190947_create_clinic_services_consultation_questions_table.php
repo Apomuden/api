@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServicesConsultationQuestionsTable extends Migration
+class CreateClinicServicesConsultationQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateServicesConsultationQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('services_consultation_questions', function (Blueprint $table) {
-            $table->unsignedBigInteger('service_id');
+        Schema::create('clinic_services_consultation_questions', function (Blueprint $table) {
+            $table->unsignedBigInteger('clinic_service_id');
             $table->unsignedBigInteger('consultation_question_id');
-            $table->foreign('service_id')
+            $table->foreign('clinic_service_id', 'clinic_service_question_foreign')
                 ->references('id')
                 ->on('clinic_services')->onDelete('restrict');
             $table->foreign('consultation_question_id', 'consultation_question_foreign')->references('id')
