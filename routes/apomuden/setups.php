@@ -62,6 +62,25 @@ Route::match(['PUT', 'PATCH'], 'hospital', [
     'module' => 'sys-mgt',
     'component' => 'setup.facility'
 ]);
+Route::get('nhisaccreditation', [
+    'uses' => 'Setups\NhisAccreditationSettingController@show',
+    'as' => 'nhisaccreditation.view',
+    'module' => 'sys-mgt',
+    'component' => 'setup.free.e-inus'
+]);
+Route::post('nhisaccreditation', [
+    'uses' => 'Setups\NhisAccreditationSettingController@store',
+    'as' => 'nhisaccreditation.store',
+    'module' => 'sys-mgt',
+    'component' => 'setup.free.e-inus'
+]);
+
+Route::match(['PUT', 'PATCH'], 'nhisaccreditation', [
+    'uses' => 'Setups\NhisAccreditationSettingController@update',
+    'as' => 'nhisaccreditation.update',
+    'module' => 'sys-mgt',
+    'component' => 'setup.free.e-inus'
+]);
 
 Route::apiResource('religions', 'Setups\ReligionController', [
     //'only'=>['index','show','store','update','delete'],
