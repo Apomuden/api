@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStockAdjustmentsTable extends Migration
+class CreateRequisitionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,23 +13,23 @@ class CreateStockAdjustmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stock_adjustments', function (Blueprint $table) {
+        Schema::create('requisitions', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->enum('adjustment_type',['OPENING','OPERATIONAL'])->default('OPERATIONAL');
-            $table->unsignedBigInteger('store_id');
-            $table->string('reference_number')->unique();
-            $table->mediumText('description')->nullable();
-            $table->enum('status',['PENDING','APPROVED','CANCELLED','SUSPENDED'])->default('PENDING');
+            $table->unsignedBigInteger('requested_store_id');
+            $table->unsignedBigInteger('issuing_store_id')->nullable();
+            $table->timestamp('requisition_date')->useCurrent();
+            $table->string('reference_number');
             $table->uuid('requested_by');
             $table->uuid('approved_by')->nullable();
-            $table->timestamp('adjustment_date')->useCurrent();
             $table->timestamp('approval_date')->nullable();
             $table->decimal('expected_total_value', 20, 2)->default(0.00);
             $table->decimal('approved_total_value', 20, 2)->default(0.00);
-            $table->softDeletes();
+            $table->enum('status',['PENDING','APPROVED','CANCELLED','SUSPENDED'])->default('PENDING');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->foreign('store_id')->references('id')->on('stores')->onDelete('restrict');
+            $table->foreign('issuing_store_id')->references('id')->on('stores')->onDelete('restrict');
+            $table->foreign('requested_store_id')->references('id')->on('stores')->onDelete('restrict');
             $table->foreign('requested_by')->references('id')->on('users')->onDelete('restrict');
             $table->foreign('approved_by')->references('id')->on('users')->onDelete('restrict');
         });
@@ -42,6 +42,6 @@ class CreateStockAdjustmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stock_adjustments');
+        Schema::dropIfExists('requisitions');
     }
 }
