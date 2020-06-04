@@ -14,6 +14,7 @@ class StockAdjustmentCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return StockAdjustmentResource::collection($this->collection);
+
     }
 }
