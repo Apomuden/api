@@ -24,6 +24,7 @@ class NhisGdrgServiceTariffResource extends JsonResource
             'major_diagnostic_category_id'=> $this->major_diagnostic_category_id,
             'major_diagnostic_category_name'=>$this->major_diagnostic_category->description,
             'mdc_code'=>$this->mdc_code,
+            'tariff'=>floatval($this->tariff),
             'hospital_service_id'=>$this->hospital_service_id,
             'hospital_service_name'=>$this->hospital_service->name,
             'patient_status'=>$this->patient_status,

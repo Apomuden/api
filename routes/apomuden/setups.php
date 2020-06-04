@@ -442,7 +442,11 @@ Route::apiResource('majordiagnosticcategories', 'Setups\MajorDiagnosticCategoryC
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'
 ]);
-Route::apiResource('nhisgdrgservicetariff', 'Setups\NhisGdrgServiceTariffController',[
+Route::apiResource('nhisgdrgservicetariffs', 'Setups\NhisGdrgServiceTariffController',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::post('nhisgdrgservicetariffs/multiple', 'Setups\NhisGdrgServiceTariffController@storeMultiple',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'
 ]);
