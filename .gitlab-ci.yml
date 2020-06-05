@@ -9,11 +9,11 @@ before_script:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 stages:
-  - deploy
+  - deploy-staging
 
-deploy:
-  stage: deploy
+deploy-staging:
+  stage: deploy-staging
   only:
-    - 15-ci-cd-should-update-the-server
+    - master
   script:
     - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev"
