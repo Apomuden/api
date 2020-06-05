@@ -15,4 +15,4 @@ deploy:
   only:
     - 15-ci-cd-should-update-the-server
   script:
-    - ssh -A willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev
+    - ssh -A willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev"
