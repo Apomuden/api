@@ -14,6 +14,6 @@ stages:
 deploy-staging:
   stage: deploy-staging
   only:
-    - master
+    - dev
   script:
     - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev"
