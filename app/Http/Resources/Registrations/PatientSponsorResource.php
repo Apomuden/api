@@ -44,6 +44,7 @@ class PatientSponsorResource extends JsonResource
                 'staff_id' => $this->staff_id,
                 'member_id'=>$this->member_id,
                 'card_serial_no'=>$this->card_serial_no,
+                'schema_code'=>$this->schema_code,
                 'issued_date'=>DateHelper::toDisplayDateTime($this->issued_date),
                 'expiry_date'=>DateHelper::toDisplayDateTime($this->expiry_date),
                 'priority'=>$this->priority,

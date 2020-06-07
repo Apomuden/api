@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\PatientSponsorMultipleRequest;
 use App\Http\Requests\Registrations\PatientSponsorRequest;
 use App\Http\Resources\Registrations\PatientSponsorResource;
+use App\Models\BillingSponsor;
 use App\Models\PatientSponsor;
 use App\Models\Relationship;
 use App\Models\SponsorshipPolicy;
@@ -65,6 +66,16 @@ class PatientSponsorController extends Controller
                 return ApiResponse::withValidationError([['sponsors.' . $iterator . '.member_id' => ['The selected sponsors.' . $iterator . '.member_id already exists']]]);
             elseif ($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['card_serial_no' => $sponsor['card_serial_no']])->first())
                 return ApiResponse::withValidationError([['sponsors.' . $iterator . '.card_serial_no' => ['The selected sponsors.' . $iterator . '.card_serial_no no already exists']]]);
+
+
+            $sponsorship_type=null;
+            if(isset($sponsor['billing_sponsor_id']))
+            $sponsorship_type= strtolower(BillingSponsor::find($sponsor['billing_sponsor_id'])->sponsorship_type->name)?:null;
+            elseif (isset($sponsor['sponsorship_policy_id']))
+            $sponsorship_type=strtolower(SponsorshipPolicy::find($sponsor['sponsorship_policy_id'])->billing_sponsor->sponsorship_type->name)?:null;
+
+            if($sponsorship_type && $sponsorship_type== 'government insurance' && !(isset($sponsor['schema_code']) && $sponsor['schema_code']))
+            return ApiResponse::withValidationError([['sponsors.' . $iterator . '.schema_code' => ['The sponsors.' . $iterator . '.schema_code is required']]]);
 
             $policiesCount = $repositoryPolicy->findWhere(['billing_sponsor_id' => $sponsor['billing_sponsor_id']])->count();
             if($policiesCount && !($sponsor['sponsorship_policy_id']??null))

@@ -22,6 +22,7 @@ class PatientSponsorMultipleRequest extends ApiFormRequest
             'sponsors.*.priority' => 'bail|sometimes|numeric|min:1',
             'sponsors.*.member_id' => 'bail|required',
             'sponsors.*.card_serial_no' => 'bail|sometimes|nullable',
+            'sponsors.*.schema_code' => 'bail|sometimes|nullable',
             'sponsors.*.company_id' => 'bail|sometimes|nullable|exists:companies,id',
             'sponsors.*.staff_name' => 'bail|required_with:sponsors.*.company_id|string',
             'sponsors.*.staff_id' => 'bail|required_with:sponsors.*.company_id|min:2',
