@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Setups;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Setups\DiseaseRequest;
+use App\Http\Resources\DiseasePaginatedCollection;
 use App\Http\Resources\DiseaseResource;
 use App\Models\Disease;
 use App\Repositories\RepositoryEloquent;
@@ -25,6 +26,12 @@ class DiseaseController extends Controller
     {
         $records = $this->repository->all('name');
         return ApiResponse::withOk('Disease list', DiseaseResource::collection($records));
+    }
+    public function page()
+    {
+        $records = $this->repository->paginate(null,'name');
+
+        return ApiResponse::withPaginate(new DiseasePaginatedCollection($records,'Disease paginated list'));
     }
 
     /**

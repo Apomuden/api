@@ -415,6 +415,11 @@ Route::apiResource('mohghsgroupings', 'Setups\MohGhsGroupingController', [
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.clinics'
 ]);
+Route::get('diseases/page', 'Setups\DiseaseController@page', [
+    //'only'=>['index','show','store','update'],
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.clinics'
+]);
 Route::apiResource('diseases', 'Setups\DiseaseController', [
     //'only'=>['index','show','store','update'],
     'module' => ['records-mgt', 'sys-mgt'],

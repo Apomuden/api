@@ -77,7 +77,8 @@ class RepositoryEloquent implements IRepository
 
     public function paginate($paginate = 15, $sortBy = null, $order = 'ASC')
     {
-
+         if(!$paginate)
+         $paginate=15;
         //Get the sort from the route params
         $urlSortBy = \request()->input('sortBy');
         $urlOrder = \request()->input('order');
