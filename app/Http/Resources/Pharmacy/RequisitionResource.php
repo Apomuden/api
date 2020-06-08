@@ -28,8 +28,7 @@ class RequisitionResource extends JsonResource
                 'expected_total_value' => $this->expected_total_value,
                 'approved_total_value' => $this->approved_total_value,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
-                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-
+                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

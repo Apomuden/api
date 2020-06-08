@@ -59,3 +59,11 @@ Route::apiResource('stockadjustments','Pharmacy\StockAdjustmentController',[
     'module'=>null,
     'component'=>'stockadjustments'
 ]);
+
+Route::post('requisitions/approvals','Pharmacy\RequisitionController@approve');
+Route::get('requisitions/approvals','Pharmacy\RequisitionController@getApprovals');
+Route::apiResource('requisitions','Pharmacy\RequisitionController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>null,
+    'component'=>'requisitions'
+]);
