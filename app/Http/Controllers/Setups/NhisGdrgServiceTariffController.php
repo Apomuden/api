@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Setups;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Requests\Setups\NhisGdrgServiceTariffMultipleRequest;
 use App\Http\Requests\Setups\NhisGdrgServiceTariffRequest;
 use App\Http\Resources\NhisGdrgServiceTariffResource;
 use App\Models\NhisGdrgServiceTariff;
 use App\Repositories\RepositoryEloquent;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class NhisGdrgServiceTariffController extends Controller
 {
@@ -37,6 +39,23 @@ class NhisGdrgServiceTariffController extends Controller
 
            $nhisGdrgServiceTariff=$this->repository->store($payload);
         return ApiResponse::withOk('Nhis Gdrg Service Tariff created',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff->refresh()));
+      /*  }
+       catch(Exception $e){
+         return ApiResponse::withException($e);
+       } */
+   }
+   function storeMultiple(NhisGdrgServiceTariffMultipleRequest $request){
+       $service_ids=[];
+       DB::beginTransaction();
+       //try{
+           foreach($request->services as $service)
+           {
+               $payload=(array)$service;
+               $service_tariff=$this->repository->store($payload);
+               $service_ids[]=$service_tariff->id;
+           }
+         DB::commit();
+        return ApiResponse::withOk('Nhis Gdrg Service Tariffs created',NhisGdrgServiceTariffResource::collection($this->repository->getModel()->whereIn('id',$service_ids)->get()));
       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);

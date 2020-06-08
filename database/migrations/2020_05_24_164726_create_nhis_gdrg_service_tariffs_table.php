@@ -25,6 +25,7 @@ class CreateNhisGdrgServiceTariffsTable extends Migration
             $table->foreign('major_diagnostic_category_id')->references('id')->on('major_diagnostic_categories');
 
             $table->string('mdc_code');
+            $table->unsignedDecimal('tariff', 20, 2)->default(0.00);
             $table->unsignedInteger('hospital_service_id');
             $table->foreign('hospital_service_id')->references('id')->on('hospital_services')->onDelete('restrict');
             $table->set('patient_status', ['OUT-PATIENT', 'IN-PATIENT']);
