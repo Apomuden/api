@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Http\Traits\ActiveTrait;
-use App\Http\Traits\FindByTrait;
+use App\Http\Traits\Eloquent\ActiveTrait;
+use App\Http\Traits\Eloquent\FindByTrait;
+use App\Http\Traits\Eloquent\SortableTrait;
 use App\Http\Traits\ReferenceNumberGeneratorTrait;
-use App\Http\Traits\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;

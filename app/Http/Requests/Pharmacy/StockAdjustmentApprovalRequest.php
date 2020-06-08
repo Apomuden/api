@@ -23,11 +23,11 @@ class StockAdjustmentApprovalRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('product')??null;
+        $id = $this->route('approval')??null;
         return [
+            'stock_adjustment_id'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustments,id',
             'adjustment_type'=>'bail|sometimes|in:OPERATIONAL,OPENING',
             'store_id'=>'bail|'.($id?'sometimes':'required').'|exists:stores,id',
-            'stock_adjustment_id'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustments,id',
             'reference_number'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustments,reference_number',
             'status'=>'bail|sometimes|in:PENDING,APPROVED,CANCELLED,SUSPENDED',
             'approval_date'=>'bail|sometimes|date',
