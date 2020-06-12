@@ -43,6 +43,7 @@ abstract class ApiFormRequest extends LaravelFormRequest
     }
     protected function softUniqueWith($table,$fields,$id){
         $fields=trim($fields,",").',deleted_at';
+        Log::alert('Unique_with',["unique_with:{$table},{$fields}" . ($id ? ',' . $id : '')]);
        return "unique_with:{$table},{$fields}".($id?','.$id:'');
     }
     protected function websiteRegEx(){

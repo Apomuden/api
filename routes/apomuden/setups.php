@@ -455,6 +455,10 @@ Route::post('nhisgdrgservicetariffs/multiple', 'Setups\NhisGdrgServiceTariffCont
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'
 ]);
+Route::post('nhisgdrgservicetariffs/map', 'Setups\NhisGdrgServiceTariffController@map',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
 Route::apiResource('nhisgdrgservicecoverage', 'Setups\NhisGdrgServiceCoverageController',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'

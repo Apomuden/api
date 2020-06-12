@@ -35,6 +35,8 @@ class ServiceResource extends JsonResource
                 'patient_status'=>$this->patient_status,
                 'prepaid_amount'=>round($this->prepaid_amount,2),
                 'postpaid_amount'=>round($this->postpaid_amount,2),
+                'nhis_child_tariff_id'=>$this->nhis_child_tariff_id,
+                'nhis_adult_tariff_id'=>$this->nhis_adult_tariff_id,
                 'status'=>$this->status,
                 'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)

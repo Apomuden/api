@@ -31,6 +31,7 @@ class NhisGdrgServiceTariffResource extends JsonResource
             'gender'=>$this->gender,
             'age_group_id'=>$this->age_group_id,
             'age_group_name'=>$this->age_group->name,
+            'tariff_type'=>$this->tariff_type,
             'status'=>$this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
