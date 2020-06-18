@@ -31,6 +31,16 @@ class NhisGdrgServiceTariff extends Model
         return $this->belongsTo(NhisProviderLevel::class);
     }
 
+    // public function comments()
+    // {
+    //     return $this->hasMany('App\Comment', 'foreign_key', 'local_key');
+    // }
+
+    public function nhis_provider_level_tariffs()
+    {
+        return $this->hasMany(NhisProviderLevelTariff::class);
+    }
+
     public static function boot()
     {
         parent::boot();

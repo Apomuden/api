@@ -10,6 +10,7 @@ use App\Http\Requests\Setups\NhisTariffMappingRequest;
 use App\Http\Resources\NhisGdrgServiceTariffResource;
 use App\Http\Resources\ServiceCollection;
 use App\Models\NhisGdrgServiceTariff;
+use App\Models\NhisProviderLevelTariff;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 use Exception;
@@ -35,38 +36,45 @@ class NhisGdrgServiceTariffController extends Controller
         : ApiResponse::withNotFound('Nhis Gdrg Service Tariff Found');
     }
 
-   function store(NhisGdrgServiceTariffRequest $request){
-       //try{
-           $payload= $request->all();
+//    function store(NhisGdrgServiceTariffRequest $request){
+//        //try{
+//            $payload= $request->except('nhis_provider_levels');
 
-           $nhisGdrgServiceTariff=$this->repository->store($payload);
-        return ApiResponse::withOk('Nhis Gdrg Service Tariff created',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff->refresh()));
-      /*  }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       } */
-   }
+//            $nhisGdrgServiceTariff=$this->repository->store($payload);
+//         return ApiResponse::withOk('Nhis Gdrg Service Tariff created',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff->refresh()));
+//       /*  }
+//        catch(Exception $e){
+//          return ApiResponse::withException($e);
+//        } */
+//    }
 
    function storeMultiple(NhisGdrgServiceTariffMultipleRequest $request){
        $service_ids=[];
        DB::beginTransaction();
 
+               $payload=[
+                    'gdrg_code' => $request->gdrg_code,
+                    'gdrg_service_name' => $request->gdrg_service_name,
+                    'major_diagnostic_category_id' => $request->major_diagnostic_category_id,
+                    'age_group_id' => $request->age_group_id,
+                    'status' => $request->status ?: 'ACTIVE'
+               ];
+               $service_tariff = $this->repository->store($payload);
                foreach($request->nhis_provider_levels as $level){
                    $payload=[
-                       'gdrg_code'=>$request->gdrg_code,
-                       'gdrg_service_name'=>$request->gdrg_service_name,
-                       'major_diagnostic_category_id'=>$request->major_diagnostic_category_id,
-                       'age_group_id'=>$request->age_group_id,
-                       'status'=>$request->status?:'ACTIVE',
+                       'nhis_gdrg_service_tariff_id'=>$service_tariff->id,
                        'nhis_provider_level_id'=>$level['nhis_provider_level_id'],
                        'tariff'=>$level['tariff']
                    ];
-                $service_tariff = $this->repository->store($payload);
-                $service_ids[] = $service_tariff->id;
+
+                  NhisProviderLevelTariff::updateOrCreate([
+                        'nhis_gdrg_service_tariff_id' => $service_tariff->id,
+                        'nhis_provider_level_id' => $level['nhis_provider_level_id']
+                  ],$payload);
                }
 
          DB::commit();
-        return ApiResponse::withOk('Nhis Gdrg Service Tariffs created',NhisGdrgServiceTariffResource::collection($this->repository->getModel()->whereIn('id',$service_ids)->get()));
+        return ApiResponse::withOk('Nhis Gdrg Service Tariffs created',new NhisGdrgServiceTariffResource($this->repository->find($service_tariff->id)));
       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);
