@@ -36,21 +36,10 @@ class NhisGdrgServiceTariffController extends Controller
         : ApiResponse::withNotFound('Nhis Gdrg Service Tariff Found');
     }
 
-//    function store(NhisGdrgServiceTariffRequest $request){
-//        //try{
-//            $payload= $request->except('nhis_provider_levels');
 
-//            $nhisGdrgServiceTariff=$this->repository->store($payload);
-//         return ApiResponse::withOk('Nhis Gdrg Service Tariff created',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff->refresh()));
-//       /*  }
-//        catch(Exception $e){
-//          return ApiResponse::withException($e);
-//        } */
-//    }
-
-   function storeMultiple(NhisGdrgServiceTariffMultipleRequest $request){
+   function store(NhisGdrgServiceTariffMultipleRequest $request){
        $service_ids=[];
-       DB::beginTransaction();
+       //DB::beginTransaction();
 
                $payload=[
                     'gdrg_code' => $request->gdrg_code,
@@ -60,20 +49,8 @@ class NhisGdrgServiceTariffController extends Controller
                     'status' => $request->status ?: 'ACTIVE'
                ];
                $service_tariff = $this->repository->store($payload);
-               foreach($request->nhis_provider_levels as $level){
-                   $payload=[
-                       'nhis_gdrg_service_tariff_id'=>$service_tariff->id,
-                       'nhis_provider_level_id'=>$level['nhis_provider_level_id'],
-                       'tariff'=>$level['tariff']
-                   ];
 
-                  NhisProviderLevelTariff::updateOrCreate([
-                        'nhis_gdrg_service_tariff_id' => $service_tariff->id,
-                        'nhis_provider_level_id' => $level['nhis_provider_level_id']
-                  ],$payload);
-               }
-
-         DB::commit();
+         //DB::commit();
         return ApiResponse::withOk('Nhis Gdrg Service Tariffs created',new NhisGdrgServiceTariffResource($this->repository->find($service_tariff->id)));
       /*  }
        catch(Exception $e){
@@ -97,7 +74,13 @@ class NhisGdrgServiceTariffController extends Controller
 
    function update(NhisGdrgServiceTariffRequest $request,$id){
        try{
-        $nhisGdrgServiceTariff=$this->repository->update($request->all(),$id);
+        $nhisGdrgServiceTariff=$this->repository->update($request->only([
+                'gdrg_code',
+                'gdrg_service_name',
+                'major_diagnostic_category_id',
+                'age_group_id',
+                'status'
+        ]),$id);
 
         return ApiResponse::withOk('Nhis Gdrg Service Tariff updated',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff));
 
