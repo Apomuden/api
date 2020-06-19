@@ -102,7 +102,8 @@ class ComponentsTableSeeder extends Seeder
             array('id' => '90', 'parent_tag' => 'lab-mgt', 'name' => 'Lab Samples', 'tag' => 'labsamples', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
             array('id' => '91', 'parent_tag' => 'lab-mgt', 'name' => 'Lab Results', 'tag' => 'labresults', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
             array('id' => '92', 'parent_tag' => null, 'name' => 'Inpatients Clinical Notes', 'tag' => 'ipd-clinical-notes', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
-            array('id' => '93', 'parent_tag' => 'records-mgt', 'name' => 'E-INUS & CORP', 'tag' => 'setup.free.e-inus', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL)
+            array('id' => '93', 'parent_tag' => 'records-mgt', 'name' => 'E-INUS & CORP', 'tag' => 'setup.free.e-inus', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
+            array('id' => '94', 'parent_tag' => 'obs-mgt', 'name' => 'Pregnancy Records', 'tag' => 'preg-rec', 'status' => 'ACTIVE', 'created_at' => '2020-01-07 00:00:00', 'updated_at' => '2020-01-07 00:00:00', 'deleted_at' => NULL),
         );
 
         Component::insert($components);

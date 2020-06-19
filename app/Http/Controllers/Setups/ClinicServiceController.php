@@ -123,7 +123,7 @@ class ClinicServiceController extends Controller
     public function questionsList($service_id)
     {
         $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
+        return ApiResponse::withOk('Questions list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
             ->orderBy('clinic_services_consultation_questions.order')->get()));
     }
 
@@ -132,7 +132,7 @@ class ClinicServiceController extends Controller
         $service = $this->repository->findOrFail($service_id);
         $service->consultation_questions()->sync($request->questions);
 
-        return ApiResponse::withOk('Components list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
+        return ApiResponse::withOk('Questions list', ServiceConsultationQuestionResource::collection($service->consultation_questions()
             ->whereIn('id', array_keys($request->questions))->orderBy('clinic_services_consultation_questions.order')->get()));
     }
 }

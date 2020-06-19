@@ -5,19 +5,19 @@ namespace App\Models;
 use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\FileResolver;
 use App\Http\Helpers\IDGenerator;
-use App\Http\Helpers\Security;
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
 use App\Http\Traits\Eloquent\SortableTrait;
-use App\Http\Utils\DateFormater;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use phpDocumentor\Reflection\Types\Self_;
-use PHPUnit\Framework\Constraint\Count;
 
+/**
+ * @method static findOrFail($patient_id)
+ * @method static find($patient_id)
+ */
 class Patient extends Model
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
