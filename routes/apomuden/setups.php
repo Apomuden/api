@@ -450,12 +450,9 @@ Route::apiResource('majordiagnosticcategories', 'Setups\MajorDiagnosticCategoryC
 Route::apiResource('nhisgdrgservicetariffs', 'Setups\NhisGdrgServiceTariffController',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus',
-    'except'=>['store']
+    //'except'=>['store']
 ]);
-Route::post('nhisgdrgservicetariffs/multiple', 'Setups\NhisGdrgServiceTariffController@storeMultiple',[
-    'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'setup.free.e-inus'
-]);
+
 Route::post('nhisgdrgservicetariffs/map', 'Setups\NhisGdrgServiceTariffController@map',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'

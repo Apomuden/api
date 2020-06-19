@@ -56,6 +56,21 @@ class NhisGdrgServiceTariff extends Model
             $model->tariff_type= $model->age_group->age_name;
         });
 
+        static::created(function($model){
+            foreach (request('nhis_provider_levels') as $level) {
+                $payload = [
+                    'nhis_gdrg_service_tariff_id' => $model->id,
+                    'nhis_provider_level_id' => $level['nhis_provider_level_id'],
+                    'tariff' => $level['tariff']
+                ];
+
+                NhisProviderLevelTariff::updateOrCreate([
+                    'nhis_gdrg_service_tariff_id' => $model->id,
+                    'nhis_provider_level_id' => $level['nhis_provider_level_id']
+                ], $payload);
+            }
+        });
+
         static::updating(function($model){
              if($model->isDirty('major_diagnostic_category_id')){
                 $model->mdc_code = $model->major_diagnostic_category->mdc_code;
@@ -72,6 +87,19 @@ class NhisGdrgServiceTariff extends Model
                 else
                 $model->tariff_type = $model->age_group->age_name;
                }
+
+            foreach (request('nhis_provider_levels') as $level) {
+                $payload = [
+                    'nhis_gdrg_service_tariff_id' => $model->id,
+                    'nhis_provider_level_id' => $level['nhis_provider_level_id'],
+                    'tariff' => $level['tariff']
+                ];
+
+                NhisProviderLevelTariff::updateOrCreate([
+                    'nhis_gdrg_service_tariff_id' => $model->id,
+                    'nhis_provider_level_id' => $level['nhis_provider_level_id']
+                ], $payload);
+            }
         });
     }
 }
