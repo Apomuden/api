@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Resources\PermissionCollection;
-use App\Models\Component;
 use App\Models\Module;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +14,7 @@ class ModuleTableSeeder extends Seeder
      */
     public function run()
     {
-       
+
     Schema::disableForeignKeyConstraints();
     DB::statement('truncate table modules');
     $modules = array(
@@ -37,7 +35,8 @@ class ModuleTableSeeder extends Seeder
         array('id' => '15','name' => 'EInsurance and Corporate Policy Management','tag' => 'insure-mgt','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00'),
         array('id' => '16','name' => 'Reports Management','tag' => 'reports-mgt','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00'),
         array('id' => '17','name' => 'System Configurations','tag' => 'sys-mgt','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00'),
-        array('id' => '18','name' => 'Dashboard','tag' => 'dashboard','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00')
+        array('id' => '18','name' => 'Dashboard','tag' => 'dashboard','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00'),
+        array('id' => '19','name' => 'Obstetrics Management','tag' => 'obs-mgt','status' => 'ACTIVE','created_at' => '2020-01-07 00:00:00','updated_at' => '2020-01-07 00:00:00')
       );
 
       Module::insert($modules);

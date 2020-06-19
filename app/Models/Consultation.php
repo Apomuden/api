@@ -8,6 +8,7 @@ use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
 use App\Http\Traits\Eloquent\SortableTrait;
+use App\Models\Obstetrics\ObstetricQuestionResponse;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -188,6 +189,11 @@ class Consultation extends Model
     public function responses()
     {
         return $this->hasMany(ConsultationQuestionResponse::class);
+    }
+
+    public function obstetric_question_responses()
+    {
+        return $this->hasMany(ObstetricQuestionResponse::class);
     }
 
 }

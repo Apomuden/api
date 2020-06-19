@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -38,6 +37,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         //Setups
         Route::prefix('setups')->group(base_path('routes/apomuden/setups.php'));
+        // Obstetrics
+        Route::prefix('obstetrics')->group(base_path('routes/apomuden/obstetrics.php'));
     });
     Route::group(['prefix' => 'utils'], function () {
         //FileResolver
