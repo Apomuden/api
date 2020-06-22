@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 abstract class ApiFormRequest extends LaravelFormRequest
 {
@@ -37,6 +38,10 @@ abstract class ApiFormRequest extends LaravelFormRequest
         throw new HttpResponseException(
             ApiResponse::withValidationError($errors)
         );
+    }
+    protected function softExists($table,$field){
+       
+        return "exists:$table,$field,deleted_at,NULL";
     }
     protected function softUnique($table,$field,$id){
         return "unique:{$table},{$field},{$id},id,deleted_at,NULL";
