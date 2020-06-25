@@ -17,6 +17,7 @@ class CreateGestationalWeeksTable extends Migration
             $table->bigIncrements('id');
 
             $table->unsignedInteger('week_number');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
 
             $table->timestamps();
             $table->softDeletes();

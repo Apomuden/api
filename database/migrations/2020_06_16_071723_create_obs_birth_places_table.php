@@ -15,6 +15,7 @@ class CreateObsBirthPlacesTable extends Migration
     {
         Schema::create('obs_birth_places', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
 
             $table->string('name');
 
