@@ -23,7 +23,7 @@ class PreviousPregnancyRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('previous_pregnancies') ?? null;
+        $id = $this->route('previous_pregnancy') ?? null;
 
         return [
             'patient_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:patients,id',

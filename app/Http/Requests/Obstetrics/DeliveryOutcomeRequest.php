@@ -23,7 +23,7 @@ class DeliveryOutcomeRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('delivery_outcomes') ?? null;
+        $id = $this->route('delivery_outcome') ?? null;
         return [
             'name' => 'bail|'. ($id ? 'sometimes' : 'required'),
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'

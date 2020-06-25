@@ -23,7 +23,7 @@ class DeliveryModeRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('delivery_modes') ?? null;
+        $id = $this->route('delivery_mode') ?? null;
         return [
             'name' => 'bail|'. ($id ? 'sometimes' : 'required'),
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'

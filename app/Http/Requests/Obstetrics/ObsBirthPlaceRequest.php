@@ -23,7 +23,7 @@ class ObsBirthPlaceRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('birth_places') ?? null;
+        $id = $this->route('birth_place') ?? null;
         return [
             'name' => 'bail|'. ($id ? 'sometimes' : 'required'),
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
