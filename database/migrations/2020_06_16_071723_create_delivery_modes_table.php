@@ -17,6 +17,7 @@ class CreateDeliveryModesTable extends Migration
             $table->bigIncrements('id');
 
             $table->string('name');
+            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
 
             $table->timestamps();
             $table->softDeletes();
