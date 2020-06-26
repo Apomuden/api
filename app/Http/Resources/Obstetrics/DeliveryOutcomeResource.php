@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed name
  * @property mixed created_at
  * @property mixed updated_at
+ * @property mixed status
  */
 class DeliveryOutcomeResource extends JsonResource
 {
@@ -23,9 +24,10 @@ class DeliveryOutcomeResource extends JsonResource
     {
         if (isset($this->id)) {
             return [
-                'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'id' => $this->id,
                 'name' => $this->name,
+                'status' => $this->status,
+                'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
             ];
         }

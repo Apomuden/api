@@ -16,12 +16,11 @@ class CreateGestationalWeeksTable extends Migration
         Schema::create('gestational_weeks', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->unsignedInteger('week_number');
+            $table->unsignedInteger('week_number')->unique();
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
 
             $table->timestamps();
             $table->softDeletes();
-            $table->unique(['week_number', 'deleted_at']);
         });
     }
 
