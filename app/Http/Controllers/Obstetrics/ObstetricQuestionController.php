@@ -57,7 +57,7 @@ class ObstetricQuestionController extends Controller
             $question = (array)$question;
             $record = ObstetricQuestion::updateOrCreate([
                 'step' => $request->step,
-                'order' => $question['order'],
+                'question' => $question['question'],
             ], $request->except(['step', 'questions']) + $question);
 
             $que_ids[] = $record->id;

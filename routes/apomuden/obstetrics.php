@@ -37,7 +37,7 @@ Route::apiResource('gestational_weeks','Obstetrics\GestationalWeekController',[
 ]);
 
 Route::post('questions/multiple', 'Obstetrics\ObstetricQuestionController@storeMultiple');
-Route::apiResource('obstetric_questions','Obstetrics\ObstetricQuestionController',[
+Route::apiResource('questions','Obstetrics\ObstetricQuestionController',[
     'module'=>'obs-mgt',
     'component'=>'preg-rec'
 ]);
