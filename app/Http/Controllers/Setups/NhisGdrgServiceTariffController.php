@@ -85,7 +85,7 @@ class NhisGdrgServiceTariffController extends Controller
                 'major_diagnostic_category_id',
                 'age_group_id',
                 'status'
-        ]),$id);
+        ])+['updated_at'=>now()],$id);
 
         return ApiResponse::withOk('Nhis Gdrg Service Tariff updated',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff));
 
