@@ -61,6 +61,7 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
         static::creating(function ($model) {
             $model->id = Str::uuid();
+            $model->clinician_code= sprintf("%05d", ($model->max('clinician_code')??0) + 1);
             $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
             $model->dob = DateHelper::toDBDate($model->dob);
@@ -77,6 +78,9 @@ class User extends Authenticatable implements JWTSubject
         });
 
         static::updating(function ($model) {
+            if(!$model->getOriginal('clinician_code'))
+            $model->clinician_code =sprintf("%05d", ($model->max('clinician_code') ?? 0) + 1);
+
             $model->dob = DateHelper::toDBDate($model->dob);
 
             $original_password = $model->getOriginal('password');
