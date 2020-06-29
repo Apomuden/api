@@ -6,6 +6,7 @@ use App\Models\Hospital;
 use App\Models\NhisAccreditationSetting;
 use App\Repositories\HospitalEloquent;
 use App\Repositories\NhisAccreditationSettingEloquent;
+use Illuminate\Validation\Rule;
 
 class NhisAccreditationSettingRequest extends ApiFormRequest
 {
@@ -16,7 +17,7 @@ class NhisAccreditationSettingRequest extends ApiFormRequest
        $nhisAccreditationRepo=new NhisAccreditationSettingEloquent(new NhisAccreditationSetting);
        $id= $nhisAccreditationRepo->first()->id??null;
         return [
-            'nhis_provider_level_id'=> 'bail|sometimes|nullable|exists:nhis_provider_levels,id',
+            'nhis_provider_level_id'=> ['bail','sometimes','nullable',Rule::exists('nhis_provider_levels','id')->whereNull('deleted_at')],
             'nhis_authorization_code'=>'bail|nullable|sometimes',
             'nhis_provider_no'=>'bail|nullable|sometimes',
             'nhis_claim_submission_mode'=> 'bail|nullable|sometimes|in:PRINTING,ELECTRONIC',

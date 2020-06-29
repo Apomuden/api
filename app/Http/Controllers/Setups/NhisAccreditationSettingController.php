@@ -37,14 +37,17 @@ class NhisAccreditationSettingController extends Controller
 
         $response = $this->repository->store($requestData);
 
-        return  ApiResponse::withOk('Nhis Accreditation Setting created', new NhisAccreditationSettingResource($response));
+        return  ApiResponse::withOk('Nhis Accreditation Setting created', new NhisAccreditationSettingResource($response->refresh()));
     }
 
 
     public function show()
     {
         $record = $this->repository->first();
+        if($record)
         return  ApiResponse::withOk('Nhis Accreditation Setting Found', new NhisAccreditationSettingResource($record));
+        else
+        return ApiResponse::withNotFound('No Record Found');
     }
 
     public function update(NhisAccreditationSettingRequest $request)
