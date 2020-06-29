@@ -45,7 +45,7 @@ Route::apiResource('questions','Obstetrics\ObstetricQuestionController',[
 Route::get('consultation/question_responses', 'Obstetrics\ObstetricQuestionResponseController@showConsultGroupedResponses');
 Route::get('consultation/question_responses/{id}', 'Obstetrics\ObstetricQuestionResponseController@showConsultResponses');
 Route::post('question_responses/multiple', 'Obstetrics\ObstetricQuestionResponseController@storeMultiple');
-Route::apiResource('obstetric_question_responses','Obstetrics\ObstetricQuestionResponseController',[
+Route::apiResource('question_responses','Obstetrics\ObstetricQuestionResponseController',[
     'module'=>'obs-mgt',
     'component'=>'preg-rec'
 ]);

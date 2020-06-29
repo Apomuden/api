@@ -26,7 +26,7 @@ class ObstetricQuestionController extends Controller
     public function index()
     {
 
-        return ApiResponse::withOk('ObstetricQuestions list', new ObstetricQuestionCollection($this->repository->all('name')));
+        return ApiResponse::withOk('ObstetricQuestions list', new ObstetricQuestionCollection($this->repository->all('order')));
     }
 
     public function show($ObstetricQuestion)

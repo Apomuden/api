@@ -55,7 +55,7 @@ class ObstetricQuestionResponseController extends Controller
             return $existingResponses->contains('consultation_id', $r->id);
         });
         return ApiResponse::withOk('Grouped response list',
-            ConsultationGroupedQuestionResponseResource::collection($consultationsWithResponse));
+            ObsConsultationGroupedQuestionResponseResource::collection($consultationsWithResponse));
     }
 
     // show responses belonging to this consultation with $id
@@ -84,11 +84,7 @@ class ObstetricQuestionResponseController extends Controller
         $createdResponses = [];
         foreach ($responses as $response) {
             $response = (array)$response;
-            $record = ObstetricQuestionResponse::updateOrCreate([
-                'consultation_id' => $request->consultation_id,
-                'obstetric_question_id' => $response['obstetric_question_id'],
-            ], $request->except(['consultation_id', 'responses']) + $response);
-
+            $record = $this->repository->store($request->except(['responses']) + $response);
             $createdResponses[] = $record->id;
         }
         DB::commit();

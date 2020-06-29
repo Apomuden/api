@@ -27,7 +27,6 @@ class CreateObstetricQuestionsTable extends Migration
             $table->softDeletes();
 
             $table->unique(['question', 'deleted_at']);
-            $table->unique(['order', 'step'], 'unique_order_step');
         });
     }
 

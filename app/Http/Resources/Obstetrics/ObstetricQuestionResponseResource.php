@@ -16,6 +16,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed patient_id
  * @property mixed response
  * @property mixed obstetric_question
+ * @property mixed step
  */
 class ObstetricQuestionResponseResource extends JsonResource
 {
@@ -35,6 +36,7 @@ class ObstetricQuestionResponseResource extends JsonResource
                 'consultant_id' => $this->consultant_id,
                 'obstetric_question' => $this->obstetric_question,
                 'response' => $this->response,
+                'step' => $this->step,
                 'response_date' => DateHelper::toDisplayDateTime($this->response_date),
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
