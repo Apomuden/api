@@ -23,12 +23,12 @@ class ObstetricQuestionOptionRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('obstetric_question_option') ?? null;
+        $id = $this->route('question_option') ?? null;
 
         return [
             'obstetric_question_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:obstetric_questions,id',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE',
-            'value' => 'bail|required',
+            'value' => 'bail|' . ($id ? 'sometimes' : 'required'),
         ];
     }
 }
