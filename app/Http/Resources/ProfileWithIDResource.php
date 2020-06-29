@@ -40,6 +40,7 @@ class ProfileWithIDResource extends JsonResource
             'staff_id' => $this->staff_id,
             'ssnit_no' => $this->ssnit_no,
             'tin' => $this->tin,
+            'clinician_code' => $this->clinician_code??null,
             'username' => $this->username,
             'surname' => $this->surname,
             'middlename' => $this->middlename,

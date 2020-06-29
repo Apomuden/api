@@ -39,6 +39,7 @@ class ProfileBasicResource extends JsonResource
             'staff_id'=>$this->staff_id,
             'ssnit_no'=>$this->ssnit_no,
             'tin'=>$this->tin,
+            'clinician_code'=>$this->clinician_code??null,
             'surname'=>$this->surname,
             'middlename'=>$this->middlename,
             'firstname'=>$this->firstname,
