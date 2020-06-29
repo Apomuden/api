@@ -447,15 +447,18 @@ Route::apiResource('majordiagnosticcategories', 'Setups\MajorDiagnosticCategoryC
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus'
 ]);
+Route::get('nhisgdrgservicetariffs/page', 'Setups\NhisGdrgServiceTariffController@page',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
+Route::post('nhisgdrgservicetariffs/map', 'Setups\NhisGdrgServiceTariffController@map',[
+    'module' => ['records-mgt', 'sys-mgt'],
+    'component' => 'setup.free.e-inus'
+]);
 Route::apiResource('nhisgdrgservicetariffs', 'Setups\NhisGdrgServiceTariffController',[
     'module' => ['records-mgt', 'sys-mgt'],
     'component' => 'setup.free.e-inus',
     //'except'=>['store']
-]);
-
-Route::post('nhisgdrgservicetariffs/map', 'Setups\NhisGdrgServiceTariffController@map',[
-    'module' => ['records-mgt', 'sys-mgt'],
-    'component' => 'setup.free.e-inus'
 ]);
 Route::apiResource('nhisgdrgservicecoverage', 'Setups\NhisGdrgServiceCoverageController',[
     'module' => ['records-mgt', 'sys-mgt'],

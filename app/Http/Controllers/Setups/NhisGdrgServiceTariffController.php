@@ -8,6 +8,7 @@ use App\Http\Requests\Setups\NhisGdrgServiceTariffMultipleRequest;
 use App\Http\Requests\Setups\NhisGdrgServiceTariffRequest;
 use App\Http\Requests\Setups\NhisTariffMappingRequest;
 use App\Http\Resources\NhisGdrgServiceTariffResource;
+use App\Http\Resources\NhisServiceTariffPaginatedCollection;
 use App\Http\Resources\ServiceCollection;
 use App\Models\NhisGdrgServiceTariff;
 use App\Models\NhisProviderLevelTariff;
@@ -36,6 +37,10 @@ class NhisGdrgServiceTariffController extends Controller
         : ApiResponse::withNotFound('Nhis Gdrg Service Tariff Found');
     }
 
+    function page(){
+        $records=$this->repository->paginate(null, 'gdrg_service_name');
+        return ApiResponse::withPaginate(new NhisServiceTariffPaginatedCollection($records, 'Nhis Gdrg Service Tariff Paginated List'));
+    }
 
    function store(NhisGdrgServiceTariffMultipleRequest $request){
        $service_ids=[];
