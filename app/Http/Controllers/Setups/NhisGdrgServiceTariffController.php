@@ -72,9 +72,8 @@ class NhisGdrgServiceTariffController extends Controller
             $service_ids[] =$service['id'];
           $this->repository->update(['nhis_child_tariff_id'=>$service['nhis_child_tariff_id'], 'nhis_adult_tariff_id'=>$service['nhis_adult_tariff_id']],$service['id']);
       }
+        DB::commit();
         return ApiResponse::withOk('Services mapped successfully!', new ServiceCollection($this->repository->getModel()->whereIn('id',$service_ids)->get()));
-
-     DB::commit();
    }
 
    function update(NhisGdrgServiceTariffRequest $request,$id){

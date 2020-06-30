@@ -51,4 +51,13 @@ class Service extends Model
     {
         return $this->belongsToMany(LabSampleType::class, 'lab_service_sample_types')->withPivot(['order', 'created_at', 'updated_at']);
     }
+
+    public function nhis_child_tariff()
+    {
+        return $this->belongsTo(NhisGdrgServiceTariff::class, 'nhis_child_tariff_id');
+    }
+    public function nhis_adult_tariff()
+    {
+        return $this->belongsTo(NhisGdrgServiceTariff::class, 'nhis_adult_tariff_id');
+    }
 }
