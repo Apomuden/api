@@ -13,6 +13,8 @@ class CreateClinicServicesConsultationQuestionsTable extends Migration
      */
     public function up()
     {
+        $this->down();
+        Schema::dropIfExists('clinic_services_consultation_questions');
         Schema::create('clinic_services_consultation_questions', function (Blueprint $table) {
             $table->unsignedBigInteger('clinic_service_id');
             $table->unsignedBigInteger('consultation_question_id');
@@ -34,6 +36,6 @@ class CreateClinicServicesConsultationQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('services_consultation_questions');
+        Schema::dropIfExists('clinic_services_consultation_questions');
     }
 }

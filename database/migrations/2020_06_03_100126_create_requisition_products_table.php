@@ -13,6 +13,7 @@ class CreateRequisitionProductsTable extends Migration
      */
     public function up()
     {
+        $this->down();
         Schema::create('requisition_products', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
@@ -24,15 +25,19 @@ class CreateRequisitionProductsTable extends Migration
             $table->unsignedBigInteger('requested_quantity')->default(0);
             $table->unsignedBigInteger('approved_quantity')->default(0);
             $table->decimal('unit_cost', 20, 2)->default(0.00);
-            $table->decimal('expected_value', 20, 2)->default(0.00);
-            $table->decimal('approved_expected_value', 20, 2)->default(0.00);
+            $table->decimal('expected_value', 20, 2)->virtualAs('requested_quantity * unit_cost');
+            $table->decimal('approved_expected_value', 20, 2)->virtualAs('approved_quantity * unit_cost');
+            $table->unsignedBigInteger('issued_quantity')->default(0)->nullable();
+            $table->decimal('issued_value', 20, 2)->virtualAs('unit_cost * issued_quantity');
+            $table->decimal('received_quantity', 20, 2)->default(0)->nullable();
+            $table->decimal('received_value', 20, 2)->virtualAs('unit_cost * received_quantity');
             $table->string('reference_number');
             $table->mediumText('reason')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
-            $table->foreign('reference_number')->references('reference_number')->on('stock_adjustments')->onDelete('restrict');
+            $table->foreign('reference_number')->references('reference_number')->on('requisitions')->onDelete('restrict');
         });
     }
 
