@@ -18,13 +18,13 @@ class CreateRequisitionsTable extends Migration
             $table->unsignedBigInteger('requested_store_id');
             $table->unsignedBigInteger('issuing_store_id')->nullable();
             $table->timestamp('requisition_date')->useCurrent();
-            $table->string('reference_number');
+            $table->string('reference_number')->unique();
             $table->uuid('requested_by');
             $table->uuid('approved_by')->nullable();
             $table->timestamp('approval_date')->nullable();
             $table->decimal('expected_total_value', 20, 2)->default(0.00);
             $table->decimal('approved_total_value', 20, 2)->default(0.00);
-            $table->enum('status',['PENDING','APPROVED','CANCELLED','SUSPENDED'])->default('PENDING');
+            $table->enum('status',['PENDING','APPROVED','ISSUED','COMPLETED','CANCELLED','SUSPENDED'])->default('PENDING');
             $table->timestamps();
             $table->softDeletes();
 

@@ -24,8 +24,8 @@ class CreateStockAdjustmentProductsTable extends Migration
             $table->unsignedBigInteger('adjusted_quantity')->default(0);
             $table->unsignedBigInteger('approved_quantity')->default(0);
             $table->decimal('unit_cost', 20, 2)->default(0.00);
-            $table->decimal('expected_value', 20, 2)->default(0.00);
-            $table->decimal('approved_expected_value', 20, 2)->default(0.00);
+            $table->decimal('expected_value', 20, 2)->virtualAs('unit_cost * adjusted_quantity');
+            $table->decimal('approved_expected_value', 20, 2)->virtualAs('approved_quantity * unit_cost');
             $table->string('reference_number');
             $table->mediumText('adjustment_reason')->nullable();
             $table->enum('adjustment_type',['INCREASE','DECREASE'])->default('INCREASE');

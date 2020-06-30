@@ -38,12 +38,26 @@ class RequisitionController extends Controller
     }
 
     public function store(RequisitionRequest $RequisitionRequest){
+        $RequisitionRequest['requested_by'] = Auth::id();
+
+        $products = $RequisitionRequest['products']??null;
+        unset($RequisitionRequest['products']);
+
+        DB::beginTransaction();
         try{
             $requestData=$RequisitionRequest->all();
             $Requisition=$this->repository->store($requestData);
-            return ApiResponse::withOk('Requisition created',new RequisitionResource($Requisition->refresh()));
+            $Requisition = $Requisition->refresh();
+            $productsRepo = new RepositoryEloquent(new RequisitionProduct);
+            foreach ($products as $product) {
+                $product['reference_number'] = $Requisition->reference_number??$Requisition['reference_number']??null;
+                $productsRepo->store($product);
+            }
+            DB::commit();
+            return ApiResponse::withOk('Requisition created',new RequisitionResource($Requisition));
         }
         catch(Exception $e){
+            DB::rollBack();
             return ApiResponse::withException($e);
         }
     }
@@ -60,13 +74,13 @@ class RequisitionController extends Controller
         DB::beginTransaction();
         try{
             $productsRepo = new RepositoryEloquent(new RequisitionProduct);
+            $Requisition=$this->repository->update($RequisitionRequest->all(),$Requisition);
             foreach ($products as $product) {
                 $product['reference_number'] = $Requisition->reference_number??$Requisition['reference_number']??null;
-                $stock_adjustment_product_id = $product['id'];
+                $requisition_product_id = $product['id'];
                 unset($product['id']);
-                $productsRepo->update($products, $stock_adjustment_product_id);
+                $productsRepo->update($products, $requisition_product_id);
             }
-            $Requisition=$this->repository->update($RequisitionRequest->all(),$Requisition);
             DB::commit();
             return ApiResponse::withOk('Requisition Approved Successfully',new RequisitionResource($Requisition));
         }

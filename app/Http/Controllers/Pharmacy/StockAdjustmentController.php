@@ -47,7 +47,7 @@ class StockAdjustmentController extends Controller
             $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct);
             foreach ($products as $product) {
                 $product['reference_number'] = $StockAdjustment->reference_number??$StockAdjustment['reference_number']??null;
-                $productsRepo->store($products);
+                $productsRepo->store($product);
             }
             DB::commit();
             return ApiResponse::withOk('Stock Adjustment created',new StockAdjustmentResource($StockAdjustment));
@@ -70,13 +70,13 @@ class StockAdjustmentController extends Controller
         DB::beginTransaction();
         try{
             $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct);
+            $StockAdjustment=$this->repository->update($StockAdjustmentRequest->all(),$StockAdjustment);
             foreach ($products as $product) {
                 $product['reference_number'] = $StockAdjustment->reference_number??$StockAdjustment['reference_number']??null;
                 $stock_adjustment_product_id = $product['id'];
                 unset($product['id']);
                 $productsRepo->update($products, $stock_adjustment_product_id);
             }
-            $StockAdjustment=$this->repository->update($StockAdjustmentRequest->all(),$StockAdjustment);
             DB::commit();
             return ApiResponse::withOk('Stock Adjustment Approved Successfully',new StockAdjustmentResource($StockAdjustment));
         }
