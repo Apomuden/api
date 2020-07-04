@@ -65,6 +65,7 @@ class User extends Authenticatable implements JWTSubject
             $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
             $model->dob = DateHelper::toDBDate($model->dob);
+            $model->prof_expiry_date = DateHelper::toDBDate($model->prof_expiry_date);
 
             //get the associated staff type
             $StaffType = StaffType::findOrFail($model->staff_type_id);
