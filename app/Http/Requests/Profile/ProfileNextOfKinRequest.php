@@ -18,6 +18,7 @@ class ProfileNextOfKinRequest extends ApiFormRequest
             'email'=>'bail|sometimes|nullable|email',
             'user_id'=>'bail|'.($id?'sometimes':'required').'|exists:users,id',
             'relation_id'=>'bail|'.($id?'sometimes':'required').'|exists:relationships,id',
+            'address' => 'bail|sometimes|nullable',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
    }

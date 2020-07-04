@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Registrations\PatientRequest;
-use App\Http\Resources\PatientPaginatedCollection;
-use App\Http\Resources\PatientResource;
+use App\Http\Resources\Registrations\PatientPaginatedCollection;
+use App\Http\Resources\Registrations\PatientResource;
 use App\Models\Patient;
 use App\Repositories\RepositoryEloquent;
 
