@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @method static findOrFail($patient_id)
@@ -71,8 +72,7 @@ class Patient extends Model
 
                 $model->id_expiry_date = DateHelper::toDBDate($model->id_expiry_date);
 
-
-                $model->photo = FileResolver::base64ToFile($model->photo, $model->patient_id, 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
+                $model->photo = FileResolver::base64ToFile($model->photo, str_replace('/','-',$model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
 
                 //Passing the Billing References
                 $repository = new RepositoryEloquent(new FundingType);
@@ -83,11 +83,9 @@ class Patient extends Model
                 $model->payment_channel_id = $funding_type->payment_channel_id;
                 $model->sponsorship_type_id = $funding_type->sponsorship_type_id;
 
-
-                $original = $model->getOriginal();
-
-                if (isset($model->folder_id) && $original->folder_id != $model->folder_id) {
-                    $model->folders()->detach($original->folder_id);
+                $original =$model->getOriginal();
+                if (isset($model->folder_id) && $original['folder_id'] != $model->folder_id) {
+                    $model->folders()->detach($original['folder_id']);
 
                     $folder = $model->folders()->orderBy('created_at', 'desc')->first();
                     if (strtoupper($folder->folder_type) == 'FAMILY') {
@@ -101,13 +99,11 @@ class Patient extends Model
                         $model->postfix = $postFix;
                     }
                 }
-
-                if (isset($model->folder_id) && $model->folder_id) {
+                if ($model->isDirty('folder_id'))
                     //Attach Patient to folder
                     $model->folders()->attach($model->folder_id);
-                }
-            } catch (Exception $e) {
-            }
+                    
+            } catch (Exception $e) {}
         });
     }
 
@@ -277,8 +273,8 @@ class Patient extends Model
         return $this->hasMany(Consultation::class);
     }
 
-     public function clinic_note_summary()
-     {
-         return $this->hasOne(PatientClinicalNoteSummary::class);
-     }
+    public function clinic_note_summary()
+    {
+        return $this->hasOne(PatientClinicalNoteSummary::class);
+    }
 }
