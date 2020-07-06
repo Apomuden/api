@@ -136,6 +136,11 @@ class Consultation extends Model
         return $this->belongsTo(Service::class, 'consultation_service_id');
     }
 
+    public function services_orders()
+    {
+        return $this->morphMany(ServiceOrder::class, 'service_orderable');
+    }
+
     public function patient()
     {
         return $this->belongsTo(Patient::class);
