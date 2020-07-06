@@ -34,7 +34,7 @@ class Patient extends Model
 
             $model->patient_id = IDGenerator::getNewPatientID(($model->reg_status ?? null));
 
-            $model->photo = FileResolver::base64ToFile($model->signature, $model->patient_id, 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
+            $model->photo = FileResolver::base64ToFile($model->signature, str_replace('/','-',$model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
 
             //Passing the Billing References
             $repository = new RepositoryEloquent(new FundingType);
@@ -102,7 +102,7 @@ class Patient extends Model
                 if ($model->isDirty('folder_id'))
                     //Attach Patient to folder
                     $model->folders()->attach($model->folder_id);
-                    
+
             } catch (Exception $e) {}
         });
     }
