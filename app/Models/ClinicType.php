@@ -9,7 +9,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ClinicType extends Model
+class ClinicType extends AuditableModel
 {
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];

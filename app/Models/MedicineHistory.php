@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class MedicineHistory extends Model
+class MedicineHistory extends AuditableModel
 {
     use FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

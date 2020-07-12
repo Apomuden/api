@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Http\Helpers\FileResolver;
 use Illuminate\Database\Eloquent\Model;
 
-class NhisAccreditationSetting extends Model
+class NhisAccreditationSetting extends AuditableModel
 {
     protected $guarded = [];
     public static function boot()

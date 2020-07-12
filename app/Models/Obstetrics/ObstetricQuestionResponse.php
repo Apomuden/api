@@ -4,6 +4,7 @@ namespace App\Models\Obstetrics;
 
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
+use App\Models\AuditableModel;
 use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\User;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @method static updateOrCreate(array $array, array $param)
  */
-class ObstetricQuestionResponse extends Model
+class ObstetricQuestionResponse extends AuditableModel
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];

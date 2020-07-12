@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class StockAdjustment extends Model
+class StockAdjustment extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes, ReferenceNumberGeneratorTrait;
 

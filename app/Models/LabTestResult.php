@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class LabTestResult extends Model
+class LabTestResult extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

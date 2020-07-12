@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
  * @method static findOrFail($patient_id)
  * @method static find($patient_id)
  */
-class Patient extends Model
+class Patient extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

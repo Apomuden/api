@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Helpers\DateHelper;
 use App\Http\Helpers\Notify;
+use App\Http\Requests\Setups\NhisAccreditationSettingRequest;
 use App\Http\Resources\Registrations\ConsultationResource;
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Consultation extends Model
+class Consultation extends AuditableModel
 {
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
 
@@ -32,6 +33,22 @@ class Consultation extends Model
             $repository = new RepositoryEloquent(new Patient);
             $patient = $repository->find($model->patient_id);
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
+
+            //Nhis Pricinng
+            $PatientActiveNhis = $patient->patient_sponsors()->whereHas('billing_sponsor',function($q1){
+                 $q1->whereHas('sponsorship_type',function($q2){
+                      $q2->whereName('Government Insurance');
+                 });
+            })->where('expiry_date','>=',today())->first();
+
+            if($PatientActiveNhis)
+            {
+                $nhisSettings=NhisAccreditationSetting::first();
+                if($model->age>12)
+                   $model->service_fee= $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id',$nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                else
+                   $model->service_fee= $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+            }
 
             //age class and group
             $repository = new RepositoryEloquent(new AgeClassification);
@@ -60,8 +77,7 @@ class Consultation extends Model
 
 
             $model->sponsor_id = $model->billing_sponsor_id;
-
-            ServiceOrder::create($model->only([
+            $model->services_orders()->create($model->only([
                 'patient_id',
                 'clinic_id',
                 'age',
@@ -102,7 +118,54 @@ class Consultation extends Model
             }
         });
 
+        static::updating(function($model){
+            //if($model->isDirty('consultation_service_id')){
+                //get patient details
+                $repository = new RepositoryEloquent(new Patient);
+                $patient = $repository->find($model->patient_id);
+                $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
+                //Nhis Pricinng
+
+                $PatientActiveNhis = $patient->patient_sponsors()->whereHas('billing_sponsor', function ($q1) {
+                    $q1->whereHas('sponsorship_type', function ($q2) {
+                        $q2->whereName('Government Insurance');
+                    });
+                })->where('expiry_date', '>=', today())->first();
+
+                if ($PatientActiveNhis) {
+                    $nhisSettings = NhisAccreditationSetting::first();
+                    if ($model->age > 12)
+                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    else
+                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                }
+            //}
+        });
         static::updated(function ($model) {
+            //update service order
+            $model->services_orders()->whereServiceId($model->consultation_service_id)->update($model->only([
+                'patient_id',
+                'clinic_id',
+                'age',
+                'gender',
+                'patient_status',
+                'service_id',
+                'service_fee',
+                'service_quantity',
+                'service_date',
+                //'order_type',
+                //'orderer_id',
+                'prepaid',
+                //'paid_service_price',
+                //'paid_service_quantity',
+                'funding_type_id',
+                'billing_system_id',
+                'billing_cycle_id',
+                'payment_style_id',
+                'payment_channel_id',
+                //'insured',
+                'billing_sponsor_id'
+            ]));
             //update an attendance
             $repository = new RepositoryEloquent(new Attendance);
             $model->attendance_id = $repository
@@ -114,7 +177,6 @@ class Consultation extends Model
                     ->orderBy('created_at', 'desc')->first()->id ?? null;
 
             Attendance::updateObject($model);
-
             //Trigger Notification
             if ($model->consultant_id && $model->consultant_id != $model->getOriginal('consultant_id'))
                 Notify::send('consultation', $model->consultant_id, new ConsultationResource($model));

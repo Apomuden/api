@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class LabParameterRange extends Model
+class LabParameterRange extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

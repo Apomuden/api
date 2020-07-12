@@ -8,7 +8,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PasswordReset extends Model
+class PasswordReset extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];

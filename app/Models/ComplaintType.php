@@ -6,7 +6,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ComplaintType extends Model
+class ComplaintType extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

@@ -8,7 +8,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Appointment extends Model
+class Appointment extends AuditableModel
 {
     use SoftDeletes, ActiveTrait, SortableTrait, FindByTrait;
     protected $guarded = [];

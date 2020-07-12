@@ -6,7 +6,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ConsultationQuestionOption extends Model
+class ConsultationQuestionOption extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

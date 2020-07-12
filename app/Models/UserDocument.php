@@ -8,7 +8,7 @@ use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class UserDocument extends Model
+class UserDocument extends AuditableModel
 {
     use ActiveTrait, SoftDeletes;
     protected $guarded = [];
