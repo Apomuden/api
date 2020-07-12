@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Ereceipt extends Model
+class Ereceipt extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
 

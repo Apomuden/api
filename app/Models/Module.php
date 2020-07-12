@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Module extends Model
+class Module extends AuditableModel
 {
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

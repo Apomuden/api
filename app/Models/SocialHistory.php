@@ -6,7 +6,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SocialHistory extends Model
+class SocialHistory extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

@@ -8,7 +8,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class NhisProviderLevel extends Model
+class NhisProviderLevel extends AuditableModel
 {
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

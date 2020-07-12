@@ -8,7 +8,7 @@ use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class BillingSponsor extends Model
+class BillingSponsor extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

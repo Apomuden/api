@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class PatientHistory extends Model
+class PatientHistory extends AuditableModel
 {
     use FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

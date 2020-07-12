@@ -4,6 +4,7 @@ namespace App\Models\Obstetrics;
 
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
+use App\Models\AuditableModel;
 use App\Models\Consultation;
 use App\Models\Patient;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class PreviousPregnancy extends Model
+class PreviousPregnancy extends AuditableModel
 {
     use ActiveTrait,FindByTrait,SoftDeletes;
     protected $guarded = [];

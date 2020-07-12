@@ -20,8 +20,6 @@ class PermissionController extends Controller
     {
         $this->repository= new RepositoryEloquent($component,true,['module']);
     }
-
-
    function showByRole($role){
      $components=$this->repository->getModel()->whereHas('roles', function ($q2) use ($role) {
             $q2->where('roles.id', $role);

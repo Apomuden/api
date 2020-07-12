@@ -11,10 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
 use App\Http\Traits\Eloquent\SortableTrait;
+use App\Models\AuditableModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class ObsFamilyInformation extends Model
+class ObsFamilyInformation extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class ServiceOrder extends Model
+class ServiceOrder extends AuditableModel
 {
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
     protected $guarded = ['id'];
@@ -141,7 +141,7 @@ class ServiceOrder extends Model
 
             $model->orderer_id = $model->orderer_id ?? $model->user_id;
 
-            $model->prepaid = $model->prepaid ?? $patient->funding_type->name == 'Cash/Prepaid';
+            $model->prepaid = $model->prepaid ?? strtoupper($patient->funding_type->name) == 'CASH/PREPAID';
             $model->paid_service_total_amt = ($model->paid_service_price ?? 0) * ($model->paid_service_quantity ?? 0);
             $model->funding_type_id = $model->funding_type_id ?? $patient->funding_type_id;
             $model->billing_system_id = $model->billing_system_id ?? $patient->billing_system_id;
@@ -179,7 +179,9 @@ class ServiceOrder extends Model
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
+
             $model->service_total_amt = (($model->service_fee??$original->service_fee)??0) * (($model->service_quantity??$original->service_quantity)??0);
+
             $model->service_date = $model->service_date ? Carbon::parse($model->service_date??null) : ($original->service_date??null);
             //$user = Auth::guard('api')->user();
             //$model->user_id = $user->id;
