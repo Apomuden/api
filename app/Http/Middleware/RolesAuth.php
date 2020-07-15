@@ -48,7 +48,7 @@ class RolesAuth extends BaseMiddleware
            if(!$role || $role->status!='ACTIVE')
                return ApiResponse::withNotAuthorized('Role not Active or Deleted');
            else if (ucwords($role->name) == 'Dev')
-               return $next($request); 
+               return $next($request);
             else{
                  $route= $request->route();
                  $action = $route->getAction();
@@ -96,8 +96,6 @@ class RolesAuth extends BaseMiddleware
 
                  $componentParts=explode('.',$component);
 
-
-
                  //Incase it is a free route
                 if(!$module || !$component)
                  return $next($request);
@@ -110,8 +108,6 @@ class RolesAuth extends BaseMiddleware
                         $components = $user->components()->active()->orderBy('name')->get();
                         Cache::forever('components->user->' . $user->id, $components);
                     }
-
-
                     foreach ($components as $dbcomponent) {
                         if(strtolower($dbcomponent->tag)== strtolower($component)){
                            $permissions=ComponentUser::where('component_id',$dbcomponent->id)

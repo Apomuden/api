@@ -25,6 +25,7 @@ class ComponentPermissionsResource extends JsonResource
             $data= [
                 'id'=>$this->id,
                 'name'=>$this->name,
+                'tag'=>$this->tag??null,
                 'status'=>$this->status,
 
             ];

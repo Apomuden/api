@@ -9,9 +9,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'dashboard'], function () {
         Route::get('staffcategories', [
             'uses' => 'Summaries\StaffCategoryController@index',
-            'as' => 'dashboard.summaries.view',
-            'module' => 'dasboard',
-            'component' => 'dasboard.staffcategories'
+            'as' => 'dashboard.main.view',
+            'module' => 'dashboard',
+            'component' => 'dashboard.main'
         ]);
     });
 //Auth Routes
