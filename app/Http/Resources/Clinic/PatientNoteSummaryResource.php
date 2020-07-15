@@ -39,6 +39,9 @@ class PatientNoteSummaryResource extends JsonResource
             'age_class_name' => $this->age_class->name ?? null,
             'age_class_id' => $this->age_class_id ?? null,
 
+            'consultation_id' => $this->consultation_id,
+            'consultation_service_name' => $this->consultation->service->description ?? null,
+            'consultation_service_id' => $this->consultation->consultation_service_id ?? null,
 
             'age' => $this->age ?? null,
             'patient_status' => $this->patient_status ?? null,

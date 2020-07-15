@@ -29,6 +29,8 @@ class GeneralNoteResource extends JsonResource
         $consultant = $this->consultant??null;
         $canceller = $this->canceller??null;
 
+        $consultation = $this->consultation??null;
+
         return isset($this->id)?[
             'id' => $this->id,
             'folder_no' => (($folder->folder_no ?? null) . ($patient->postfix ?? null)) ?? null,
@@ -44,6 +46,8 @@ class GeneralNoteResource extends JsonResource
             'age_class_id' => $this->age_class_id ?? null,
 
             'consultation_id' => $this->consultation_id,
+            'consultation_service_name' => $this->consultation->service->description??null,
+            'consultation_service_id' => $this->consultation->consultation_service_id??null,
 
             'age' => $this->age ?? null,
             'patient_status' => $this->patient_status ?? null,
