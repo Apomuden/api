@@ -30,9 +30,10 @@ class PermissionController extends Controller
     function showHierarchy()
     {
         //DB::enableQueryLog();
-        $modules = Module::active()->whereHas('roles')->sortBy('name')->paginate(10);
+        $modules = Module::active()->sortBy('name')->paginate(10);
+        $records= new ModulePermissionsCollection($modules, "Components hierachy");
 
-        return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
+        return  ApiResponse::withPaginate($records);
     }
    function showHierarchyByRole($role){
        //DB::enableQueryLog();

@@ -22,18 +22,18 @@ class Security{
         $modules=[];
         if(is_array($tag)){
             foreach($tag as $tg){
-               $modules[]=$repository->getModel()->where('tag',$tg)->first(['name','id'])??null;
+               $modules[]=$repository->getModel()->where('tag',$tg)->first(['name','id','tag'])??null;
             }
             return $modules;
         }
         else
-        return $repository->getModel()->where('tag',$tag)->first(['name','id'])??null;
+        return $repository->getModel()->where('tag',$tag)->first(['name','id','tag'])??null;
 
     }
 
     static function getComponentByTag($tag){
         $repository=new RepositoryEloquent(new Component);
-        return $repository->getModel()->where('tag',$tag)->first(['name','id'])??null;
+        return $repository->getModel()->where('tag',$tag)->first(['name','id','tag'])??null;
     }
 
     static function getRolePermissions($role_id,$component_id){

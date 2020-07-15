@@ -26,36 +26,22 @@ class UserRegisterationController extends Controller
    function index(){
         $this->repository->useActiveTrait=false;
         $users=$this->repository->paginate(10,'username');
-
         return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of users'));
    }
-
-   function show($profile)
+   function show($profile=null)
    {
       $profile=$this->repository->find($profile);
       return ApiResponse::withOk('Profile found',new ProfileWithIDResource($profile));
    }
-
-  /*  function search(){
-      $params=\request()->query();
-      if($params)
-      $users=$this->repository->getModel()->findBy($params)->sortBy('username')->paginate(10);
-      else
-      $users=$this->repository->paginate(10,'username');
-      return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of found users'));
-   } */
-
    function store(ProfileRequest $request)
    {
        $profile=$this->repository->store($request->all());
        return ApiResponse::withOk('Profile created',new ProfileWithIDResource($profile->refresh()));
    }
-
    function update(ProfileRequest $request,$profile){
         $profile=$this->repository->update($request->all(),$profile);
         return ApiResponse::withOk('Profile updated',new ProfileWithIDResource($profile->refresh()));
    }
-
     public function destroy($id)
     {
         $this->repository->delete($id);
