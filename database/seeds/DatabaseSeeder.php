@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(RegionsTableSeeder::class);
         // $this->call(HospitalTableSeeder::class);
         // $this->call(RolesTableSeeder::class);
-        //$this->call(ModuleTableSeeder::class);
-        //$this->call(ComponentsTableSeeder::class);
-        //$this->call(PermissionTableSeeder::class);
+        $this->call(ModuleTableSeeder::class);
+        $this->call(ComponentsTableSeeder::class);
+        $this->call(PermissionTableSeeder::class);
         // $this->call(CompanySeeder::class);
         // $this->call(AgeGroupTableSeeder::class);
         //$this->call(AgeClassificationTableSeeder::class);
