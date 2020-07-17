@@ -14,6 +14,6 @@ class StoreActivity extends AuditableModel
 
     public function store()
     {
-        return $this->belongsTo(Store::class);
+        return $this->belongsToOne(Store::class);
     }
 }

@@ -25,8 +25,8 @@ class StoreResource extends JsonResource
             'requesting_products_from_stores'=>$store_activity->requesting_products_from_stores??null,
             'receiving_issued_products'=>$store_activity->receiving_issued_products??null,
             'direct_engagement_with_patient'=>$store_activity->direct_engagement_with_patient??null,
-            'created_at'=>DateHelper::toDisplayDateTime($store_activity->created_at)??null,
-            'updated_at'=>DateHelper::toDisplayDateTime($store_activity->updated_at)??null
+            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }
