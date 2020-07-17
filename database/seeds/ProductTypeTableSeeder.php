@@ -16,23 +16,25 @@ class ProductTypeTableSeeder extends Seeder
     public function run()
     {
         Schema::disableForeignKeyConstraints();
-        DB::statement('truncate table product_types');
-        ProductType::query()->insert([
+        //DB::statement('truncate table product_types');
+        $records = [
             [
-                "id"=>1,
                 "name"=>"DRUG",
                 "status"=>"ACTIVE",
-                "created_at"=> Carbon::now(),
-                "updated_at"=> Carbon::now()
+                "created_at"=> "2020-07-17 4:27:00",
+                "updated_at"=> "2020-07-17 4:27:00",
             ],
             [
-                "id"=>2,
                 "name"=>"NON-DRUG",
                 "status"=>"ACTIVE",
-                "created_at"=> Carbon::now(),
-                "updated_at"=> Carbon::now()
-            ],
-        ]);
+                "created_at"=> "2020-07-17 4:27:00",
+                "updated_at"=> "2020-07-17 4:27:00",
+            ]
+        ];
+
+        foreach ($records as $record) {
+            ProductType::query()->firstOrCreate($record);
+        }
         Schema::enableForeignKeyConstraints();
     }
 }

@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(RegionsTableSeeder::class);
         // $this->call(HospitalTableSeeder::class);
         // $this->call(RolesTableSeeder::class);
-        $this->call(ModuleTableSeeder::class);
-        $this->call(ComponentsTableSeeder::class);
-        $this->call(PermissionTableSeeder::class);
+        //$this->call(ModuleTableSeeder::class);
+        //$this->call(ComponentsTableSeeder::class);
+        //$this->call(PermissionTableSeeder::class);
         // $this->call(CompanySeeder::class);
         // $this->call(AgeGroupTableSeeder::class);
         //$this->call(AgeClassificationTableSeeder::class);
@@ -48,7 +48,11 @@ class DatabaseSeeder extends Seeder
         //$this->call(MeasurementsTableSeeder::class);
         //$this->call(DischargeReasonsTableSeeder::class);
         //$this->call(illnessTypeTableseeder::class);
-        //$this->call(ProductTypeTableSeeder::class);
+        $this->call(ProductTypeTableSeeder::class);
+        $this->call(ProductCategoryTableSeeder::class);
+        $this->call(ProductFormsTableSeeder::class);
+        $this->call(ProductFormUnitsTableSeeder::class);
+        $this->call(MedicineRouteTableSeeder::class);
 //        $this->call(ConsultationQuestionsTableSeeder::class);
 //        $this->call(ConsultationQuestionOptionsTableSeeder::class);
 //        $this->call(ConsultationQuestionResponsesTableSeeder::class);
