@@ -48,12 +48,12 @@ deploy-staging:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api \
-        && git pull origin dev \
-        && php artisan migrate --seed \
-        && composer install \
-        && php artisan key:generate \
-        && php artisan migrate --seed \
-        && php artisan cache:clear \
-        && php artisan config:clear \
+    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api
+        && git pull origin dev
+        && php artisan migrate --seed
+        && composer install
+        && php artisan key:generate
+        && php artisan migrate --seed
+        && php artisan cache:clear
+        && php artisan config:clear
         && php artisan storage:link"
