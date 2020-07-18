@@ -13,6 +13,7 @@ use App\Models\Clinic;
 use App\Models\Consultation;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Exception;
 use Facade\FlareClient\Api;
 use Illuminate\Http\Request;
@@ -95,10 +96,10 @@ class ConsultationController extends Controller
             unset($clinic_type_id);
         }
         $repo = new RepositoryEloquent(new Consultation);
-        $hasAPendingRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>$request['attendance_date']])->count();
-        if($hasAPendingRequest) {
+        $hasAPendingRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>Carbon::parse($request['attendance_date'])->format('Y-m-d')??today()])->count();
+        if($hasAPendingRequest)
             return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request with the same attendance date']);
-        }
+
         $message = $this->routeName === 'consultationservicerequests.store' ? 'Consultation request created' : 'Consultation Service created';
         $response = $this->repository->store($request->all());
         return  ApiResponse::withOk($message, new ConsultationResource($response->refresh()));

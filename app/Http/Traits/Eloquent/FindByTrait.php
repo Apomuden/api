@@ -30,7 +30,6 @@ trait FindByTrait
             $paramObj->comparator = '>';
             $paramObj->value = str_replace('>', '', trim($value));
         }
-
         else if (ApiRequest::startsWith(trim($value), '!')) {
             $paramObj->comparator = '!=';
             $paramObj->value = str_replace('!', '', trim($value));
@@ -43,7 +42,6 @@ trait FindByTrait
             $paramObj->comparator = 'like';
             $paramObj->value = "%{$value}%";
         }
-
         return $paramObj;
     }
     public function scopeFindBy($query, array $params)
