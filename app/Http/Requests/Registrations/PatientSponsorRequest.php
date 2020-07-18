@@ -64,7 +64,7 @@ class PatientSponsorRequest extends ApiFormRequest
                         || $validator_values['sponsorship_type_name']==='private company')  && !$id) ? 'required':'sometimes|nullable').'|string',
 
             'member_id'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance'
-                        || $validator_values['sponsorship_type_name']==='private insurance') && !$id) ? 'required':'sometimes|nullable').'|string|'.($benefit_type == 'BABY'? $this->softUniqueWith('patient_sponsors', 'member_id,patient_id', $id): $this->softUnique('patient_sponsors', 'member_id',$id)),
+                        || $validator_values['sponsorship_type_name']==='private insurance') && !$id) ? 'required':'sometimes|nullable').'|string|'.($benefit_type == 'BABY'? $this->softUniqueWith('patient_sponsors', 'member_id,patient_id', $id): $this->softUnique('patient_sponsors', 'member_id',$id)).($validator_values['sponsorship_type_name'] === 'government insurance'?'digits:8':''),
 
             'card_serial_no'=>'bail|'.((($validator_values['sponsorship_type_name'] === 'government insurance') && !$id) ? 'required':'sometimes|nullable').'|unique:patient_sponsors,card_serial_no|'.($benefit_type=='BABY'? $this->softUniqueWith('patient_sponsors', 'card_serial_no,patient_id', $id): $this->softUnique('patient_sponsors', 'card_serial_no', $id)),
             'schema_code'=>'bail|'.($validator_values['sponsorship_type_name'] === 'government insurance' && !$id ? 'required':'sometimes|nullable'),

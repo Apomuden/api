@@ -12,6 +12,7 @@ use App\Http\Resources\ClinicServiceResource;
 use App\Http\Resources\ServiceConsultationComponentResource;
 use App\Http\Resources\ServiceConsultationQuestionResource;
 use App\Models\ClinicService;
+use App\Models\Patient;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Support\Facades\DB;
 
@@ -39,6 +40,24 @@ class ClinicServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function getServices($patient_id)
+    {
+        $patient=Patient::find($patient_id);
+        $unit=$patient->ageunit;
+        $age=$patient->absage;
+        $
+
+        switch($unit){
+            case 'YEAR':
+
+        }
+
+        // $services = Service::whereHas('hospital_service', function ($query) use ($hospital_service) {
+        //     $query->where('name', $hospital_service);
+        // });
+
+        return ApiResponse::withOk('Service List', new ServiceCollection($services));
+    }
     public function store(ClinicServiceRequest $request)
     {
        $record=$this->repository->store($request->all());

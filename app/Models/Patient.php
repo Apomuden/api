@@ -132,7 +132,6 @@ class Patient extends AuditableModel
             return Carbon::parse($this->dob)->diffInDays(Carbon::now());
         }
     }
-
     public function ageByUnit(string $age_unit)
     {
         switch ($age_unit) {
@@ -146,6 +145,16 @@ class Patient extends AuditableModel
                 return Carbon::parse($this->dob)->diffInDays(Carbon::now());
         }
     }
+    // public function getAgeCategoryAttribute(){
+    //     $days=$this->ageByUnit($this->ageunit);
+    //     $ageGroups=AgeGroup::where('min_age_unit', $this->ageunit)
+    //               ->orWhere('max_age_unit', $this->ageunit)
+    //               ->orderBy('min_age_unit')->get();
+
+    //     //foreach($ageGroups as $ageGroup){
+    //         //$ageGroup->max_age_unit== $this->ageunit &&
+    //     //}
+    // }
 
     public function getAgeUnitAttribute()
     {

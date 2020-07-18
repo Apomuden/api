@@ -31,6 +31,7 @@ class ServiceController extends Controller
 
         return ApiResponse::withOk('Service List', new ServiceCollection($services));
     }
+    
     function getPrice()
     {
         $patient_id=request('patient_id');
