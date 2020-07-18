@@ -71,7 +71,6 @@ class RepositoryEloquent implements IRepository
             $all = $all && $sortBy ? $all->sortBy($sortBy) : $all;
         }
 
-
         return $this->cache($key, $all);
     }
 
