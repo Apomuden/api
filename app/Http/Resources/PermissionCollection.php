@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Traits\Resources\PaginationTrait;
+use App\Http\Traits\PaginationTrait;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PermissionCollection extends ResourceCollection
