@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Traits\PaginationTrait;
+use App\Http\Traits\Resources\PaginationTrait;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class ServicePaginatedCollection extends ResourceCollection
