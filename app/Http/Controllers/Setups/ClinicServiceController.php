@@ -40,12 +40,12 @@ class ClinicServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    /*
     public function getServices($patient_id)
     {
         $patient=Patient::find($patient_id);
         $unit=$patient->ageunit;
         $age=$patient->absage;
-        $
 
         switch($unit){
             case 'YEAR':
@@ -58,6 +58,7 @@ class ClinicServiceController extends Controller
 
         return ApiResponse::withOk('Service List', new ServiceCollection($services));
     }
+    */
     public function store(ClinicServiceRequest $request)
     {
        $record=$this->repository->store($request->all());
