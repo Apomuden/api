@@ -89,7 +89,7 @@ class RepositoryEloquent implements IRepository
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
 
-        if($searchParams['zlimit'])
+        if(isset($searchParams['zlimit']))
         $paginate= $searchParams['zlimit'];
 
 
