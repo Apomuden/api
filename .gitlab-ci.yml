@@ -9,11 +9,45 @@ before_script:
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
 stages:
+  - build
   - deploy-staging
+
+buildTest:
+  services:
+    - mysql:5.7
+  image: edbizarro/gitlab-ci-pipeline-php:7.4-alpine
+  stage: build
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --pure-lockfile
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan migrate --seed
+    - php ./vendor/bin/phpunit --coverage-text --colors=never
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - vendor/
+      - .env
+  except:
+    - dev
 
 deploy-staging:
   stage: deploy-staging
   only:
     - dev
   script:
-    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev"
+    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api \
+        && git pull origin dev \
+        && php artisan migrate --seed \
+        && composer install \
+        && php artisan key:generate \
+        && php artisan migrate --seed \
+        && php artisan cache:clear \
+        && php artisan config:clear \
+        && php artisan storage:link"
