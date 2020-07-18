@@ -96,7 +96,7 @@ class ConsultationRequest extends ApiFormRequest
             'member_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,member_id',
             'staff_id'=>'bail|sometimes|nullable|string|exists:patient_sponsors,staff_id',
             'card_serial_no'=>'bail|'.(!$id && $sponsorship_type=='government insurance' ? 'required':'sometimes|nullable').'|string|exists:patient_sponsors,card_serial_no',
-            'ccc'=>'bail|'.(!$id && $sponsorship_type=='government insurance' ? 'required':'sometimes|nullable').'|string|size:5|unique:consultations,ccc',
+            'ccc'=>'bail|'.(!$id && $sponsorship_type=='government insurance' ? 'required':'sometimes|nullable').'|string|size:5|unique:consultations,ccc,'.$id,
             'started_at'=>'bail|sometimes|nullable|date',
             'ended_at'=>'bail|sometimes|nullable|date',
             'patient_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT',
