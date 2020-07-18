@@ -14,6 +14,8 @@ buildTest:
     MYSQL_ROOT_PASSWORD: secret
     DB_HOST: mysql
     DB_USERNAME: root
+    DB_PASSWORD: secret
+    DB_DATABASE: homestead
   services:
     - mysql:5.7
   image: edbizarro/gitlab-ci-pipeline-php:7.4-alpine
