@@ -1,19 +1,59 @@
-before_script:
-  - apt-get update -qq
-  - apt-get install -qq git
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
-  - mkdir -p ~/.ssh
-  - chmod 700 ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-
 stages:
+  - build
   - deploy-staging
+# Variables
+
+cache:
+  key: $CI_COMMIT_REF_NAME
+  paths:
+    - vendor
+
+buildTest:
+  variables:
+    MYSQL_DATABASE: homestead
+    MYSQL_ROOT_PASSWORD: secret
+    DB_HOST: mysql
+    DB_USERNAME: root
+    DB_PASSWORD: secret
+    DB_DATABASE: homestead
+  services:
+    - mysql:5.7
+  image: edbizarro/gitlab-ci-pipeline-php:7.4-alpine
+  stage: build
+  script:
+    - yarn config set cache-folder .yarn
+    - yarn install --pure-lockfile
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress
+    - cp .env.example .env
+    - php artisan key:generate
+    - php artisan migrate --seed
+    - php ./vendor/bin/phpunit --coverage-text --colors=never
+  artifacts:
+    expire_in: 1 day
+    paths:
+      - ./storage/logs
+  except:
+    - dev
 
 deploy-staging:
   stage: deploy-staging
   only:
     - dev
   script:
-    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api && git pull origin dev"
+    - apt-get update -qq
+    - apt-get install -qq git
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh willie@78.141.192.241 "cd /var/www/html/ssisgh/test-api \
+        && git pull origin dev \
+        && php artisan migrate --seed \
+        && composer install \
+        && php artisan key:generate \
+        && php artisan migrate --seed \
+        && php artisan cache:clear \
+        && php artisan config:clear \
+        && php artisan storage:link"
