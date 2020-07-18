@@ -90,6 +90,9 @@ class RepositoryEloquent implements IRepository
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
 
+        if($searchParams['zlimit'])
+        $paginate= $searchParams['zlimit'];
+
 
         $key = $this->cache_prefix . '->paginate';
 

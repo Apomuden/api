@@ -11,11 +11,9 @@ use stdClass;
 
 trait FindByTrait
 {
-
     private function getComparator($value)
     {
         $paramObj = new stdClass;
-
         if (ApiRequest::startsWith(trim($value), '<=')) {
             $paramObj->comparator = '<=';
             $paramObj->value = str_replace('<=', '', trim($value));
@@ -63,13 +61,13 @@ trait FindByTrait
         unset($params['dateTo']);
         unset($params['page']);
 
+        unset($params['zlimit']);
+
         if ($dateFrom)
             $query = $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($dateFrom)));
 
         if ($dateTo)
             $query = $query->whereDate('created_at', '<=', date('Y-m-d', strtotime($dateTo)));
-
-
 
         unset($params['sortBy'], $params['order']);
 
@@ -96,8 +94,6 @@ trait FindByTrait
             $value = ApiRequest::sanitize_string($value) ?? null;
 
             $paramObj = $this->getComparator($value);
-
-
 
             if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
                  if($paramObj->comparator=='=' || ApiRequest::startsWith($paramObj->comparator,'>') || ApiRequest::startsWith($paramObj->comparator, '<'))
