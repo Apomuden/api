@@ -90,13 +90,14 @@ class ConsultationController extends Controller
         }
         if (isset($request['clinic_id'])) {
             $clinic_type_id = ((new RepositoryEloquent(new Clinic))->find($request['clinic_id'])->first()->clinic_type_id)??null;
-            if ($clinic_type_id) {
+            if ($clinic_type_id)
                 $request['clinic_type_id'] = $clinic_type_id;
-            }
+
             unset($clinic_type_id);
         }
-        $repo = new RepositoryEloquent(new Consultation);
-        $hasAPendingRequest = $repo->findWhere(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE', 'attendance_date'=>Carbon::parse($request['attendance_date'])->format('Y-m-d')??today()])->count();
+
+        $hasAPendingRequest = Consultation::where(['patient_id'=>$request['patient_id'], 'status'=>'IN-QUEUE'])->whereDate(DB::raw('DATE(attendance_date)'),Carbon::parse($request['attendance_date'])->format('Y-m-d') ?? today()->format('Y-m-d'))->count();
+
         if($hasAPendingRequest)
             return ApiResponse::withValidationError(['patient_id'=>'Patient Already has a pending request with the same attendance date']);
 
