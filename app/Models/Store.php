@@ -12,7 +12,7 @@ class Store extends AuditableModel
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
-    public function store_activities()
+    public function store_activity()
     {
         return $this->hasOne(StoreActivity::class);
     }

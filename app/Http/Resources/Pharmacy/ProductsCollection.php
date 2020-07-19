@@ -10,7 +10,8 @@ class ProductsCollection extends PaginatedCollectionHelper
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param null $coll
      * @return array
      */
     public function toArray($request, $coll = null)

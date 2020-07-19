@@ -22,10 +22,10 @@ class ProductsController extends Controller
     }
 
     public function index(Request $request) {
-        $paginate = trim($request->request->get('paginate'));
+        $paginate = trim(\request()->request->get('paginate'));
 
         $paginate = $paginate=='false' ? false : true;
-        $request->request->remove('paginate');
+        \request()->request->remove('paginate');
 
         return ApiResponse::withPaginate(
             new ProductsCollection($this->repository->paginate(15,'brand_name'),

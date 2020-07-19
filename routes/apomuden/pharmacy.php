@@ -45,7 +45,7 @@ Route::apiResource('storeactivities','Pharmacy\StoreActivityController',[
     //'component'=>'storeactivities'
 ]);
 
-Route::apiResource('storeusers','Pharmacy\StoreUserController',[
+Route::apiResource('issueandreceiptvouchers','Pharmacy\IssueAndReceiptVoucherController',[
     //'only'=>['index','show','store','update'],
     'module'=> 'config.store',
     'component'=> 'config.store.users'
@@ -62,6 +62,12 @@ Route::apiResource('stockadjustments','Pharmacy\StockAdjustmentController',[
 
 Route::post('requisitions/approvals','Pharmacy\RequisitionController@approve');
 Route::get('requisitions/approvals','Pharmacy\RequisitionController@getApprovals');
+Route::apiResource('requisitions','Pharmacy\RequisitionController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'account',
+    'component'=> 'account.requisition'
+]);
+
 Route::apiResource('requisitions','Pharmacy\RequisitionController',[
     //'only'=>['index','show','store','update'],
     'module'=>'account',
