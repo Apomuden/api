@@ -43,7 +43,7 @@ class ProductsResource extends JsonResource
             'age_group_name' => $age_group->name??null,
             'age_group_id' => $age_group->id??null,
             'nhis_cover' => $this->nhis_cover,
-            'expires' => $this->nhis_code,
+            'expires' => $this->expires,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
