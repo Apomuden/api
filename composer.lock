@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8074dfba9635ecef77b9a35f1023b2b9",
+    "content-hash": "6c727d170c963eb2cdd95179ab4ba9d9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1793,6 +1793,43 @@
                 "redis"
             ],
             "time": "2016-06-16T16:22:20+00:00"
+        },
+        {
+            "name": "profclems/postman-collection-generator",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/profclems/postman-collection-generator.git",
+                "reference": "35bc8e64c2ff36ae5a140235e810795753211279"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/profclems/postman-collection-generator/zipball/35bc8e64c2ff36ae5a140235e810795753211279",
+                "reference": "35bc8e64c2ff36ae5a140235e810795753211279",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Profclems\\PostmanCollectionGenerator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clement Sam",
+                    "email": "clementsam75@gmail.com"
+                }
+            ],
+            "description": "A package that automatically generate postman collection from laravel api/web routes",
+            "time": "2020-06-18T17:08:44+00:00"
         },
         {
             "name": "psr/container",

@@ -175,6 +175,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Felixkiss\UniqueWithValidator\ServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        \Profclems\PostmanCollectionGenerator\PostmanCollectionServiceProvider::class,
     ],
 
     /*
