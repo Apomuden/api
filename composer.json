@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "owen-it/laravel-auditing": "^10.0",
         "predis/predis": "^1.1",
+        "profclems/postman-collection-generator": "^1.0",
         "tymon/jwt-auth": "1.0.*"
     },
     "require-dev": {
