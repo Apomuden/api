@@ -36,4 +36,9 @@ class Products extends AuditableModel
     {
         return $this->belongsTo(MedicineRoute::class);
     }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class);
+    }
 }

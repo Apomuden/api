@@ -34,7 +34,7 @@ class CreateProductsTable extends Migration
             $table->string('strength_equivalent')->nullable();
             $table->unsignedInteger('age_group_id')->nullable();
             $table->foreign('age_group_id')->references('id')->on('age_groups')->onDelete('cascade');
-            $table->enum('gender',['MALE','FEMALE','BOTH'])->default('BOTH');
+            $table->enum('gender',['MALE','FEMALE','MALE,FEMALE'])->default('MALE,FEMALE');
             $table->enum('nhis_cover',['YES','NO'])->default('YES');
             $table->string('nhis_code')->nullable();
             $table->enum('status',['ACTIVE','INACTIVE'])->default('ACTIVE');
