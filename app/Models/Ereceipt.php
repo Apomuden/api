@@ -37,7 +37,7 @@ class Ereceipt extends AuditableModel
 
     public static function generateReceiptNumber(): string
     {
-        $prefix = strtoupper(date('M')) . ' ';
+        $prefix = strtoupper(date('M'));
         $midNumber = '00001';
         $postfix = strtoupper(date('y'));
         $receiptNumber = $prefix . '/' . $midNumber . '/' . $postfix;
