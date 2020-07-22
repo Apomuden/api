@@ -9,7 +9,7 @@ use App\Repositories\RepositoryEloquent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ClinicService extends Model
+class ClinicService extends AuditableModel
 {
     use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
     protected $guarded = [];

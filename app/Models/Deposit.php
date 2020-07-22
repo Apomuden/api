@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Deposit extends Model
+class Deposit extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
 

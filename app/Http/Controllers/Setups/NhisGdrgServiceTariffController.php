@@ -10,8 +10,10 @@ use App\Http\Requests\Setups\NhisTariffMappingRequest;
 use App\Http\Resources\NhisGdrgServiceTariffResource;
 use App\Http\Resources\NhisServiceTariffPaginatedCollection;
 use App\Http\Resources\ServiceCollection;
+use App\Models\NhisAccreditationSetting;
 use App\Models\NhisGdrgServiceTariff;
 use App\Models\NhisProviderLevelTariff;
+use App\Models\Patient;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 use Exception;
@@ -42,6 +44,7 @@ class NhisGdrgServiceTariffController extends Controller
         return ApiResponse::withPaginate(new NhisServiceTariffPaginatedCollection($records, 'Nhis Gdrg Service Tariff Paginated List'));
     }
 
+    
    function store(NhisGdrgServiceTariffMultipleRequest $request){
        $service_ids=[];
        //DB::beginTransaction();
@@ -72,9 +75,8 @@ class NhisGdrgServiceTariffController extends Controller
             $service_ids[] =$service['id'];
           $this->repository->update(['nhis_child_tariff_id'=>$service['nhis_child_tariff_id'], 'nhis_adult_tariff_id'=>$service['nhis_adult_tariff_id']],$service['id']);
       }
+        DB::commit();
         return ApiResponse::withOk('Services mapped successfully!', new ServiceCollection($this->repository->getModel()->whereIn('id',$service_ids)->get()));
-
-     DB::commit();
    }
 
    function update(NhisGdrgServiceTariffRequest $request,$id){

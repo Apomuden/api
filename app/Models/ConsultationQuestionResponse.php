@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static updateOrCreate(array $array, array $except)
  * @method static where(array $array)
  */
-class ConsultationQuestionResponse extends Model
+class ConsultationQuestionResponse extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

@@ -12,6 +12,7 @@ use App\Models\StockAdjustment;
 use App\Models\StockAdjustmentProduct;
 use App\Repositories\RepositoryEloquent;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -24,9 +25,14 @@ class StockAdjustmentController extends Controller
         $this->repository= new RepositoryEloquent($StockAdjustment);
     }
 
-    public function index(){
+    public function index()
+    {
+        $paginate = trim(\request()->request->get('paginate'));
 
-        return ApiResponse::withOk('Stock Adjustments list',new StockAdjustmentCollection($this->repository->all('name')));
+        $paginate = $paginate=='false' ? false : true;
+        \request()->request->remove('paginate');
+        return ApiResponse::withPaginate(new StockAdjustmentCollection($this->repository->all('name'),
+            'Stock Adjustments list', $paginate));
     }
 
     public function show($StockAdjustment){
@@ -41,6 +47,7 @@ class StockAdjustmentController extends Controller
         try{
             $products = $StockAdjustmentRequest['products']??null;
             unset($StockAdjustmentRequest['products']);
+            $StockAdjustmentRequest['requested_by'] = Auth::id();
             $requestData=$StockAdjustmentRequest->all();
             $StockAdjustment=$this->repository->store($requestData);
             $StockAdjustment = $StockAdjustment->refresh();
@@ -70,7 +77,7 @@ class StockAdjustmentController extends Controller
         DB::beginTransaction();
         try{
             $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct);
-            $StockAdjustment=$this->repository->update($StockAdjustmentRequest->all(),$StockAdjustment);
+            $StockAdjustment = $this->repository->update($StockAdjustmentRequest->all(), $StockAdjustment);
             foreach ($products as $product) {
                 $product['reference_number'] = $StockAdjustment->reference_number??$StockAdjustment['reference_number']??null;
                 $stock_adjustment_product_id = $product['id'];
@@ -87,18 +94,22 @@ class StockAdjustmentController extends Controller
     }
 
     public function getApprovals($status='APPROVED'){
+        $paginate = trim(\request()->request->get('paginate'));
+
+        $paginate = $paginate=='false' ? false : true;
+        \request()->request->remove('paginate');
         $searchParams = \request()->query();
         $status = $status??'APPROVED';
         unset($searchParams['status']);
 
         //DB::enableQueryLog();
         $this->repository->setModel(StockAdjustment::findBy($searchParams)->where(function ($query) use ($status) {
-            $query->whereDate('status', $status);
+            $query->where('status', $status);
         }));
 
         $records= $this->repository->getModel()->get();
         //return [DB::getQueryLog()];
-        return ApiResponse::withOk('Stock Adjustment Approvals List', StockAdjustmentResource::collection($records));
+        return ApiResponse::withPaginate(new StockAdjustmentCollection($records, 'Stock Adjustment Approvals List', $paginate));
     }
 
     public function update(StockAdjustmentRequest $StockAdjustmentRequest,$StockAdjustment){

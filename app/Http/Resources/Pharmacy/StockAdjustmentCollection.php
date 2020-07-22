@@ -2,19 +2,20 @@
 
 namespace App\Http\Resources\Pharmacy;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use App\Http\Resources\Helpers\PaginatedCollectionHelper;
 
-class StockAdjustmentCollection extends ResourceCollection
+class StockAdjustmentCollection extends PaginatedCollectionHelper
 {
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param null $coll
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request, $coll = null)
     {
-        return StockAdjustmentResource::collection($this->collection);
+        return parent::toArray($request,StockAdjustmentResource::collection($this->collection));
 
     }
 }

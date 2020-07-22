@@ -10,7 +10,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Folder extends Model
+class Folder extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

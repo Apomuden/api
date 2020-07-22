@@ -6,7 +6,7 @@ use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Country extends Model
+class Country extends AuditableModel
 {
     use ActiveTrait, FindByTrait;
     protected $guarded = [];

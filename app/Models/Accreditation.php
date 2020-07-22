@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Accreditation extends Model
+class Accreditation extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

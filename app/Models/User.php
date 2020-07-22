@@ -18,11 +18,11 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Facades\Cache;
+use OwenIt\Auditing\Contracts\Auditable;
 
-
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject,Auditable
 {
-    use Notifiable, ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
+    use Notifiable, ActiveTrait, SortableTrait, FindByTrait, SoftDeletes,\OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 
@@ -61,10 +61,11 @@ class User extends Authenticatable implements JWTSubject
         parent::boot();
         static::creating(function ($model) {
             $model->id = Str::uuid();
-            $model->clinician_code= sprintf("%05d", ($model->max('clinician_code')??0) + 1);
+            $model->clinician_code=sprintf("%05d", ($model->max('clinician_code')??0) + 1);
             $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
             $model->dob = DateHelper::toDBDate($model->dob);
+            $model->prof_expiry_date = DateHelper::toDBDate($model->prof_expiry_date);
 
             //get the associated staff type
             $StaffType = StaffType::findOrFail($model->staff_type_id);
@@ -321,4 +322,8 @@ class User extends Authenticatable implements JWTSubject
         $key = 'components->user->' . $this->id;
         Cache::forget($key);
     }
+
+    protected $auditExclude  = [
+        'password'
+    ];
 }

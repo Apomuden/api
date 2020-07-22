@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Procedure extends Model
+class Procedure extends AuditableModel
 {
     use FindByTrait, SoftDeletes;
     protected $guarded = [];

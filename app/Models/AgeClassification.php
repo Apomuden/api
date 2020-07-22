@@ -8,7 +8,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class AgeClassification extends Model
+class AgeClassification extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

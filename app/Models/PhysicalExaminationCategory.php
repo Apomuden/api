@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PhysicalExaminationCategory extends Model
+class PhysicalExaminationCategory extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

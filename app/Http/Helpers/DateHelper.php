@@ -64,7 +64,6 @@ class DateHelper
         ->orderBy('min_age')
             ->get();
 
-
         foreach($age_categories as $age_category){
             if($age_category->min_comparator=='>=' && $age_category->min_unit==$unit && $age>=$age_category->min_age){
                 if ($age_category->max_comparator == '<=' && $age_category->max_unit == $unit && $age <= $age_category->max_age)

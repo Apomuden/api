@@ -28,6 +28,7 @@ class PatientNextOfKinResource extends JsonResource
              'folder_no'=>$patient->activefolder->folder_no??null,
              'relation_id'=>$relationship->id??null,
              'relation_name'=>$relationship->name??null,
+             'address'=>$this->address??null,
              'status'=>$this->status,
              'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
              'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),

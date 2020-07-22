@@ -11,6 +11,8 @@ use App\Http\Resources\Lab\LabParameterResource;
 use App\Http\Resources\Lab\LabSampleTypeResource;
 use App\Http\Resources\ServiceCollection;
 use App\Http\Resources\ServiceResource;
+use App\Models\NhisAccreditationSetting;
+use App\Models\Patient;
 use App\Models\Service;
 use App\Repositories\RepositoryEloquent;
 
@@ -29,13 +31,52 @@ class ServiceController extends Controller
 
         return ApiResponse::withOk('Service List', new ServiceCollection($services));
     }
+    
+    function getPrice()
+    {
+        $patient_id=request('patient_id');
+        $service_id=request('service_id');
+        $billing_sponsor_id=request('billing_sponsor_id');
 
-    /* public function search(){
-       $params=request()->query();
-       $servicePrices=$this->repository->getModel()->findBy($params)->orderBy('description')->get();
-       return ApiResponse::withOk('Service Prices List',new ServicePriceCollection($servicePrices));
-    } */
+        $fee=0;
+        $patient = Patient::find($patient_id);
+        if ($patient) {
+            $PatientActiveNhis = $patient->patient_sponsors()
+                ->where('status', 'ACTIVE')
+                ->where('billing_sponsor_id', $billing_sponsor_id)
+                ->whereHas('billing_sponsor', function ($q1) {
+                    $q1->whereHas('sponsorship_type', function ($q2) {
+                        $q2->whereName('Government Insurance');
+                    });
+            })->where('expiry_date', '>=', today())->first();
 
+            $service = Service::find($service_id);
+
+            if ($PatientActiveNhis) {
+
+                $age = $patient->age;
+
+                $nhisSettings = NhisAccreditationSetting::first();
+
+                if ($age > 12)
+                    $fee=$service->nhis_adult_tariff->nhis_provider_level_tariffs()
+                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? 0.00;
+                else
+                    $fee=$service->nhis_child_tariff->nhis_provider_level_tariffs()
+                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? 0.00;
+            }
+            else if ($billing_sponsor_id) {
+                $hasPostPaid = $patient->patient_sponsors()
+                    ->where('status', 'ACTIVE')
+                    ->where('billing_sponsor_id', $billing_sponsor_id)->first();
+
+                if ($hasPostPaid)
+                    $fee=$service->postpaid_amount;
+            }
+            $fee=$service->prepaid_amount;
+        }
+        return ApiResponse::withOk('Service Fee',floatVal($fee));
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -47,7 +88,6 @@ class ServiceController extends Controller
         $servicePrice = $this->repository->store($request->all());
         return ApiResponse::withOk('Service created', new ServiceResource($servicePrice->refresh()));
     }
-
     /**
      * Display the specified resource.
      *

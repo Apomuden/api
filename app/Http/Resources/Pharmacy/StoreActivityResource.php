@@ -18,6 +18,7 @@ class StoreActivityResource extends JsonResource
         $store = $this->store??null;
         return [
             'id'=>$this->id,
+            'store_id'=>$store->id??null,
             'store_name'=>$store->name??null,
             'purchasing_from_suppliers'=>$this->purchasing_from_suppliers??null,
             'receiving_from_suppliers'=>$this->receiving_from_suppliers??null,
@@ -25,7 +26,6 @@ class StoreActivityResource extends JsonResource
             'requesting_products_from_stores'=>$this->requesting_products_from_stores??null,
             'receiving_issued_products'=>$this->receiving_issued_products??null,
             'direct_engagement_with_patient'=>$this->direct_engagement_with_patient??null,
-            'store_id'=>$store->id??null,
             'created_at'=>DateHelper::toDisplayDateTime($this->created_at)??null,
             'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)??null
         ];

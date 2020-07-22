@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class Diagnosis extends Model
+class Diagnosis extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Products extends Model
+class Products extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
@@ -35,5 +35,10 @@ class Products extends Model
     public function medicine_route()
     {
         return $this->belongsTo(MedicineRoute::class);
+    }
+
+    public function age_group()
+    {
+        return $this->belongsTo(AgeGroup::class);
     }
 }

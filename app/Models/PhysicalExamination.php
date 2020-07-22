@@ -10,7 +10,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class PhysicalExamination extends Model
+class PhysicalExamination extends AuditableModel
 {
     use FindByTrait, SortableTrait, SoftDeletes;
 

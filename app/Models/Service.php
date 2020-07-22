@@ -8,7 +8,7 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Service extends Model
+class Service extends AuditableModel
 {
     use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
 
@@ -50,5 +50,14 @@ class Service extends Model
     public function lab_sample_types()
     {
         return $this->belongsToMany(LabSampleType::class, 'lab_service_sample_types')->withPivot(['order', 'created_at', 'updated_at']);
+    }
+
+    public function nhis_child_tariff()
+    {
+        return $this->belongsTo(NhisGdrgServiceTariff::class, 'nhis_child_tariff_id');
+    }
+    public function nhis_adult_tariff()
+    {
+        return $this->belongsTo(NhisGdrgServiceTariff::class, 'nhis_adult_tariff_id');
     }
 }

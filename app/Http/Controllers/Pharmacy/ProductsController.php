@@ -21,9 +21,15 @@ class ProductsController extends Controller
         $this->repository= new RepositoryEloquent($Products);
     }
 
-    public function index(){
+    public function index(Request $request) {
+        $paginate = trim(\request()->request->get('paginate'));
 
-        return ApiResponse::withOk('Products list',new ProductsCollection($this->repository->all('name')));
+        $paginate = $paginate=='false' ? false : true;
+        \request()->request->remove('paginate');
+
+        return ApiResponse::withPaginate(
+            new ProductsCollection($this->repository->paginate(15,'brand_name'),
+                'Products List', $paginate));
     }
 
     public function show($Products){
@@ -37,7 +43,8 @@ class ProductsController extends Controller
         try{
             $requestData=$ProductsRequest->all();
             $Products=$this->repository->store($requestData);
-            return ApiResponse::withOk('Product created',new ProductsResource($Products->refresh()));
+            return ApiResponse::withOk('Product created',
+                new ProductsResource($Products->refresh()));
         }
         catch(Exception $e){
             return ApiResponse::withException($e);

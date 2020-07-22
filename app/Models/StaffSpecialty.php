@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StaffSpecialty extends Model
+class StaffSpecialty extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];

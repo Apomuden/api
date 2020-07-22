@@ -71,7 +71,6 @@ class RepositoryEloquent implements IRepository
             $all = $all && $sortBy ? $all->sortBy($sortBy) : $all;
         }
 
-
         return $this->cache($key, $all);
     }
 
@@ -89,6 +88,9 @@ class RepositoryEloquent implements IRepository
 
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
+
+        if(isset($searchParams['zlimit']))
+        $paginate= $searchParams['zlimit'];
 
 
         $key = $this->cache_prefix . '->paginate';

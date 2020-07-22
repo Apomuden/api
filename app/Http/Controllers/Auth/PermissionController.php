@@ -20,8 +20,6 @@ class PermissionController extends Controller
     {
         $this->repository= new RepositoryEloquent($component,true,['module']);
     }
-
-
    function showByRole($role){
      $components=$this->repository->getModel()->whereHas('roles', function ($q2) use ($role) {
             $q2->where('roles.id', $role);
@@ -32,9 +30,10 @@ class PermissionController extends Controller
     function showHierarchy()
     {
         //DB::enableQueryLog();
-        $modules = Module::active()->whereHas('roles')->sortBy('name')->paginate(10);
+        $modules = Module::active()->sortBy('name')->paginate(10);
+        $records= new ModulePermissionsCollection($modules, "Components hierachy");
 
-        return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
+        return  ApiResponse::withPaginate($records);
     }
    function showHierarchyByRole($role){
        //DB::enableQueryLog();

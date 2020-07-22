@@ -25,9 +25,14 @@ class RequisitionController extends Controller
         $this->repository= new RepositoryEloquent($Requisition);
     }
 
-    public function index(){
+    public function index()
+    {
+        $paginate = trim(\request()->request->get('paginate'));
 
-        return ApiResponse::withOk('Requisitions list',new RequisitionCollection($this->repository->all('name')));
+        $paginate = $paginate=='false' ? false : true;
+        \request()->request->remove('paginate');
+        return ApiResponse::withPaginate(new RequisitionCollection($this->repository->all('name'),
+            'Requisitions list', $paginate));
     }
 
     public function show($Requisition){
@@ -91,18 +96,22 @@ class RequisitionController extends Controller
     }
 
     public function getApprovals($status='APPROVED'){
+        $paginate = trim(\request()->request->get('paginate'));
+
+        $paginate = $paginate=='false' ? false : true;
+        \request()->request->remove('paginate');
         $searchParams = \request()->query();
         $status = $status??'APPROVED';
         unset($searchParams['status']);
 
         //DB::enableQueryLog();
         $this->repository->setModel(Requisition::findBy($searchParams)->where(function ($query) use ($status) {
-            $query->whereDate('status', $status);
+            $query->where('status', $status);
         }));
 
         $records= $this->repository->getModel()->get();
         //return [DB::getQueryLog()];
-        return ApiResponse::withOk('Requisition Approvals List', RequisitionResource::collection($records));
+        return ApiResponse::withPaginate(new RequisitionCollection($records, 'Requisition Approvals List', $paginate));
     }
 
     public function update(RequisitionRequest $RequisitionRequest,$Requisition){

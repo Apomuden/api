@@ -7,12 +7,12 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Store extends Model
+class Store extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
     protected $guarded = [];
 
-    public function store_activities()
+    public function store_activity()
     {
         return $this->hasOne(StoreActivity::class);
     }

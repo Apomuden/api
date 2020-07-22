@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
-class ProcedureNote extends Model
+class ProcedureNote extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
     protected $guarded = [];

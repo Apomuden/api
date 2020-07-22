@@ -7,7 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Discount extends Model
+class Discount extends AuditableModel
 {
     use ActiveTrait, FindByTrait, SoftDeletes;
 
