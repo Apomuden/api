@@ -22,9 +22,13 @@ class Clinic extends AuditableModel
         return $this->belongsTo(AgeGroup::class);
     }
 
-
     public function clinic_type()
     {
         return $this->belongsTo(ClinicType::class);
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class, 'clinic_services');
     }
 }

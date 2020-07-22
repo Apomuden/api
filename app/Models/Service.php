@@ -64,4 +64,9 @@ class Service extends AuditableModel
     {
         return $this->belongsTo(NhisGdrgServiceTariff::class, 'nhis_adult_tariff_id');
     }
+
+    public function clinic_services()
+    {
+        return $this->hasMany(ClinicService::class);
+    }
 }
