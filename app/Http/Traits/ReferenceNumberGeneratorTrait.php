@@ -13,7 +13,7 @@ trait ReferenceNumberGeneratorTrait
 
     public static function generate(Model $model, string $column = 'reference_number', $separator = '/'): string
     {
-        $prefix = strtoupper(date('M')) . ' ';
+        $prefix = strtoupper(date('M'));
         $midNumber = '00001';
         $postfix = strtoupper(date('y'));
         $receiptNumber = $prefix . $separator . $midNumber . $separator . $postfix;
