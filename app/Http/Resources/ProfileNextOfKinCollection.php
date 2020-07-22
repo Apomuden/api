@@ -15,6 +15,5 @@ class ProfileNextOfKinCollection extends ResourceCollection
     public function toArray($request)
     {
         return  ProfileNextOfKinResource::collection($this->collection);
-
     }
 }

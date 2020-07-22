@@ -24,7 +24,7 @@ class PatientNoteSummaryController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Patient notes summary list',PatientNoteSummaryResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Patient notes summary list', PatientNoteSummaryResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -47,7 +47,7 @@ class PatientNoteSummaryController extends Controller
      */
     public function show($id)
     {
-        $record = $this->repository->getModel()->where('patient_id',$id)->first();
+        $record = $this->repository->getModel()->where('patient_id', $id)->first();
         return ApiResponse::withOk('Patient note summary found', new PatientNoteSummaryResource($record));
     }
     /**

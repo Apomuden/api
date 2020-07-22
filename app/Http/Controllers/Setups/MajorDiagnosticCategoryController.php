@@ -16,44 +16,46 @@ class MajorDiagnosticCategoryController extends Controller
 
     public function __construct(MajorDiagnosticCategory $majorDiagnosticCategory)
     {
-        $this->repository= new RepositoryEloquent($majorDiagnosticCategory);
+        $this->repository = new RepositoryEloquent($majorDiagnosticCategory);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('Major diagnostic category list',MajorDiagnosticCategoryResource::collection($this->repository->all('name')));
+        return ApiResponse::withOk('Major diagnostic category list', MajorDiagnosticCategoryResource::collection($this->repository->all('name')));
     }
 
-    function show($NHIS){
-        $majorDiagnosticCategory=$this->repository->show($NHIS);//pass the country
-        return $majorDiagnosticCategory?
-        ApiResponse::withOk('Major diagnostic category Found',new MajorDiagnosticCategoryResource($NHIS))
+    function show($NHIS)
+    {
+        $majorDiagnosticCategory = $this->repository->show($NHIS);//pass the country
+        return $majorDiagnosticCategory ?
+        ApiResponse::withOk('Major diagnostic category Found', new MajorDiagnosticCategoryResource($NHIS))
         : ApiResponse::withNotFound('Major diagnostic category Found');
     }
 
-   function store(MajorDiagnosticCategoryRequest $majorDiagnosticCategoryRequest){
-       //try{
-           $requestData= $majorDiagnosticCategoryRequest->all();
+    function store(MajorDiagnosticCategoryRequest $majorDiagnosticCategoryRequest)
+    {
+        //try{
+           $requestData = $majorDiagnosticCategoryRequest->all();
 
-           $majorDiagnosticCategory=$this->repository->store($requestData);
-        return ApiResponse::withOk('Major diagnostic category created',new MajorDiagnosticCategoryResource($majorDiagnosticCategory->refresh()));
-      /*  }
+           $majorDiagnosticCategory = $this->repository->store($requestData);
+        return ApiResponse::withOk('Major diagnostic category created', new MajorDiagnosticCategoryResource($majorDiagnosticCategory->refresh()));
+       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);
-       } */
-   }
+        } */
+    }
 
-   function update(MajorDiagnosticCategoryRequest $majorDiagnosticCategoryRequest,$id){
-       try{
-        $majorDiagnosticCategory=$this->repository->update($majorDiagnosticCategoryRequest->all(),$id);
+    function update(MajorDiagnosticCategoryRequest $majorDiagnosticCategoryRequest, $id)
+    {
+        try {
+            $majorDiagnosticCategory = $this->repository->update($majorDiagnosticCategoryRequest->all(), $id);
 
-        return ApiResponse::withOk('Major diagnostic category updated',new MajorDiagnosticCategoryResource($majorDiagnosticCategory));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Major diagnostic category updated', new MajorDiagnosticCategoryResource($majorDiagnosticCategory));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

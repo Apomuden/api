@@ -30,8 +30,8 @@ class PhysicalExaminationMultipleRequest extends ApiFormRequest
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
             'exams' => 'bail|array',
-            'exams.*.note'=>'bail|string|sometimes|nullable',
-            'exams.*.category_id'=> 'bail|distinct|exists:physical_examination_categories,id',
+            'exams.*.note' => 'bail|string|sometimes|nullable',
+            'exams.*.category_id' => 'bail|distinct|exists:physical_examination_categories,id',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
@@ -42,8 +42,9 @@ class PhysicalExaminationMultipleRequest extends ApiFormRequest
             $errorCounter = 0;
             foreach ($all['exams'] as $exam) {
                 $exam = (array) $exam;
-                if (PhysicalExamination::where(['consultation_id' => $all['consultation_id'], 'category_id' => $exam['category_id']])->first())
+                if (PhysicalExamination::where(['consultation_id' => $all['consultation_id'], 'category_id' => $exam['category_id']])->first()) {
                     $validator->errors()->add("exams.$errorCounter.category_id", "Physical examination note for exams.$errorCounter.category_id has already been submitted!");
+                }
 
                 $errorCounter++;
             }

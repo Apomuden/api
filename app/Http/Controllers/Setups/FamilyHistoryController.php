@@ -24,8 +24,8 @@ class FamilyHistoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Family histories list',FamilyHistoryResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Family histories list', FamilyHistoryResource::collection($records));
     }
 
     /**
@@ -36,8 +36,8 @@ class FamilyHistoryController extends Controller
      */
     public function store(FamilyHistoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Family history created',new FamilyHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Family history created', new FamilyHistoryResource($record));
     }
 
     /**
@@ -49,7 +49,7 @@ class FamilyHistoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Family history found',new FamilyHistoryResource($record));
+        return ApiResponse::withOk('Family history found', new FamilyHistoryResource($record));
     }
 
     /**
@@ -61,7 +61,7 @@ class FamilyHistoryController extends Controller
      */
     public function update(FamilyHistoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Family history updated', new FamilyHistoryResource($record));
     }
 

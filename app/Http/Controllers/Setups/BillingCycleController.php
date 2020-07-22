@@ -18,36 +18,38 @@ class BillingCycleController extends Controller
 
     public function __construct(BillingCycle $billingCycle)
     {
-        $this->repository= new RepositoryEloquent($billingCycle);
+        $this->repository = new RepositoryEloquent($billingCycle);
     }
-    function index(){
-        return ApiResponse::withOk('Billing Cycle list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Billing Cycle list', new GeneralCollection($this->repository->all('name')));
     }
-    function show($billingCycle){
-        $billingCycle=$this->repository->show($billingCycle);//pass the country
-        return $billingCycle?
-        ApiResponse::withOk('Billing Cycle Found',new GeneralResource($billingCycle))
+    function show($billingCycle)
+    {
+        $billingCycle = $this->repository->show($billingCycle);//pass the country
+        return $billingCycle ?
+        ApiResponse::withOk('Billing Cycle Found', new GeneralResource($billingCycle))
         : ApiResponse::withNotFound('Billing Cycle Not Found');
     }
-   function store(BillingCycleRequest $billingCycleRequest){
-       try{
-           $requestData=$billingCycleRequest->all();
-           $billingCycle=$this->repository->store($requestData);
-           return ApiResponse::withOk('Billing Cycle created',new GeneralResource($billingCycle->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
-   function update(BillingCycleRequest $billingCycleRequest,$billingCycle){
-       try{
-        $billingCycle=$this->repository->update($billingCycleRequest->all(),$billingCycle);
-        return ApiResponse::withOk('Billing Cycle updated',new GeneralResource($billingCycle));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function store(BillingCycleRequest $billingCycleRequest)
+    {
+        try {
+            $requestData = $billingCycleRequest->all();
+            $billingCycle = $this->repository->store($requestData);
+            return ApiResponse::withOk('Billing Cycle created', new GeneralResource($billingCycle->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
+    function update(BillingCycleRequest $billingCycleRequest, $billingCycle)
+    {
+        try {
+            $billingCycle = $this->repository->update($billingCycleRequest->all(), $billingCycle);
+            return ApiResponse::withOk('Billing Cycle updated', new GeneralResource($billingCycle));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

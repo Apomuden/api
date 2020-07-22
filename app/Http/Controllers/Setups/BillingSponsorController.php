@@ -24,11 +24,11 @@ class BillingSponsorController extends Controller
             'payment_channel',
 
         ];
-        $this->repository=new RepositoryEloquent($billingSponsor,true,$with);
+        $this->repository = new RepositoryEloquent($billingSponsor, true, $with);
     }
     public function index()
     {
-        return ApiResponse::withOk('Billing Sponsors List',BillingSponsorResource::collection($this->repository->all('name')));
+        return ApiResponse::withOk('Billing Sponsors List', BillingSponsorResource::collection($this->repository->all('name')));
     }
 
     /**
@@ -39,8 +39,8 @@ class BillingSponsorController extends Controller
      */
     public function store(BillingSponsorRequest $request)
     {
-       $billingSponsor=$this->repository->store($request->all());
-       return ApiResponse::withOk("Billing Sponsor created", new BillingSponsorResource($billingSponsor->refresh()));
+        $billingSponsor = $this->repository->store($request->all());
+        return ApiResponse::withOk("Billing Sponsor created", new BillingSponsorResource($billingSponsor->refresh()));
     }
 
     /**
@@ -51,18 +51,17 @@ class BillingSponsorController extends Controller
      */
     public function show($billingsponsor)
     {
-        $billingSponsor=$this->repository->find($billingsponsor);
+        $billingSponsor = $this->repository->find($billingsponsor);
         return
-        $billingSponsor?
+        $billingSponsor ?
          ApiResponse::withOk("Billing Sponsor found", new BillingSponsorResource($billingSponsor))
          :
          ApiResponse::withOk("Billing Sponsor not found");
-
     }
 
     public function update(BillingSponsorRequest $request, $billingsponsor)
     {
-        $billingSponsor=$this->repository->update($request->all(),$billingsponsor);
+        $billingSponsor = $this->repository->update($request->all(), $billingsponsor);
         return ApiResponse::withOk("Billing Sponsor updated", new BillingSponsorResource($billingSponsor));
     }
 

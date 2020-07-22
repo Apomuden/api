@@ -23,8 +23,8 @@ class SocialHistoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Social histories list',SocialHistoryResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Social histories list', SocialHistoryResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class SocialHistoryController extends Controller
      */
     public function store(SocialHistoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Social history created',new SocialHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Social history created', new SocialHistoryResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class SocialHistoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Social history found',new SocialHistoryResource($record));
+        return ApiResponse::withOk('Social history found', new SocialHistoryResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class SocialHistoryController extends Controller
      */
     public function update(SocialHistoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Social history updated', new SocialHistoryResource($record));
     }
 

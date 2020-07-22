@@ -15,6 +15,5 @@ class RoleCollection extends ResourceCollection
     public function toArray($request)
     {
         return  RoleResource::collection($this->collection);
-
     }
 }

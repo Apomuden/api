@@ -17,7 +17,7 @@ class NhisAccreditationSettingRequest extends ApiFormRequest
     }
     public function rules()
     {
-        $nhisAccreditationRepo = new NhisAccreditationSettingEloquent(new NhisAccreditationSetting);
+        $nhisAccreditationRepo = new NhisAccreditationSettingEloquent(new NhisAccreditationSetting());
         $id = $nhisAccreditationRepo->first()->id ?? null;
         return [
             'nhis_provider_level_id' => ['bail', 'sometimes', 'nullable', Rule::exists('nhis_provider_levels', 'id')->whereNull('deleted_at')],

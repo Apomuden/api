@@ -22,84 +22,89 @@ class StockAdjustmentController extends Controller
 
     public function __construct(StockAdjustment $StockAdjustment)
     {
-        $this->repository= new RepositoryEloquent($StockAdjustment);
+        $this->repository = new RepositoryEloquent($StockAdjustment);
     }
 
     public function index()
     {
         $paginate = trim(\request()->request->get('paginate'));
 
-        $paginate = $paginate=='false' ? false : true;
+        $paginate = $paginate == 'false' ? false : true;
         \request()->request->remove('paginate');
-        return ApiResponse::withPaginate(new StockAdjustmentCollection($this->repository->all('name'),
-            'Stock Adjustments list', $paginate));
+        return ApiResponse::withPaginate(new StockAdjustmentCollection(
+            $this->repository->all('name'),
+            'Stock Adjustments list',
+            $paginate
+        ));
     }
 
-    public function show($StockAdjustment){
-        $StockAdjustment=$this->repository->show($StockAdjustment);
-        return $StockAdjustment?
-            ApiResponse::withOk('Stock Adjustment Found',new StockAdjustmentResource($StockAdjustment))
+    public function show($StockAdjustment)
+    {
+        $StockAdjustment = $this->repository->show($StockAdjustment);
+        return $StockAdjustment ?
+            ApiResponse::withOk('Stock Adjustment Found', new StockAdjustmentResource($StockAdjustment))
             : ApiResponse::withNotFound('Stock Adjustment Not Found');
     }
 
-    public function store(StockAdjustmentRequest $StockAdjustmentRequest){
+    public function store(StockAdjustmentRequest $StockAdjustmentRequest)
+    {
         DB::beginTransaction();
-        try{
-            $products = $StockAdjustmentRequest['products']??null;
+        try {
+            $products = $StockAdjustmentRequest['products'] ?? null;
             unset($StockAdjustmentRequest['products']);
             $StockAdjustmentRequest['requested_by'] = Auth::id();
-            $requestData=$StockAdjustmentRequest->all();
-            $StockAdjustment=$this->repository->store($requestData);
+            $requestData = $StockAdjustmentRequest->all();
+            $StockAdjustment = $this->repository->store($requestData);
             $StockAdjustment = $StockAdjustment->refresh();
-            $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct);
+            $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct());
             foreach ($products as $product) {
-                $product['reference_number'] = $StockAdjustment->reference_number??$StockAdjustment['reference_number']??null;
+                $product['reference_number'] = $StockAdjustment->reference_number ?? $StockAdjustment['reference_number'] ?? null;
                 $productsRepo->store($product);
             }
             DB::commit();
-            return ApiResponse::withOk('Stock Adjustment created',new StockAdjustmentResource($StockAdjustment));
-        }
-        catch(Exception $e){
+            return ApiResponse::withOk('Stock Adjustment created', new StockAdjustmentResource($StockAdjustment));
+        } catch (Exception $e) {
             DB::rollBack();
             return ApiResponse::withException($e);
         }
     }
 
-    public function approve(StockAdjustmentApprovalRequest $StockAdjustmentRequest){
-        $StockAdjustment = $StockAdjustmentRequest['stock_adjustment_id']??null;
+    public function approve(StockAdjustmentApprovalRequest $StockAdjustmentRequest)
+    {
+        $StockAdjustment = $StockAdjustmentRequest['stock_adjustment_id'] ?? null;
         unset($StockAdjustmentRequest['stock_adjustment_id']);
 
         $StockAdjustmentRequest['approved_by'] = Auth::id();
 
-        $products = $StockAdjustmentRequest['products']??null;
+        $products = $StockAdjustmentRequest['products'] ?? null;
         unset($StockAdjustmentRequest['products']);
 
         DB::beginTransaction();
-        try{
-            $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct);
+        try {
+            $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct());
             $StockAdjustment = $this->repository->update($StockAdjustmentRequest->all(), $StockAdjustment);
             foreach ($products as $product) {
-                $product['reference_number'] = $StockAdjustment->reference_number??$StockAdjustment['reference_number']??null;
+                $product['reference_number'] = $StockAdjustment->reference_number ?? $StockAdjustment['reference_number'] ?? null;
                 $stock_adjustment_product_id = $product['id'];
                 unset($product['id']);
                 $productsRepo->update($products, $stock_adjustment_product_id);
             }
             DB::commit();
-            return ApiResponse::withOk('Stock Adjustment Approved Successfully',new StockAdjustmentResource($StockAdjustment));
-        }
-        catch(Exception $e){
+            return ApiResponse::withOk('Stock Adjustment Approved Successfully', new StockAdjustmentResource($StockAdjustment));
+        } catch (Exception $e) {
             DB::rollBack();
             return ApiResponse::withException($e);
         }
     }
 
-    public function getApprovals($status='APPROVED'){
+    public function getApprovals($status = 'APPROVED')
+    {
         $paginate = trim(\request()->request->get('paginate'));
 
-        $paginate = $paginate=='false' ? false : true;
+        $paginate = $paginate == 'false' ? false : true;
         \request()->request->remove('paginate');
         $searchParams = \request()->query();
-        $status = $status??'APPROVED';
+        $status = $status ?? 'APPROVED';
         unset($searchParams['status']);
 
         //DB::enableQueryLog();
@@ -107,17 +112,17 @@ class StockAdjustmentController extends Controller
             $query->where('status', $status);
         }));
 
-        $records= $this->repository->getModel()->get();
+        $records = $this->repository->getModel()->get();
         //return [DB::getQueryLog()];
         return ApiResponse::withPaginate(new StockAdjustmentCollection($records, 'Stock Adjustment Approvals List', $paginate));
     }
 
-    public function update(StockAdjustmentRequest $StockAdjustmentRequest,$StockAdjustment){
-        try{
-            $StockAdjustment=$this->repository->update($StockAdjustmentRequest->all(),$StockAdjustment);
-            return ApiResponse::withOk('Stock Adjustment updated',new StockAdjustmentResource($StockAdjustment));
-        }
-        catch(Exception $e){
+    public function update(StockAdjustmentRequest $StockAdjustmentRequest, $StockAdjustment)
+    {
+        try {
+            $StockAdjustment = $this->repository->update($StockAdjustmentRequest->all(), $StockAdjustment);
+            return ApiResponse::withOk('Stock Adjustment updated', new StockAdjustmentResource($StockAdjustment));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

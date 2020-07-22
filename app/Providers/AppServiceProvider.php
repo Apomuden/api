@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,14 +26,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('set', function ($attribute, $value, $parameters, $validator) {
-            $set=explode(',',$value);
-            if (array_intersect($set,$parameters)!=$set)
+            $set = explode(',', $value);
+            if (array_intersect($set, $parameters) != $set) {
                 return false;
+            }
             return true;
         });
 
-        Validator::replacer('set', function($message, $attribute, $rule, $parameters) {
-            return str_replace(':values',join(",",$parameters),$message);
+        Validator::replacer('set', function ($message, $attribute, $rule, $parameters) {
+            return str_replace(':values', join(",", $parameters), $message);
         });
 
         Validator::extend('file64', function ($attribute, $value, $parameters, $validator) {
@@ -43,8 +45,8 @@ class AppServiceProvider extends ServiceProvider
             return false;
         });
 
-        Validator::replacer('file64', function($message, $attribute, $rule, $parameters) {
-            return str_replace(':values',join(",",$parameters),$message);
+        Validator::replacer('file64', function ($message, $attribute, $rule, $parameters) {
+            return str_replace(':values', join(",", $parameters), $message);
         });
     }
 }

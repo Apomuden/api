@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AgeGroup extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function clinic()
@@ -27,45 +30,48 @@ class AgeGroup extends AuditableModel
     //     return $this->belongsTo(AgeGroup::class);
     // }
 
-    public function getAgeNameAttribute(){
-        $min_age_days=0;$max_age_days=0;
-        switch($this->max_age_unit){
+    public function getAgeNameAttribute()
+    {
+        $min_age_days = 0;
+        $max_age_days = 0;
+        switch ($this->max_age_unit) {
             case 'YEAR':
-                $max_age_days=$this->max_age*365;
-            break;
+                $max_age_days = $this->max_age * 365;
+                break;
             case 'MONTH':
-                $max_age_days=$this->max_age*30;
-            break;
+                $max_age_days = $this->max_age * 30;
+                break;
             case 'WEEK':
-                $max_age_days=$this->max_age*7;
-            break;
+                $max_age_days = $this->max_age * 7;
+                break;
             default:
-                $max_age_days= $this->max_age;
-            break;
+                $max_age_days = $this->max_age;
+                break;
         }
-        switch($this->min_age_unit){
+        switch ($this->min_age_unit) {
             case 'YEAR':
-                $min_age_days=$this->min_age*365;
-            break;
+                $min_age_days = $this->min_age * 365;
+                break;
             case 'MONTH':
-                $min_age_days=$this->min_age*30;
-            break;
+                $min_age_days = $this->min_age * 30;
+                break;
             case 'WEEK':
-                $min_age_days=$this->min_age*7;
-            break;
+                $min_age_days = $this->min_age * 7;
+                break;
             default:
-                $min_age_days= $this->min_age;
-            break;
+                $min_age_days = $this->min_age;
+                break;
         }
 
-       $twelve_years=12*365;
-       if($min_age_days<$twelve_years && $twelve_years<$max_age_days)
-       $age_name='ALL';
-       else if($min_age_days>$twelve_years)
-       $age_name='ADULT';
-       else if($min_age_days < $twelve_years)
-       $age_name='CHILD';
+        $twelve_years = 12 * 365;
+        if ($min_age_days < $twelve_years && $twelve_years < $max_age_days) {
+            $age_name = 'ALL';
+        } elseif ($min_age_days > $twelve_years) {
+            $age_name = 'ADULT';
+        } elseif ($min_age_days < $twelve_years) {
+            $age_name = 'CHILD';
+        }
 
-       return $age_name;
+        return $age_name;
     }
 }

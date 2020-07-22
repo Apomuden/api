@@ -25,14 +25,14 @@ class FolderRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $repository=new HospitalEloquent(new Hospital);
-        $hospital=$repository->first();
+        $repository = new HospitalEloquent(new Hospital());
+        $hospital = $repository->first();
 
-        $id=$this->route('folder')??null;
+        $id = $this->route('folder') ?? null;
         return [
-             'rack_no'=>'bail|sometimes|nullable',
-             'folder_type'=>'bail|'.($id?'sometimes':'required').'|string|in:'.($hospital->allowed_folder_type??'INDIVIDUAL'),
-             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,NULLIFIED,OLD'
+             'rack_no' => 'bail|sometimes|nullable',
+             'folder_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|in:' . ($hospital->allowed_folder_type ?? 'INDIVIDUAL'),
+             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE,NULLIFIED,OLD'
         ];
     }
 }

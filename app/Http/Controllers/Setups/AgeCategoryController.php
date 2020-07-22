@@ -18,41 +18,42 @@ class AgeCategoryController extends Controller
 
     public function __construct(AgeCategory $ageCategory)
     {
-        $this->repository= new RepositoryEloquent($ageCategory);
+        $this->repository = new RepositoryEloquent($ageCategory);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('AgeCategory list',new AgeCategoryCollection($this->repository->all('name')));
+        return ApiResponse::withOk('AgeCategory list', new AgeCategoryCollection($this->repository->all('name')));
     }
 
-    public function show($AgeCategory){
-        $AgeCategory=$this->repository->show($AgeCategory);//pass the country
-        return $AgeCategory?
-            ApiResponse::withOk('AgeCategory Found',new AgeCategoryResource($AgeCategory))
+    public function show($AgeCategory)
+    {
+        $AgeCategory = $this->repository->show($AgeCategory);//pass the country
+        return $AgeCategory ?
+            ApiResponse::withOk('AgeCategory Found', new AgeCategoryResource($AgeCategory))
             : ApiResponse::withNotFound('AgeCategory Not Found');
     }
 
-    public function store(AgeCategoryRequest $AgeCategoryRequest){
-        try{
-            $requestData=$AgeCategoryRequest->all();
+    public function store(AgeCategoryRequest $AgeCategoryRequest)
+    {
+        try {
+            $requestData = $AgeCategoryRequest->all();
 
-            $AgeCategory=$this->repository->store($requestData);
-            return ApiResponse::withOk('AgeCategory created',new AgeCategoryResource($AgeCategory->refresh()));
-        }
-        catch(Exception $e){
+            $AgeCategory = $this->repository->store($requestData);
+            return ApiResponse::withOk('AgeCategory created', new AgeCategoryResource($AgeCategory->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(AgeCategoryRequest $AgeCategoryRequest,$id){
-        try{
-            $AgeCategory=$this->repository->update($AgeCategoryRequest->all(),$id);
+    public function update(AgeCategoryRequest $AgeCategoryRequest, $id)
+    {
+        try {
+            $AgeCategory = $this->repository->update($AgeCategoryRequest->all(), $id);
 
-            return ApiResponse::withOk('AgeCategory updated',new AgeCategoryResource($AgeCategory));
-
-        }
-        catch(Exception $e){
+            return ApiResponse::withOk('AgeCategory updated', new AgeCategoryResource($AgeCategory));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

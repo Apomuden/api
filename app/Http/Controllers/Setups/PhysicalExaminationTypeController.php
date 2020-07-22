@@ -23,8 +23,8 @@ class PhysicalExaminationTypeController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Physical Examinations types list',PhysicalExaminationTypeResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Physical Examinations types list', PhysicalExaminationTypeResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class PhysicalExaminationTypeController extends Controller
      */
     public function store(PhysicalExaminationTypeRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Physical Examinations type created',new PhysicalExaminationTypeResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Physical Examinations type created', new PhysicalExaminationTypeResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class PhysicalExaminationTypeController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Physical Examinations type found',new PhysicalExaminationTypeResource($record));
+        return ApiResponse::withOk('Physical Examinations type found', new PhysicalExaminationTypeResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class PhysicalExaminationTypeController extends Controller
      */
     public function update(PhysicalExaminationTypeRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Physical Examinations type updated', new PhysicalExaminationTypeResource($record));
     }
 

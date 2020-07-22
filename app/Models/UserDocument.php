@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserDocument extends AuditableModel
 {
-    use ActiveTrait, SoftDeletes;
+    use ActiveTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function user()
@@ -22,13 +24,13 @@ class UserDocument extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            $userRepo = new RepositoryEloquent(new User);
+            $userRepo = new RepositoryEloquent(new User());
             $username = $userRepo->findOrFail($model->user_id)->username;
             $model->file = FileResolver::base64ToFile($model->file, $username . '-' . uniqid(), 'users' . DIRECTORY_SEPARATOR . 'files') ?? null;
         });
 
         static::updating(function ($model) {
-            $userRepo = new RepositoryEloquent(new User);
+            $userRepo = new RepositoryEloquent(new User());
             $username = $userRepo->findOrFail($model->user_id)->username;
             $uploadDir = 'users' . DIRECTORY_SEPARATOR . 'files';
             $model->file = FileResolver::base64ToFile($model->file, $username . '-' . uniqid(), $uploadDir) ?? null;

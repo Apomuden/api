@@ -1,4 +1,5 @@
 <?php
+
 //This is Request is for the current logged in user
 namespace App\Http\Requests\Profile;
 
@@ -16,17 +17,18 @@ class ProfileRequest extends ApiFormRequest
     }
     public function rules()
     {
-        if (Request::route()->getName() == 'profiles.store')
+        if (Request::route()->getName() == 'profiles.store') {
             $id = null;
-        else
+        } else {
             $id = $this->route('profile') ?? Auth::guard('api')->user();
+        }
         return [
-            'username' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|'.$this->softUnique('users', 'username', $id),
-            'id_no' => 'bail|sometimes|nullable|string|'.$this->softUnique('users','id_no',$id),
-            'active_cell' => 'bail|' . ($id ? 'sometimes' : 'required') . '|min:10|'.$this->softUnique('users','active_cell',$id),
-            'email' => 'bail|sometimes|nullable|email|'. $this->softUnique('users', 'email', $id),
-            'ssnit_no' => 'bail|sometimes|nullable|'. $this->softUnique('users', 'ssnit_no', $id),
-            'tin' => 'bail|sometimes|nullable|'. $this->softUnique('users', 'tin', $id),
+            'username' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('users', 'username', $id),
+            'id_no' => 'bail|sometimes|nullable|string|' . $this->softUnique('users', 'id_no', $id),
+            'active_cell' => 'bail|' . ($id ? 'sometimes' : 'required') . '|min:10|' . $this->softUnique('users', 'active_cell', $id),
+            'email' => 'bail|sometimes|nullable|email|' . $this->softUnique('users', 'email', $id),
+            'ssnit_no' => 'bail|sometimes|nullable|' . $this->softUnique('users', 'ssnit_no', $id),
+            'tin' => 'bail|sometimes|nullable|' . $this->softUnique('users', 'tin', $id),
             'title_id' => 'bail|sometimes|integer|exists:titles,id',
             'surname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',
             'middlename' => 'bail|sometimes|nullable|string',

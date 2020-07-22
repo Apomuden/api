@@ -19,27 +19,29 @@ class PatientVitalController extends Controller
 
     public function __construct(PatientVital $patientVital)
     {
-        $this->repository= new RepositoryEloquent($patientVital);
+        $this->repository = new RepositoryEloquent($patientVital);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Patient Vitals list',new PatientVitalCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Patient Vitals list', new PatientVitalCollection($this->repository->all('name')));
     }
 
-    public function show($patientVital){
-        $patientVital=$this->repository->show($patientVital);
-        return $patientVital?
-            ApiResponse::withOk('Patient Vitals Found',new PatientVitalResource($patientVital))
+    public function show($patientVital)
+    {
+        $patientVital = $this->repository->show($patientVital);
+        return $patientVital ?
+            ApiResponse::withOk('Patient Vitals Found', new PatientVitalResource($patientVital))
             : ApiResponse::withNotFound('Patient Vitals Not Found');
     }
 
     public function byAttendanceDate($attendanceDate)
     {
         $searchParams = \request()->query();
-        $attendanceDate = $attendanceDate??null;
-        $patientID = $searchParams['patient_id']??null;
-        unset($searchParams['attendance_date'],$searchParams['patient_id']);
+        $attendanceDate = $attendanceDate ?? null;
+        $patientID = $searchParams['patient_id'] ?? null;
+        unset($searchParams['attendance_date'], $searchParams['patient_id']);
 
         //DB::enableQueryLog();
         $this->repository->setModel(PatientVital::findBy($searchParams)->where(function ($query) use ($patientID, $attendanceDate) {
@@ -50,27 +52,28 @@ class PatientVitalController extends Controller
             }
         }));
 
-        $records= $this->repository->getModel()->get();
+        $records = $this->repository->getModel()->get();
         //return [DB::getQueryLog()];
         return ApiResponse::withOk('Found Patient Vitals', PatientVitalResource::collection($records));
-
     }
 
-    public function store(PatientVitalRequest $patientVitalRequest){
+    public function store(PatientVitalRequest $patientVitalRequest)
+    {
         //try{
-            $requestData=$patientVitalRequest->all();
-            $patientVital=$this->repository->store($requestData);
-            return ApiResponse::withOk('Patient Vitals created',new PatientVitalResource($patientVital->refresh()));
+            $requestData = $patientVitalRequest->all();
+            $patientVital = $this->repository->store($requestData);
+            return ApiResponse::withOk('Patient Vitals created', new PatientVitalResource($patientVital->refresh()));
         /* }
         catch(Exception $e){
             return ApiResponse::withException($e);
         } */
     }
 
-    public function update(PatientVitalRequest $patientVitalRequest,$patientVital){
+    public function update(PatientVitalRequest $patientVitalRequest, $patientVital)
+    {
         //try{
-            $patientVital=$this->repository->update($patientVitalRequest->all(),$patientVital);
-            return ApiResponse::withOk('Patient Vitals updated',new PatientVitalResource($patientVital));
+            $patientVital = $this->repository->update($patientVitalRequest->all(), $patientVital);
+            return ApiResponse::withOk('Patient Vitals updated', new PatientVitalResource($patientVital));
         /* }
         catch(Exception $e){
             return ApiResponse::withException($e);

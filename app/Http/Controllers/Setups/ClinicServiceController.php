@@ -21,7 +21,7 @@ class ClinicServiceController extends Controller
     protected $repository;
     public function __construct(ClinicService $clinicService)
     {
-        $this->repository = new RepositoryEloquent($clinicService,true,['clinic','clinic_type', 'service', 'billing_cycle']);
+        $this->repository = new RepositoryEloquent($clinicService, true, ['clinic','clinic_type', 'service', 'billing_cycle']);
     }
     /**
      * Display a listing of the resource.
@@ -30,8 +30,8 @@ class ClinicServiceController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('consultation_service_id');
-        return ApiResponse::withOk('Clinic services list',ClinicServiceResource::collection($records));
+        $records = $this->repository->all('consultation_service_id');
+        return ApiResponse::withOk('Clinic services list', ClinicServiceResource::collection($records));
     }
 
     /**
@@ -61,21 +61,22 @@ class ClinicServiceController extends Controller
     */
     public function store(ClinicServiceRequest $request)
     {
-       $record=$this->repository->store($request->all());
-       return ApiResponse::withOk('Clinic service created',new ClinicServiceResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Clinic service created', new ClinicServiceResource($record->refresh()));
     }
 
-    public function storeMultiple(ClinicServiceMultipleRequest $request){
+    public function storeMultiple(ClinicServiceMultipleRequest $request)
+    {
         DB::beginTransaction();
-        $clinic_id=$request->clinic_id;
-        $services=$request->services;
-        foreach($services as $service){
-            $service=(object) $service;
+        $clinic_id = $request->clinic_id;
+        $services = $request->services;
+        foreach ($services as $service) {
+            $service = (object) $service;
             $this->repository->store([
-                'clinic_id'=>$clinic_id,
-                'service_id'=>$service->service_id,
-                'billing_cycle_id'=>$service->billing_cycle_id,
-                'billing_duration'=>$service->billing_duration
+                'clinic_id' => $clinic_id,
+                'service_id' => $service->service_id,
+                'billing_cycle_id' => $service->billing_cycle_id,
+                'billing_duration' => $service->billing_duration
             ]);
         }
         DB::commit();
@@ -91,7 +92,7 @@ class ClinicServiceController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->findOrFail($id);
+        $record = $this->repository->findOrFail($id);
         return ApiResponse::withOk('Clinic service found', new ClinicServiceResource($record));
     }
 
@@ -104,7 +105,7 @@ class ClinicServiceController extends Controller
      */
     public function update(ClinicServiceRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(), $id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Clinic service updated', new ClinicServiceResource($record));
     }
 
@@ -125,8 +126,10 @@ class ClinicServiceController extends Controller
     public function componentsList($service_id)
     {
         $service = $this->repository->findOrFail($service_id);
-        return ApiResponse::withOk('Components list',
-            ServiceConsultationComponentResource::collection($service->consultation_components()->get()));
+        return ApiResponse::withOk(
+            'Components list',
+            ServiceConsultationComponentResource::collection($service->consultation_components()->get())
+        );
     }
 
     public function saveComponents(ConsultationServiceComponentsRequest $request, $service_id)

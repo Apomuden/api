@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientNextOfKin extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function patient()

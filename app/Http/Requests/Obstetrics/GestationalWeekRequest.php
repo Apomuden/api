@@ -25,7 +25,7 @@ class GestationalWeekRequest extends ApiFormRequest
     {
         $id = $this->route('gestational_week') ?? null;
         return [
-            'week_number' => 'bail|'. ($id ? 'sometimes' : 'required') . '|numeric|min:1',
+            'week_number' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:1',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }

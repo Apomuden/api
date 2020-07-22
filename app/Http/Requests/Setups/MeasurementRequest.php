@@ -23,13 +23,13 @@ class MeasurementRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('measurement')??null;
+        $id = $this->route('measurement') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required'),
-            'unit'=>'bail|sometimes|string',
-            'min_value'=>'bail|sometimes|nullable|numeric',
-            'max_value'=>'bail|sometimes|nullable|numeric',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'unit' => 'bail|sometimes|string',
+            'min_value' => 'bail|sometimes|nullable|numeric',
+            'max_value' => 'bail|sometimes|nullable|numeric',
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

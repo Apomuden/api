@@ -18,37 +18,40 @@ class AgeClassificationController extends Controller
 
     public function __construct(AgeClassification $ageClassification)
     {
-        $this->repository= new RepositoryEloquent($ageClassification);
+        $this->repository = new RepositoryEloquent($ageClassification);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('AgeClassification list',new AgeClassificationCollection($this->repository->all('name')));
+        return ApiResponse::withOk('AgeClassification list', new AgeClassificationCollection($this->repository->all('name')));
     }
 
-    public function show($AgeClassification){
-        $AgeClassification=$this->repository->show($AgeClassification);//pass the country
-        return $AgeClassification?
-            ApiResponse::withOk('AgeClassification Found',new AgeClassificationResource($AgeClassification))
+    public function show($AgeClassification)
+    {
+        $AgeClassification = $this->repository->show($AgeClassification);//pass the country
+        return $AgeClassification ?
+            ApiResponse::withOk('AgeClassification Found', new AgeClassificationResource($AgeClassification))
             : ApiResponse::withNotFound('AgeClassification Not Found');
     }
 
-    public function store(AgeClassificationRequest $AgeClassificationRequest){
-        try{
-            $requestData=$AgeClassificationRequest->all();
+    public function store(AgeClassificationRequest $AgeClassificationRequest)
+    {
+        try {
+            $requestData = $AgeClassificationRequest->all();
 
-            $AgeClassification=$this->repository->store($requestData);
-            return ApiResponse::withOk('AgeClassification created',new AgeClassificationResource($AgeClassification->refresh()));
-        }
-        catch(Exception $e){
+            $AgeClassification = $this->repository->store($requestData);
+            return ApiResponse::withOk('AgeClassification created', new AgeClassificationResource($AgeClassification->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(AgeClassificationRequest $AgeClassificationRequest,$id){
-            $AgeClassification=$this->repository->update($AgeClassificationRequest->all(),$id);
+    public function update(AgeClassificationRequest $AgeClassificationRequest, $id)
+    {
+            $AgeClassification = $this->repository->update($AgeClassificationRequest->all(), $id);
 
-            return ApiResponse::withOk('AgeClassification updated',new AgeClassificationResource($AgeClassification));
+            return ApiResponse::withOk('AgeClassification updated', new AgeClassificationResource($AgeClassification));
     }
     public function destroy($id)
     {

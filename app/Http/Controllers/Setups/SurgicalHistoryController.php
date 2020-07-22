@@ -23,8 +23,8 @@ class SurgicalHistoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Surgical histories list',SurgicalHistoryResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Surgical histories list', SurgicalHistoryResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class SurgicalHistoryController extends Controller
      */
     public function store(SurgicalHistoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Surgical history created',new SurgicalHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Surgical history created', new SurgicalHistoryResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class SurgicalHistoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Surgical history found',new SurgicalHistoryResource($record));
+        return ApiResponse::withOk('Surgical history found', new SurgicalHistoryResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class SurgicalHistoryController extends Controller
      */
     public function update(SurgicalHistoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Surgical history updated', new SurgicalHistoryResource($record));
     }
 

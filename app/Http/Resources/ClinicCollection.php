@@ -12,7 +12,7 @@ class ClinicCollection extends ResourceCollection
      * @param  \Illuminate\Http\Request  $request
      * @return object
      */
-    public function toArray($request) : object
+    public function toArray($request): object
     {
         return  ClinicResource::collection($this->collection);
     }

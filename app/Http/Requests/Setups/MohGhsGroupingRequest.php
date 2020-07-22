@@ -25,9 +25,9 @@ class MohGhsGroupingRequest extends ApiFormRequest
     {
         $id = $this->route('mohghsgrouping') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('moh_ghs_groupings','name',$id),
-            'moh_grouping_code'=>'bail|sometimes|nullable|'.$this->softUnique('moh_ghs_groupings', 'moh_grouping_code',$id),
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('moh_ghs_groupings', 'name', $id),
+            'moh_grouping_code' => 'bail|sometimes|nullable|' . $this->softUnique('moh_ghs_groupings', 'moh_grouping_code', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

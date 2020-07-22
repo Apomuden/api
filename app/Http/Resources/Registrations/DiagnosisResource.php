@@ -25,39 +25,39 @@ class DiagnosisResource extends JsonResource
         $clinic_type = $this->clinic_type;
         $consultant = $this->consultant;
         return [
-            'id'=>$this->id,
-            'disease_id'=>$this->disease_id,
-            'disease_name'=>$this->disease->name??null,
+            'id' => $this->id,
+            'disease_id' => $this->disease_id,
+            'disease_name' => $this->disease->name ?? null,
 
-            'consultation_id'=>$this->consultation_id,
+            'consultation_id' => $this->consultation_id,
 
-            'disease_code'=>$this->disease_code??null,
+            'disease_code' => $this->disease_code ?? null,
 
-            'icd10_code'=>$this->icd10_code??null,
-            'icd10_grouping_code'=>$this->icd10_grouping_code??null,
-            'icd10_grouping_code'=>$this->icd10_grouping_code??null,
+            'icd10_code' => $this->icd10_code ?? null,
+            'icd10_grouping_code' => $this->icd10_grouping_code ?? null,
+            'icd10_grouping_code' => $this->icd10_grouping_code ?? null,
 
-            'icd10_grouping_id'=>$this->icd10_grouping_id??null,
-            'icd10_grouping_name'=>$this->icd10_grouping->name??null,
+            'icd10_grouping_id' => $this->icd10_grouping_id ?? null,
+            'icd10_grouping_name' => $this->icd10_grouping->name ?? null,
 
-            'icd10_category_id'=>$this->icd10_category_id??null,
-            'icd10_category_name'=>$this->icd10_category->name??null,
+            'icd10_category_id' => $this->icd10_category_id ?? null,
+            'icd10_category_name' => $this->icd10_category->name ?? null,
 
-            'moh_ghs_grouping_id'=>$this->moh_ghs_grouping_id??null,
-            'moh_ghs_grouping_name'=>$this->moh_ghs_grouping->name??null,
+            'moh_ghs_grouping_id' => $this->moh_ghs_grouping_id ?? null,
+            'moh_ghs_grouping_name' => $this->moh_ghs_grouping->name ?? null,
 
-            'moh_grouping_code'=>$this->moh_grouping_code??null,
+            'moh_grouping_code' => $this->moh_grouping_code ?? null,
 
-            'require_surgery'=>$this->require_surgery??null,
-            'require_investigation'=>$this->require_investigation??null,
-            'adult_gdrg'=>$this->adult_gdrg??null,
-            'adult_tariff'=>$this->adult_tariff??null,
-            'child_gdrg'=>$this->child_gdrg??null,
-            'child_tariff'=>$this->child_tariff??null,
-            'remarks'=>$this->remarks??null,
+            'require_surgery' => $this->require_surgery ?? null,
+            'require_investigation' => $this->require_investigation ?? null,
+            'adult_gdrg' => $this->adult_gdrg ?? null,
+            'adult_tariff' => $this->adult_tariff ?? null,
+            'child_gdrg' => $this->child_gdrg ?? null,
+            'child_tariff' => $this->child_tariff ?? null,
+            'remarks' => $this->remarks ?? null,
 
-            'diagnosis_type'=>$this->diagnosis_type,
-            'diagnosis_status'=>$this->diagnosis_status,
+            'diagnosis_type' => $this->diagnosis_type,
+            'diagnosis_status' => $this->diagnosis_status,
 
 
             'consultant_name' => $consultant->fullname ?? null,

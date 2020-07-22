@@ -15,6 +15,5 @@ class ProfileDocumentCollection extends ResourceCollection
     public function toArray($request)
     {
         return  ProfileDocumentResource::collection($this->collection);
-
     }
 }

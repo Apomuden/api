@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deposit extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
     public $receiptItemType = 'deposit';
@@ -29,7 +31,7 @@ class Deposit extends AuditableModel
         static::created(function ($model) {
             $receiptItem = $model->only(['receipt_number']);
             unset($receiptItem['receipt_number']);
-            $receiptItem = new ReceiptItem;
+            $receiptItem = new ReceiptItem();
             $receiptItem->ereceipt_id = Ereceipt::getLastReceipt('id')->id ?? null;
             $receiptItem->receipt_item_id = $model->id ?? null;
             $receiptItem->receipt_item_type = get_class($model) ?? null;
@@ -37,7 +39,7 @@ class Deposit extends AuditableModel
         });
     }
 
-    public function  ereceipt()
+    public function ereceipt()
     {
         return $this->morphToMany(Ereceipt::class, 'receipt_item');
     }

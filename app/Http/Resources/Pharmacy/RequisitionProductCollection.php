@@ -15,6 +15,5 @@ class RequisitionProductCollection extends ResourceCollection
     public function toArray($request)
     {
         return RequisitionProductResource::collection($this->collection);
-
     }
 }

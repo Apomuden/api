@@ -31,6 +31,6 @@ class DeliveryModeResource extends JsonResource
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
             ];
         }
-        return NULL;
+        return null;
     }
 }

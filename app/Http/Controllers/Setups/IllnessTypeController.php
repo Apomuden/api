@@ -24,8 +24,8 @@ class IllnessTypeController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Illness types list',IllnessTypeResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Illness types list', IllnessTypeResource::collection($records));
     }
 
     /**
@@ -36,8 +36,8 @@ class IllnessTypeController extends Controller
      */
     public function store(IllnessTypeRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Illness type created',new IllnessTypeResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Illness type created', new IllnessTypeResource($record));
     }
 
     /**
@@ -49,7 +49,7 @@ class IllnessTypeController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Illness type found',new IllnessTypeResource($record));
+        return ApiResponse::withOk('Illness type found', new IllnessTypeResource($record));
     }
 
     /**
@@ -61,7 +61,7 @@ class IllnessTypeController extends Controller
      */
     public function update(IllnessTypeRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Illness type updated', new IllnessTypeResource($record));
     }
 

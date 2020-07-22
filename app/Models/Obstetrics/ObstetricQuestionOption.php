@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ObstetricQuestionOption extends AuditableModel
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function obstetric_question()

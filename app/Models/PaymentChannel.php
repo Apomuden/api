@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentChannel extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function funding_type()

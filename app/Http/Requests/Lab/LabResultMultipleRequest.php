@@ -33,14 +33,14 @@ class LabResultMultipleRequest extends ApiFormRequest
     public function rules()
     {
         return [
-             'investigation_id'=>'bail|'.($this->id?'sometimes':'required').'|exists:investigations,id',
+             'investigation_id' => 'bail|' . ($this->id ? 'sometimes' : 'required') . '|exists:investigations,id',
             'results' => 'bail|required|array',
-             'results.*.lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'),'distinct', 'exists:lab_parameters,id'],
-            'results.*.test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
+             'results.*.lab_parameter_id' => ['bail', ($this->id ? 'sometimes' : 'required'),'distinct', 'exists:lab_parameters,id'],
+            'results.*.test_value' => 'bail|' . ($this->id ? 'sometimes' : 'required'),
             'results.*.test_date' => 'bail|sometimes|nullable|date',
-            'technician_id'=>['bail','sometimes','nullable'],
-            'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
-            'results.*.status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
+            'technician_id' => ['bail','sometimes','nullable'],
+            'patient_status' => 'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
+            'results.*.status' => 'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
         ];
     }
     public function withValidator($validator)
@@ -48,26 +48,29 @@ class LabResultMultipleRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             $all = $this->all();
 
-            $errorCounter=0;
+            $errorCounter = 0;
 
-            foreach($all['results'] as $result){
-                $result=(array) $result;
+            foreach ($all['results'] as $result) {
+                $result = (array) $result;
                 if (isset($result['lab_parameter_id']) && isset($all['investigation_id'])) {
                     $lab_parameter = Investigation::find($all['investigation_id'])->service->lab_parameters()->where('lab_parameter_id', $result['lab_parameter_id'])->first();
 
-                    if (!$lab_parameter)
+                    if (!$lab_parameter) {
                         $validator->errors()->add("lab_parameter_id", "Selected results.{$errorCounter}.lab_parameter_id does not belong to the specified investigation's lab service!");
+                    }
                 }
 
                 if (!$this->id) {
                     $labResult = LabTestResult::where(['investigation_id' => $all['investigation_id'], 'lab_parameter_id' => $result['lab_parameter_id']])->first();
 
-                    if (isset($labResult->test_value) && $labResult->test_value)
+                    if (isset($labResult->test_value) && $labResult->test_value) {
                         $validator->errors()->add("test_value", "Test value  for {$labResult->lab_parameter_name} for results.{$errorCounter}.investigation_id: {$labResult->investigation_id} already exists!");
+                    }
                 }
 
-                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist','Dev']))
+                if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist','Dev'])) {
                     $validator->errors()->add("technician_id", "Selected results.{$errorCounter}.technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
+                }
 
                 $errorCounter++;
             }

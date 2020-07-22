@@ -14,14 +14,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ServiceOrder extends AuditableModel
 {
-    use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use SortableTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = ['id'];
 
     public function service_orderable()
     {
         return $this->morphTo();
     }
-    public function  ereceipt()
+    public function ereceipt()
     {
         return $this->morphToMany(Ereceipt::class, 'receipt_item');
     }
@@ -119,16 +123,16 @@ class ServiceOrder extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            $clinicEloquent = new RepositoryEloquent(new Clinic);
+            $clinicEloquent = new RepositoryEloquent(new Clinic());
             $clinic = $clinicEloquent->findOrFail($model->clinic_id);
             $model->clinic_type_id = $clinic->clinic_type_id;
 
-            $patientEloquent = new RepositoryEloquent(new Patient);
+            $patientEloquent = new RepositoryEloquent(new Patient());
             $patient = $patientEloquent->findOrFail($model->patient_id);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
             $model->gender = $model->gender ?? $patient->gender;
-            $serviceEloquent = new RepositoryEloquent(new Service);
+            $serviceEloquent = new RepositoryEloquent(new Service());
             $service = $serviceEloquent->findOrFail($model->service_id);
 
             $model->hospital_service_id = $service->hospital_service_id;
@@ -149,7 +153,7 @@ class ServiceOrder extends AuditableModel
             $model->payment_style_id = $model->payment_style_id ?? $patient->payment_style_id;
             $model->payment_channel_id = $model->payment_channel_id ?? $patient->payment_channel_id;
 
-            $sponsorEloquent = new RepositoryEloquent(new BillingSponsor);
+            $sponsorEloquent = new RepositoryEloquent(new BillingSponsor());
             $sponsor = $sponsorEloquent->find($model->billing_sponsor_id);
             $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? null;
             $model->cancelled_date = $model->canceller_id ? Carbon::today() : null;
@@ -164,40 +168,40 @@ class ServiceOrder extends AuditableModel
         static::updating(function ($model) {
             $original = $model->getOriginal();
 
-            $clinicEloquent = new RepositoryEloquent(new Clinic);
-            $clinic = $clinicEloquent->find($model->clinic_id)?? ($original->clinic??null);
+            $clinicEloquent = new RepositoryEloquent(new Clinic());
+            $clinic = $clinicEloquent->find($model->clinic_id) ?? ($original->clinic ?? null);
             $model->clinic_type_id = $clinic->clinic_type_id;
 
-            $patientEloquent = new RepositoryEloquent(new Patient);
-            $patient = $patientEloquent->find($model->patient_id)?? ($original->patient??null);
+            $patientEloquent = new RepositoryEloquent(new Patient());
+            $patient = $patientEloquent->find($model->patient_id) ?? ($original->patient ?? null);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
             $model->gender = $model->gender ?? $patient->gender;
-            $serviceEloquent = new RepositoryEloquent(new Service);
-            $service = $serviceEloquent->find($model->service_id)?? ($original->service??null);
+            $serviceEloquent = new RepositoryEloquent(new Service());
+            $service = $serviceEloquent->find($model->service_id) ?? ($original->service ?? null);
 
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
 
-            $model->service_total_amt = (($model->service_fee??$original->service_fee)??0) * (($model->service_quantity??$original->service_quantity)??0);
+            $model->service_total_amt = (($model->service_fee ?? $original->service_fee) ?? 0) * (($model->service_quantity ?? $original->service_quantity) ?? 0);
 
-            $model->service_date = $model->service_date ? Carbon::parse($model->service_date??null) : ($original->service_date??null);
+            $model->service_date = $model->service_date ? Carbon::parse($model->service_date ?? null) : ($original->service_date ?? null);
             //$user = Auth::guard('api')->user();
             //$model->user_id = $user->id;
 
-            $model->prepaid = ($model->prepaid??($original->prepaid??null)) ?? $patient->funding_type->name == 'Cash/Prepaid';
-            $model->paid_service_total_amt = ($model->paid_service_price??($original->paid_service_price)??null) * ($model->paid_service_quantity??($original->paid_service_quantity)??null);
+            $model->prepaid = ($model->prepaid ?? ($original->prepaid ?? null)) ?? $patient->funding_type->name == 'Cash/Prepaid';
+            $model->paid_service_total_amt = ($model->paid_service_price ?? ($original->paid_service_price) ?? null) * ($model->paid_service_quantity ?? ($original->paid_service_quantity) ?? null);
             $model->funding_type_id = $model->funding_type_id ?? $patient->funding_type_id;
             $model->billing_system_id = $model->billing_system_id ?? $patient->billing_system_id;
             $model->billing_cycle_id = $model->billing_cycle_id ?? $patient->billing_cycle_id;
             $model->payment_style_id = $model->payment_style_id ?? $patient->payment_style_id;
             $model->payment_channel_id = $model->payment_channel_id ?? $patient->payment_channel_id;
 
-            $sponsorEloquent = new RepositoryEloquent(new BillingSponsor);
-            $sponsor = $sponsorEloquent->find($model->billing_sponsor_id)??($original->billing_sponsor??null);
-            $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? ($original->sponsorship_type_id)??null;
-            $model->cancelled_date = $model->canceller_id ? Carbon::today() : ($original->cancelled_date??null);
+            $sponsorEloquent = new RepositoryEloquent(new BillingSponsor());
+            $sponsor = $sponsorEloquent->find($model->billing_sponsor_id) ?? ($original->billing_sponsor ?? null);
+            $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? ($original->sponsorship_type_id) ?? null;
+            $model->cancelled_date = $model->canceller_id ? Carbon::today() : ($original->cancelled_date ?? null);
         });
     }
 }

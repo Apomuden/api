@@ -15,6 +15,5 @@ class StaffTypeCollection extends ResourceCollection
     public function toArray($request)
     {
         return  StaffTypeResource::collection($this->collection);
-
     }
 }

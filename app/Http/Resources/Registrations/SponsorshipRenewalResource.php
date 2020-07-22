@@ -15,7 +15,7 @@ class SponsorshipRenewalResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(isset($this->id)) {
+        if (isset($this->id)) {
             $billing_sponsor = $this->billing_sponsor ?? null;
             $sponsorship_policy = $this->sponsorship_policy ?? null;
             $patient = $this->patient ?? null;

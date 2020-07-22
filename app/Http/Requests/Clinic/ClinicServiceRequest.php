@@ -29,21 +29,21 @@ class ClinicServiceRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('clinicservice')??null;
-        $repository=new RepositoryEloquent(new HospitalService);
-        $consultation_service=$repository
-        ->findWhere(['name'=>'Consultation'])
-        ->orWhere('name','Consultation service')
+        $id = $this->route('clinicservice') ?? null;
+        $repository = new RepositoryEloquent(new HospitalService());
+        $consultation_service = $repository
+        ->findWhere(['name' => 'Consultation'])
+        ->orWhere('name', 'Consultation service')
         ->first();
         return [
-            'clinic_id'=>['bail',($id?'sometimes':'required'),'integer', Rule::exists('clinics', 'id')],
-            'service_id'=> ['bail', ($id ? 'sometimes' : 'required'), 'integer',
-               Rule::exists('services', 'id')->where(function($query) use($consultation_service){
-                  $query->where('hospital_service_id',$consultation_service->id);
+            'clinic_id' => ['bail',($id ? 'sometimes' : 'required'),'integer', Rule::exists('clinics', 'id')],
+            'service_id' => ['bail', ($id ? 'sometimes' : 'required'), 'integer',
+               Rule::exists('services', 'id')->where(function ($query) use ($consultation_service) {
+                  $query->where('hospital_service_id', $consultation_service->id);
                })
              ],
-            'billing_cycle_id'=> ['bail',($id ? 'sometimes' : 'required'), 'integer', Rule::exists('billing_cycles', 'id')],
-            'billing_duration'=> 'bail|'.($id ? 'sometimes' : 'required').'|integer|min:1'
+            'billing_cycle_id' => ['bail',($id ? 'sometimes' : 'required'), 'integer', Rule::exists('billing_cycles', 'id')],
+            'billing_duration' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|min:1'
         ];
     }
 }

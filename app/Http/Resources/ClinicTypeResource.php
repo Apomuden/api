@@ -25,6 +25,6 @@ class ClinicTypeResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

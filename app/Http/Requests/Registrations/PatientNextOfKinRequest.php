@@ -26,14 +26,14 @@ class PatientNextOfKinRequest extends ApiFormRequest
     public function rules()
     {
 
-        $id=$this->route('patientnextofkin')??null;
+        $id = $this->route('patientnextofkin') ?? null;
         return [
-             'name'=>'bail|'.($id?'sometimes':'required').'|string',
-             'phone'=>'bail|'.($id?'sometimes':'required').'|numeric|min:9',
-             'relation_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:relationships,id',
-             'patient_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:patients,id|'.$this->softUniqueWith('patient_next_of_kin', 'name,phone,patient_id',$id),
-             'address'=>'bail|sometimes|nullable',
-             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,NULLIFIED,OLD'
+             'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',
+             'phone' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:9',
+             'relation_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:relationships,id',
+             'patient_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:patients,id|' . $this->softUniqueWith('patient_next_of_kin', 'name,phone,patient_id', $id),
+             'address' => 'bail|sometimes|nullable',
+             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE,NULLIFIED,OLD'
         ];
     }
 }

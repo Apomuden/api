@@ -15,6 +15,5 @@ class TitleCollection extends ResourceCollection
     public function toArray($request)
     {
         return  TitleResource::collection($this->collection);
-
     }
 }

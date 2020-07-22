@@ -15,7 +15,7 @@ class ClinicRequest extends ApiFormRequest
      *
      * @return bool
      */
-    public function authorize() : bool
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,18 +25,18 @@ class ClinicRequest extends ApiFormRequest
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         $id = $this->route('clinic') ?? null;
 
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('clinics','name',$id),
-            'age_group_id'=>'bail|sometimes|nullable|integer|exists:age_groups,id',
-            'gender'=>'bail|'.($id?'sometimes':'required').'|set:MALE,FEMALE,BIGENDER',
-            'patient_status'=> 'bail|'.($id?'sometimes':'required').'|set:IN-PATIENT,OUT-PATIENT,WALK-IN',
-            'clinic_type_id'=> 'bail|'. ($id ? 'sometimes' : 'required').'|exists:clinic_types,id',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('clinics', 'name', $id),
+            'age_group_id' => 'bail|sometimes|nullable|integer|exists:age_groups,id',
+            'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE,BIGENDER',
+            'patient_status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|set:IN-PATIENT,OUT-PATIENT,WALK-IN',
+            'clinic_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:clinic_types,id',
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
 }

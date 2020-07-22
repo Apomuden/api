@@ -35,22 +35,22 @@ class PhysicalExaminationController extends Controller
      */
     public function store(PhysicalExaminationRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Physical Examination created',new PhysicalExaminationResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Physical Examination created', new PhysicalExaminationResource($record));
     }
-    public function storeMultiple(PhysicalExaminationMultipleRequest  $request)
+    public function storeMultiple(PhysicalExaminationMultipleRequest $request)
     {
 
-        $payload= $request->except(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
+        $payload = $request->except(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
 
-        $record_ids=[];
-        foreach($payload['exams'] as $exam){
-            $exam=$exam + $request->only(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
+        $record_ids = [];
+        foreach ($payload['exams'] as $exam) {
+            $exam = $exam + $request->only(['consultation_id', 'patient_status', 'consultation_date', 'consultant_id']);
             $record = $this->repository->store($exam);
-            $record_ids[]=$record->id;
+            $record_ids[] = $record->id;
         }
-        $records=$this->repository->getModel()->whereIn('id',$record_ids)->orderBy('category_id')->get();
-        return ApiResponse::withOk('Physical Examinations created',PhysicalExaminationResource::collection($records));
+        $records = $this->repository->getModel()->whereIn('id', $record_ids)->orderBy('category_id')->get();
+        return ApiResponse::withOk('Physical Examinations created', PhysicalExaminationResource::collection($records));
     }
 
     /**
@@ -61,8 +61,8 @@ class PhysicalExaminationController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->show($id);
-        return ApiResponse::withOk('Physical Examination found',new PhysicalExaminationResource($record));
+        $record = $this->repository->show($id);
+        return ApiResponse::withOk('Physical Examination found', new PhysicalExaminationResource($record));
     }
 
     /**
@@ -74,8 +74,8 @@ class PhysicalExaminationController extends Controller
      */
     public function update(PhysicalExaminationRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
-        return ApiResponse::withOk('Physical Examination updated',new PhysicalExaminationResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Physical Examination updated', new PhysicalExaminationResource($record));
     }
 
     

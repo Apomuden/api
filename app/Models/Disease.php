@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use App\Http\Traits\Eloquent\ActiveTrait;
@@ -8,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Disease extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
 

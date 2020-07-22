@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Appointment extends AuditableModel
 {
-    use SoftDeletes, ActiveTrait, SortableTrait, FindByTrait;
+    use SoftDeletes;
+    use ActiveTrait;
+    use SortableTrait;
+    use FindByTrait;
+
     protected $guarded = [];
 
     public function patient()

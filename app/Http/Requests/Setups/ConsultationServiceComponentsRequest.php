@@ -23,8 +23,9 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
      */
     public function rules()
     {
-        if (sizeof($this->request->get("components")) == 0)
+        if (sizeof($this->request->get("components")) == 0) {
             return [];
+        }
         return [
             'components' => 'bail|required|array',
             'components.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_components,id'
@@ -37,8 +38,9 @@ class ConsultationServiceComponentsRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             $clinic = ClinicService::find(request('service_id'));
 
-            if (is_null($clinic))
+            if (is_null($clinic)) {
                 $validator->errors()->add("Service id", "The id in path is not a Consultation service");
+            }
         });
     }
 

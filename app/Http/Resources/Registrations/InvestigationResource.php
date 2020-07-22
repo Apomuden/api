@@ -15,8 +15,8 @@ class InvestigationResource extends JsonResource
      */
     public function toArray($request)
     {
-        $patient = $this->patient??null;
-        $folder = $patient->activefolder??null;
+        $patient = $this->patient ?? null;
+        $folder = $patient->activefolder ?? null;
         $hospital_service = $this->hospital_service;
         $service_category = $this->service_category;
         $service_subcategory = $this->service_subcategory;
@@ -31,7 +31,7 @@ class InvestigationResource extends JsonResource
         $clinic = $this->clinic;
         $consultant = $this->consultant;
 
-        $canceller=$this->canceller;
+        $canceller = $this->canceller;
 
         return [
             'id' => $this->id,
@@ -52,7 +52,7 @@ class InvestigationResource extends JsonResource
             'age' => $this->age ?? null,
             'patient_status' => $this->patient_status ?? null,
 
-            'order_type'=>$this->order_type,
+            'order_type' => $this->order_type,
 
             'clinic_type_name' => $clinic_type->name ?? null,
             'clinic_type_id' => $clinic_type->id ?? null,
@@ -75,8 +75,8 @@ class InvestigationResource extends JsonResource
             'user_name' => $user->fullname,
             'user_id' => $user->id,
 
-            'prepaid_total' => round($this->prepaid_total,2) ?? 0.00,
-            'postpaid_total' => round($this->postpaid_total,2) ?? 0.00,
+            'prepaid_total' => round($this->prepaid_total, 2) ?? 0.00,
+            'postpaid_total' => round($this->postpaid_total, 2) ?? 0.00,
 
             'funding_type_name' => $funding_type->name ?? null,
             'funding_type_id' => $funding_type->id ?? null,

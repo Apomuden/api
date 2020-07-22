@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Auth;
 
 class Diagnosis extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
 

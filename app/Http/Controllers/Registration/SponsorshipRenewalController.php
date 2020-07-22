@@ -18,11 +18,11 @@ class SponsorshipRenewalController extends Controller
     protected $repository;
     public function __construct(SponsorshipRenewal $SponsorshipRenewal)
     {
-        $this->repository=new RepositoryEloquent($SponsorshipRenewal);
+        $this->repository = new RepositoryEloquent($SponsorshipRenewal);
     }
     public function index()
     {
-        return ApiResponse::withOk('Sponsorship Renewals list',SponsorshipRenewalResource::collection($this->repository->all('member_id')));
+        return ApiResponse::withOk('Sponsorship Renewals list', SponsorshipRenewalResource::collection($this->repository->all('member_id')));
     }
 
     /**
@@ -33,8 +33,8 @@ class SponsorshipRenewalController extends Controller
      */
     public function store(SponsorshipRenewalRequest $request)
     {
-        $repo = new RepositoryEloquent(new PatientSponsor);
-        $sponsor = $repo->findWhere(['patient_id'=>$request['patient_id'],'billing_sponsor_id'=>$request['billing_sponsor_id']])->orWhere(['id'=>$request['patient_sponsor_id']])->first();
+        $repo = new RepositoryEloquent(new PatientSponsor());
+        $sponsor = $repo->findWhere(['patient_id' => $request['patient_id'],'billing_sponsor_id' => $request['billing_sponsor_id']])->orWhere(['id' => $request['patient_sponsor_id']])->first();
         if (!$sponsor) {
             return ApiResponse::withValidationError('Patient has no sponsor');
         }
@@ -46,15 +46,13 @@ class SponsorshipRenewalController extends Controller
         try {
             DB::beginTransaction();
             $repo->update($sponsorRequest->all(), $sponsor->id);
-            $sponsorshipRenewal= $this->repository->store($request->all());
+            $sponsorshipRenewal = $this->repository->store($request->all());
             DB::commit();
-            return ApiResponse::withOk('Patient sponsorship renewed',new SponsorshipRenewalResource($sponsorshipRenewal->refresh()));
-        }
-        catch (\Exception $e) {
+            return ApiResponse::withOk('Patient sponsorship renewed', new SponsorshipRenewalResource($sponsorshipRenewal->refresh()));
+        } catch (\Exception $e) {
             DB::rollback();
             return ApiResponse::withException($e);
         }
-
     }
 
     /**
@@ -65,7 +63,7 @@ class SponsorshipRenewalController extends Controller
      */
     public function show($SponsorshipRenewal)
     {
-        $SponsorshipRenewal=$this->repository->find($SponsorshipRenewal);
+        $SponsorshipRenewal = $this->repository->find($SponsorshipRenewal);
         return ApiResponse::withOk('Sponsorship renewal found', new SponsorshipRenewalResource($SponsorshipRenewal));
     }
 
@@ -78,7 +76,7 @@ class SponsorshipRenewalController extends Controller
      */
     public function update(SponsorshipRenewalRequest $request, $SponsorshipRenewal)
     {
-        $SponsorshipRenewal=$this->repository->update($request->all(),$SponsorshipRenewal);
+        $SponsorshipRenewal = $this->repository->update($request->all(), $SponsorshipRenewal);
         return ApiResponse::withOk('Sponsorship Renewal updated', new SponsorshipRenewalResource($SponsorshipRenewal));
     }
 
@@ -90,7 +88,7 @@ class SponsorshipRenewalController extends Controller
      */
     public function destroy($SponsorshipRenewal)
     {
-        $SponsorshipRenewal=$this->repository->delete($SponsorshipRenewal);
+        $SponsorshipRenewal = $this->repository->delete($SponsorshipRenewal);
         return ApiResponse::withOk('Sponsor Renewal deleted successfully');
     }
 }

@@ -9,11 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductForm extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
-    public function product_type() {
+    public function product_type()
+    {
         return $this->belongsTo(ProductType::class);
     }
-
 }

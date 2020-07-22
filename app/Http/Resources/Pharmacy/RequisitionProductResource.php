@@ -19,8 +19,8 @@ class RequisitionProductResource extends JsonResource
             return [
                 'id' => $this->id,
                 'product_id' => $this->product_id,
-                'brand_name' => $product->brand_name??null,
-                'generic_name' => $product->generic_name??null,
+                'brand_name' => $product->brand_name ?? null,
+                'generic_name' => $product->generic_name ?? null,
                 'batch_number' => $this->batch_number,
                 'expiry_date' => $this->expiry_date,
                 'unit_of_measurement' => $this->unit_of_measurement,
@@ -38,6 +38,6 @@ class RequisitionProductResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

@@ -9,5 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FolderPatient extends AuditableModel
 {
     use FindByTrait;
+
     protected $guarded = [];
 }

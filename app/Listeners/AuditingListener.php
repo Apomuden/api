@@ -29,13 +29,12 @@ class AuditingListener
      */
     public function handle(Auditing $event)
     {
-        try{
+        try {
             $original = $event->model->getOriginal();
             $current = $event->model->toArray();
             unset($current['updated_at'], $original['updated_at']);
             return $original != $current;
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
              return true;
         }
     }

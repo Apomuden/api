@@ -23,7 +23,7 @@ class TreatmentPlanController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Treatment plan notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Treatment plan notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class TreatmentPlanController extends Controller
      */
     public function store(TreatmentPlanNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Treatment plan note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Treatment plan note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class TreatmentPlanController extends Controller
      */
     public function update(TreatmentPlanNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Treatment plan note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Treatment plan note updated', new GeneralNoteResource($record));
     }
 
     /**

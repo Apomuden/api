@@ -16,15 +16,15 @@ class CountryResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'name'=>$this->country_name,
-            'code'=>$this->country_code,
-            'flag'=>\route('file.url',['flags',strtolower($this->country_code).'.png']),
-            'call_code'=>$this->call_code,
-            'currency'=>$this->currency,
-            'alt_currency'=>$this->alternate_currency,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+            'id' => $this->id,
+            'name' => $this->country_name,
+            'code' => $this->country_code,
+            'flag' => \route('file.url', ['flags',strtolower($this->country_code) . '.png']),
+            'call_code' => $this->call_code,
+            'currency' => $this->currency,
+            'alt_currency' => $this->alternate_currency,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

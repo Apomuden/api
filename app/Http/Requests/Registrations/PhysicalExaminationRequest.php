@@ -26,14 +26,12 @@ class PhysicalExaminationRequest extends ApiFormRequest
     {
         $id = $this->route('physicalexamination') ?? null;
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required') . '|exists:consultations,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-            'note'=>'bail|string|sometimes|nullable',
-            'category_id'=> 'bail|exists:physical_examination_categories,id',
+            'note' => 'bail|string|sometimes|nullable',
+            'category_id' => 'bail|exists:physical_examination_categories,id',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
-
-
 }

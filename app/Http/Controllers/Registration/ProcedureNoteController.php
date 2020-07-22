@@ -23,7 +23,7 @@ class ProcedureNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Procedure notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Procedure notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class ProcedureNoteController extends Controller
      */
     public function store(ProcedureNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Procedure note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Procedure note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class ProcedureNoteController extends Controller
      */
     public function update(ProcedureNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Procedure note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Procedure note updated', new GeneralNoteResource($record));
     }
 
     /**

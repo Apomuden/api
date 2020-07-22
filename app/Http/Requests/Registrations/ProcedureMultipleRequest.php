@@ -20,7 +20,7 @@ class ProcedureMultipleRequest extends ApiFormRequest
     private $consultation;
     public function authorize()
     {
-        $this->consultation= Consultation::find(request('consultation_id'));
+        $this->consultation = Consultation::find(request('consultation_id'));
         return true;
     }
 
@@ -33,26 +33,26 @@ class ProcedureMultipleRequest extends ApiFormRequest
     {
         $id = $this->route('procedure') ?? null;
 
-        $repository = new RepositoryEloquent(new HospitalService);
+        $repository = new RepositoryEloquent(new HospitalService());
 
         $procedure_service = $repository
             ->findWhere(['name' => 'Procedure'])
             ->orWhere('name', 'Surgery')->first();
 
-        $repository = new RepositoryEloquent(new Role);
+        $repository = new RepositoryEloquent(new Role());
 
         $role = $repository->findWhere(['name' => 'Doctor'])
             ->orWhere('name', 'DEV')->first();
 
 
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required') . '|exists:consultations,id',
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
             'procedures' => 'bail|required|array',
             'procedures.*.cancelled_date' => 'bail|sometimes|date',
-            'procedures.*.order_type'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',
+            'procedures.*.order_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:INTERNAL,EXTERNAL',
             'procedures.*.funding_type_id' => 'bail|sometimes|integer|exists:funding_types,id',
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
@@ -85,14 +85,14 @@ class ProcedureMultipleRequest extends ApiFormRequest
             $errorCounter = 0;
 
             foreach ($all['procedures'] as $procedure) {
+                $procedure = (array)$procedure;
 
-                $procedure=(array)$procedure;
+                if (isset($procedure['billing_sponsor_id'])) {
+                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $procedure['billing_sponsor_id'])->first() ?? null;
 
-                if(isset($procedure['billing_sponsor_id'])){
-                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $procedure['billing_sponsor_id'])->first()??null;
-
-                    if (!$patient_sponsor)
+                    if (!$patient_sponsor) {
                         $validator->errors()->add("billing_sponsor_id", "Selected procedures.$errorCounter.billing_sponsor_id is a valid sponsor of the patient!");
+                    }
 
                     $errorCounter++;
                 }
@@ -105,5 +105,4 @@ class ProcedureMultipleRequest extends ApiFormRequest
         $data = parent::all($keys);
         return $data;
     }
-
 }

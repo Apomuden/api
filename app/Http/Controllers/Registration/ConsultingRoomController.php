@@ -25,7 +25,7 @@ class ConsultingRoomController extends Controller
      */
     public function index()
     {
-       return ApiResponse::withOk('Consulting rooms list',ConsultingRoomResource::collection($this->repository->all('description')));
+        return ApiResponse::withOk('Consulting rooms list', ConsultingRoomResource::collection($this->repository->all('description')));
     }
 
     /**
@@ -36,8 +36,8 @@ class ConsultingRoomController extends Controller
      */
     public function store(ConsultingRoomRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Consulting room created',new ConsultationResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Consulting room created', new ConsultationResource($record->refresh()));
     }
 
     /**
@@ -48,7 +48,7 @@ class ConsultingRoomController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->show($id);
+        $record = $this->repository->show($id);
         return ApiResponse::withOk('Consulting room found', new ConsultationResource($record));
     }
 
@@ -61,7 +61,7 @@ class ConsultingRoomController extends Controller
      */
     public function update(ConsultingRoomRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Consulting room updated', new ConsultationResource($record));
     }
 

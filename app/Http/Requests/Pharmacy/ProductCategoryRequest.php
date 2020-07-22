@@ -23,11 +23,11 @@ class ProductCategoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('productcategory')??null;
+        $id = $this->route('productcategory') ?? null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('product_categories','name',$id),
-            'product_type_id'=>'bail|'.($id?'sometimes':'required').'|exists:product_types,id',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('product_categories', 'name', $id),
+            'product_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:product_types,id',
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

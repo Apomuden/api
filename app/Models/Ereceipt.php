@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class Ereceipt extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
     protected $guarded = ['id'];
 

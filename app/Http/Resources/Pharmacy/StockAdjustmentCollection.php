@@ -15,7 +15,6 @@ class StockAdjustmentCollection extends PaginatedCollectionHelper
      */
     public function toArray($request, $coll = null)
     {
-        return parent::toArray($request,StockAdjustmentResource::collection($this->collection));
-
+        return parent::toArray($request, StockAdjustmentResource::collection($this->collection));
     }
 }

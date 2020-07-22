@@ -67,6 +67,6 @@ class PreviousPregnancyResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

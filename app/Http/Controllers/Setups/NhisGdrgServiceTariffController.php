@@ -25,31 +25,35 @@ class NhisGdrgServiceTariffController extends Controller
 
     public function __construct(NhisGdrgServiceTariff $nhisGdrgServiceTariff)
     {
-        $this->repository= new RepositoryEloquent($nhisGdrgServiceTariff);
+        $this->repository = new RepositoryEloquent($nhisGdrgServiceTariff);
     }
 
-    function index(){
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Nhis Gdrg Service Tariff list',NhisGdrgServiceTariffResource::collection($records));
+    function index()
+    {
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Nhis Gdrg Service Tariff list', NhisGdrgServiceTariffResource::collection($records));
     }
-    function show($id){
-        $nhisGdrgServiceTariff=$this->repository->show($id);//pass the country
-        return $nhisGdrgServiceTariff?
-        ApiResponse::withOk('Nhis Gdrg Service Tariff Found',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff))
+    function show($id)
+    {
+        $nhisGdrgServiceTariff = $this->repository->show($id);//pass the country
+        return $nhisGdrgServiceTariff ?
+        ApiResponse::withOk('Nhis Gdrg Service Tariff Found', new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff))
         : ApiResponse::withNotFound('Nhis Gdrg Service Tariff Found');
     }
 
-    function page(){
-        $records=$this->repository->paginate(null, 'gdrg_service_name');
+    function page()
+    {
+        $records = $this->repository->paginate(null, 'gdrg_service_name');
         return ApiResponse::withPaginate(new NhisServiceTariffPaginatedCollection($records, 'Nhis Gdrg Service Tariff Paginated List'));
     }
 
     
-   function store(NhisGdrgServiceTariffMultipleRequest $request){
-       $service_ids=[];
-       //DB::beginTransaction();
+    function store(NhisGdrgServiceTariffMultipleRequest $request)
+    {
+        $service_ids = [];
+        //DB::beginTransaction();
 
-               $payload=[
+               $payload = [
                     'gdrg_code' => $request->gdrg_code,
                     'gdrg_service_name' => $request->gdrg_service_name,
                     'major_diagnostic_category_id' => $request->major_diagnostic_category_id,
@@ -58,44 +62,44 @@ class NhisGdrgServiceTariffController extends Controller
                ];
                $service_tariff = $this->repository->store($payload);
 
-         //DB::commit();
-        return ApiResponse::withOk('Nhis Gdrg Service Tariffs created',new NhisGdrgServiceTariffResource($this->repository->find($service_tariff->id)));
-      /*  }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       } */
-   }
+          //DB::commit();
+               return ApiResponse::withOk('Nhis Gdrg Service Tariffs created', new NhisGdrgServiceTariffResource($this->repository->find($service_tariff->id)));
+       /*  }
+        catch(Exception $e){
+          return ApiResponse::withException($e);
+        } */
+    }
 
-   function map(NhisTariffMappingRequest $request){
+    function map(NhisTariffMappingRequest $request)
+    {
         DB::beginTransaction();
         $service_ids = [];
 
-      foreach($request->services as $service){
-          $this->repository->setModel(new Service);
-            $service_ids[] =$service['id'];
-          $this->repository->update(['nhis_child_tariff_id'=>$service['nhis_child_tariff_id'], 'nhis_adult_tariff_id'=>$service['nhis_adult_tariff_id']],$service['id']);
-      }
+        foreach ($request->services as $service) {
+            $this->repository->setModel(new Service());
+            $service_ids[] = $service['id'];
+            $this->repository->update(['nhis_child_tariff_id' => $service['nhis_child_tariff_id'], 'nhis_adult_tariff_id' => $service['nhis_adult_tariff_id']], $service['id']);
+        }
         DB::commit();
-        return ApiResponse::withOk('Services mapped successfully!', new ServiceCollection($this->repository->getModel()->whereIn('id',$service_ids)->get()));
-   }
+        return ApiResponse::withOk('Services mapped successfully!', new ServiceCollection($this->repository->getModel()->whereIn('id', $service_ids)->get()));
+    }
 
-   function update(NhisGdrgServiceTariffRequest $request,$id){
-       try{
-        $nhisGdrgServiceTariff=$this->repository->update($request->only([
+    function update(NhisGdrgServiceTariffRequest $request, $id)
+    {
+        try {
+            $nhisGdrgServiceTariff = $this->repository->update($request->only([
                 'gdrg_code',
                 'gdrg_service_name',
                 'major_diagnostic_category_id',
                 'age_group_id',
                 'status'
-        ])+['updated_at'=>now()],$id);
+            ]) + ['updated_at' => now()], $id);
 
-        return ApiResponse::withOk('Nhis Gdrg Service Tariff updated',new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Nhis Gdrg Service Tariff updated', new NhisGdrgServiceTariffResource($nhisGdrgServiceTariff));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

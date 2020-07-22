@@ -43,6 +43,6 @@ class ObstetricQuestionResponseResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

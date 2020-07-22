@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SocialHistory extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function social_history_category()

@@ -15,6 +15,5 @@ class DepartmentCollection extends ResourceCollection
     public function toArray($request)
     {
         return  DepartmentResource::collection($this->collection);
-
     }
 }

@@ -15,11 +15,11 @@ class AgeCategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(isset($this->id)) {
+        if (isset($this->id)) {
             $age_classification = $this->age_classification ?? null;
             $age_group = $this->age_group ?? null;
             return [
-                'id'=>$this->id,
+                'id' => $this->id,
                 'description' => $this->description,
                 'age_classification_name' => $age_classification->name ?? null,
                 'age_classification_id' => $age_classification->id ?? null,
@@ -31,8 +31,8 @@ class AgeCategoryResource extends JsonResource
                 'max_comparator' => $this->max_comparator,
                 'max_age' => $this->max_age,
                 'status' => $this->status,
-                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+                'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

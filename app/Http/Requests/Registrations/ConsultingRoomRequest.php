@@ -24,11 +24,11 @@ class ConsultingRoomRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('consultingroom')??null;
+        $id = $this->route('consultingroom') ?? null;
         return [
-            'description'=>'bail|required|'.$this->softUnique('consulting_rooms','description',$id),
-            'gender'=>'bail|required|set:MALE,FEMALE,BIGENDER',
-            'status'=>'bail|required|in:ACTIVE,INACTIVE'
+            'description' => 'bail|required|' . $this->softUnique('consulting_rooms', 'description', $id),
+            'gender' => 'bail|required|set:MALE,FEMALE,BIGENDER',
+            'status' => 'bail|required|in:ACTIVE,INACTIVE'
         ];
     }
 }

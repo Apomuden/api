@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Http\Controllers\Obstetrics;
-
 
 use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Obstetrics\ObsFamilyInformationRequest;
@@ -44,7 +42,7 @@ class ObsFamilyInformationController
 //        }
     }
 
-        public function update(ObsFamilyInformationRequest $request, $id)
+    public function update(ObsFamilyInformationRequest $request, $id)
     {
         try {
             $info = $this->repository->update($request->all(), $id);

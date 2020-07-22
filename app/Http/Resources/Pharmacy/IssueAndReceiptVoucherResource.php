@@ -30,6 +30,6 @@ class IssueAndReceiptVoucherResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

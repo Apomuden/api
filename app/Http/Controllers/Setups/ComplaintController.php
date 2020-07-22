@@ -23,8 +23,8 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Complaints list',ComplaintResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Complaints list', ComplaintResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class ComplaintController extends Controller
      */
     public function store(ComplaintRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Complaint created',new ComplaintResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Complaint created', new ComplaintResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class ComplaintController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Complaint found',new ComplaintResource($record));
+        return ApiResponse::withOk('Complaint found', new ComplaintResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class ComplaintController extends Controller
      */
     public function update(ComplaintRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Complaint updated', new ComplaintResource($record));
     }
 

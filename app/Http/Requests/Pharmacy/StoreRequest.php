@@ -23,10 +23,10 @@ class StoreRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('store')??null;
+        $id = $this->route('store') ?? null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('stores','name',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('stores', 'name', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

@@ -24,11 +24,11 @@ class LabSampleTypeRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('sampletype');
+        $id = $this->route('sampletype');
         return [
-            'name'=>'bail|string|'.$this->softUnique('lab_sample_types','name',$id),
-            'prefix'=>'bail|string|max:3|'.$this->softUnique('lab_sample_types', 'prefix',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|string|' . $this->softUnique('lab_sample_types', 'name', $id),
+            'prefix' => 'bail|string|max:3|' . $this->softUnique('lab_sample_types', 'prefix', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

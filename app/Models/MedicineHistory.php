@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MedicineHistory extends AuditableModel
 {
-    use FindByTrait, SortableTrait, SoftDeletes;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function medicine_history_category()

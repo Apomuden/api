@@ -24,8 +24,8 @@ class ComplaintTypeController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Complaint types list',ComplaintTypeResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Complaint types list', ComplaintTypeResource::collection($records));
     }
 
     /**
@@ -36,8 +36,8 @@ class ComplaintTypeController extends Controller
      */
     public function store(IllnessTypeRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Complaint type created',new ComplaintTypeResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Complaint type created', new ComplaintTypeResource($record));
     }
 
     /**
@@ -49,7 +49,7 @@ class ComplaintTypeController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Complaint type found',new ComplaintTypeResource($record));
+        return ApiResponse::withOk('Complaint type found', new ComplaintTypeResource($record));
     }
 
     /**
@@ -61,7 +61,7 @@ class ComplaintTypeController extends Controller
      */
     public function update(ComplaintTypeRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Complaint type updated', new ComplaintTypeResource($record));
     }
 

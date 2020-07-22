@@ -12,30 +12,39 @@ use Illuminate\Support\Facades\Auth;
 
 class StockAdjustment extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes, ReferenceNumberGeneratorTrait;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+    use ReferenceNumberGeneratorTrait;
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        static::creating(function($model){
-            $model->reference_number = $model->reference_number??ReferenceNumberGeneratorTrait::generate($model->getModel());
+        static::creating(function ($model) {
+            $model->reference_number = $model->reference_number ?? ReferenceNumberGeneratorTrait::generate($model->getModel());
             $model->adjusted_by = Auth::id();
         });
     }
 
-    public function user_approved() {
+    public function user_approved()
+    {
         return $this->belongsTo(User::class, 'approved_by');
     }
 
-    public function user_requested() {
+    public function user_requested()
+    {
         return $this->belongsTo(User::class, 'requested_by');
     }
 
-    public function store() {
+    public function store()
+    {
         return $this->belongsTo(Store::class);
     }
 
-    public function stock_adjustment_product() {
+    public function stock_adjustment_product()
+    {
         return $this->hasMany(StockAdjustmentProduct::class, 'reference_number');
     }
 }

@@ -21,7 +21,11 @@ use Illuminate\Support\Facades\Log;
  */
 class Patient extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
     private $age_unit;
     public static function boot()
@@ -34,10 +38,10 @@ class Patient extends AuditableModel
 
             $model->patient_id = IDGenerator::getNewPatientID(($model->reg_status ?? null));
 
-            $model->photo = FileResolver::base64ToFile($model->signature, str_replace('/','-',$model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
+            $model->photo = FileResolver::base64ToFile($model->signature, str_replace('/', '-', $model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
 
             //Passing the Billing References
-            $repository = new RepositoryEloquent(new FundingType);
+            $repository = new RepositoryEloquent(new FundingType());
 
             $funding_type = $repository->find($model->funding_type_id);
             $model->billing_system_id = $funding_type->billing_system_id;
@@ -55,10 +59,11 @@ class Patient extends AuditableModel
                 if (strtoupper($folder->folder_type) == 'FAMILY') {
                     $postFix = $folder->patients()->where('postfix', '!=', null)->max('postfix');
 
-                    if ($postFix)
+                    if ($postFix) {
                         $postFix++;
-                    else
+                    } else {
                         $postFix = 'a';
+                    }
 
                     $model->postfix = $postFix;
                     $model->save();
@@ -72,10 +77,10 @@ class Patient extends AuditableModel
 
                 $model->id_expiry_date = DateHelper::toDBDate($model->id_expiry_date);
 
-                $model->photo = FileResolver::base64ToFile($model->photo, str_replace('/','-',$model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
+                $model->photo = FileResolver::base64ToFile($model->photo, str_replace('/', '-', $model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
 
                 //Passing the Billing References
-                $repository = new RepositoryEloquent(new FundingType);
+                $repository = new RepositoryEloquent(new FundingType());
                 $funding_type = $repository->find($model->funding_type_id);
                 $model->billing_system_id = $funding_type->billing_system_id;
                 $model->billing_cycle_id = $funding_type->billing_cycle_id;
@@ -83,7 +88,7 @@ class Patient extends AuditableModel
                 $model->payment_channel_id = $funding_type->payment_channel_id;
                 $model->sponsorship_type_id = $funding_type->sponsorship_type_id;
 
-                $original =$model->getOriginal();
+                $original = $model->getOriginal();
                 if (isset($model->folder_id) && $original['folder_id'] != $model->folder_id) {
                     $model->folders()->detach($original['folder_id']);
 
@@ -91,19 +96,21 @@ class Patient extends AuditableModel
                     if (strtoupper($folder->folder_type) == 'FAMILY') {
                         $postFix = $folder->patients()->where('postfix', '!=', null)->max('postfix');
 
-                        if ($postFix)
+                        if ($postFix) {
                             $postFix++;
-                        else
+                        } else {
                             $postFix = 'a';
+                        }
 
                         $model->postfix = $postFix;
                     }
                 }
-                if ($model->isDirty('folder_id'))
+                if ($model->isDirty('folder_id')) {
                     //Attach Patient to folder
                     $model->folders()->attach($model->folder_id);
-
-            } catch (Exception $e) {}
+                }
+            } catch (Exception $e) {
+            }
         });
     }
 
@@ -158,8 +165,9 @@ class Patient extends AuditableModel
 
     public function getAgeUnitAttribute()
     {
-        if (!$this->age_unit)
+        if (!$this->age_unit) {
             $this->absage;
+        }
 
         return $this->age_unit;
     }

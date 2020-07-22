@@ -24,8 +24,8 @@ class AllergyHistoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Allergy histories list',AllergyHistoryResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Allergy histories list', AllergyHistoryResource::collection($records));
     }
 
     /**
@@ -36,8 +36,8 @@ class AllergyHistoryController extends Controller
      */
     public function store(AllergyHistoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Allergy histories created',new AllergyHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Allergy histories created', new AllergyHistoryResource($record));
     }
 
     /**
@@ -49,7 +49,7 @@ class AllergyHistoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Allergy history found',new AllergyHistoryResource($record));
+        return ApiResponse::withOk('Allergy history found', new AllergyHistoryResource($record));
     }
 
     /**
@@ -61,7 +61,7 @@ class AllergyHistoryController extends Controller
      */
     public function update(AllergyHistoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Allergy history updated', new AllergyHistoryResource($record));
     }
 

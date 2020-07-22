@@ -18,7 +18,7 @@ class InvestigationController extends Controller
     protected $repository;
     public function __construct(Investigation $investigation)
     {
-        $this->repository = new RepositoryEloquent($investigation,true, 'lab_test_results');
+        $this->repository = new RepositoryEloquent($investigation, true, 'lab_test_results');
     }
     /**
      * Display a listing of the resource.
@@ -32,13 +32,15 @@ class InvestigationController extends Controller
         return ApiResponse::withOk('Investigations list', InvestigationResource::collection($records));
     }
 
-    public function hierarchyIndex(){
+    public function hierarchyIndex()
+    {
         $records = $this->repository->all('created_at');
         return ApiResponse::withOk('Investigations results list', InvestigationResultHierarchicalResource::collection($records));
     }
-    public function hierarchyShow($investigation_id){
+    public function hierarchyShow($investigation_id)
+    {
         $record = $this->repository->find($investigation_id);
-        return ApiResponse::withOk('Investigations results found',new InvestigationResultHierarchicalResource($record));
+        return ApiResponse::withOk('Investigations results found', new InvestigationResultHierarchicalResource($record));
     }
     /**
      * Store a newly created resource in storage.

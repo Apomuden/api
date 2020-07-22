@@ -14,28 +14,28 @@ class PatientNextOfKinController extends Controller
     protected $repository;
     public function __construct()
     {
-       $this->repository=new RepositoryEloquent(new PatientNextOfKin,true,['relationship','patient']);
+        $this->repository = new RepositoryEloquent(new PatientNextOfKin(), true, ['relationship','patient']);
     }
     public function index()
     {
-        $patients=$this->repository->all('name');
-        return ApiResponse::withOk('Patient Next of Kins List',PatientNextOfKinResource::collection($patients));
+        $patients = $this->repository->all('name');
+        return ApiResponse::withOk('Patient Next of Kins List', PatientNextOfKinResource::collection($patients));
     }
     public function store(PatientNextOfKinRequest $request)
     {
-        $patient=$this->repository->store($request->all());
+        $patient = $this->repository->store($request->all());
         return ApiResponse::withOk('Patient Next of Kin created', new PatientNextOfKinResource($patient->refresh()));
     }
 
     public function show($patientnextofkin)
     {
-        $patient=$this->repository->find($patientnextofkin);
+        $patient = $this->repository->find($patientnextofkin);
         return ApiResponse::withOk('Patient Next of Kin found', new PatientNextOfKinResource($patient));
     }
 
-    public function update(PatientNextOfKinRequest $request,$patientnextofkin)
+    public function update(PatientNextOfKinRequest $request, $patientnextofkin)
     {
-        $patient=$this->repository->update($request->all(),$patientnextofkin);
+        $patient = $this->repository->update($request->all(), $patientnextofkin);
         return ApiResponse::withOk('Patient Next of Kin updated', new PatientNextOfKinResource($patient));
     }
 

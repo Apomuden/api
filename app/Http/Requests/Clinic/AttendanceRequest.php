@@ -25,33 +25,33 @@ class AttendanceRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('attendance')??null;
+        $id = $this->route('attendance') ?? null;
 
-        $clinic_id=request()->input('clinic_id')??null;
+        $clinic_id = request()->input('clinic_id') ?? null;
 
-        $insured=request()->input('insured')??'YES';
+        $insured = request()->input('insured') ?? 'YES';
 
         return [
-            'patient_id'=>'bail|'.($id?'sometimes':'required').'|exists:patients,id',
-            'insured'=>'bail|sometimes|nullable|in:YES,NO',
-            'sponsor_id'=> ['bail',$insured=='YES'?'required':'sometimes', $insured == 'YES' ? 'required' : 'nullable',
-               Rule::exists('billing_sponsors','id')->where(function($query){
-                   $query->where('status','ACTIVE');
+            'patient_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:patients,id',
+            'insured' => 'bail|sometimes|nullable|in:YES,NO',
+            'sponsor_id' => ['bail',$insured == 'YES' ? 'required' : 'sometimes', $insured == 'YES' ? 'required' : 'nullable',
+               Rule::exists('billing_sponsors', 'id')->where(function ($query) {
+                   $query->where('status', 'ACTIVE');
                })
             ],
-            'clinic_id'=> [
+            'clinic_id' => [
                 'bail', ($id ? 'sometimes' : 'required'),
                  Rule::exists('clinics', 'id')->where(function ($query) {
                     $query->where('status', 'ACTIVE');
-                })
+                 })
             ],
-            'service_id'=> [
+            'service_id' => [
                 'bail', ($id ? 'sometimes' : 'required'),
-                Rule::exists('clinic_services', 'service_id')->where(function ($query) use($clinic_id) {
-                    $query->where('status', 'ACTIVE')->where('clinic_id',$clinic_id);
+                Rule::exists('clinic_services', 'service_id')->where(function ($query) use ($clinic_id) {
+                    $query->where('status', 'ACTIVE')->where('clinic_id', $clinic_id);
                 })
             ],
-            'attendance_date'=>'bail|sometimes|nullable|date'
+            'attendance_date' => 'bail|sometimes|nullable|date'
         ];
     }
 }

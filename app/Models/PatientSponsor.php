@@ -10,20 +10,26 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientSponsor extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            if ($model->benefit_type == 'SELF')
+            if ($model->benefit_type == 'SELF') {
                 $model->relation_id = null;
+            }
         });
 
         static::updating(function ($model) {
-            if ($model->benefit_type == 'SELF')
+            if ($model->benefit_type == 'SELF') {
                 $model->relation_id = null;
+            }
         });
     }
     public function sponsor()

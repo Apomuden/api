@@ -10,20 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Hospital extends AuditableModel
 {
     use FindByTrait;
+
     protected $guarded = [];
     public static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
             $model->logo = FileResolver::base64ToFile($model->logo, 'logo', 'logos') ?? null;
-            $model->claim_manager_signature = FileResolver::base64ToFile($model->claim_manager_signature,'claim-manager-sign', 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
-
+            $model->claim_manager_signature = FileResolver::base64ToFile($model->claim_manager_signature, 'claim-manager-sign', 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
         });
 
         static::updating(function ($model) {
             $model->logo = FileResolver::base64ToFile($model->logo, 'logo', 'logos') ?? null;
             $model->claim_manager_signature = FileResolver::base64ToFile($model->claim_manager_signature, 'claim-manager-sign', 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
-
         });
     }
     public function accreditations()

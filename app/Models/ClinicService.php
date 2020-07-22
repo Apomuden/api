@@ -11,7 +11,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClinicService extends AuditableModel
 {
-    use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
+    use SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+
     protected $guarded = [];
 
     public function clinic()
@@ -43,25 +47,25 @@ class ClinicService extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            $repository = new RepositoryEloquent(new Service);
+            $repository = new RepositoryEloquent(new Service());
             $service = $repository->find($model->service_id);
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
 
-            $repository = new RepositoryEloquent(new Clinic);
+            $repository = new RepositoryEloquent(new Clinic());
             $clinic = $repository->find($model->clinic_id);
             $model->clinic_type_id = $clinic->clinic_type_id;
         });
 
         static::updating(function ($model) {
-            $repository = new RepositoryEloquent(new Service);
+            $repository = new RepositoryEloquent(new Service());
             $service = $repository->find($model->service_id);
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
 
-            $repository = new RepositoryEloquent(new Clinic);
+            $repository = new RepositoryEloquent(new Clinic());
             $clinic = $repository->find($model->clinic_id);
             $model->clinic_type_id = $clinic->clinic_type_id;
         });

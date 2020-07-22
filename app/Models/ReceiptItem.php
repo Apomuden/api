@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReceiptItem extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
 }

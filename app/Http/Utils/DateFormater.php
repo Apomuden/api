@@ -2,12 +2,11 @@
 
 namespace App\Http\Utils;
 
-
 use Carbon\Carbon;
 
 class DateFormater
 {
-    public function __construct(String $date, String $displayDateFormat = "Y-m-d", String $displayDateTimeFormat = "c")
+    public function __construct(string $date, string $displayDateFormat = "Y-m-d", string $displayDateTimeFormat = "c")
     {
         $this->time = strtotime(strpos('/', $date) !== -1 ? str_replace('/', '-', $date) : (new Carbon($date))->isoFormat('D-M-Y H:m:s'));
         $this->displayDateFormat = $displayDateFormat;

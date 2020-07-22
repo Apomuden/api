@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Accreditation extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()

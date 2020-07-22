@@ -4,17 +4,19 @@ namespace App\Http\Routing;
 
 use Illuminate\Routing\ResourceRegistrar;
 
-class AppResourceRegistrar extends ResourceRegistrar{
+class AppResourceRegistrar extends ResourceRegistrar
+{
     protected function getResourceAction($resource, $controller, $method, $options)
     {
         $name = $this->getResourceRouteName($resource, $method, $options);
 
         $action = ['as' => $name, 'uses' => $controller . '@' . $method];
 
-        if(isset($options['tags']))
-        $action= array_merge($action, $options);
-        else if(isset($options['module'], $options['component']))
-            $action = array_merge($action, ['module'=> $options['module'], 'component'=>$options['component'], 'parent_module'=>($options['parent_module']??null)]);
+        if (isset($options['tags'])) {
+            $action = array_merge($action, $options);
+        } elseif (isset($options['module'], $options['component'])) {
+            $action = array_merge($action, ['module' => $options['module'], 'component' => $options['component'], 'parent_module' => ($options['parent_module'] ?? null)]);
+        }
 
         if (isset($options['middleware'])) {
             $action['middleware'] = $options['middleware'];

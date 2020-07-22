@@ -15,17 +15,18 @@ class LabSampleTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        $pivot=$this->pivot??null;
-        $data= [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'prefix'=>$this->prefix??null
+        $pivot = $this->pivot ?? null;
+        $data = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'prefix' => $this->prefix ?? null
         ];
 
-        if($pivot)
-        $data['order']=$pivot->order;
+        if ($pivot) {
+            $data['order'] = $pivot->order;
+        }
 
-        $data=$data+[
+        $data = $data + [
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)

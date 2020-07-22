@@ -22,13 +22,13 @@ class ClinicConsultServiceResource extends JsonResource
 
             return [
                 'id' => $this->id,
-                'display_name' => $this->name??$service_category->name??null,
-                'clinic_name'=>$clinic->name??null,
-                'clinic_id'=> $this->clinic_id??null,
-                'billing_cycle_name' => $billing_cycle->name??null,
-                'billing_cycle_id' => $this->billing_cycle_id??null,
-                'service_category_name' => $service_category->name??null,
-                'service_category_id' => $this->service_category_id??null,
+                'display_name' => $this->name ?? $service_category->name ?? null,
+                'clinic_name' => $clinic->name ?? null,
+                'clinic_id' => $this->clinic_id ?? null,
+                'billing_cycle_name' => $billing_cycle->name ?? null,
+                'billing_cycle_id' => $this->billing_cycle_id ?? null,
+                'service_category_name' => $service_category->name ?? null,
+                'service_category_id' => $this->service_category_id ?? null,
                 'price' => doubleval($this->price),
                 'duration' => $this->duration,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
@@ -36,6 +36,6 @@ class ClinicConsultServiceResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

@@ -26,8 +26,8 @@ class LabParameterController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Lab paramters list',LabParameterResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Lab paramters list', LabParameterResource::collection($records));
     }
 
     /**
@@ -38,8 +38,8 @@ class LabParameterController extends Controller
      */
     public function store(LabParameterRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Lab paramter created',new LabParameterResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Lab paramter created', new LabParameterResource($record));
     }
 
     /**
@@ -63,7 +63,7 @@ class LabParameterController extends Controller
      */
     public function update(LabParameterRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Lab paramter updated', new LabParameterResource($record));
     }
 
@@ -75,7 +75,7 @@ class LabParameterController extends Controller
      */
     public function destroy($id)
     {
-       $this->repository->delete($id);
+        $this->repository->delete($id);
         return ApiResponse::withOk('Lab paramter deleted');
     }
 }

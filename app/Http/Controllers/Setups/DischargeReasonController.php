@@ -23,8 +23,8 @@ class DischargeReasonController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Discharge reasons list',DischargeReasonResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Discharge reasons list', DischargeReasonResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class DischargeReasonController extends Controller
      */
     public function store(DischargeReasonRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Discharge reasons created',new DischargeReasonResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Discharge reasons created', new DischargeReasonResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class DischargeReasonController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Discharge reason found',new DischargeReasonResource($record));
+        return ApiResponse::withOk('Discharge reason found', new DischargeReasonResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class DischargeReasonController extends Controller
      */
     public function update(DischargeReasonRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Discharge reason updated', new DischargeReasonResource($record));
     }
 

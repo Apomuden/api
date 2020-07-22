@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use App\Http\Helpers\ApiResponse;
@@ -39,19 +40,23 @@ abstract class ApiFormRequest extends LaravelFormRequest
             ApiResponse::withValidationError($errors)
         );
     }
-    protected function softExists($table,$field){
+    protected function softExists($table, $field)
+    {
        
         return "exists:$table,$field,deleted_at,NULL";
     }
-    protected function softUnique($table,$field,$id){
+    protected function softUnique($table, $field, $id)
+    {
         return "unique:{$table},{$field},{$id},id,deleted_at,NULL";
     }
-    protected function softUniqueWith($table,$fields,$id){
-        $fields=trim($fields,",").',deleted_at';
-        Log::alert('Unique_with',["unique_with:{$table},{$fields}" . ($id ? ',' . $id : '')]);
-       return "unique_with:{$table},{$fields}".($id?','.$id:'');
+    protected function softUniqueWith($table, $fields, $id)
+    {
+        $fields = trim($fields, ",") . ',deleted_at';
+        Log::alert('Unique_with', ["unique_with:{$table},{$fields}" . ($id ? ',' . $id : '')]);
+        return "unique_with:{$table},{$fields}" . ($id ? ',' . $id : '');
     }
-    protected function websiteRegEx(){
+    protected function websiteRegEx()
+    {
         return 'regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
     }
     public function validationData()

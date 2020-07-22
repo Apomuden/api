@@ -17,26 +17,29 @@ class RegionController extends Controller
 
     public function __construct(Region $region)
     {
-        $this->repository= new RegionEloquent($region);
+        $this->repository = new RegionEloquent($region);
     }
 
-    function index(){
-        return ApiResponse::withOk('Region list',new RegionCollection($this->repository->all()));
+    function index()
+    {
+        return ApiResponse::withOk('Region list', new RegionCollection($this->repository->all()));
     }
 
-    function show($region){
-        $region=$this->repository->show($region);//pass the country
-        return $region?
-        ApiResponse::withOk('Region Found',new RegionResource($region))
+    function show($region)
+    {
+        $region = $this->repository->show($region);//pass the country
+        return $region ?
+        ApiResponse::withOk('Region Found', new RegionResource($region))
         : ApiResponse::withNotFound('Region Not Found');
     }
 
-   function showByCountry($country){
-       $this->repository->setModel(new Country());
-       $regions=$this->repository->find($country)->regions()->active()->orderBy('region_name')->get();
+    function showByCountry($country)
+    {
+        $this->repository->setModel(new Country());
+        $regions = $this->repository->find($country)->regions()->active()->orderBy('region_name')->get();
 
-       return $regions?
-       ApiResponse::withOk('Available Regions',new RegionCollection($regions))
-       : ApiResponse::withNotFound('Region Not Found');
-   }
+        return $regions ?
+        ApiResponse::withOk('Available Regions', new RegionCollection($regions))
+        : ApiResponse::withNotFound('Region Not Found');
+    }
 }

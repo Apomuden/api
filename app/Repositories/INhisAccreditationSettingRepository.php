@@ -1,5 +1,10 @@
 <?php
+
 namespace App\Repositories;
-interface INhisAccreditationSettingRepository{
-   function first();
+
+interface INhisAccreditationSettingRepository
+{
+
+
+    function first();
 }

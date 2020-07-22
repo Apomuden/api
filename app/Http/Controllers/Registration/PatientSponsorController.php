@@ -20,12 +20,12 @@ class PatientSponsorController extends Controller
     protected $repository;
     public function __construct(PatientSponsor $patientSponsor)
     {
-      $this->repository=new RepositoryEloquent($patientSponsor);
+        $this->repository = new RepositoryEloquent($patientSponsor);
     }
     public function index()
     {
 
-       return ApiResponse::withOk('Patient sponsors list',PatientSponsorResource::collection($this->repository->all('member_id')));
+        return ApiResponse::withOk('Patient sponsors list', PatientSponsorResource::collection($this->repository->all('member_id')));
     }
 
     /**
@@ -37,59 +37,63 @@ class PatientSponsorController extends Controller
     public function store(PatientSponsorRequest $request)
     {
         $request['user_id'] = Auth::id();
-       $sponsor= $this->repository->store($request->all());
+        $sponsor = $this->repository->store($request->all());
 
-       return ApiResponse::withOk('Patient sponsor created',new PatientSponsorResource($sponsor->refresh()));
+        return ApiResponse::withOk('Patient sponsor created', new PatientSponsorResource($sponsor->refresh()));
     }
 
-    public function storeMultiple(PatientSponsorMultipleRequest $request){
+    public function storeMultiple(PatientSponsorMultipleRequest $request)
+    {
         DB::beginTransaction();
 
         //Creating records
-        $patient_id=$request['patient_id'];
+        $patient_id = $request['patient_id'];
         $sponsors = $request['sponsors'];
 
-        $repository=new RepositoryEloquent(new Relationship);
-        $mother_relation=$repository->showWhere(['name'=>'mother'])->first();
+        $repository = new RepositoryEloquent(new Relationship());
+        $mother_relation = $repository->showWhere(['name' => 'mother'])->first();
 
-        $repositoryPolicy = new RepositoryEloquent(new SponsorshipPolicy);
+        $repositoryPolicy = new RepositoryEloquent(new SponsorshipPolicy());
 
-        $repositorySponsor = new RepositoryEloquent(new PatientSponsor);
+        $repositorySponsor = new RepositoryEloquent(new PatientSponsor());
 
-        $iterator=0;
-        $patient_ids=[];
-        foreach($sponsors as $sponsor){
-            if($sponsor['benefit_type']=='BABY' && $sponsor['relation_id']!=$mother_relation->id)
-            return ApiResponse::withValidationError([['sponsors.'.$iterator.'.relation_id'=> 'The selected sponsors.' . $iterator . '.relation_id is not correct for Baby Benefit type']]);
-
-            elseif($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['member_id' => $sponsor['member_id']])->first())
+        $iterator = 0;
+        $patient_ids = [];
+        foreach ($sponsors as $sponsor) {
+            if ($sponsor['benefit_type'] == 'BABY' && $sponsor['relation_id'] != $mother_relation->id) {
+                return ApiResponse::withValidationError([['sponsors.' . $iterator . '.relation_id' => 'The selected sponsors.' . $iterator . '.relation_id is not correct for Baby Benefit type']]);
+            } elseif ($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['member_id' => $sponsor['member_id']])->first()) {
                 return ApiResponse::withValidationError([['sponsors.' . $iterator . '.member_id' => ['The selected sponsors.' . $iterator . '.member_id already exists']]]);
-            elseif ($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['card_serial_no' => $sponsor['card_serial_no']])->first())
+            } elseif ($sponsor['benefit_type'] != 'BABY' && $repositorySponsor->findWhere(['card_serial_no' => $sponsor['card_serial_no']])->first()) {
                 return ApiResponse::withValidationError([['sponsors.' . $iterator . '.card_serial_no' => ['The selected sponsors.' . $iterator . '.card_serial_no no already exists']]]);
+            }
 
 
-            $sponsorship_type=null;
-            if(isset($sponsor['billing_sponsor_id']))
-            $sponsorship_type= strtolower(BillingSponsor::find($sponsor['billing_sponsor_id'])->sponsorship_type->name)?:null;
-            elseif (isset($sponsor['sponsorship_policy_id']))
-            $sponsorship_type=strtolower(SponsorshipPolicy::find($sponsor['sponsorship_policy_id'])->billing_sponsor->sponsorship_type->name)?:null;
+            $sponsorship_type = null;
+            if (isset($sponsor['billing_sponsor_id'])) {
+                $sponsorship_type = strtolower(BillingSponsor::find($sponsor['billing_sponsor_id'])->sponsorship_type->name) ?: null;
+            } elseif (isset($sponsor['sponsorship_policy_id'])) {
+                $sponsorship_type = strtolower(SponsorshipPolicy::find($sponsor['sponsorship_policy_id'])->billing_sponsor->sponsorship_type->name) ?: null;
+            }
 
-            if($sponsorship_type && $sponsorship_type== 'government insurance' && !(isset($sponsor['schema_code']) && $sponsor['schema_code']))
-            return ApiResponse::withValidationError([['sponsors.' . $iterator . '.schema_code' => ['The sponsors.' . $iterator . '.schema_code is required']]]);
+            if ($sponsorship_type && $sponsorship_type == 'government insurance' && !(isset($sponsor['schema_code']) && $sponsor['schema_code'])) {
+                return ApiResponse::withValidationError([['sponsors.' . $iterator . '.schema_code' => ['The sponsors.' . $iterator . '.schema_code is required']]]);
+            }
 
             $policiesCount = $repositoryPolicy->findWhere(['billing_sponsor_id' => $sponsor['billing_sponsor_id']])->count();
-            if($policiesCount && !($sponsor['sponsorship_policy_id']??null))
-            return ApiResponse::withValidationError([['sponsors.' . $iterator . '.sponsorship_policy_id' => ['The sponsors.' . $iterator . '.sponsorship_policy_id is required']]]);
+            if ($policiesCount && !($sponsor['sponsorship_policy_id'] ?? null)) {
+                return ApiResponse::withValidationError([['sponsors.' . $iterator . '.sponsorship_policy_id' => ['The sponsors.' . $iterator . '.sponsorship_policy_id is required']]]);
+            }
 
 
-            $sponsor['patient_id']=$patient_id;
-            $sponsor=$this->repository->store($sponsor);
-            $patient_ids[]=$sponsor->id;
+            $sponsor['patient_id'] = $patient_id;
+            $sponsor = $this->repository->store($sponsor);
+            $patient_ids[] = $sponsor->id;
             $iterator++;
         }
         DB::commit();
 
-        $sponsors= $this->repository->getModel()->whereIn('id',$patient_ids)->orderBy('priority')->get();
+        $sponsors = $this->repository->getModel()->whereIn('id', $patient_ids)->orderBy('priority')->get();
         return ApiResponse::withOk('Patient sponsors created', PatientSponsorResource::collection($sponsors));
     }
 
@@ -101,7 +105,7 @@ class PatientSponsorController extends Controller
      */
     public function show($patientsponsor)
     {
-        $patientsponsor=$this->repository->find($patientsponsor);
+        $patientsponsor = $this->repository->find($patientsponsor);
         return ApiResponse::withOk('Patient sponsor found', new PatientSponsorResource($patientsponsor));
     }
 
@@ -114,7 +118,7 @@ class PatientSponsorController extends Controller
      */
     public function update(PatientSponsorRequest $request, $patientsponsor)
     {
-        $patientsponsor=$this->repository->update($request->all(),$patientsponsor);
+        $patientsponsor = $this->repository->update($request->all(), $patientsponsor);
         return ApiResponse::withOk('Patient sponsor updated', new PatientSponsorResource($patientsponsor));
     }
 
@@ -126,7 +130,7 @@ class PatientSponsorController extends Controller
      */
     public function destroy($patientsponsor)
     {
-       $patientsponsor=$this->repository->delete($patientsponsor);
+        $patientsponsor = $this->repository->delete($patientsponsor);
         return ApiResponse::withOk('Patient sponsor deleted successfully');
     }
 }

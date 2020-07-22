@@ -1,4 +1,5 @@
 <?php
+
 //This is Request is for the current logged in user
 namespace App\Http\Requests\Registrations;
 
@@ -18,7 +19,7 @@ class PatientWithFolderRequest extends ApiFormRequest
         $id_type_id = \request()->input('id_type_id') ?? null;
         $id_type = null;
         if ($id_type_id) {
-            $repository = new  RepositoryEloquent(new IdType);
+            $repository = new  RepositoryEloquent(new IdType());
             $id_type = $repository->find($id_type_id);
         }
         return [
@@ -46,7 +47,7 @@ class PatientWithFolderRequest extends ApiFormRequest
             'second_language_id' => 'bail|sometimes|nullable|integer|exists:languages,id',
             'official_language_id' => 'bail|sometimes|nullable|integer|exists:languages,id',
             'id_type_id' => 'bail|sometimes|nullable|integer|in:' . ($id_type->id ?? null),
-            'id_no' => 'bail|' . ($id_type_id ? 'required' : 'sometimes|nullable') . '|'.$this->softUnique('patients','id_no',$id),
+            'id_no' => 'bail|' . ($id_type_id ? 'required' : 'sometimes|nullable') . '|' . $this->softUnique('patients', 'id_no', $id),
             'id_expiry_date' => 'bail|' . ($id_type_id && ($id_type && $id_type->expires) ? 'required' : 'sometimes|nullable') . '|date',
             'religion_id' => 'bail|sometimes|nullable|integer|exists:religions,id',
             'educational_level_id' => 'bail|sometimes|nullable|integer|exists:educational_levels,id',

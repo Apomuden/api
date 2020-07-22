@@ -15,17 +15,17 @@ class RoleResource extends JsonResource
      */
     public function toArray($request)
     {
-        if(isset($this->id)){
+        if (isset($this->id)) {
             return [
-                'id'=>$this->id,
-                'name'=>$this->name,
-                'description'=>$this->description,
-                'status'=>$this->status,
-                'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-                'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+                'id' => $this->id,
+                'name' => $this->name,
+                'description' => $this->description,
+                'status' => $this->status,
+                'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
+        } else {
+            return null;
         }
-        else
-           return NULL;
     }
 }

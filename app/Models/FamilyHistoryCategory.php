@@ -9,6 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FamilyHistoryCategory extends AuditableModel
 {
-    use FindByTrait, SortableTrait, SoftDeletes;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 }

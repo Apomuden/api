@@ -16,44 +16,46 @@ class NhisProviderLevelController extends Controller
 
     public function __construct(NhisProviderLevel $nhisProviderLevel)
     {
-        $this->repository= new RepositoryEloquent($nhisProviderLevel);
+        $this->repository = new RepositoryEloquent($nhisProviderLevel);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('NHIS Provider Level list',NhisProviderLevelResource::collection($this->repository->all('name')));
+        return ApiResponse::withOk('NHIS Provider Level list', NhisProviderLevelResource::collection($this->repository->all('name')));
     }
 
-    function show($NHIS){
-        $nhisProviderLevel=$this->repository->show($NHIS);//pass the country
-        return $nhisProviderLevel?
-        ApiResponse::withOk('NHIS Provider Level Found',new NhisProviderLevelResource($NHIS))
+    function show($NHIS)
+    {
+        $nhisProviderLevel = $this->repository->show($NHIS);//pass the country
+        return $nhisProviderLevel ?
+        ApiResponse::withOk('NHIS Provider Level Found', new NhisProviderLevelResource($NHIS))
         : ApiResponse::withNotFound('NHIS Provider Level Found');
     }
 
-   function store(NhisProviderLevelRequest $NHISRequest){
-       //try{
-           $requestData=$NHISRequest->all();
+    function store(NhisProviderLevelRequest $NHISRequest)
+    {
+        //try{
+           $requestData = $NHISRequest->all();
 
-           $nhisProviderLevel=$this->repository->store($requestData);
-        return ApiResponse::withOk('NHIS provider level created',new NhisProviderLevelResource($nhisProviderLevel->refresh()));
-      /*  }
+           $nhisProviderLevel = $this->repository->store($requestData);
+        return ApiResponse::withOk('NHIS provider level created', new NhisProviderLevelResource($nhisProviderLevel->refresh()));
+       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);
-       } */
-   }
+        } */
+    }
 
-   function update(NhisProviderLevelRequest $NHISRequest,$id){
-       try{
-        $nhisProviderLevel=$this->repository->update($NHISRequest->all(),$id);
+    function update(NhisProviderLevelRequest $NHISRequest, $id)
+    {
+        try {
+            $nhisProviderLevel = $this->repository->update($NHISRequest->all(), $id);
 
-        return ApiResponse::withOk('NHIS provider level updated',new NhisProviderLevelResource($nhisProviderLevel));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('NHIS provider level updated', new NhisProviderLevelResource($nhisProviderLevel));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

@@ -18,38 +18,40 @@ class ReceiptItemController extends Controller
 
     public function __construct(ReceiptItem $ReceiptItem)
     {
-        $this->repository= new RepositoryEloquent($ReceiptItem);
+        $this->repository = new RepositoryEloquent($ReceiptItem);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Receipt Items list',new ReceiptItemCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Receipt Items list', new ReceiptItemCollection($this->repository->all('name')));
     }
 
-    public function show($ReceiptItem){
-        $ReceiptItem=$this->repository->show($ReceiptItem);
-        return $ReceiptItem?
-            ApiResponse::withOk('Receipt Item Found',new ReceiptItemResource($ReceiptItem))
+    public function show($ReceiptItem)
+    {
+        $ReceiptItem = $this->repository->show($ReceiptItem);
+        return $ReceiptItem ?
+            ApiResponse::withOk('Receipt Item Found', new ReceiptItemResource($ReceiptItem))
             : ApiResponse::withNotFound('Receipt Item Not Found');
     }
 
-    public function store(ReceiptItemRequest $ReceiptItemRequest){
-        try{
-            $requestData=$ReceiptItemRequest->all();
-            $ReceiptItem=$this->repository->store($requestData);
-            return ApiResponse::withOk('Receipt Item created',new ReceiptItemResource($ReceiptItem->refresh()));
-        }
-        catch(Exception $e){
+    public function store(ReceiptItemRequest $ReceiptItemRequest)
+    {
+        try {
+            $requestData = $ReceiptItemRequest->all();
+            $ReceiptItem = $this->repository->store($requestData);
+            return ApiResponse::withOk('Receipt Item created', new ReceiptItemResource($ReceiptItem->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(ReceiptItemRequest $ReceiptItemRequest,$ReceiptItem){
-        try{
-            $ReceiptItem=$this->repository->update($ReceiptItemRequest->all(),$ReceiptItem);
-            return ApiResponse::withOk('Receipt Item updated',new ReceiptItemResource($ReceiptItem));
-        }
-        catch(Exception $e){
+    public function update(ReceiptItemRequest $ReceiptItemRequest, $ReceiptItem)
+    {
+        try {
+            $ReceiptItem = $this->repository->update($ReceiptItemRequest->all(), $ReceiptItem);
+            return ApiResponse::withOk('Receipt Item updated', new ReceiptItemResource($ReceiptItem));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

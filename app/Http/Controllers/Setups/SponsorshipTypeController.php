@@ -17,39 +17,41 @@ class SponsorshipTypeController extends Controller
 
     public function __construct(SponsorshipType $sponsorshipType)
     {
-        $this->repository= new RepositoryEloquent($sponsorshipType);
+        $this->repository = new RepositoryEloquent($sponsorshipType);
     }
 
-    function index(){
-        return ApiResponse::withOk('Sponsorship Type list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Sponsorship Type list', new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($sponsorshipType){
-        $sponsorshipType=$this->repository->show($sponsorshipType);//pass the country
-        return $sponsorshipType?
-        ApiResponse::withOk('Sponsorship Type Found',new GeneralResource($sponsorshipType))
+    function show($sponsorshipType)
+    {
+        $sponsorshipType = $this->repository->show($sponsorshipType);//pass the country
+        return $sponsorshipType ?
+        ApiResponse::withOk('Sponsorship Type Found', new GeneralResource($sponsorshipType))
         : ApiResponse::withNotFound('Sponsorship Type Not Found');
     }
 
-   function store(SponsorshipTypeRequest $sponsorshipTypeRequest){
-       try{
-           $requestData=$sponsorshipTypeRequest->all();
-           $sponsorshipType=$this->repository->store($requestData);
-           return ApiResponse::withOk('Sponsorship Type created',new GeneralResource($sponsorshipType->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
-   function update(SponsorshipTypeRequest $sponsorshipTypeRequest,$sponsorshipType){
-       try{
-        $sponsorshipType=$this->repository->update($sponsorshipTypeRequest->all(),$sponsorshipType);
-        return ApiResponse::withOk('Sponsorship Type updated',new GeneralResource($sponsorshipType));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function store(SponsorshipTypeRequest $sponsorshipTypeRequest)
+    {
+        try {
+            $requestData = $sponsorshipTypeRequest->all();
+            $sponsorshipType = $this->repository->store($requestData);
+            return ApiResponse::withOk('Sponsorship Type created', new GeneralResource($sponsorshipType->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
+    function update(SponsorshipTypeRequest $sponsorshipTypeRequest, $sponsorshipType)
+    {
+        try {
+            $sponsorshipType = $this->repository->update($sponsorshipTypeRequest->all(), $sponsorshipType);
+            return ApiResponse::withOk('Sponsorship Type updated', new GeneralResource($sponsorshipType));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

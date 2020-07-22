@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Clinic extends AuditableModel
 {
-    use SoftDeletes, ActiveTrait, FindByTrait, SortableTrait;
+    use SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+
     protected $guarded = [];
 
     public function age_group()

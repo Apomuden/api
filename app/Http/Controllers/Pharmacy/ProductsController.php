@@ -18,45 +18,53 @@ class ProductsController extends Controller
 
     public function __construct(Products $Products)
     {
-        $this->repository= new RepositoryEloquent($Products);
+        $this->repository = new RepositoryEloquent($Products);
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $paginate = trim(\request()->request->get('paginate'));
 
-        $paginate = $paginate=='false' ? false : true;
+        $paginate = $paginate == 'false' ? false : true;
         \request()->request->remove('paginate');
 
         return ApiResponse::withPaginate(
-            new ProductsCollection($this->repository->paginate(15,'brand_name'),
-                'Products List', $paginate));
+            new ProductsCollection(
+                $this->repository->paginate(15, 'brand_name'),
+                'Products List',
+                $paginate
+            )
+        );
     }
 
-    public function show($Products){
-        $Products=$this->repository->show($Products);
-        return $Products?
-            ApiResponse::withOk('Product Found',new ProductsResource($Products))
+    public function show($Products)
+    {
+        $Products = $this->repository->show($Products);
+        return $Products ?
+            ApiResponse::withOk('Product Found', new ProductsResource($Products))
             : ApiResponse::withNotFound('Product Not Found');
     }
 
-    public function store(ProductsRequest $ProductsRequest){
-        try{
-            $requestData=$ProductsRequest->all();
-            $Products=$this->repository->store($requestData);
-            return ApiResponse::withOk('Product created',
-                new ProductsResource($Products->refresh()));
-        }
-        catch(Exception $e){
+    public function store(ProductsRequest $ProductsRequest)
+    {
+        try {
+            $requestData = $ProductsRequest->all();
+            $Products = $this->repository->store($requestData);
+            return ApiResponse::withOk(
+                'Product created',
+                new ProductsResource($Products->refresh())
+            );
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(ProductsRequest $ProductsRequest,$Products){
-        try{
-            $Products=$this->repository->update($ProductsRequest->all(),$Products);
-            return ApiResponse::withOk('Product updated',new ProductsResource($Products));
-        }
-        catch(Exception $e){
+    public function update(ProductsRequest $ProductsRequest, $Products)
+    {
+        try {
+            $Products = $this->repository->update($ProductsRequest->all(), $Products);
+            return ApiResponse::withOk('Product updated', new ProductsResource($Products));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

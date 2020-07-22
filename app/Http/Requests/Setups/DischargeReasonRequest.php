@@ -23,10 +23,10 @@ class DischargeReasonRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('dischargereason')??null;
+        $id = $this->route('dischargereason') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('discharge_reasons','name',$id),
-            'status' => 'bail|'.($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('discharge_reasons', 'name', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

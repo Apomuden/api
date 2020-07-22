@@ -16,13 +16,13 @@ class ProductFormResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'name' => $this->name,
-            'product_type_name'=>$this->product_type->name??null,
-            'product_type_id'=>$this->product_type->id??null,
-            'status'=>$this->status,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+            'product_type_name' => $this->product_type->name ?? null,
+            'product_type_id' => $this->product_type->id ?? null,
+            'status' => $this->status,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

@@ -32,6 +32,6 @@ class RequisitionResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

@@ -18,22 +18,25 @@ class EreceiptController extends Controller
 
     public function __construct(Ereceipt $Ereceipt)
     {
-        $this->repository= new RepositoryEloquent($Ereceipt);
+        $this->repository = new RepositoryEloquent($Ereceipt);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('E-receipts list',new EreceiptCollection($this->repository->all('name')));
+        return ApiResponse::withOk('E-receipts list', new EreceiptCollection($this->repository->all('name')));
     }
 
-    public function show($Ereceipt){
-        $Ereceipt=$this->repository->show($Ereceipt);
-        return $Ereceipt?
-            ApiResponse::withOk('E-receipt Found',new EreceiptResource($Ereceipt))
+    public function show($Ereceipt)
+    {
+        $Ereceipt = $this->repository->show($Ereceipt);
+        return $Ereceipt ?
+            ApiResponse::withOk('E-receipt Found', new EreceiptResource($Ereceipt))
             : ApiResponse::withNotFound('E-receipt Not Found');
     }
 
-    public function store(EreceiptRequest $EreceiptRequest){
+    public function store(EreceiptRequest $EreceiptRequest)
+    {
         /*
         try{
             $requestData=$EreceiptRequest->all();
@@ -45,12 +48,12 @@ class EreceiptController extends Controller
         }*/
     }
 
-    public function update(EreceiptRequest $EreceiptRequest,$Ereceipt){
-        try{
-            $Ereceipt=$this->repository->update($EreceiptRequest->all(),$Ereceipt);
-            return ApiResponse::withOk('E-receipt updated',new EreceiptResource($Ereceipt));
-        }
-        catch(Exception $e){
+    public function update(EreceiptRequest $EreceiptRequest, $Ereceipt)
+    {
+        try {
+            $Ereceipt = $this->repository->update($EreceiptRequest->all(), $Ereceipt);
+            return ApiResponse::withOk('E-receipt updated', new EreceiptResource($Ereceipt));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

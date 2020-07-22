@@ -24,14 +24,14 @@ class LabParameterRangeRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('range');
+        $id = $this->route('range');
         return [
-            'lab_parameter_id'=> 'bail|'.($id?'sometimes':'required').'|integer|exists:lab_parameters,id|'.$this->softUniqueWith('lab_parameter_ranges', 'flag,lab_parameter_id,text_value,min_age,min_age_unit,max_age,max_age_unit,gender',$id),
-            'flag'=>'bail|sometimes|nullable|string',
-            'min_comparator'=> 'bail|sometimes|nullable|in:>,>=,<,<=,=',
-            'min_value'=> 'bail|sometimes|nullable|numeric',
-            'max_comparator'=> 'bail|sometimes|nullable|in:>,>=,<,<=,=',
-            'max_value'=> 'bail|sometimes|nullable|numeric',
+            'lab_parameter_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:lab_parameters,id|' . $this->softUniqueWith('lab_parameter_ranges', 'flag,lab_parameter_id,text_value,min_age,min_age_unit,max_age,max_age_unit,gender', $id),
+            'flag' => 'bail|sometimes|nullable|string',
+            'min_comparator' => 'bail|sometimes|nullable|in:>,>=,<,<=,=',
+            'min_value' => 'bail|sometimes|nullable|numeric',
+            'max_comparator' => 'bail|sometimes|nullable|in:>,>=,<,<=,=',
+            'max_value' => 'bail|sometimes|nullable|numeric',
 
             'min_age' => 'bail|sometimes|nullable|integer|numeric|min:0',
             'min_age_unit' => 'bail|sometimes|nullable|string|in:DAY,WEEK,MONTH,YEAR',
@@ -39,10 +39,10 @@ class LabParameterRangeRequest extends ApiFormRequest
             'max_age' => 'bail|sometimes|nullable|integer|numeric|min:0',
             'max_age_unit' => 'bail|sometimes|nullable|string|in:DAY,WEEK,MONTH,YEAR',
 
-            'text_value'=> 'bail|sometimes|nullable',
+            'text_value' => 'bail|sometimes|nullable',
 
-            'gender'=>'bail|'. ($id ? 'sometimes' : 'required').'|set:MALE,FEMALE',
-            'status'=>'bail|string|in:ACTIVE,INACTIVE'
+            'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|set:MALE,FEMALE',
+            'status' => 'bail|string|in:ACTIVE,INACTIVE'
         ];
     }
     /* public function withValidator($validator)

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SocialHistoryCategory extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 }

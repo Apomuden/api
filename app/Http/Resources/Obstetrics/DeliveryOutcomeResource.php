@@ -32,6 +32,6 @@ class DeliveryOutcomeResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

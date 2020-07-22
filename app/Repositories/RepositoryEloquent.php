@@ -42,8 +42,9 @@ class RepositoryEloquent implements IRepository
 
         if ($this->useCache) {
             $all = Cache::get($key);
-            if (!$searchParams && $all)
+            if (!$searchParams && $all) {
                 return $all;
+            }
             if ($this->with) {
                 $all = $this->useActiveTrait ? $this->model->with($this->with)->active() : $this->model->with($this->with);
                 $all = ($this->useFindBy && $searchParams) ? $all->findBy($searchParams) : $all;
@@ -76,8 +77,9 @@ class RepositoryEloquent implements IRepository
 
     public function paginate($paginate = 15, $sortBy = null, $order = 'ASC')
     {
-         if(!$paginate)
-         $paginate=15;
+        if (!$paginate) {
+            $paginate = 15;
+        }
         //Get the sort from the route params
         $urlSortBy = \request()->input('sortBy');
         $urlOrder = \request()->input('order');
@@ -89,26 +91,30 @@ class RepositoryEloquent implements IRepository
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
 
-        if(isset($searchParams['zlimit']))
-        $paginate= $searchParams['zlimit'];
+        if (isset($searchParams['zlimit'])) {
+            $paginate = $searchParams['zlimit'];
+        }
 
 
         $key = $this->cache_prefix . '->paginate';
 
         if (!$urlSortBy & $this->useCache) {
             $all = Cache::get($key);
-            if (!$searchParams && $all)
+            if (!$searchParams && $all) {
                 return $all;
+            }
 
-            if ($this->with)
+            if ($this->with) {
                 $all = $this->useActiveTrait ? $this->model->with($this->with)->active() : $this->model->with($this->with);
-            else
+            } else {
                 $all = $this->useActiveTrait ? $this->model->active() : $this->model;
+            }
         } else {
-            if ($this->with)
+            if ($this->with) {
                 $all = ($this->useActiveTrait ? $this->model->with($this->with)->active() : $this->model->with($this->with));
-            else
+            } else {
                 $all = ($this->useActiveTrait ? $this->model->active() : $this->model);
+            }
         }
 
         $all = $all && $sortBy ? $all->orderBy($sortBy, $order) : $all;
@@ -170,18 +176,21 @@ class RepositoryEloquent implements IRepository
 
         if ($this->useCache) {
             $record = Cache::get($key);
-            if ($record)
+            if ($record) {
                 return $record;
+            }
 
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->first();
-            else
+            } else {
                 $record = $this->model->first();
+            }
         } else {
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->first();
-            else
+            } else {
                 $record = $this->model->first();
+            }
         }
 
         return $this->cache($key, $record);
@@ -194,18 +203,21 @@ class RepositoryEloquent implements IRepository
 
         if ($this->useCache) {
             $record = Cache::get($key);
-            if ($record)
+            if ($record) {
                 return $record;
+            }
 
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->count();
-            else
+            } else {
                 $record = $this->model->count();
+            }
         } else {
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->count();
-            else
+            } else {
                 $record = $this->model->count();
+            }
         }
 
         return $this->cache($key, $record);
@@ -218,18 +230,21 @@ class RepositoryEloquent implements IRepository
 
         if ($this->useCache) {
             $record = Cache::get($key);
-            if ($record)
+            if ($record) {
                 return $record;
+            }
 
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->find($id);
-            else
+            } else {
                 $record = $this->model->find($id);
+            }
         } else {
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->find($id);
-            else
+            } else {
                 $record = $this->model->find($id);
+            }
         }
 
         return $this->cache($key, $record);
@@ -238,10 +253,11 @@ class RepositoryEloquent implements IRepository
     //find record by
     public function showWhere(array $where)
     {
-        if ($this->with)
+        if ($this->with) {
             $record = $this->model->with($this->with)->where($where);
-        else
+        } else {
             $record = $this->model->where($where);
+        }
 
         return $record;
     }
@@ -252,18 +268,21 @@ class RepositoryEloquent implements IRepository
         $key = $this->cache_prefix . '->find->' . $id;
         if ($this->useCache) {
             $record = Cache::get($key);
-            if ($record)
+            if ($record) {
                 return $record;
+            }
 
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->findOrFail($id);
-            else
+            } else {
                 $record = $this->model->findOrFail($id);
+            }
         } else {
-            if ($this->with)
+            if ($this->with) {
                 $record = $this->model->with($this->with)->findOrFail($id);
-            else
+            } else {
                 $record = $this->model->findOrFail($id);
+            }
         }
 
         return $this->cache($key, $record);
@@ -289,8 +308,9 @@ class RepositoryEloquent implements IRepository
     public function setModel($model, $with = null)
     {
         $this->model = $model;
-        if ($with)
+        if ($with) {
             $this->with = $with;
+        }
         $this->cache_prefix = class_basename($this->model);
 
         // return $this;
@@ -312,15 +332,17 @@ class RepositoryEloquent implements IRepository
 
     protected function cache($key, $value, $time = null)
     {
-        if ($time)
+        if ($time) {
             Cache::put($key, $value, $time);
-        else
+        } else {
             Cache::forever($key, $value);
+        }
 
         $searchParams = \request()->query();
 
-        if ($searchParams)
+        if ($searchParams) {
             $this->deletCache($key);
+        }
 
         return $value;
     }

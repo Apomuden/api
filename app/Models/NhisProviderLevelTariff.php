@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class NhisProviderLevelTariff extends AuditableModel
 {
-    use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use SortableTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
     protected $casts = [
         'tariff' => 'float',

@@ -15,20 +15,20 @@ class UserRemarkResource extends JsonResource
      */
     public function toArray($request)
     {
-        $user=$this->user;
-        $remarker=$this->remarker;
+        $user = $this->user;
+        $remarker = $this->remarker;
 
         return [
-            'id'=>$this->id,
-            'type'=>$this->type,
-            'user_id'=>$user->id??null,
-            'user_name'=>$user->fullname??null,
-            'remarker_id'=>$remarker->id,
-            'remarker_name'=>$remarker->fullname,
-            'remarks'=>$this->remarks,
-            'status'=>$this->status,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
+            'id' => $this->id,
+            'type' => $this->type,
+            'user_id' => $user->id ?? null,
+            'user_name' => $user->fullname ?? null,
+            'remarker_id' => $remarker->id,
+            'remarker_name' => $remarker->fullname,
+            'remarks' => $this->remarks,
+            'status' => $this->status,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

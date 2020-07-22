@@ -17,40 +17,42 @@ class PaymentChannelController extends Controller
 
     public function __construct(PaymentChannel $paymentChannel)
     {
-        $this->repository= new RepositoryEloquent($paymentChannel);
+        $this->repository = new RepositoryEloquent($paymentChannel);
     }
 
-    function index(){
-        return ApiResponse::withOk('Payment Channel list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Payment Channel list', new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($paymentChannel){
-        $paymentChannel=$this->repository->show($paymentChannel);//pass the country
-        return $paymentChannel?
-        ApiResponse::withOk('Payment Channel Found',new GeneralResource($paymentChannel))
+    function show($paymentChannel)
+    {
+        $paymentChannel = $this->repository->show($paymentChannel);//pass the country
+        return $paymentChannel ?
+        ApiResponse::withOk('Payment Channel Found', new GeneralResource($paymentChannel))
         : ApiResponse::withNotFound('Payment Channel Not Found');
     }
 
-   function store(PaymentChannelRequest $paymentChannelRequest){
-       try{
-           $requestData=$paymentChannelRequest->all();
-           $paymentChannel=$this->repository->store($requestData);
-           return ApiResponse::withOk('Payment Channel created',new GeneralResource($paymentChannel->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+    function store(PaymentChannelRequest $paymentChannelRequest)
+    {
+        try {
+            $requestData = $paymentChannelRequest->all();
+            $paymentChannel = $this->repository->store($requestData);
+            return ApiResponse::withOk('Payment Channel created', new GeneralResource($paymentChannel->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(PaymentChannelRequest $paymentChannelRequest,$paymentChannel){
-       try{
-        $paymentChannel=$this->repository->update($paymentChannelRequest->all(),$paymentChannel);
-        return ApiResponse::withOk('Payment Channel updated',new GeneralResource($paymentChannel));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function update(PaymentChannelRequest $paymentChannelRequest, $paymentChannel)
+    {
+        try {
+            $paymentChannel = $this->repository->update($paymentChannelRequest->all(), $paymentChannel);
+            return ApiResponse::withOk('Payment Channel updated', new GeneralResource($paymentChannel));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
     public function destroy($id)
     {

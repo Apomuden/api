@@ -16,11 +16,11 @@ class MedicineRouteResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
+            'id' => $this->id,
             'name' => $this->name,
-            'status'=>$this->status,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+            'status' => $this->status,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

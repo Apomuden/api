@@ -15,6 +15,5 @@ class DistrictCollection extends ResourceCollection
     public function toArray($request)
     {
         return  DistrictResource::collection($this->collection);
-
     }
 }

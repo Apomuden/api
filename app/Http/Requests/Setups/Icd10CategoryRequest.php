@@ -23,10 +23,10 @@ class Icd10CategoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('icd10category')??null;
+        $id = $this->route('icd10category') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('icd10_categories','name',$id),
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('icd10_categories', 'name', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

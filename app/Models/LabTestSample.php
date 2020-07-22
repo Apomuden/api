@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Log;
 
 class LabTestSample extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()
@@ -22,8 +24,9 @@ class LabTestSample extends AuditableModel
         parent::boot();
         static::creating(function ($model) {
             $user = Auth::guard('api')->user();
-            if (!$model->technician_id)
+            if (!$model->technician_id) {
                 $model->technician_id = $user->id;
+            }
 
             $model->user_id = $user->id;
 
@@ -49,8 +52,9 @@ class LabTestSample extends AuditableModel
             }
 
             $user = Auth::guard('api')->user();
-            if (!$model->technician_id)
+            if (!$model->technician_id) {
                 $model->technician_id = $user->id;
+            }
 
             $model->user_id = $user->id;
         });

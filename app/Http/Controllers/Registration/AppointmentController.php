@@ -16,12 +16,12 @@ class AppointmentController extends Controller
     protected $repository;
     public function __construct(Appointment $appointment)
     {
-        $this->repository=new RepositoryEloquent($appointment);
+        $this->repository = new RepositoryEloquent($appointment);
     }
     public function index()
     {
 
-        return ApiResponse::withOk('Appointments list',AppointmentResource::collection($this->repository->all('id')));
+        return ApiResponse::withOk('Appointments list', AppointmentResource::collection($this->repository->all('id')));
     }
 
     /**
@@ -33,16 +33,16 @@ class AppointmentController extends Controller
     public function store(AppointmentRequest $request)
     {
         $request['entered_by'] = Auth::id();
-        $sponsor= $this->repository->store($request->all());
+        $sponsor = $this->repository->store($request->all());
         if (isset($request['clinic_id'])) {
-            $clinic_type_id = ((new RepositoryEloquent(new Clinic))->find($request['clinic_id'])->first()->clinic_type_id)??null;
+            $clinic_type_id = ((new RepositoryEloquent(new Clinic()))->find($request['clinic_id'])->first()->clinic_type_id) ?? null;
             if ($clinic_type_id) {
                 $request['clinic_type_id'] = $clinic_type_id;
             }
             unset($clinic_type_id);
         }
 
-        return ApiResponse::withOk('Appointment created',new AppointmentResource($sponsor->refresh()));
+        return ApiResponse::withOk('Appointment created', new AppointmentResource($sponsor->refresh()));
     }
 
     /**
@@ -53,7 +53,7 @@ class AppointmentController extends Controller
      */
     public function show($appointment)
     {
-        $appointment=$this->repository->find($appointment);
+        $appointment = $this->repository->find($appointment);
         return ApiResponse::withOk('Appointment found', new AppointmentResource($appointment));
     }
 
@@ -66,7 +66,7 @@ class AppointmentController extends Controller
      */
     public function update(AppointmentRequest $request, $appointment)
     {
-        $appointment=$this->repository->update($request->all(),$appointment);
+        $appointment = $this->repository->update($request->all(), $appointment);
         return ApiResponse::withOk('Appointment updated', new AppointmentResource($appointment));
     }
 
@@ -78,7 +78,7 @@ class AppointmentController extends Controller
      */
     public function destroy($appointment)
     {
-        $appointment=$this->repository->delete($appointment);
+        $appointment = $this->repository->delete($appointment);
         return ApiResponse::withOk('Appointment deleted successfully');
     }
 }

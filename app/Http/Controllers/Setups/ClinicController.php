@@ -69,15 +69,13 @@ class ClinicController extends Controller
      * @param  \App\Models\Clinic  $clinic
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(ClinicRequest $request,$id)
+    public function update(ClinicRequest $request, $id)
     {
-        try{
+        try {
             $clinic = $this->repository->update($request->all(), $id);
 
             return ApiResponse::withOk('Clinic updated', new ClinicResource($clinic));
-
-        }
-        catch(Exception $e){
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
@@ -87,5 +85,4 @@ class ClinicController extends Controller
         $this->repository->delete($id);
         return ApiResponse::withOk('Clinic deleted successfully');
     }
-
 }

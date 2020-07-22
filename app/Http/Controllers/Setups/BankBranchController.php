@@ -26,60 +26,61 @@ class BankBranchController extends Controller
 
     public function __construct(BankBranch $bankBranch)
     {
-        $this->repository= new RepositoryEloquent($bankBranch);
+        $this->repository = new RepositoryEloquent($bankBranch);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('Bank Branch list',new BankBranchCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Bank Branch list', new BankBranchCollection($this->repository->all('name')));
     }
 
-    function show($bankBranch){
-        $bankBranch=$this->repository->show($bankBranch);//pass the country
-        return $bankBranch?
-        ApiResponse::withOk('Bank Branch Found',new BankBranchResource($bankBranch))
+    function show($bankBranch)
+    {
+        $bankBranch = $this->repository->show($bankBranch);//pass the country
+        return $bankBranch ?
+        ApiResponse::withOk('Bank Branch Found', new BankBranchResource($bankBranch))
         : ApiResponse::withNotFound('Bank Branch Not Found');
     }
 
-   function store(BankBranchRequest $bankBranchRequest){
-       //try{
-           $requestData=$bankBranchRequest->all();
+    function store(BankBranchRequest $bankBranchRequest)
+    {
+        //try{
+           $requestData = $bankBranchRequest->all();
 
-           $bankBranch=$this->repository->store($requestData);
-        return ApiResponse::withOk('Bank Branch created',new BankBranchResource($bankBranch->refresh()));
-      /*  }
+           $bankBranch = $this->repository->store($requestData);
+        return ApiResponse::withOk('Bank Branch created', new BankBranchResource($bankBranch->refresh()));
+       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);
-       } */
-   }
+        } */
+    }
 
-   function update(BankBranchRequest $bankRequest,$bankBranch){
-       try{
-        $bankBranch=$this->repository->update($bankRequest->all(),$bankBranch);
+    function update(BankBranchRequest $bankRequest, $bankBranch)
+    {
+        try {
+            $bankBranch = $this->repository->update($bankRequest->all(), $bankBranch);
 
-        return ApiResponse::withOk('Bank Branch updated',new BankBranchResource($bankBranch));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Bank Branch updated', new BankBranchResource($bankBranch));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Bank Branch deleted successfully');
     }
-   function showByBank($bank){
-       try{
-        $this->repository->setModel(new Bank);
-        $bankBranches=$this->repository->findOrFail($bank)->branches()->active()->orderBy('name')->get();
-        return $bankBranches?
-          ApiResponse::withOk('Available Bank Branches',new BankBranchCollection($bankBranches))
-          : ApiResponse::withNotFound('Not Bank Branches Found');
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-
-   }
+    function showByBank($bank)
+    {
+        try {
+            $this->repository->setModel(new Bank());
+            $bankBranches = $this->repository->findOrFail($bank)->branches()->active()->orderBy('name')->get();
+            return $bankBranches ?
+            ApiResponse::withOk('Available Bank Branches', new BankBranchCollection($bankBranches))
+            : ApiResponse::withNotFound('Not Bank Branches Found');
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 }

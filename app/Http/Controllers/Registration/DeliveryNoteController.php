@@ -23,7 +23,7 @@ class DeliveryNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Delivery notes list',DeliveryNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Delivery notes list', DeliveryNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class DeliveryNoteController extends Controller
      */
     public function store(DeliveryNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Delivery note created',new DeliveryNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Delivery note created', new DeliveryNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class DeliveryNoteController extends Controller
      */
     public function update(DeliveryNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Delivery note updated', new DeliveryNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Delivery note updated', new DeliveryNoteResource($record));
     }
 
     /**

@@ -35,8 +35,9 @@ class ServiceConsultationQuestionResource extends JsonResource
             'created_at' => DateHelper::toDisplayDateTime($pivot->created_at ?? $this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($pivot->updated_at ?? $this->updated_at)
         ];
-        if ($pivot)
+        if ($pivot) {
             $data['order'] = $pivot->order;
+        }
 
         return $data;
     }

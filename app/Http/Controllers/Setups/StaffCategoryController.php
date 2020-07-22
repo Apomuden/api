@@ -18,40 +18,42 @@ class StaffCategoryController extends Controller
 
     public function __construct(StaffCategory $category)
     {
-        $this->repository= new RepositoryEloquent($category);
+        $this->repository = new RepositoryEloquent($category);
     }
 
-    function index(){
-        return ApiResponse::withOk('Staff Category list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Staff Category list', new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($category){
-        $category=$this->repository->show($category);//pass the country
-        return $category?
-        ApiResponse::withOk('Staff Category Found',new GeneralResource($category))
+    function show($category)
+    {
+        $category = $this->repository->show($category);//pass the country
+        return $category ?
+        ApiResponse::withOk('Staff Category Found', new GeneralResource($category))
         : ApiResponse::withNotFound('Staff Category Not Found');
     }
 
-   function store(StaffCategoryRequest $staffCategoryRequest){
-       try{
-           $requestData=$staffCategoryRequest->all();
-           $category=$this->repository->store($requestData);
-           return ApiResponse::withOk('Staff Category created',new GeneralResource($category->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+    function store(StaffCategoryRequest $staffCategoryRequest)
+    {
+        try {
+            $requestData = $staffCategoryRequest->all();
+            $category = $this->repository->store($requestData);
+            return ApiResponse::withOk('Staff Category created', new GeneralResource($category->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(StaffCategoryRequest $staffCategoryRequest,$category){
-       try{
-        $category=$this->repository->update($staffCategoryRequest->all(),$category);
-        return ApiResponse::withOk('Staff Category updated',new GeneralResource($category));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function update(StaffCategoryRequest $staffCategoryRequest, $category)
+    {
+        try {
+            $category = $this->repository->update($staffCategoryRequest->all(), $category);
+            return ApiResponse::withOk('Staff Category updated', new GeneralResource($category));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
     public function destroy($id)
     {

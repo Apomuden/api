@@ -23,7 +23,7 @@ class RequisitionProductRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('dummyparam')??null; //TODO: Change the route param from dummyparam
+        $id = $this->route('dummyparam') ?? null; //TODO: Change the route param from dummyparam
 
         return [
             

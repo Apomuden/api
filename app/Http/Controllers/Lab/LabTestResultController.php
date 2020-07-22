@@ -27,9 +27,9 @@ class LabTestResultController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('parameter_order');
+        $records = $this->repository->all('parameter_order');
 
-        return ApiResponse::withOk('Lab results list',labTestResultResource::collection($records));
+        return ApiResponse::withOk('Lab results list', labTestResultResource::collection($records));
     }
 
     /**
@@ -40,12 +40,12 @@ class LabTestResultController extends Controller
      */
     public function store(LabResultRequest $request)
     {
-        $record=LabTestResult::updateOrCreate([
+        $record = LabTestResult::updateOrCreate([
             'investigation_id' => $request->investigation_id,
             'lab_parameter_id' => $request->lab_parameter_id,
-        ],$request->except(['investigation_id', 'lab_parameter_id']));
+        ], $request->except(['investigation_id', 'lab_parameter_id']));
         Artisan::call('cache:clear');
-        return ApiResponse::withOk('Lab result created',new labTestResultResource($record->refresh()));
+        return ApiResponse::withOk('Lab result created', new labTestResultResource($record->refresh()));
     }
 
     public function storeMultiple(LabResultMultipleRequest $request)
@@ -54,11 +54,11 @@ class LabTestResultController extends Controller
         $results = $request->results;
         $results_ids = [];
         foreach ($results as $result) {
-            $result=(array) $result;
+            $result = (array) $result;
             $record = LabTestResult::updateOrCreate([
                 'investigation_id' => $request->investigation_id,
                 'lab_parameter_id' => $result['lab_parameter_id'],
-            ], $request->except(['investigation_id', 'results'])+$result);
+            ], $request->except(['investigation_id', 'results']) + $result);
 
             $results_ids[] = $record->id;
         }
@@ -89,7 +89,7 @@ class LabTestResultController extends Controller
      */
     public function update(LabResultRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Lab result updated', new labTestResultResource($record));
     }
 

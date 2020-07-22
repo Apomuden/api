@@ -32,6 +32,6 @@ class GestationalWeekResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

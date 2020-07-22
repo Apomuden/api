@@ -15,12 +15,12 @@ class ConsultingRoomResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'description'=>$this->description,
-            'gender'=>$this->gender,
-            'status'=>$this->status,
-            'created_at'=>(string) $this->created_at,
-            'updated_at'=>(string) $this->updated_at,
+            'id' => $this->id,
+            'description' => $this->description,
+            'gender' => $this->gender,
+            'status' => $this->status,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
         ];
     }
 }

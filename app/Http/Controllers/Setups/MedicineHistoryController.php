@@ -23,8 +23,8 @@ class MedicineHistoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Medicine histories list',MedicineHistoryResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Medicine histories list', MedicineHistoryResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class MedicineHistoryController extends Controller
      */
     public function store(MedicineHistoryCategoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Medicine histories created',new MedicineHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Medicine histories created', new MedicineHistoryResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class MedicineHistoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Medicine history found',new MedicineHistoryResource($record));
+        return ApiResponse::withOk('Medicine history found', new MedicineHistoryResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class MedicineHistoryController extends Controller
      */
     public function update(MedicineHistoryCategoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Medicine history updated', new MedicineHistoryResource($record));
     }
 

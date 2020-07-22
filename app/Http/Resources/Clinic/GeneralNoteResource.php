@@ -18,20 +18,20 @@ class GeneralNoteResource extends JsonResource
         $patient = $this->patient ?? null;
         $folder = $patient->activefolder ?? null;
 
-        $user = $this->user??null;
-        $funding_type = $this->funding_type??null;
+        $user = $this->user ?? null;
+        $funding_type = $this->funding_type ?? null;
 
-        $sponsorship_type = $this->sponsorship_type??null;
-        $billing_sponsor = $this->billing_sponsor??null;
-        $sponsorship_policy = $this->sponsorship_policy??null;
-        $clinic_type = $this->clinic_type??null;
-        $clinic = $this->clinic??null;
-        $consultant = $this->consultant??null;
-        $canceller = $this->canceller??null;
+        $sponsorship_type = $this->sponsorship_type ?? null;
+        $billing_sponsor = $this->billing_sponsor ?? null;
+        $sponsorship_policy = $this->sponsorship_policy ?? null;
+        $clinic_type = $this->clinic_type ?? null;
+        $clinic = $this->clinic ?? null;
+        $consultant = $this->consultant ?? null;
+        $canceller = $this->canceller ?? null;
 
-        $consultation = $this->consultation??null;
+        $consultation = $this->consultation ?? null;
 
-        return isset($this->id)?[
+        return isset($this->id) ? [
             'id' => $this->id,
             'folder_no' => (($folder->folder_no ?? null) . ($patient->postfix ?? null)) ?? null,
             'patient_title' => $patient->title->name ?? null,
@@ -46,8 +46,8 @@ class GeneralNoteResource extends JsonResource
             'age_class_id' => $this->age_class_id ?? null,
 
             'consultation_id' => $this->consultation_id,
-            'consultation_service_name' => $this->consultation->service->description??null,
-            'consultation_service_id' => $this->consultation->consultation_service_id??null,
+            'consultation_service_name' => $this->consultation->service->description ?? null,
+            'consultation_service_id' => $this->consultation->consultation_service_id ?? null,
 
             'age' => $this->age ?? null,
             'patient_status' => $this->patient_status ?? null,
@@ -60,8 +60,8 @@ class GeneralNoteResource extends JsonResource
             'clinic_name' => $clinic->name ?? null,
             'clinic_id' => $clinic->id ?? null,
 
-            'user_name' => $user->fullname??null,
-            'user_id' => $user->id??null,
+            'user_name' => $user->fullname ?? null,
+            'user_id' => $user->id ?? null,
 
             'funding_type_name' => $funding_type->name ?? null,
             'funding_type_id' => $funding_type->id ?? null,
@@ -82,11 +82,11 @@ class GeneralNoteResource extends JsonResource
             'canceller_id' => $canceller->id ?? null,
 
             'cancelled_date' => $this->cancelled_date ? (string) $this->cancelled_date : null,
-            'notes'=>$this->notes,
+            'notes' => $this->notes,
             'status' => $this->status,
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-        ]:null;
+        ] : null;
     }
 }

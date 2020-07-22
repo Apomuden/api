@@ -40,8 +40,9 @@ class ObsFamilyInformationResource extends JsonResource
     public function toArray($request)
     {
         $dob = null;
-        if (isset($this->partner_dob))
+        if (isset($this->partner_dob)) {
             $dob = DateHelper::toDisplayDateTime($this->partner_dob);
+        }
         return [
             'id' => $this->id,
             'patient_id' => $this->patient_id,

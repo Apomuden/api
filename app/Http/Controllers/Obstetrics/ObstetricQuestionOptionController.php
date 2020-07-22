@@ -17,38 +17,40 @@ class ObstetricQuestionOptionController extends Controller
 
     public function __construct(ObstetricQuestionOption $ObstetricQuestionOption)
     {
-        $this->repository= new RepositoryEloquent($ObstetricQuestionOption);
+        $this->repository = new RepositoryEloquent($ObstetricQuestionOption);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('ObstetricQuestionOptions list',new ObstetricQuestionOptionCollection($this->repository->all('name')));
+        return ApiResponse::withOk('ObstetricQuestionOptions list', new ObstetricQuestionOptionCollection($this->repository->all('name')));
     }
 
-    public function show($ObstetricQuestionOption){
-        $ObstetricQuestionOption=$this->repository->show($ObstetricQuestionOption);
-        return $ObstetricQuestionOption?
-            ApiResponse::withOk('ObstetricQuestionOption Found',new ObstetricQuestionOptionResource($ObstetricQuestionOption))
+    public function show($ObstetricQuestionOption)
+    {
+        $ObstetricQuestionOption = $this->repository->show($ObstetricQuestionOption);
+        return $ObstetricQuestionOption ?
+            ApiResponse::withOk('ObstetricQuestionOption Found', new ObstetricQuestionOptionResource($ObstetricQuestionOption))
             : ApiResponse::withNotFound('ObstetricQuestionOption Not Found');
     }
 
-    public function store(ObstetricQuestionOptionRequest $ObstetricQuestionOptionRequest){
-        try{
-            $requestData=$ObstetricQuestionOptionRequest->all();
-            $ObstetricQuestionOption=$this->repository->store($requestData);
-            return ApiResponse::withOk('ObstetricQuestionOption created',new ObstetricQuestionOptionResource($ObstetricQuestionOption->refresh()));
-        }
-        catch(Exception $e){
+    public function store(ObstetricQuestionOptionRequest $ObstetricQuestionOptionRequest)
+    {
+        try {
+            $requestData = $ObstetricQuestionOptionRequest->all();
+            $ObstetricQuestionOption = $this->repository->store($requestData);
+            return ApiResponse::withOk('ObstetricQuestionOption created', new ObstetricQuestionOptionResource($ObstetricQuestionOption->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(ObstetricQuestionOptionRequest $ObstetricQuestionOptionRequest,$ObstetricQuestionOption){
-        try{
-            $ObstetricQuestionOption=$this->repository->update($ObstetricQuestionOptionRequest->all(),$ObstetricQuestionOption);
-            return ApiResponse::withOk('ObstetricQuestionOption updated',new ObstetricQuestionOptionResource($ObstetricQuestionOption));
-        }
-        catch(Exception $e){
+    public function update(ObstetricQuestionOptionRequest $ObstetricQuestionOptionRequest, $ObstetricQuestionOption)
+    {
+        try {
+            $ObstetricQuestionOption = $this->repository->update($ObstetricQuestionOptionRequest->all(), $ObstetricQuestionOption);
+            return ApiResponse::withOk('ObstetricQuestionOption updated', new ObstetricQuestionOptionResource($ObstetricQuestionOption));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

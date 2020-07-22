@@ -23,15 +23,15 @@ class StoreActivityRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('storeactivity')??null;
+        $id = $this->route('storeactivity') ?? null;
         return [
-            'store_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:stores,id|'.$this->softUnique('store_activities','store_id',$id),
-            'purchasing_from_suppliers'=>'bail|sometimes|boolean',
-            'receiving_from_suppliers'=>'bail|sometimes|boolean',
-            'issuing_requested_product'=>'bail|sometimes|boolean',
-            'requesting_products_from_stores'=>'bail|sometimes|boolean',
-            'receiving_issued_products'=>'bail|sometimes|boolean',
-            'direct_engagement_with_patient'=>'bail|sometimes|boolean'
+            'store_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:stores,id|' . $this->softUnique('store_activities', 'store_id', $id),
+            'purchasing_from_suppliers' => 'bail|sometimes|boolean',
+            'receiving_from_suppliers' => 'bail|sometimes|boolean',
+            'issuing_requested_product' => 'bail|sometimes|boolean',
+            'requesting_products_from_stores' => 'bail|sometimes|boolean',
+            'receiving_issued_products' => 'bail|sometimes|boolean',
+            'direct_engagement_with_patient' => 'bail|sometimes|boolean'
         ];
     }
 }

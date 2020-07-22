@@ -32,6 +32,6 @@ class ObsBirthPlaceResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

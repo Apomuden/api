@@ -24,10 +24,10 @@ class SocialHistoryCategoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('socialhistorycategory')??null;
+        $id = $this->route('socialhistorycategory') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('social_history_categories','name',$id),
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('social_history_categories', 'name', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

@@ -12,18 +12,18 @@ use Illuminate\Http\Request;
 
 class SponsorshipPolicyController extends Controller
 {
-   protected $repository;
+    protected $repository;
     public function __construct(SponsorshipPolicy $sponsorshipPolicy)
     {
-        $with=[
+        $with = [
             'billing_sponsor'
         ];
-        $this->repository=new RepositoryEloquent($sponsorshipPolicy,true,$with);
+        $this->repository = new RepositoryEloquent($sponsorshipPolicy, true, $with);
     }
     public function index()
     {
-       $policies=$this->repository->all('name');
-       return ApiResponse::withOk('Sponsor policies list',SponsorshipPolicyResource::collection($policies));
+        $policies = $this->repository->all('name');
+        return ApiResponse::withOk('Sponsor policies list', SponsorshipPolicyResource::collection($policies));
     }
 
     /**
@@ -32,8 +32,8 @@ class SponsorshipPolicyController extends Controller
      */
     public function store(SponsorshipPolicyRequest $request)
     {
-       $policy=$this->repository->store($request->all());
-       return ApiResponse::withOk('Sponsor policy created',new SponsorshipPolicyResource($policy->refresh()));
+        $policy = $this->repository->store($request->all());
+        return ApiResponse::withOk('Sponsor policy created', new SponsorshipPolicyResource($policy->refresh()));
     }
 
     /**
@@ -42,9 +42,9 @@ class SponsorshipPolicyController extends Controller
      */
     public function show($sponsorpolicy)
     {
-        $policy=$this->repository->find($sponsorpolicy);
+        $policy = $this->repository->find($sponsorpolicy);
         return
-        $policy?ApiResponse::withOk('Sponsor policy found', new SponsorshipPolicyResource($policy)):
+        $policy ? ApiResponse::withOk('Sponsor policy found', new SponsorshipPolicyResource($policy)) :
         ApiResponse::withNotFound('Sponsor policy not found');
     }
 
@@ -54,7 +54,7 @@ class SponsorshipPolicyController extends Controller
      */
     public function update(SponsorshipPolicyRequest $request, $sponsorpolicy)
     {
-        $policy=$this->repository->update($request->all(),$sponsorpolicy);
+        $policy = $this->repository->update($request->all(), $sponsorpolicy);
         return ApiResponse::withOk('Sponsor policy updated', new SponsorshipPolicyResource($policy));
     }
 

@@ -10,7 +10,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BillingSponsor extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function sponsorship_type()

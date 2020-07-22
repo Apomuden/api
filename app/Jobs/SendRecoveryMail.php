@@ -12,14 +12,17 @@ use Illuminate\Support\Facades\Mail;
 
 class SendRecoveryMail implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     private $name,$email,$password;
-    public function __construct($name,$email,$password)
+    public function __construct($name, $email, $password)
     {
-        $this->name=$name;
-        $this->email=$email;
-        $this->password=$password;
+        $this->name = $name;
+        $this->email = $email;
+        $this->password = $password;
     }
 
     /**
@@ -29,7 +32,7 @@ class SendRecoveryMail implements ShouldQueue
      */
     public function handle()
     {
-        $recoveryMail=new UserRecoveryMail($this->name,$this->password);
+        $recoveryMail = new UserRecoveryMail($this->name, $this->password);
          Mail::to($this->email)
         ->send($recoveryMail);
     }

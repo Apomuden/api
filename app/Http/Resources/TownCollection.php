@@ -15,6 +15,5 @@ class TownCollection extends ResourceCollection
     public function toArray($request)
     {
         return  TownResource::collection($this->collection);
-
     }
 }

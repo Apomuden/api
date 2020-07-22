@@ -10,16 +10,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends AuditableModel
 {
-    use ActiveTrait, SortableTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use SortableTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
 
     public function getDisplayNameAttribute()
     {
-        if ($this->description)
+        if ($this->description) {
             return $this->description;
-        else
+        } else {
             return $this->service_subcategory->name ?? $this->service_category->name;
+        }
     }
 
     public function hospital_service()

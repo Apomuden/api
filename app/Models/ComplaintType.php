@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComplaintType extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 }
