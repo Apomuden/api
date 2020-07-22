@@ -4,6 +4,7 @@ namespace App\Http\Helpers;
 
 use App\Http\Utils\DateFormater;
 use App\Models\AgeCategory;
+use App\Models\AgeGroup;
 use App\Models\Attendance;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
@@ -48,6 +49,28 @@ class DateHelper
     {
         return date('Y-m-d', strtotime($years . ' years ago'));
     }
+
+    static function getAgeGroups($dob){
+            $day_age = Carbon::now()->diffInDays(Carbon::parse($dob));
+
+            $year_age = Carbon::parse($dob)->age;
+
+            $month_age = Carbon::now()->diffInMonths(Carbon::parse($dob));
+
+            $ageGroup= AgeGroup::whereRaw("(
+                (min_age_unit='YEAR' and $year_age>= min_age)
+                 or (min_age_unit='MONTH' and $month_age>= min_age)
+                 or (min_age_unit='DAY' and $day_age>= min_age)
+            ) and (
+                 (max_age_unit='YEAR' and $year_age<= max_age)
+                 or (max_age_unit='MONTH' and $month_age<= max_age)
+                 or (max_age_unit='DAY' and $day_age<= max_age)
+                 or (max_age is null)
+            )")->orderBy('max_age_unit')->orderBy('max_age')->get();
+
+         return $ageGroup;
+    }
+
     static function getAgeCategory($age_class_id, $dob)
     {
 
@@ -66,7 +89,6 @@ class DateHelper
         $repository = new RepositoryEloquent(new AgeCategory());
         $age_categories = $repository
         ->findWhere(['age_classification_id' => $age_class_id])
-
         ->orderBy('min_age')
             ->get();
 
@@ -77,7 +99,7 @@ class DateHelper
                 } elseif ($age_category->max_comparator == '<' && $age_category->max_unit == $unit && $age < $age_category->max_age) {
                     return $age_category;
                 }
-                   continue;
+                continue;
             } elseif ($age_category->min_comparator == '>' && $age_category->min_unit == $unit && $age > $age_category->min_age) {
                 if ($age_category->max_comparator == '<=' && $age_category->max_unit == $unit && $age <= $age_category->max_age) {
                     return $age_category;

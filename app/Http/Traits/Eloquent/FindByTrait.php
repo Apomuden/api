@@ -77,9 +77,14 @@ trait FindByTrait
 
             if (in_array($first_key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($first_key, 'date')) {
                 $query = $query->whereDate($first_key, $paramObj->comparator, $paramObj->value);
-            } else {
+            }
+            else if (in_array($first_key, ['gender', 'patient_status']) && $paramObj->comparator!='like') {
+                $query = $query->whereRaw("find_in_set(?,$first_key)", [$paramObj->value]);
+            }
+            else {
                 $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
             }
+
             unset($params[0][$first_key], $params[$first_key]);
         }
 
@@ -98,7 +103,11 @@ trait FindByTrait
             } else {
                 if ($paramObj->comparator == '=') {
                     $query = $query->where($key, $paramObj->comparator, $paramObj->value);
-                } else {
+                }
+                 else if(in_array($key, ['gender', 'patient_status']) && $paramObj->comparator != 'like') {
+                    $query = $query->OrWhereRaw("find_in_set(?,$key)", [$paramObj->value]);
+                }
+                else {
                     $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
                 }
             }

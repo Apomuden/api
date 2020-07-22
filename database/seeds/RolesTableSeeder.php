@@ -12,13 +12,19 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        Role::insert([
+        $payload= [
             ['name' => 'Admin'],
             ['name' => 'Nurse'],
             ['name' => 'Doctor'],
             ['name' => 'Lab Technologist'],
             ['name' => 'Lab Technician'],
-            ['name' => 'Biomedical Scientist']
-        ]);
+            ['name' => 'Biomedical Scientist'],
+            ['name' => 'Cachier'],
+            ['name' => 'Records Attendant'],
+            ['name' => 'Records Supervisor'],
+            ['name' => 'Records Head']
+        ];
+        foreach($payload as $row)
+        Role::firstOrNew($row);
     }
 }

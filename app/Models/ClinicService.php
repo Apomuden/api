@@ -39,6 +39,8 @@ class ClinicService extends AuditableModel
     {
         return $this->belongsTo(Service::class);
     }
+
+    
     public function billing_cycle()
     {
         return $this->belongsTo(BillingCycle::class);

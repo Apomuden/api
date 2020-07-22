@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pricing;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Helpers\DateHelper;
 use App\Http\Requests\Lab\LabServiceParameterRequest;
 use App\Http\Requests\Lab\LabServiceSampleTypeRequest;
 use App\Http\Requests\Pricing\ServiceRequest;
@@ -11,6 +12,8 @@ use App\Http\Resources\Lab\LabParameterResource;
 use App\Http\Resources\Lab\LabSampleTypeResource;
 use App\Http\Resources\ServiceCollection;
 use App\Http\Resources\ServiceResource;
+use App\Models\Clinic;
+use App\Models\ClinicService;
 use App\Models\NhisAccreditationSetting;
 use App\Models\Patient;
 use App\Models\Service;
@@ -31,7 +34,65 @@ class ServiceController extends Controller
 
         return ApiResponse::withOk('Service List', new ServiceCollection($services));
     }
-    
+
+    //getting services by patient age and gender
+    function getServicesApplicableToPatient(){
+        $clinic_id = request('clinic_id');
+        $patient_id = request('patient_id');
+        $age = request('age');
+        $gender = request('gender');
+        $status=request('status');
+        $patient_status=request('patient_status');
+
+
+        if($patient_id)
+        {
+            $patient= (new RepositoryEloquent(new Patient))->find($patient_id);
+            $age=$age??$patient->age;
+
+            $gender=$gender??$patient->gender;
+        }
+
+        $age_groups = DateHelper::getAgeGroups(DateHelper::getDOB($age));
+
+        $in_age_groups=[];
+        if ($age_groups) {
+            foreach ($age_groups as $age_group)
+                $in_age_groups[] = $age_group->id;
+        }
+
+        if($clinic_id){
+            $services = Service::whereHas('clinic_services',function($q1) use($clinic_id){
+                $q1->where('clinic_id',$clinic_id);
+            })->orderBy('services.description');
+        }
+        else
+        $services=Service::orderBy('services.description');
+
+        if($in_age_groups)
+        $services=$services->whereIn('age_group_id',$in_age_groups);
+
+
+        if($status)
+        $services=$services->whereStatus($status);
+
+
+        $findBy=[];
+
+        if($patient_status)
+        $findBy['patient_status'] = "={$patient_status}";
+
+        if($gender)
+        $findBy['gender']= "={$gender}";
+
+        if($findBy)
+        $services=$services->findBy($findBy);
+
+        $services=$services->get();
+
+        return ApiResponse::withOk('Service List', new ServiceCollection($services));
+
+    }
     function getPrice()
     {
         $patient_id = request('patient_id');
