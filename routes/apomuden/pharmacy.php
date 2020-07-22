@@ -41,8 +41,8 @@ Route::apiResource('stores','Pharmacy\StoreController',[
 
 Route::apiResource('storeactivities','Pharmacy\StoreActivityController',[
     //'only'=>['index','show','store','update'],
-    //'module'=>null,
-    //'component'=>'storeactivities'
+    'module'=>null,
+    'component'=>'config.store.activity'
 ]);
 
 Route::apiResource('issueandreceiptvouchers','Pharmacy\IssueAndReceiptVoucherController',[
@@ -52,24 +52,38 @@ Route::apiResource('issueandreceiptvouchers','Pharmacy\IssueAndReceiptVoucherCon
 ]);
 
 
-Route::post('stockadjustments/approvals','Pharmacy\StockAdjustmentController@approve');
-Route::get('stockadjustments/approvals','Pharmacy\StockAdjustmentController@getApprovals');
+Route::post('stockadjustments/approvals','Pharmacy\StockAdjustmentController@approve',[
+    'module'=>'store',
+    'component'=> 'store.stock.adjustment.approval'
+]);
+Route::get('stockadjustments/approvals','Pharmacy\StockAdjustmentController@getApprovals',[
+    'module'=>'store',
+    'component'=> 'store.stock.adjustment.approval'
+]);
 Route::apiResource('stockadjustments','Pharmacy\StockAdjustmentController',[
     //'only'=>['index','show','store','update'],
-    'module'=>'account',
-    'component'=> 'account.stock.adjustment'
+    'module'=>'store',
+    'component'=> 'store.stock.adjustment'
 ]);
 
-Route::post('requisitions/approvals','Pharmacy\RequisitionController@approve');
-Route::get('requisitions/approvals','Pharmacy\RequisitionController@getApprovals');
+Route::post('requisitions/approvals','Pharmacy\RequisitionController@approve',[
+    'module'=>'store',
+    'component'=> 'store.requisition.approval'
+]);
+Route::get('requisitions/approvals','Pharmacy\RequisitionController@getApprovals',[
+    'module'=>'store',
+    'component'=> 'store.requisition.approval'
+]);
 Route::apiResource('requisitions','Pharmacy\RequisitionController',[
     //'only'=>['index','show','store','update'],
-    'module'=>'account',
-    'component'=> 'account.requisition'
+    'module'=>'store',
+    'component'=> 'store.requisition'
 ]);
 
-Route::apiResource('requisitions','Pharmacy\RequisitionController',[
+/*
+Route::apiResource('prescriptions','Pharmacy\PrescriptionController',[
     //'only'=>['index','show','store','update'],
-    'module'=>'account',
-    'component'=> 'account.requisition'
+    'module'=>'store',
+    'component'=> 'store.prescription'
 ]);
+*/

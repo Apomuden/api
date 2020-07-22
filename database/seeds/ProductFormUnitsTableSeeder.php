@@ -15,9 +15,9 @@ class ProductFormUnitsTableSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         $records = [
-            ['name'=>'Bottle'],
-            ['name'=>'Strip'],
-            ['name'=>'Pack']
+            ['name'=>'Bottle','unit_type'=>'VOLUME'],
+            ['name'=>'Strip','unit_type'=>'BASE'],
+            ['name'=>'Pack','unit_type'=>'BASE']
         ];
         foreach ($records as $record) {
             $record = array_merge($record, [
