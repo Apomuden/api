@@ -100,6 +100,12 @@ use Illuminate\Support\Facades\Route;
         'module' => 'security',
         'component' => 'security.module'
         ]);
+        
+        Route::get('modules/{module}/submodules', 'Auth\ModuleController@getSubmodules',[
+        //'only'=>['index','show','update','delete'],
+        'module' => 'security',
+        'component' => 'security.module'
+        ]);
 
         Route::apiResource('components','Auth\ComponentController',[
         //'only'=>['index','show','update','delete'],

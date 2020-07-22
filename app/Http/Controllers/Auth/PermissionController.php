@@ -31,26 +31,59 @@ class PermissionController extends Controller
     }
     function showHierarchy()
     {
-        //DB::enableQueryLog();
-        $modules = Module::active()->sortBy('name')->paginate(10);
+        $module=request('module');
+        $parent_tag=request('parent_tag');
+         $component= request('component');
+
+        $modules = Module::active()->sortBy('name');
+
+        if($module)
+        $modules->where('modules.id',$module)->orWhere('modules.tag',$module);
+
+        if($parent_tag)
+        $modules->where('modules.parent_tag',$parent_tag);
+
+        if($component)
+        $modules->whereHas('components',function($q1) use($component){
+               $q1->where('components.id',$component)->orWhere('components.tag',$component);
+        })->with(['components'=>function($q2) use($component){
+               $q2->where('components.id',$component)->orWhere('components.tag',$component)->take(1);
+        }]);
+
+        $modules=$modules->paginate(10);
         $records = new ModulePermissionsCollection($modules, "Components hierachy");
 
         return  ApiResponse::withPaginate($records);
     }
     function showHierarchyByRole($role)
     {
-        //DB::enableQueryLog();
-        // $modules = Module::active()->whereHas('roles', function ($q2) use ($role) {
-        //     $q2->where('roles.id', $role);
-        // })->sortBy('name')->paginate(10);
+
         $modules = Module::active()->with(['components'=>function($q1) use($role){
                     $q1->whereHas('roles',function($q2) use ($role){
                           $q2->where('roles.id', $role);
                     });
-        }])->sortBy('name')->paginate(10);
+        }])->sortBy('name');
+
+        $module = request('module');
+        $parent_tag = request('parent_tag');
+        $component = request('component');
+
+        if ($module)
+        $modules->where('modules.id', $module)->orWhere('modules.tag', $module);
+
+        if ($parent_tag)
+        $modules->where('modules.parent_tag', $parent_tag);
+
+        if ($component)
+        $modules->whereHas('components', function ($q1) use ($component) {
+            $q1->where('components.id', $component)->orWhere('components.tag', $component);
+        });
+
+
+        $modules=$modules->paginate(10);
         return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
     }
-   //get User Component Permissions
+    //get User Component Permissions
     function showPermissionHierarchy($user)
     {
         $modules = Module::active()->whereHas('users', function ($q2) use ($user) {

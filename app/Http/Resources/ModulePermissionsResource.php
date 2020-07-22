@@ -25,8 +25,14 @@ class ModulePermissionsResource extends JsonResource
             $parentComponents = [];
             //$parentSubmodules=[];
 
+            $componentParam = request('component');
+
             if (!ApiRequest::startsWith($this->tag, 'config1')) {
-                $components = $this->components()->orderBy('name')->get();
+                if($componentParam)
+                $components = $this->components()->where('components.tag',$componentParam)->orWhere('components.id',$componentParam)->orderBy('name')->take(1)->get();
+                else
+                    $components = $this->components()->orderBy('name')->get();
+
                 $components = ($components && count($components)) ? ComponentPermissionsResource::collection($components) : [];
             } else {
                 //Get setup parent module tags
@@ -34,7 +40,10 @@ class ModulePermissionsResource extends JsonResource
                 // foreach($subModules as $subModule){
                 //     $parentSubmodules[$subModule->parent_tag][] = new ModulePermissionsResource($$subModule);
                 // }
-                $components = $this->components()->orderBy('name')->get();
+                if ($componentParam)
+                    $components = $this->components()->where('components.tag', $componentParam)->orWhere('components.id', $componentParam)->orderBy('name')->take(1)->get();
+                else
+                    $components = $this->components()->orderBy('name')->get();
                 foreach ($components as $component) {
                     if (!$component->parent_tag) {
                         continue;

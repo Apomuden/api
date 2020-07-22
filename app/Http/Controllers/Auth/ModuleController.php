@@ -29,4 +29,12 @@ class ModuleController extends Controller
         ApiResponse::withOk('Module Found', new GeneralResource($module))
         : ApiResponse::withNotFound('Module Not Found');
     }
+
+    function getSubmodules($module){
+        $module = $this->repository->findWhere(['id'=>$module])->orWhere('tag',$module)->first();//pass the country
+
+        $subModules=Module::where('parent_tag',$module->tag)->orderBy('name')->get();
+        return ApiResponse::withOk('Sub Modules list', new GeneralCollection($subModules));
+
+    }
 }
