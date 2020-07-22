@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TreatmentPlanNote extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
     public function age_class()
     {
@@ -39,7 +43,7 @@ class TreatmentPlanNote extends AuditableModel
     }
     public function user()
     {
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
     public static function boot()
     {
@@ -49,16 +53,17 @@ class TreatmentPlanNote extends AuditableModel
             $model->user_id = $user->id;
 
             $consultation = $model->consultation;
-            if ($consultation && !$model->patient_id)
+            if ($consultation && !$model->patient_id) {
                 $model->patient_id = $consultation->patient_id;
+            }
 
             $model->clinic_type_id = $consultation->clinic_type_id ?? null;
             $model->clinic_id = $consultation->clinic_id ?? null;
 
             $patient =  $model->patient;
-            $model->gender =$patient->gender;
+            $model->gender = $patient->gender;
 
-            if($consultation) {
+            if ($consultation) {
                 $model->billing_sponsor_id = $consultation->billing_sponsor_id;
                 $model->sponsorship_policy_id = $consultation->sponsorship_policy_id;
                 $model->sponsorship_type_id = $consultation->sponsorship_type_id;
@@ -76,7 +81,7 @@ class TreatmentPlanNote extends AuditableModel
                 $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
                 //age class and group
-                $repository = new RepositoryEloquent(new AgeClassification);
+                $repository = new RepositoryEloquent(new AgeClassification());
                 $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
                 $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
@@ -112,7 +117,7 @@ class TreatmentPlanNote extends AuditableModel
                 $model->age_group_id = $consultation->age_group_id;
                 $model->consultation_date = $consultation->start_date;
                 $model->age = $consultation->age;
-            } else if ($model->isDirty('patient_id')) {
+            } elseif ($model->isDirty('patient_id')) {
                 $patient = $model->patient;
                 $model->gender = $patient->gender;
                 $patient_sponsor = $patient->patient_sponsors()->orderBy('priority', 'asc')->first();
@@ -122,7 +127,7 @@ class TreatmentPlanNote extends AuditableModel
                 $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
                 //age class and group
-                $repository = new RepositoryEloquent(new AgeClassification);
+                $repository = new RepositoryEloquent(new AgeClassification());
                 $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
                 $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);

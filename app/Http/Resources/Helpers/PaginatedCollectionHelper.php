@@ -13,7 +13,7 @@ class PaginatedCollectionHelper extends ResourceCollection
     //pagination and resource must be defined to allow pagination
     public $pagination, $resource, $isPaginated, $message;
 
-    public function __construct($resource,  $message=null, $isPaginated=false)
+    public function __construct($resource, $message = null, $isPaginated = false)
     {
         $this->isPaginated = $isPaginated;
         $this->resource = $resource;
@@ -26,21 +26,20 @@ class PaginatedCollectionHelper extends ResourceCollection
         parent::__construct($resource);
     }
 
-    public function toArray($request, $resource=null)
+    public function toArray($request, $resource = null)
     {
         $dataCount = count($this->collection);
-        $data=[
-            'errorCode'=>'000',
-            'taggedAs'=>$this->message?$this->message:'No records found',
-            'dataCount'=>$dataCount,
-            'data'=>$resource,
+        $data = [
+            'errorCode' => '000',
+            'taggedAs' => $this->message ? $this->message : 'No records found',
+            'dataCount' => $dataCount,
+            'data' => $resource,
         ];
         if ($this->isPaginated === true) {
             if ($dataCount && $this->pagination && $this->isPaginated) {
                 $data['pagination'] = $this->pagination;
             }
-        }
-        else {
+        } else {
             return $data;
         }
 

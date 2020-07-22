@@ -23,7 +23,7 @@ class PhysicianNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Physician notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Physician notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class PhysicianNoteController extends Controller
      */
     public function store(PhysicianNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Physician note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Physician note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class PhysicianNoteController extends Controller
      */
     public function update(PhysicianNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Physician note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Physician note updated', new GeneralNoteResource($record));
     }
 
     /**

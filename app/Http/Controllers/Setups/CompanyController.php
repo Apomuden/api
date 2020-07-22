@@ -19,11 +19,12 @@ class CompanyController extends Controller
 
     public function __construct(Company $company)
     {
-        $this->repository= new RepositoryEloquent($company);
+        $this->repository = new RepositoryEloquent($company);
     }
 
-    function index(){
-        return ApiResponse::withOk('Company list',new CompanyCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Company list', new CompanyCollection($this->repository->all('name')));
     }
 
     /* function search(){
@@ -36,46 +37,46 @@ class CompanyController extends Controller
         return ApiResponse::withOk('Companies found',new CompanyCollection($companies));
     } */
 
-    function show($company){
-        $company=$this->repository->show($company);//pass the country
-        return $company?
-        ApiResponse::withOk('Company Found',new CompanyResource($company))
+    function show($company)
+    {
+        $company = $this->repository->show($company);//pass the country
+        return $company ?
+        ApiResponse::withOk('Company Found', new CompanyResource($company))
         : ApiResponse::withNotFound('Company Not Found');
     }
 
-   function store(CompanyRequest $companyRequest){
-       try{
-           $requestData=$companyRequest->all();
-           $sponsorship_type_id=$requestData['sponsorship_type_id']??null;
+    function store(CompanyRequest $companyRequest)
+    {
+        try {
+            $requestData = $companyRequest->all();
+            $sponsorship_type_id = $requestData['sponsorship_type_id'] ?? null;
 
-           unset($requestData['sponsorship_type_id']);
+            unset($requestData['sponsorship_type_id']);
 
-           DB::beginTransaction();
-           $company=$this->repository->store($requestData);
+            DB::beginTransaction();
+            $company = $this->repository->store($requestData);
 
-           if($sponsorship_type_id && $company){
-               $this->repository->setModel(new BillingSponsor);
-               $this->repository->store(['name'=>$company->name,'sponsorship_type_id'=>$sponsorship_type_id,'company_id'=>$company->id]);
-           }
-           DB::commit();
-          return ApiResponse::withOk('Company created',new CompanyResource($company->refresh()));
-      }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            if ($sponsorship_type_id && $company) {
+                $this->repository->setModel(new BillingSponsor());
+                $this->repository->store(['name' => $company->name,'sponsorship_type_id' => $sponsorship_type_id,'company_id' => $company->id]);
+            }
+            DB::commit();
+            return ApiResponse::withOk('Company created', new CompanyResource($company->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(CompanyRequest $companyRequest,$company){
-       try{
-        $company=$this->repository->update($companyRequest->all(),$company);
+    function update(CompanyRequest $companyRequest, $company)
+    {
+        try {
+            $company = $this->repository->update($companyRequest->all(), $company);
 
-        return ApiResponse::withOk('Company updated',new CompanyResource($company));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Company updated', new CompanyResource($company));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

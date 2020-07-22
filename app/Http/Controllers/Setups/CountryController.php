@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Setups;
+
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\CountryCollection;
@@ -15,18 +16,19 @@ class CountryController extends Controller
 
     public function __construct(Country $hospital)
     {
-        $this->repository= new CountryEloquent($hospital);
+        $this->repository = new CountryEloquent($hospital);
     }
 
-    function index(){
-        return ApiResponse::withOk('Countries list',new CountryCollection($this->repository->all()));
+    function index()
+    {
+        return ApiResponse::withOk('Countries list', new CountryCollection($this->repository->all()));
     }
 
-    function show($country){
-        $country=$this->repository->show($country);//pass the country
-        return $country?
-        ApiResponse::withOk('Country Found',new CountryResource($country))
+    function show($country)
+    {
+        $country = $this->repository->show($country);//pass the country
+        return $country ?
+        ApiResponse::withOk('Country Found', new CountryResource($country))
         : ApiResponse::withNotFound('Country Not Found');
     }
-
 }

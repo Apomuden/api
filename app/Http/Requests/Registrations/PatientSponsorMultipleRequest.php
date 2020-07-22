@@ -1,9 +1,9 @@
 <?php
+
 //This is Request is for the current logged in user
 namespace App\Http\Requests\Registrations;
 
 use App\Http\Requests\ApiFormRequest;
-
 use Illuminate\Validation\Rule;
 
 class PatientSponsorMultipleRequest extends ApiFormRequest
@@ -14,10 +14,10 @@ class PatientSponsorMultipleRequest extends ApiFormRequest
     }
     public function rules()
     {
-        $data= [
+        $data = [
             'patient_id' => 'bail|required|integer|exists:patients,id',
-            'sponsors'=>'bail|array',
-            'sponsors.*.billing_sponsor_id'=> 'bail|required_without:sponsorship_policy_id|distinct|integer|exists:billing_sponsors,id',
+            'sponsors' => 'bail|array',
+            'sponsors.*.billing_sponsor_id' => 'bail|required_without:sponsorship_policy_id|distinct|integer|exists:billing_sponsors,id',
             'sponsors.*.sponsorship_policy_id' => 'bail|sometimes|nullable|integer|exists:sponsorship_policies,id',
             'sponsors.*.priority' => 'bail|sometimes|numeric|min:1',
             'sponsors.*.member_id' => 'bail|required',
@@ -35,7 +35,6 @@ class PatientSponsorMultipleRequest extends ApiFormRequest
             'sponsors.*.expiry_date' => 'bail|required|date',
             'sponsors.*.status' => 'bail|sometimes|string|in:ACTIVE,INACTIVE,TERMINATED,BLACKLISTED'
         ];
-
         return $data;
     }
 }

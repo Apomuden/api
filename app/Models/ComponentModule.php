@@ -7,5 +7,5 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ComponentModule extends AuditableModel
 {
-    public $table="component_module";
+    public $table = "component_module";
 }

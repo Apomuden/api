@@ -19,40 +19,42 @@ class LanguageController extends Controller
 
     public function __construct(Language $language)
     {
-        $this->repository= new RepositoryEloquent($language);
+        $this->repository = new RepositoryEloquent($language);
     }
 
-    function index(){
-        return ApiResponse::withOk('Languages list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Languages list', new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($language){
-        $language=$this->repository->show($language);//pass the country
-        return $language?
-        ApiResponse::withOk('Language Found',new GeneralResource($language))
+    function show($language)
+    {
+        $language = $this->repository->show($language);//pass the country
+        return $language ?
+        ApiResponse::withOk('Language Found', new GeneralResource($language))
         : ApiResponse::withNotFound('Language Not Found');
     }
 
-   function store(LanguageRequest $languageRequest){
-       try{
-           $requestData=$languageRequest->all();
-           $language=$this->repository->store($requestData);
-        return ApiResponse::withOk('Language created',new GeneralResource($language->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+    function store(LanguageRequest $languageRequest)
+    {
+        try {
+            $requestData = $languageRequest->all();
+            $language = $this->repository->store($requestData);
+            return ApiResponse::withOk('Language created', new GeneralResource($language->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(LanguageRequest $languageRequest,$language){
-       try{
-        $language=$this->repository->update($languageRequest->all(),$language);
-        return ApiResponse::withOk('Language updated',new GeneralResource($language));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function update(LanguageRequest $languageRequest, $language)
+    {
+        try {
+            $language = $this->repository->update($languageRequest->all(), $language);
+            return ApiResponse::withOk('Language updated', new GeneralResource($language));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
     public function destroy($id)
     {

@@ -15,6 +15,5 @@ class ObstetricQuestionOptionCollection extends ResourceCollection
     public function toArray($request)
     {
         return ObstetricQuestionOptionResource::collection($this->collection);
-
     }
 }

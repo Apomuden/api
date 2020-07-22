@@ -18,15 +18,15 @@ class ObstetricQuestionOptionResource extends JsonResource
         if (isset($this->id)) {
             return [
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
-'id' => $this->id,
-'obstetric_question_id' => $this->obstetric_question_id,
-'status' => $this->status,
-'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-'value' => $this->value,
+            'id' => $this->id,
+            'obstetric_question_id' => $this->obstetric_question_id,
+            'status' => $this->status,
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
+            'value' => $this->value,
 
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

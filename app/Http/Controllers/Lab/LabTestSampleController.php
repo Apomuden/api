@@ -28,8 +28,8 @@ class LabTestSampleController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Lab Test Sample list',labTestSampleResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Lab Test Sample list', labTestSampleResource::collection($records));
     }
 
 
@@ -41,30 +41,31 @@ class LabTestSampleController extends Controller
      */
     public function store(LabTestSampleRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Lab Test Sample created',new labTestSampleResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Lab Test Sample created', new labTestSampleResource($record->refresh()));
     }
     public function storeMultiple(LabTestSampleMultipleRequest $request)
     {
-        $tests=$request->tests;
-        $record_ids=[];
-        foreach($tests as $test){
-            $test=(array) $test;
+        $tests = $request->tests;
+        $record_ids = [];
+        foreach ($tests as $test) {
+            $test = (array) $test;
 
-            $samples=(array)$test['samples'];
-            foreach($samples as $sample){
-                $sample=(array) $sample;
-                $payload= $sample+['investigation_id'=>$test['investigation_id']];
+            $samples = (array)$test['samples'];
+            foreach ($samples as $sample) {
+                $sample = (array) $sample;
+                $payload = $sample + ['investigation_id' => $test['investigation_id']];
 
-                if(isset($request->technician_id))
-                $payload['technician_id']= $request->technician_id;
+                if (isset($request->technician_id)) {
+                    $payload['technician_id'] = $request->technician_id;
+                }
 
                 $record = $this->repository->store($payload);
-                $record_ids[]=$record->id;
+                $record_ids[] = $record->id;
             }
         }
         Artisan::call('cache:clear');
-        return ApiResponse::withOk('Lab Test Sample created',labTestSampleResource::collection($this->repository->getModel()->whereIn('id',$record_ids)->orderBy('lab_sample_type_order')->get()));
+        return ApiResponse::withOk('Lab Test Sample created', labTestSampleResource::collection($this->repository->getModel()->whereIn('id', $record_ids)->orderBy('lab_sample_type_order')->get()));
     }
 
     /**
@@ -88,7 +89,7 @@ class LabTestSampleController extends Controller
      */
     public function update(LabTestSampleRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Lab Test Sample updated', new labTestSampleResource($record));
     }
 
@@ -100,7 +101,7 @@ class LabTestSampleController extends Controller
      */
     public function destroy($id)
     {
-       $this->repository->delete($id);
+        $this->repository->delete($id);
         return ApiResponse::withOk('Lab Test Sample deleted');
     }
 }

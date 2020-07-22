@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Auth;
 
 class LabParameterRange extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function lab_parameter()

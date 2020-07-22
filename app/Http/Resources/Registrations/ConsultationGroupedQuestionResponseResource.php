@@ -20,8 +20,9 @@ class ConsultationGroupedQuestionResponseResource extends JsonResource
     {
         $responses = ConsultationQuestionResponseResource::collection($this->responses);
         $consultant = 'Unknown';
-        if (count($responses) > 0)
+        if (count($responses) > 0) {
             $consultant = $responses->resource[0]->toArray($responses->resource[0])['consultant_name'];
+        }
         return [
             'consultation_id' => $this->id,
             'consultation_date' => DateHelper::toDisplayDateTime($this->attendance_date),

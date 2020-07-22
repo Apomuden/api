@@ -16,7 +16,6 @@ class RequisitionCollection extends PaginatedCollectionHelper
      */
     public function toArray($request, $coll = null)
     {
-        return parent::toArray($request,  RequisitionResource::collection($this->collection));
-
+        return parent::toArray($request, RequisitionResource::collection($this->collection));
     }
 }

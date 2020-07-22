@@ -23,8 +23,8 @@ class PhysicalExaminationCategoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Physical Examinations categories list',GeneralResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Physical Examinations categories list', GeneralResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class PhysicalExaminationCategoryController extends Controller
      */
     public function store(PhysicalExaminationCategoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Physical Examinations category created',new GeneralResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Physical Examinations category created', new GeneralResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class PhysicalExaminationCategoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Physical Examinations category found',new GeneralResource($record));
+        return ApiResponse::withOk('Physical Examinations category found', new GeneralResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class PhysicalExaminationCategoryController extends Controller
      */
     public function update(PhysicalExaminationCategoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Physical Examinations category updated', new GeneralResource($record));
     }
 

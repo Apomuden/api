@@ -18,44 +18,45 @@ class AgeGroupController extends Controller
 
     public function __construct(AgeGroup $ageGroup)
     {
-        $this->repository= new RepositoryEloquent($ageGroup);
+        $this->repository = new RepositoryEloquent($ageGroup);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('AgeGroup list',new AgeGroupCollection($this->repository->all('name')));
+        return ApiResponse::withOk('AgeGroup list', new AgeGroupCollection($this->repository->all('name')));
     }
 
-    function show($AgeGroup){
-        $AgeGroup=$this->repository->show($AgeGroup);//pass the country
-        return $AgeGroup?
-        ApiResponse::withOk('AgeGroup Found',new AgeGroupResource($AgeGroup))
+    function show($AgeGroup)
+    {
+        $AgeGroup = $this->repository->show($AgeGroup);//pass the country
+        return $AgeGroup ?
+        ApiResponse::withOk('AgeGroup Found', new AgeGroupResource($AgeGroup))
         : ApiResponse::withNotFound('AgeGroup Not Found');
     }
 
-   function store(AgeGroupRequest $AgeGroupRequest){
-       try{
-           $requestData=$AgeGroupRequest->all();
+    function store(AgeGroupRequest $AgeGroupRequest)
+    {
+        try {
+            $requestData = $AgeGroupRequest->all();
 
-           $AgeGroup=$this->repository->store($requestData);
-        return ApiResponse::withOk('AgeGroup created',new AgeGroupResource($AgeGroup->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            $AgeGroup = $this->repository->store($requestData);
+            return ApiResponse::withOk('AgeGroup created', new AgeGroupResource($AgeGroup->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(AgeGroupRequest $AgeGroupRequest,$id){
-       try{
-        $AgeGroup=$this->repository->update($AgeGroupRequest->all(),$id);
+    function update(AgeGroupRequest $AgeGroupRequest, $id)
+    {
+        try {
+            $AgeGroup = $this->repository->update($AgeGroupRequest->all(), $id);
 
-        return ApiResponse::withOk('AgeGroup updated',new AgeGroupResource($AgeGroup));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('AgeGroup updated', new AgeGroupResource($AgeGroup));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

@@ -24,8 +24,8 @@ class MohGhsGroupingController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('MohGhs Grouping list',MohGroupingResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('MohGhs Grouping list', MohGroupingResource::collection($records));
     }
 
     /**
@@ -36,8 +36,8 @@ class MohGhsGroupingController extends Controller
      */
     public function store(MohGhsGroupingRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Moh Ghs Created',new MohGroupingResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Moh Ghs Created', new MohGroupingResource($record));
     }
 
     /**
@@ -61,7 +61,7 @@ class MohGhsGroupingController extends Controller
      */
     public function update(MohGhsGroupingRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Moh Ghs updated', new MohGroupingResource($record));
     }
 

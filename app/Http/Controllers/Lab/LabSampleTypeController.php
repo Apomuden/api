@@ -19,7 +19,7 @@ class LabSampleTypeController extends Controller
     {
         $this->repository = new RepositoryEloquent($labSampleType);
     }
-    public function sampleCode($investigation_id,$sample_type_id)
+    public function sampleCode($investigation_id, $sample_type_id)
     {
         return ApiResponse::withOk('New Sample Code', IDGenerator::getNewSampleCode($investigation_id, $sample_type_id));
     }
@@ -30,8 +30,8 @@ class LabSampleTypeController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Lab Sample type list',LabSampleTypeResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Lab Sample type list', LabSampleTypeResource::collection($records));
     }
 
     /**
@@ -42,8 +42,8 @@ class LabSampleTypeController extends Controller
      */
     public function store(LabSampleTypeRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Lab Sample type created',new LabSampleTypeResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Lab Sample type created', new LabSampleTypeResource($record));
     }
 
     /**
@@ -67,7 +67,7 @@ class LabSampleTypeController extends Controller
      */
     public function update(LabSampleTypeRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Lab Sample type updated', new LabSampleTypeResource($record));
     }
 
@@ -79,7 +79,7 @@ class LabSampleTypeController extends Controller
      */
     public function destroy($id)
     {
-       $this->repository->delete($id);
+        $this->repository->delete($id);
         return ApiResponse::withOk('Lab Sample type deleted');
     }
 }

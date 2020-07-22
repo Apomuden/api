@@ -23,17 +23,17 @@ class AgeCategoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('agecategory')??null;
+        $id = $this->route('agecategory') ?? null;
         return [
-            'description' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUniqueWith('age_categories','description,age_classification_id',$id),
-            'age_classification_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:age_classifications,id',
-            'age_group_id'=>'bail|'.($id?'sometimes':'required').'|integer|exists:age_groups,id',
-            'min_unit'=>'bail|sometimes|in:DAY,MONTH,YEAR',
-            'max_unit'=>'bail|sometimes|in:DAY,MONTH,YEAR',
-            'min_comparator'=>'bail|sometimes|in:>,>=,=',
-            'max_comparator'=>'bail|sometimes|in:<,<=',
-            'max_age'=>'bail|sometimes|nullable|min:1',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'description' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUniqueWith('age_categories', 'description,age_classification_id', $id),
+            'age_classification_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:age_classifications,id',
+            'age_group_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:age_groups,id',
+            'min_unit' => 'bail|sometimes|in:DAY,MONTH,YEAR',
+            'max_unit' => 'bail|sometimes|in:DAY,MONTH,YEAR',
+            'min_comparator' => 'bail|sometimes|in:>,>=,=',
+            'max_comparator' => 'bail|sometimes|in:<,<=',
+            'max_age' => 'bail|sometimes|nullable|min:1',
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

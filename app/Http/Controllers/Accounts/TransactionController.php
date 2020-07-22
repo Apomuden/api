@@ -23,7 +23,7 @@ class TransactionController extends Controller
 
     public function __construct()
     {
-        $this->repository = new Transaction;
+        $this->repository = new Transaction();
     }
 
     public function quickDetails($patient_id)
@@ -34,7 +34,7 @@ class TransactionController extends Controller
 
     public function createReceipt(TransactionRequest $transactionRequest)
     {
-        $receiptItems = $transactionRequest['services']??null;
+        $receiptItems = $transactionRequest['services'] ?? null;
         //dd($receiptItems);
         try {
             DB::beginTransaction();
@@ -51,7 +51,7 @@ class TransactionController extends Controller
                     $repo = $item_type::query()->find($item_id);
                     $repo->update(['status' => ($item['status'] ?? 'FULL-PAYMENT')]);
                     //dd(get_class($repo));
-                    $receiptItem = new ReceiptItem;
+                    $receiptItem = new ReceiptItem();
                     $receiptItem->ereceipt_id = $receipt['ereceipt_id'] ?? null;
                     $receiptItem->receipt_item_id = $item_id;
                     $receiptItem->receipt_item_type = get_class($repo);
@@ -59,24 +59,22 @@ class TransactionController extends Controller
                 }
 
                 $Abscond = Abscond::query()->where('patient_id', $transactionRequest['patient_id']);
-                $Abscond->update(['status'=>'INACTIVE']);
+                $Abscond->update(['status' => 'INACTIVE']);
 
                 $Discount = Discount::query()->where('patient_id', $transactionRequest['patient_id']);
-                $Discount->update(['status'=>'INACTIVE']);
+                $Discount->update(['status' => 'INACTIVE']);
 
                 $Deposit = Deposit::query()->where('patient_id', $transactionRequest['patient_id']);
-                $Deposit->update(['status'=>'INACTIVE']);
+                $Deposit->update(['status' => 'INACTIVE']);
                 DB::commit();
 
-                $repo = new RepositoryEloquent(new Ereceipt);
+                $repo = new RepositoryEloquent(new Ereceipt());
                 $repo = $repo->show($receipt['ereceipt_id'] ?? null);
                 return ApiResponse::withOk('Patient E-Receipt Created', new EreceiptResource($repo));
             }
-        }
-        catch (\Exception $exception) {
+        } catch (\Exception $exception) {
             //DB::rollBack();
             dd($exception);
         }
     }
-
 }

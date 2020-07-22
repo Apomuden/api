@@ -18,37 +18,39 @@ class AccreditationController extends Controller
 
     public function __construct(Accreditation $accreditation)
     {
-        $this->repository= new RepositoryEloquent($accreditation);
+        $this->repository = new RepositoryEloquent($accreditation);
     }
 
-   function index(){
-       return ApiResponse::withOk('Accreditations list',new AccreditationCollection($this->repository->all()));
-   }
+    function index()
+    {
+        return ApiResponse::withOk('Accreditations list', new AccreditationCollection($this->repository->all()));
+    }
 
-   function show($accreditation){
-    $accreditation=$this->repository->show($accreditation);//pass the accreditation
-    return $accreditation?
-    ApiResponse::withOk('Accreditation Found',new AccreditationResource($accreditation))
-    : ApiResponse::withNotFound('Accreditation Not Found');
-   }
+    function show($accreditation)
+    {
+        $accreditation = $this->repository->show($accreditation);//pass the accreditation
+        return $accreditation ?
+        ApiResponse::withOk('Accreditation Found', new AccreditationResource($accreditation))
+        : ApiResponse::withNotFound('Accreditation Not Found');
+    }
 
-   function store(AccreditionRequest $accreditionRequest){
-        try{
-           $accreditation=$this->repository->store($accreditionRequest->all());
-           return ApiResponse::withOk('Accreditation created',new AccreditationResource($accreditation->refresh()));
-        }
-        catch(Exception $e){
+    function store(AccreditionRequest $accreditionRequest)
+    {
+        try {
+            $accreditation = $this->repository->store($accreditionRequest->all());
+            return ApiResponse::withOk('Accreditation created', new AccreditationResource($accreditation->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
-   }
+    }
 
-   function update(AccreditionRequest $accreditionRequest,$accreditation)
-   {
-        $accreditation=$this->repository->update($accreditionRequest->all(),$accreditation);
-        return $accreditation?
-        ApiResponse::withOk('Accreditation Found',new AccreditationResource($accreditation))
+    function update(AccreditionRequest $accreditionRequest, $accreditation)
+    {
+        $accreditation = $this->repository->update($accreditionRequest->all(), $accreditation);
+        return $accreditation ?
+        ApiResponse::withOk('Accreditation Found', new AccreditationResource($accreditation))
         : ApiResponse::withNotFound('Accreditation Not Found');
-   }
+    }
 
     public function destroy($id)
     {

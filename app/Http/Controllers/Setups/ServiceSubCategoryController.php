@@ -20,61 +20,63 @@ class ServiceSubCategoryController extends Controller
 
     public function __construct(ServiceSubcategory $serviceCategory)
     {
-        $this->repository= new RepositoryEloquent($serviceCategory,true,['hospital_service','service_category']);
+        $this->repository = new RepositoryEloquent($serviceCategory, true, ['hospital_service','service_category']);
     }
 
-    function index(){
-        $serviceCategories=$this->repository->all('name');
-        return ApiResponse::withOk('Service Sub Category list',new ServiceSubCategoryCollection($serviceCategories));
+    function index()
+    {
+        $serviceCategories = $this->repository->all('name');
+        return ApiResponse::withOk('Service Sub Category list', new ServiceSubCategoryCollection($serviceCategories));
     }
 
-    function show($serviceCategory){
-        $serviceCategory=$this->repository->show($serviceCategory);//pass the country
-        return $serviceCategory?
-        ApiResponse::withOk('Service Sub Category Found',new ServiceSubcategoryResource($serviceCategory))
+    function show($serviceCategory)
+    {
+        $serviceCategory = $this->repository->show($serviceCategory);//pass the country
+        return $serviceCategory ?
+        ApiResponse::withOk('Service Sub Category Found', new ServiceSubcategoryResource($serviceCategory))
         : ApiResponse::withNotFound('Service Sub Category Not Found');
     }
 
-   function store(SetupsServiceSubCategoryRequest $serviceCategoryRequest){
-       try{
-           $requestData=$serviceCategoryRequest->all();
+    function store(SetupsServiceSubCategoryRequest $serviceCategoryRequest)
+    {
+        try {
+            $requestData = $serviceCategoryRequest->all();
 
-           $CategoryRepo=new RepositoryEloquent(new ServiceCategory);
-           $serviceCategory=$CategoryRepo->find($requestData['service_category_id']);
+            $CategoryRepo = new RepositoryEloquent(new ServiceCategory());
+            $serviceCategory = $CategoryRepo->find($requestData['service_category_id']);
 
-           $requestData['hospital_service_id']=$serviceCategory->hospital_service_id;
+            $requestData['hospital_service_id'] = $serviceCategory->hospital_service_id;
 
-           $serviceCategory=$this->repository->store($requestData);
-          return ApiResponse::withOk('Service Sub Category created',new ServiceSubcategoryResource($serviceCategory->refresh()));
-      }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            $serviceCategory = $this->repository->store($requestData);
+            return ApiResponse::withOk('Service Sub Category created', new ServiceSubcategoryResource($serviceCategory->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(SetupsServiceSubCategoryRequest $ServiceCategoryRequest,$serviceCategory){
-       try{
-        $serviceCategory=$this->repository->update($ServiceCategoryRequest->all(),$serviceCategory);
+    function update(SetupsServiceSubCategoryRequest $ServiceCategoryRequest, $serviceCategory)
+    {
+        try {
+            $serviceCategory = $this->repository->update($ServiceCategoryRequest->all(), $serviceCategory);
 
-        return ApiResponse::withOk('Service Sub Category updated',new ServiceSubcategoryResource($serviceCategory));
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Service Sub Category updated', new ServiceSubcategoryResource($serviceCategory));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Service sub category deleted successfully');
     }
-   function showByServiceCategory($serviceCategory){
-       $this->repository->setModel(new ServiceCategory,['service_subcategories'=>function($query){
-           $query->active()->orderBy('name');
-       }]);
-      $service_subcategories=$this->repository->find($serviceCategory)->service_subcategories()->get();
-      return $service_subcategories?
-      ApiResponse::withOk('Available Service Sub Categories Found',new ServiceSubCategoryCollection($service_subcategories))
-      : ApiResponse::withNotFound('Available Service Sub Categories Not Found');
-   }
-
+    function showByServiceCategory($serviceCategory)
+    {
+        $this->repository->setModel(new ServiceCategory(), ['service_subcategories' => function ($query) {
+            $query->active()->orderBy('name');
+        }]);
+        $service_subcategories = $this->repository->find($serviceCategory)->service_subcategories()->get();
+        return $service_subcategories ?
+        ApiResponse::withOk('Available Service Sub Categories Found', new ServiceSubCategoryCollection($service_subcategories))
+        : ApiResponse::withNotFound('Available Service Sub Categories Not Found');
+    }
 }

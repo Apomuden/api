@@ -23,8 +23,9 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
      */
     public function rules()
     {
-        if (sizeof($this->request->get("questions")) == 0)
+        if (sizeof($this->request->get("questions")) == 0) {
             return [];
+        }
         return [
             'questions' => 'bail|required|array',
             'questions.*.id' => ['bail', 'required', 'distinct', 'exists:consultation_questions,id'],
@@ -37,8 +38,9 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             $clinic = ClinicService::find(request('service_id'));
 
-            if (is_null($clinic))
+            if (is_null($clinic)) {
                 $validator->errors()->add("Service id", "The id in path is not a Consultation service!");
+            }
         });
     }
 
@@ -49,10 +51,11 @@ class ConsultationServiceQuestionsRequest extends ApiFormRequest
         $all = [];
 
         foreach ($data['questions'] as $question) {
-            if ($this->method() == self::METHOD_DELETE)
+            if ($this->method() == self::METHOD_DELETE) {
                 $all[$question['id']] = $question['id'];
-            else
+            } else {
                 $all[$question['id']] = ['order' => $question['order']];
+            }
         }
         $data['questions'] = $all;
 

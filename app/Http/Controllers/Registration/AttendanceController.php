@@ -34,10 +34,11 @@ class AttendanceController extends Controller
         $this->repository->useFindBy = false;
 
         //Enforce folder search only when folder params are specified
-        if ($this->withCallback)
+        if ($this->withCallback) {
             $this->repository->setModel(Attendance::findBy($this->searchParams)->whereHas('patient', $this->withCallback));
-        else
+        } else {
             $this->repository->setModel(Attendance::findBy($this->searchParams));
+        }
 
         return ApiResponse::withOk('Attendance list', AttendanceResource::collection($this->repository->all()));
     }
@@ -48,7 +49,8 @@ class AttendanceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function byFolderNo(Request $request){
+    public function byFolderNo(Request $request)
+    {
         $searchParams = \request()->query();
 
         $folder_no = $searchParams['folder_no'] ?? null;
@@ -57,12 +59,15 @@ class AttendanceController extends Controller
         //Folder Postfix of patient
         $postfix = $folder_no ? substr($folder_no, -1) : null;
 
-        unset($searchParams['folder_no'],
-        $searchParams['rack_no'],
-        $searchParams['folder_type']);
+        unset(
+            $searchParams['folder_no'],
+            $searchParams['rack_no'],
+            $searchParams['folder_type']
+        );
 
-        if ($folder_no)
+        if ($folder_no) {
             $folderSearch['folder_no'] = '=' . $folder_no;
+        }
 
         if ($postfix && !is_numeric(trim($postfix))) {
             //$searchParams['postfix'] = '=' . trim($postfix);
@@ -73,14 +78,15 @@ class AttendanceController extends Controller
             $query->findBy($folderSearch);
         };
         //DB::enableQueryLog();
-         $this->repository->setModel(Attendance::findBy($searchParams)->whereHas('patient', function ($query) use ($withCallback,$folderSearch,$postfix) {
-            if($postfix)
-            $query->where('postfix',$postfix)->whereHas('folders', $withCallback);
-            else
-            $query->whereHas('folders', $withCallback);
-        }));
+         $this->repository->setModel(Attendance::findBy($searchParams)->whereHas('patient', function ($query) use ($withCallback, $folderSearch, $postfix) {
+            if ($postfix) {
+                $query->where('postfix', $postfix)->whereHas('folders', $withCallback);
+            } else {
+                $query->whereHas('folders', $withCallback);
+            }
+         }));
 
-        $records= $this->repository->getModel()->get();
+        $records = $this->repository->getModel()->get();
 
         //return [DB::getQueryLog()];
         return ApiResponse::withOk('Found Attendances', AttendanceResource::collection($records));
@@ -132,5 +138,4 @@ class AttendanceController extends Controller
         $this->repository->delete($id);
         return ApiResponse::withOk('Attendance deleted successfully');
     }
-
 }

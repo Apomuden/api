@@ -18,38 +18,40 @@ class ProductFormController extends Controller
 
     public function __construct(ProductForm $ProductForm)
     {
-        $this->repository= new RepositoryEloquent($ProductForm);
+        $this->repository = new RepositoryEloquent($ProductForm);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Product Forms list',new ProductFormCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Product Forms list', new ProductFormCollection($this->repository->all('name')));
     }
 
-    public function show($ProductForm){
-        $ProductForm=$this->repository->show($ProductForm);
-        return $ProductForm?
-            ApiResponse::withOk('Product Form Found',new ProductFormResource($ProductForm))
+    public function show($ProductForm)
+    {
+        $ProductForm = $this->repository->show($ProductForm);
+        return $ProductForm ?
+            ApiResponse::withOk('Product Form Found', new ProductFormResource($ProductForm))
             : ApiResponse::withNotFound('Product Form Not Found');
     }
 
-    public function store(ProductFormRequest $ProductFormRequest){
-        try{
-            $requestData=$ProductFormRequest->all();
-            $ProductForm=$this->repository->store($requestData);
-            return ApiResponse::withOk('Product Form created',new ProductFormResource($ProductForm->refresh()));
-        }
-        catch(Exception $e){
+    public function store(ProductFormRequest $ProductFormRequest)
+    {
+        try {
+            $requestData = $ProductFormRequest->all();
+            $ProductForm = $this->repository->store($requestData);
+            return ApiResponse::withOk('Product Form created', new ProductFormResource($ProductForm->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(ProductFormRequest $ProductFormRequest,$ProductForm){
-        try{
-            $ProductForm=$this->repository->update($ProductFormRequest->all(),$ProductForm);
-            return ApiResponse::withOk('Product Form updated',new ProductFormResource($ProductForm));
-        }
-        catch(Exception $e){
+    public function update(ProductFormRequest $ProductFormRequest, $ProductForm)
+    {
+        try {
+            $ProductForm = $this->repository->update($ProductFormRequest->all(), $ProductForm);
+            return ApiResponse::withOk('Product Form updated', new ProductFormResource($ProductForm));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

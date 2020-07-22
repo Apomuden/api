@@ -24,11 +24,11 @@ class FamilyHistoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('familyhistory')??null;
+        $id = $this->route('familyhistory') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('family_histories', 'name,family_history_category_id',$id),
-            'family_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exists:family_history_categories,id',
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUniqueWith('family_histories', 'name,family_history_category_id', $id),
+            'family_history_category_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:family_history_categories,id',
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

@@ -3,15 +3,15 @@
 namespace App\Http\Routing;
 
 use Illuminate\Container\Container;
-
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Routing\Router;
 
-class AppRouter extends Router{
+class AppRouter extends Router
+{
 
     public function __construct(Dispatcher $events, Container $container = null)
     {
-       parent::__construct($events,$container);
+        parent::__construct($events, $container);
     }
     public function resource($name, $controller, array $options = [])
     {

@@ -15,6 +15,5 @@ class BankBranchCollection extends ResourceCollection
     public function toArray($request)
     {
         return  BankResource::collection($this->collection);
-
     }
 }

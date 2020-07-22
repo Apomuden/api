@@ -18,40 +18,42 @@ class SpecialtyController extends Controller
 
     public function __construct(StaffSpecialty $specialty)
     {
-        $this->repository=new RepositoryEloquent($specialty);
+        $this->repository = new RepositoryEloquent($specialty);
     }
 
-    function index(){
-        return ApiResponse::withOk('Specialty list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Specialty list', new GeneralCollection($this->repository->all('name')));
     }
 
-    function show($specialty){
-        $specialty=$this->repository->show($specialty);//pass the country
-        return $specialty?
-        ApiResponse::withOk('Specialty Found',new GeneralResource($specialty))
+    function show($specialty)
+    {
+        $specialty = $this->repository->show($specialty);//pass the country
+        return $specialty ?
+        ApiResponse::withOk('Specialty Found', new GeneralResource($specialty))
         : ApiResponse::withNotFound('Specialty Not Found');
     }
 
-   function store(SpecialtyRequest $SpecialtyRequest){
-       try{
-           $requestData=$SpecialtyRequest->all();
-           $specialty=$this->repository->store($requestData);
-           return ApiResponse::withOk('Specialty created',new GeneralResource($specialty->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+    function store(SpecialtyRequest $SpecialtyRequest)
+    {
+        try {
+            $requestData = $SpecialtyRequest->all();
+            $specialty = $this->repository->store($requestData);
+            return ApiResponse::withOk('Specialty created', new GeneralResource($specialty->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(SpecialtyRequest $SpecialtyRequest,$specialty){
-       try{
-        $specialty=$this->repository->update($SpecialtyRequest->all(),$specialty);
-        return ApiResponse::withOk('Specialty updated',new GeneralResource($specialty));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function update(SpecialtyRequest $SpecialtyRequest, $specialty)
+    {
+        try {
+            $specialty = $this->repository->update($SpecialtyRequest->all(), $specialty);
+            return ApiResponse::withOk('Specialty updated', new GeneralResource($specialty));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

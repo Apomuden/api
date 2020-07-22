@@ -19,16 +19,21 @@ class ProfileController extends Controller
         $folder_no = $this->searchParams['folder_no'] ?? null;
         $rack_no = $this->searchParams['rack_no'] ?? null;
         $folder_type = $this->searchParams['folder_type'] ?? null;
-        unset($this->searchParams['folder_no'],
-        $this->searchParams['rack_no'],
-        $this->searchParams['folder_type']);
+        unset(
+            $this->searchParams['folder_no'],
+            $this->searchParams['rack_no'],
+            $this->searchParams['folder_type']
+        );
         $folderSearch = [];
-        if ($folder_no)
+        if ($folder_no) {
             $folderSearch['folder_no'] = $folder_no;
-        if ($rack_no)
+        }
+        if ($rack_no) {
             $folderSearch['rack_no'] = $rack_no;
-        if ($folder_type)
+        }
+        if ($folder_type) {
             $folderSearch['folder_type'] = $folder_type;
+        }
         $this->withCallback = function ($query) use ($folderSearch) {
             $query->findBy($folderSearch);
         };
@@ -54,7 +59,7 @@ class ProfileController extends Controller
             'official_language',
             'folders' => $this->withCallback
         ];
-        $this->repository = new RepositoryEloquent(new Patient, true, $with);
+        $this->repository = new RepositoryEloquent(new Patient(), true, $with);
     }
     public function index()
     {

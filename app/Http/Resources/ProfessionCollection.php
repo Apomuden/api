@@ -15,6 +15,5 @@ class ProfessionCollection extends ResourceCollection
     public function toArray($request)
     {
         return  ProfessionResource::collection($this->collection);
-
     }
 }

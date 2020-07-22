@@ -15,6 +15,5 @@ class ComponentPermissionsCollection extends ResourceCollection
     public function toArray($request)
     {
         return  ComponentPermissionsResource::collection($this->collection);
-
     }
 }

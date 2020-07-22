@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ConsultationComponent extends AuditableModel
 {
-    use SoftDeletes, ActiveTrait, FindByTrait;
+    use SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
 
     public function clinic_services()
     {

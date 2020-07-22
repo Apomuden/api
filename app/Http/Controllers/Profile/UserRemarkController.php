@@ -16,15 +16,15 @@ class UserRemarkController extends Controller
     protected $repository;
     public function __construct(UserRemark $userRemark)
     {
-       $this->repository=new RepositoryEloquent($userRemark,true,['remarker']);
+        $this->repository = new RepositoryEloquent($userRemark, true, ['remarker']);
     }
 
     public function index()
     {
        //DB::enableQueryLog();
-       $remarks=$this->repository->all('type');
+        $remarks = $this->repository->all('type');
        //return [DB::getQueryLog()];
-       return ApiResponse::withOk('User remarks list',UserRemarkResource::collection($remarks));
+        return ApiResponse::withOk('User remarks list', UserRemarkResource::collection($remarks));
     }
 
     /**
@@ -35,14 +35,14 @@ class UserRemarkController extends Controller
      */
     public function store(UserRemarkRequest $request)
     {
-       $remark=$this->repository->store($request->all());
-       return ApiResponse::withOk('User remark created',new UserRemarkResource($remark->refresh()));
+        $remark = $this->repository->store($request->all());
+        return ApiResponse::withOk('User remark created', new UserRemarkResource($remark->refresh()));
     }
 
     public function show($remark)
     {
-       $remark=$this->repository->find($remark);
-       return ApiResponse::withOk('User remark found',new UserRemarkResource($remark));
+        $remark = $this->repository->find($remark);
+        return ApiResponse::withOk('User remark found', new UserRemarkResource($remark));
     }
 
     /**
@@ -52,10 +52,10 @@ class UserRemarkController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRemarkRequest $request,$remark)
+    public function update(UserRemarkRequest $request, $remark)
     {
-       $remark=$this->repository->update($request->all(),$remark);
-       return ApiResponse::withOk('User remark updated',new UserRemarkResource($remark));
+        $remark = $this->repository->update($request->all(), $remark);
+        return ApiResponse::withOk('User remark updated', new UserRemarkResource($remark));
     }
 
     /**

@@ -20,56 +20,58 @@ class ServiceCategoryController extends Controller
 
     public function __construct(ServiceCategory $serviceCategory)
     {
-        $this->repository= new RepositoryEloquent($serviceCategory);
+        $this->repository = new RepositoryEloquent($serviceCategory);
     }
 
-    function index(){
-        $serviceCategories=$this->repository->getInstanceWith('hospital_service')->all('name');
-        return ApiResponse::withOk('Service Category list',new ServiceCategoryCollection($serviceCategories));
+    function index()
+    {
+        $serviceCategories = $this->repository->getInstanceWith('hospital_service')->all('name');
+        return ApiResponse::withOk('Service Category list', new ServiceCategoryCollection($serviceCategories));
     }
 
-    function show($serviceCategory){
-        $serviceCategory=$this->repository->getInstanceWith('hospital_service')->show($serviceCategory);//pass the country
-        return $serviceCategory?
-        ApiResponse::withOk('Service Category Found',new ServiceCategoryResource($serviceCategory))
+    function show($serviceCategory)
+    {
+        $serviceCategory = $this->repository->getInstanceWith('hospital_service')->show($serviceCategory);//pass the country
+        return $serviceCategory ?
+        ApiResponse::withOk('Service Category Found', new ServiceCategoryResource($serviceCategory))
         : ApiResponse::withNotFound('Service Category Not Found');
     }
 
-   function store(ServiceCategoryRequest $serviceCategoryRequest){
-       try{
-           $requestData=$serviceCategoryRequest->all();
+    function store(ServiceCategoryRequest $serviceCategoryRequest)
+    {
+        try {
+            $requestData = $serviceCategoryRequest->all();
 
-           $serviceCategory=$this->repository->store($requestData);
-          return ApiResponse::withOk('Service Category created',new ServiceCategoryResource($serviceCategory->refresh()));
-      }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            $serviceCategory = $this->repository->store($requestData);
+            return ApiResponse::withOk('Service Category created', new ServiceCategoryResource($serviceCategory->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(ServiceCategoryRequest $ServiceCategoryRequest,$serviceCategory){
-       try{
-        $serviceCategory=$this->repository->update($ServiceCategoryRequest->all(),$serviceCategory);
+    function update(ServiceCategoryRequest $ServiceCategoryRequest, $serviceCategory)
+    {
+        try {
+            $serviceCategory = $this->repository->update($ServiceCategoryRequest->all(), $serviceCategory);
 
-        return ApiResponse::withOk('Service Category updated',new ServiceCategoryResource($serviceCategory));
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Service Category updated', new ServiceCategoryResource($serviceCategory));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Service category deleted successfully');
     }
-   function showByHospitalService($hospitalservice){
-       $this->repository->setModel(new HospitalService,['service_categories'=>function($query){
-           $query->active()->orderBy('name');
-       }]);
-      $service_categories=$this->repository->find($hospitalservice)->service_categories()->get();
-      return $service_categories?
-      ApiResponse::withOk('Available Service Categories Found',new ServiceCategoryCollection($service_categories))
-      : ApiResponse::withNotFound('Available Service Categories Not Found');
-   }
-
+    function showByHospitalService($hospitalservice)
+    {
+        $this->repository->setModel(new HospitalService(), ['service_categories' => function ($query) {
+            $query->active()->orderBy('name');
+        }]);
+        $service_categories = $this->repository->find($hospitalservice)->service_categories()->get();
+        return $service_categories ?
+        ApiResponse::withOk('Available Service Categories Found', new ServiceCategoryCollection($service_categories))
+        : ApiResponse::withNotFound('Available Service Categories Not Found');
+    }
 }

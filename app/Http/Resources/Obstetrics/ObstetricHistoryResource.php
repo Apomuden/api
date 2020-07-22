@@ -58,6 +58,6 @@ class ObstetricHistoryResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

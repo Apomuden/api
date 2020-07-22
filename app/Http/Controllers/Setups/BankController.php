@@ -22,44 +22,46 @@ class BankController extends Controller
 
     public function __construct(Bank $bank)
     {
-        $this->repository= new RepositoryEloquent($bank);
+        $this->repository = new RepositoryEloquent($bank);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('Banks list',new BankCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Banks list', new BankCollection($this->repository->all('name')));
     }
 
-    function show($bank){
-        $bank=$this->repository->show($bank);//pass the country
-        return $bank?
-        ApiResponse::withOk('Bank Found',new BankResource($bank))
+    function show($bank)
+    {
+        $bank = $this->repository->show($bank);//pass the country
+        return $bank ?
+        ApiResponse::withOk('Bank Found', new BankResource($bank))
         : ApiResponse::withNotFound('Bank Not Found');
     }
 
-   function store(BankRequest $bankRequest){
-       //try{
-           $requestData=$bankRequest->all();
+    function store(BankRequest $bankRequest)
+    {
+        //try{
+           $requestData = $bankRequest->all();
 
-           $bank=$this->repository->store($requestData);
-        return ApiResponse::withOk('Bank created',new BankResource($bank->refresh()));
-      /*  }
+           $bank = $this->repository->store($requestData);
+        return ApiResponse::withOk('Bank created', new BankResource($bank->refresh()));
+       /*  }
        catch(Exception $e){
          return ApiResponse::withException($e);
-       } */
-   }
+        } */
+    }
 
-   function update(BankRequest $bankRequest,$bank){
-       try{
-        $bank=$this->repository->update($bankRequest->all(),$bank);
+    function update(BankRequest $bankRequest, $bank)
+    {
+        try {
+            $bank = $this->repository->update($bankRequest->all(), $bank);
 
-        return ApiResponse::withOk('Bank updated',new BankResource($bank));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Bank updated', new BankResource($bank));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

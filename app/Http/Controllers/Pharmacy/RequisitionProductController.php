@@ -18,38 +18,40 @@ class RequisitionProductController extends Controller
 
     public function __construct(RequisitionProduct $RequisitionProduct)
     {
-        $this->repository= new RepositoryEloquent($RequisitionProduct);
+        $this->repository = new RepositoryEloquent($RequisitionProduct);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('RequisitionProducts list',new RequisitionProductCollection($this->repository->all('name')));
+        return ApiResponse::withOk('RequisitionProducts list', new RequisitionProductCollection($this->repository->all('name')));
     }
 
-    public function show($RequisitionProduct){
-        $RequisitionProduct=$this->repository->show($RequisitionProduct);
-        return $RequisitionProduct?
-            ApiResponse::withOk('RequisitionProduct Found',new RequisitionProductResource($RequisitionProduct))
+    public function show($RequisitionProduct)
+    {
+        $RequisitionProduct = $this->repository->show($RequisitionProduct);
+        return $RequisitionProduct ?
+            ApiResponse::withOk('RequisitionProduct Found', new RequisitionProductResource($RequisitionProduct))
             : ApiResponse::withNotFound('RequisitionProduct Not Found');
     }
 
-    public function store(RequisitionProductRequest $RequisitionProductRequest){
-        try{
-            $requestData=$RequisitionProductRequest->all();
-            $RequisitionProduct=$this->repository->store($requestData);
-            return ApiResponse::withOk('RequisitionProduct created',new RequisitionProductResource($RequisitionProduct->refresh()));
-        }
-        catch(Exception $e){
+    public function store(RequisitionProductRequest $RequisitionProductRequest)
+    {
+        try {
+            $requestData = $RequisitionProductRequest->all();
+            $RequisitionProduct = $this->repository->store($requestData);
+            return ApiResponse::withOk('RequisitionProduct created', new RequisitionProductResource($RequisitionProduct->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(RequisitionProductRequest $RequisitionProductRequest,$RequisitionProduct){
-        try{
-            $RequisitionProduct=$this->repository->update($RequisitionProductRequest->all(),$RequisitionProduct);
-            return ApiResponse::withOk('RequisitionProduct updated',new RequisitionProductResource($RequisitionProduct));
-        }
-        catch(Exception $e){
+    public function update(RequisitionProductRequest $RequisitionProductRequest, $RequisitionProduct)
+    {
+        try {
+            $RequisitionProduct = $this->repository->update($RequisitionProductRequest->all(), $RequisitionProduct);
+            return ApiResponse::withOk('RequisitionProduct updated', new RequisitionProductResource($RequisitionProduct));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

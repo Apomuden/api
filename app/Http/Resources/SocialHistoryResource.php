@@ -14,15 +14,15 @@ class SocialHistoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $social_history_category=$this->social_history_category;
+        $social_history_category = $this->social_history_category;
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'social_history_category_id'=> $social_history_category->id??null,
-            'social_history_category_name'=>$social_history_category->name??null,
-            'status'=>$this->status,
-            'created_at'=>(string) $this->created_at,
-            'updated_at'=>(string) $this->updated_at
+            'id' => $this->id,
+            'name' => $this->name,
+            'social_history_category_id' => $social_history_category->id ?? null,
+            'social_history_category_name' => $social_history_category->name ?? null,
+            'status' => $this->status,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at
         ];
     }
 }

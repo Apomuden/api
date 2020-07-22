@@ -18,59 +18,59 @@ class ProfileNextOfKinController extends Controller
 
     public function __construct(StaffNextOfKin $nextofkin)
     {
-        $this->repository= new RepositoryEloquent($nextofkin,true,['user','relationship']);
+        $this->repository = new RepositoryEloquent($nextofkin, true, ['user','relationship']);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('Profile Next of Kin list',new ProfileNextOfKinCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Profile Next of Kin list', new ProfileNextOfKinCollection($this->repository->all('name')));
     }
 
-    function show($profilenextofkin){
-        $profilenextofkin=$this->repository->show($profilenextofkin);//pass the country
-        return $profilenextofkin?
-        ApiResponse::withOk('Profile Next of Kin Found',new ProfileNextOfKinResource($profilenextofkin))
+    function show($profilenextofkin)
+    {
+        $profilenextofkin = $this->repository->show($profilenextofkin);//pass the country
+        return $profilenextofkin ?
+        ApiResponse::withOk('Profile Next of Kin Found', new ProfileNextOfKinResource($profilenextofkin))
         : ApiResponse::withNotFound('Profile Next of Kin Not Found');
     }
 
-   function store(ProfileNextOfKinRequest $profileNextOfKin){
-       try{
-           $requestData=$profileNextOfKin->all();
+    function store(ProfileNextOfKinRequest $profileNextOfKin)
+    {
+        try {
+            $requestData = $profileNextOfKin->all();
 
-           $profileNextOfKin=$this->repository->store($requestData);
-        return ApiResponse::withOk('Profile Next of Kin created',new ProfileNextOfKinResource($profileNextOfKin->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            $profileNextOfKin = $this->repository->store($requestData);
+            return ApiResponse::withOk('Profile Next of Kin created', new ProfileNextOfKinResource($profileNextOfKin->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(ProfileNextOfKinRequest $profileNextOfKinRequest,$profileNextOfKin){
-       try{
-        $profileNextOfKin=$this->repository->update($profileNextOfKinRequest->all(),$profileNextOfKin);
+    function update(ProfileNextOfKinRequest $profileNextOfKinRequest, $profileNextOfKin)
+    {
+        try {
+            $profileNextOfKin = $this->repository->update($profileNextOfKinRequest->all(), $profileNextOfKin);
 
-        return ApiResponse::withOk('Profile Next of Kin updated',new ProfileNextOfKinResource($profileNextOfKin));
-
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Profile Next of Kin updated', new ProfileNextOfKinResource($profileNextOfKin));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);
         return ApiResponse::withOk('Profile deleted successfully');
     }
-   function showByProfile($profile){
-       $this->repository->setModel(new User,['nextofkins'=>function($query){
-           $query->active()->with(['relationship','user'])->orderBy('name');
-       }]);
-       $nextofkins=$this->repository->find($profile)->nextofkins??null;
+    function showByProfile($profile)
+    {
+        $this->repository->setModel(new User(), ['nextofkins' => function ($query) {
+            $query->active()->with(['relationship','user'])->orderBy('name');
+        }]);
+        $nextofkins = $this->repository->find($profile)->nextofkins ?? null;
 
-       return $nextofkins?
-       ApiResponse::withOk('Available Documents Found',new ProfileNextOfKinCollection($nextofkins))
-       : ApiResponse::withNotFound('Profile Next of Kins Not Found');
-   }
-
-
+        return $nextofkins ?
+        ApiResponse::withOk('Available Documents Found', new ProfileNextOfKinCollection($nextofkins))
+        : ApiResponse::withNotFound('Profile Next of Kins Not Found');
+    }
 }

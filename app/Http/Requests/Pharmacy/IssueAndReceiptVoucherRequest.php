@@ -23,17 +23,17 @@ class IssueAndReceiptVoucherRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('issuereceiptvoucher')??null; //TODO: Change the route param from dummyparam
+        $id = $this->route('issuereceiptvoucher') ?? null; //TODO: Change the route param from dummyparam
 
         return [
             'id' => 'bail',
-            'issuing_store_id' => 'bail|'.($id?'sometimes':'required').'|exists:stores,id',
-            'requisition_reference_number' => 'bail'.($id?'sometimes':'required').'|exists:requisitions,reference_number',
-            'requisition_id' => 'bail'.($id?'sometimes':'required').'|exists:stores,id',
+            'issuing_store_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:stores,id',
+            'requisition_reference_number' => 'bail' . ($id ? 'sometimes' : 'required') . '|exists:requisitions,reference_number',
+            'requisition_id' => 'bail' . ($id ? 'sometimes' : 'required') . '|exists:stores,id',
             'issued_voucher_number' => 'bail|sometimes|string',
-            'issued_total_value' => 'bail|'.($id?'sometimes':'required').'|numeric|min:0',
-            'issued_quantity' => 'bail|'.($id?'sometimes':'required').'|numeric|min:0',
-            'issued_value' => 'bail|'.($id?'sometimes':'required').'|numeric|min:0',
+            'issued_total_value' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:0',
+            'issued_quantity' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:0',
+            'issued_value' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:0',
             'date_issued' => 'bail|sometimes|date'
         ];
     }

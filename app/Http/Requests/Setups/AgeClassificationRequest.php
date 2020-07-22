@@ -23,10 +23,10 @@ class AgeClassificationRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('ageclassification')??null;
+        $id = $this->route('ageclassification') ?? null;
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('age_classifications','name',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('age_classifications', 'name', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

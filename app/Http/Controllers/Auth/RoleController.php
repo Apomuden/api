@@ -17,40 +17,42 @@ class RoleController extends Controller
 
     public function __construct(Role $role)
     {
-        $this->repository= new RepositoryEloquent($role);
+        $this->repository = new RepositoryEloquent($role);
     }
 
-    function index(){
-        return ApiResponse::withOk('Role list',new RoleCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Role list', new RoleCollection($this->repository->all('name')));
     }
 
-    function show($role){
-        $role=$this->repository->show($role);//pass the country
-        return $role?
-        ApiResponse::withOk('Role Found',new RoleResource($role))
+    function show($role)
+    {
+        $role = $this->repository->show($role);//pass the country
+        return $role ?
+        ApiResponse::withOk('Role Found', new RoleResource($role))
         : ApiResponse::withNotFound('Role Not Found');
     }
 
-   function store(RoleRequest $roleRequest){
-       try{
-           $requestData=$roleRequest->all();
-           $role=$this->repository->store($requestData);
-           return ApiResponse::withOk('Role created',new RoleResource($role->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+    function store(RoleRequest $roleRequest)
+    {
+        try {
+            $requestData = $roleRequest->all();
+            $role = $this->repository->store($requestData);
+            return ApiResponse::withOk('Role created', new RoleResource($role->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(RoleRequest $roleRequest,$role){
-       try{
-          $role=$this->repository->update($roleRequest->all(),$role);
-        return ApiResponse::withOk('Role updated',new RoleResource($role));
-       }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+    function update(RoleRequest $roleRequest, $role)
+    {
+        try {
+            $role = $this->repository->update($roleRequest->all(), $role);
+            return ApiResponse::withOk('Role updated', new RoleResource($role));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

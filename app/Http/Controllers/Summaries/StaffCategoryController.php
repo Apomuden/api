@@ -12,7 +12,7 @@ class StaffCategoryController extends Controller
 {
     public function index()
     {
-       $staffCategories=User::getCategorySummary();
-       return ApiResponse::withOk('Staff Category Summaries',StaffCategoryResource::collection($staffCategories));
+        $staffCategories = User::getCategorySummary();
+        return ApiResponse::withOk('Staff Category Summaries', StaffCategoryResource::collection($staffCategories));
     }
 }

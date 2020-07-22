@@ -17,18 +17,18 @@ class FolderController extends Controller
 
     public function __construct(Folder $folder)
     {
-       $this->repository=new RepositoryEloquent($folder);
+        $this->repository = new RepositoryEloquent($folder);
     }
 
     public function index(Request $request)
     {
-       return ApiResponse::withOk('Folders List',FolderResource::collection($this->repository->all('surname')));
+        return ApiResponse::withOk('Folders List', FolderResource::collection($this->repository->all('surname')));
     }
 
     public function store(FolderRequest $request)
     {
-        $folder=$this->repository->store($request->all());
-       return ApiResponse::withOk("Folder created",new FolderResource($folder->refresh()));
+        $folder = $this->repository->store($request->all());
+        return ApiResponse::withOk("Folder created", new FolderResource($folder->refresh()));
     }
 
     /**
@@ -39,8 +39,8 @@ class FolderController extends Controller
      */
     public function show($folder)
     {
-        $folder=$this->repository->find($folder);
-        return ApiResponse::withOk('Folder found',new FolderResource($folder));
+        $folder = $this->repository->find($folder);
+        return ApiResponse::withOk('Folder found', new FolderResource($folder));
     }
 
     /**
@@ -52,8 +52,8 @@ class FolderController extends Controller
      */
     public function update(FolderRequest $request, $folder)
     {
-        $folder=$this->repository->update($request->all(),$folder);
-        return ApiResponse::withOk('Folder updated',new FolderResource($folder));
+        $folder = $this->repository->update($request->all(), $folder);
+        return ApiResponse::withOk('Folder updated', new FolderResource($folder));
     }
 
     /**

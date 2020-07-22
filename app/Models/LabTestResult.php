@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Log;
 
 class LabTestResult extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()
@@ -63,7 +65,7 @@ class LabTestResult extends AuditableModel
             $model->gender = $patient->gender;
             $model->patient_status = $model->patient_status ?? $investigation->patient_status;
 
-            $serviceEloquent = new RepositoryEloquent(new Service);
+            $serviceEloquent = new RepositoryEloquent(new Service());
             $service = $serviceEloquent->findOrFail($investigation->service_id);
 
             $model->hospital_service_id = $service->hospital_service_id;
@@ -84,8 +86,9 @@ class LabTestResult extends AuditableModel
                     $model->billing_sponsor_id = null;
                     $model->sponsorship_type_id = $patient->funding_type->sponsorship_type_id;
                     $model->prepaid_total = $service->prepaid_amount;
-                } else
+                } else {
                     $model->postpaid_total = $service->postpaid_amount;
+                }
             }
 
             $model->test_date  = $model->test_date  ??  Carbon::today();
@@ -126,7 +129,7 @@ class LabTestResult extends AuditableModel
                 $model->gender = $investigation->patient->gender;
                 $model->patient_status = $model->patient_status ?? $investigation->patient_status;
 
-                $serviceEloquent = new RepositoryEloquent(new Service);
+                $serviceEloquent = new RepositoryEloquent(new Service());
                 $service = $serviceEloquent->findOrFail($investigation->service_id);
 
                 $model->hospital_service_id = $service->hospital_service_id;
@@ -143,8 +146,9 @@ class LabTestResult extends AuditableModel
                     $model->billing_sponsor_id = null;
                     $model->sponsorship_type_id = $investigation->patient->funding_type->sponsorship_type_id;
                     $model->prepaid_total = $service->prepaid_amount;
-                } else
+                } else {
                     $model->postpaid_total = $service->postpaid_amount;
+                }
 
 
                 $policy = $investigation->patient->patient_sponsors()->whereHas('sponsorship_policy', function ($query) {
@@ -152,8 +156,9 @@ class LabTestResult extends AuditableModel
                 })->orderBy('priority', 'asc')->first() ?? null;
 
                 $model->sponsorship_policy_id = $model->postpaid_total ? ($policy->sponsorship_policy_id ?? null) : null;
-            } else
+            } else {
                 $investigation = $model->investigation;
+            }
 
             if ($model->lab_parameter_id) {
                 $lab_parameter = LabParameter::findOrFail($model->lab_parameter_id);
@@ -197,28 +202,32 @@ class LabTestResult extends AuditableModel
     public function getComputeRangeAttribute()
     {
         if ($this->test_value && $this->lab_parameter_id && $this->patient_id) {
-
             $patient = Patient::withTrashed()->findOrFail($this->patient_id);
-            if ($this->gender)
+            if ($this->gender) {
                 $patient->gender = $this->gender;
+            }
 
             $ranges = LabParameterRange::where('lab_parameter_id', $this->lab_parameter_id)->orderBy('max_value')->get();
 
             foreach ($ranges as $range) {
                 $expression = null;
                 if ($patient->abs_age && $patient->age_unit) {
-                    if ($range->min_age && $range->min_age_unit)
+                    if ($range->min_age && $range->min_age_unit) {
                         $expression .= $patient->ageByUnit($range->min_age_unit) . ' >= ' . $range->min_age . ' && ';
-                    if ($range->max_age && $range->max_age_unit)
+                    }
+                    if ($range->max_age && $range->max_age_unit) {
                         $expression .= $patient->ageByUnit($range->max_age_unit) . ' <= ' . $range->max_age . ' && ';
+                    }
                 }
-                if ($range->lab_parameter->value_type == 'Text')
+                if ($range->lab_parameter->value_type == 'Text') {
                     $expression .= (strtolower(trim($this->test_value)) == strtolower(trim($range->text_value)) ? 'true' : 'false') . ' && ';
-                else {
-                    if ($range->min_comparator && $range->min_value)
+                } else {
+                    if ($range->min_comparator && $range->min_value) {
                         $expression = "$this->test_value $range->min_comparator $range->min_value && ";
-                    if ($range->max_comparator && $range->max_value)
+                    }
+                    if ($range->max_comparator && $range->max_value) {
                         $expression .= "$this->test_value $range->max_comparator $range->max_value && ";
+                    }
                 }
 
                 if ($range->gender) {
@@ -228,8 +237,9 @@ class LabTestResult extends AuditableModel
                 $expression = rtrim($expression, ' && ');
                 //Log::critical('Expression',[$expression]);
                 $inRange = eval("return $expression ;");
-                if ($inRange)
+                if ($inRange) {
                     return $range;
+                }
             }
         }
     }
@@ -334,7 +344,8 @@ class LabTestResult extends AuditableModel
     {
         $parameters = $this->service->lab_parameters()->orderBy('lab_service_parameters.order')->get();
 
-        if ($parameters->count() == self::whereNotIn('status', ['APPROVED', 'CANCELLED', 'RESULTS-TAKEN'])->count())
+        if ($parameters->count() == self::whereNotIn('status', ['APPROVED', 'CANCELLED', 'RESULTS-TAKEN'])->count()) {
             $this->investigation->update(['status' => 'RESULTS-TAKEN']);
+        }
     }
 }

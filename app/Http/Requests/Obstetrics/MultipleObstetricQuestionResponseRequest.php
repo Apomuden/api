@@ -27,8 +27,9 @@ class MultipleObstetricQuestionResponseRequest extends ApiFormRequest
      */
     public function rules()
     {
-        if (sizeof($this->request->get("responses")) == 0)
+        if (sizeof($this->request->get("responses")) == 0) {
             return [];
+        }
         return [
             'consultation_id' => 'bail|required|exists:consultations,id',
             'patient_id' => 'bail|required|exists:patients,id',

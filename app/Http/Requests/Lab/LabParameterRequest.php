@@ -27,10 +27,10 @@ class LabParameterRequest extends ApiFormRequest
         $id = $this->route('parameter') ?? null;
         return [
             'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('lab_parameters', 'name', $id),
-            'description' => 'bail|sometimes|nullable|'. $this->softUnique('lab_parameters', 'description', $id),
+            'description' => 'bail|sometimes|nullable|' . $this->softUnique('lab_parameters', 'description', $id),
             'value_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:Text,Number',
             'unit' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
-} 
+}

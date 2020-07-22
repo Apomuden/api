@@ -18,38 +18,40 @@ class StoreController extends Controller
 
     public function __construct(Store $Store)
     {
-        $this->repository= new RepositoryEloquent($Store);
+        $this->repository = new RepositoryEloquent($Store);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Product Forms list',new StoreCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Product Forms list', new StoreCollection($this->repository->all('name')));
     }
 
-    public function show($Store){
-        $Store=$this->repository->show($Store);
-        return $Store?
-            ApiResponse::withOk('Product Form Found',new StoreResource($Store))
+    public function show($Store)
+    {
+        $Store = $this->repository->show($Store);
+        return $Store ?
+            ApiResponse::withOk('Product Form Found', new StoreResource($Store))
             : ApiResponse::withNotFound('Product Form Not Found');
     }
 
-    public function store(StoreRequest $StoreRequest){
-        try{
-            $requestData=$StoreRequest->all();
-            $Store=$this->repository->store($requestData);
-            return ApiResponse::withOk('Product Form created',new StoreResource($Store->refresh()));
-        }
-        catch(Exception $e){
+    public function store(StoreRequest $StoreRequest)
+    {
+        try {
+            $requestData = $StoreRequest->all();
+            $Store = $this->repository->store($requestData);
+            return ApiResponse::withOk('Product Form created', new StoreResource($Store->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(StoreRequest $StoreRequest,$Store){
-        try{
-            $Store=$this->repository->update($StoreRequest->all(),$Store);
-            return ApiResponse::withOk('Product Form updated',new StoreResource($Store));
-        }
-        catch(Exception $e){
+    public function update(StoreRequest $StoreRequest, $Store)
+    {
+        try {
+            $Store = $this->repository->update($StoreRequest->all(), $Store);
+            return ApiResponse::withOk('Product Form updated', new StoreResource($Store));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

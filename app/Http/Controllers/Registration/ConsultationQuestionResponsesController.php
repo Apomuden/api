@@ -25,8 +25,10 @@ class ConsultationQuestionResponsesController extends Controller
     public function index()
     {
         $records = $this->repository->all('id', 'ASC');
-        return ApiResponse::withOk('Question response list',
-            ConsultationQuestionResponseResource::collection($records));
+        return ApiResponse::withOk(
+            'Question response list',
+            ConsultationQuestionResponseResource::collection($records)
+        );
     }
 
     // group responses by consultation
@@ -37,14 +39,18 @@ class ConsultationQuestionResponsesController extends Controller
         // check if there are responses for these consultations
         $existingResponses = $this->repository->getModel()->whereIn('consultation_id', $consultations->modelKeys())->get();
         // throw 404 if no consultation has a response
-        if (count($existingResponses) == 0) return ApiResponse::withNotFound('Nothing found');
+        if (count($existingResponses) == 0) {
+            return ApiResponse::withNotFound('Nothing found');
+        }
 
         // filter only consultations that have responses for display
         $consultationsWithResponse = $consultations->filter(function ($r) use ($existingResponses) {
             return $existingResponses->contains('consultation_id', $r->id);
         });
-        return ApiResponse::withOk('Grouped response list',
-            ConsultationGroupedQuestionResponseResource::collection($consultationsWithResponse));
+        return ApiResponse::withOk(
+            'Grouped response list',
+            ConsultationGroupedQuestionResponseResource::collection($consultationsWithResponse)
+        );
     }
 
     public function store(ConsultationQuestionResponsesRequest $request)

@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 class Attendance extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = ['id'];
 
     public static function updateObject($model)
@@ -22,18 +25,18 @@ class Attendance extends AuditableModel
         $attendance = self::find($model->attendance_id);
         $attendance->service_id = ($model->consultation_service_id ?? $attendance->service_id) ?? null;
         //create an attendance
-        $repository = new RepositoryEloquent(new FundingType);
+        $repository = new RepositoryEloquent(new FundingType());
         $funding_type = $repository->find($model->funding_type_id ?? $attendance->funding_type_id);
         $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash/Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
         $attendance->patient_id = $model->patient_id ?? $attendance->patient_id;
 
         //get clinic details
-        $repository = new RepositoryEloquent(new Clinic);
+        $repository = new RepositoryEloquent(new Clinic());
         $clinic = $repository->find($model->clinic_id);
         $attendance->clinic_type_id = $clinic->clinic_type_id ?? $attendance->clinic_type_id;
 
         //get patient details
-        $repository = new RepositoryEloquent(new Patient);
+        $repository = new RepositoryEloquent(new Patient());
         $patient = $repository->findOrFail($attendance->patient_id);
         $attendance->age = Carbon::parse($patient->dob)->age;
 
@@ -45,7 +48,7 @@ class Attendance extends AuditableModel
         $attendance->sponsorship_type_id = $model->sponsorship_type_id ?? $attendance->sponsorship_type_id;
 
         //age class and group
-        $repository = new RepositoryEloquent(new AgeClassification);
+        $repository = new RepositoryEloquent(new AgeClassification());
         $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUT PATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
         $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
@@ -66,19 +69,19 @@ class Attendance extends AuditableModel
         parent::boot();
         static::creating(function ($model) {
             //create an attendance
-            $repository = new RepositoryEloquent(new FundingType);
+            $repository = new RepositoryEloquent(new FundingType());
             $funding_type = $repository->find($model->funding_type_id);
 
             $insured = in_array(ucfirst($funding_type->name), ['Cash/Prepaid', 'Cash / Prepaid', 'Cash', 'Prepaid']) ? 'NO' : 'YES';
             //$model->patient_id = $model->parent_id;
 
             //get clinic details
-            $repository = new RepositoryEloquent(new Clinic);
+            $repository = new RepositoryEloquent(new Clinic());
             $clinic = $repository->find($model->clinic_id);
             $model->clinic_type_id = $clinic->clinic_type_id;
 
             //get patient details
-            $repository = new RepositoryEloquent(new Patient);
+            $repository = new RepositoryEloquent(new Patient());
             $patient = $repository->find($model->patient_id);
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
@@ -90,7 +93,7 @@ class Attendance extends AuditableModel
             $model->sponsorship_type_id = $model->sponsorship_type_id ?? null;
 
             //age class and group
-            $repository = new RepositoryEloquent(new AgeClassification);
+            $repository = new RepositoryEloquent(new AgeClassification());
             $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
             $age_category = DateHelper::getAgeCategory($age_class->id, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);

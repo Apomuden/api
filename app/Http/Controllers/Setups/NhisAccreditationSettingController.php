@@ -32,8 +32,9 @@ class NhisAccreditationSettingController extends Controller
 
         //$requestData['logo']=FileResolver::base64ToFile($request->logo);
 
-        if($this->repository->first())
-        return ApiResponse::withNotOk('Nhis Accreditation Setting is already setup,kindly update');
+        if ($this->repository->first()) {
+            return ApiResponse::withNotOk('Nhis Accreditation Setting is already setup,kindly update');
+        }
 
         $response = $this->repository->store($requestData);
 
@@ -44,10 +45,11 @@ class NhisAccreditationSettingController extends Controller
     public function show()
     {
         $record = $this->repository->first();
-        if($record)
-        return  ApiResponse::withOk('Nhis Accreditation Setting Found', new NhisAccreditationSettingResource($record));
-        else
-        return ApiResponse::withNotFound('No Record Found');
+        if ($record) {
+            return  ApiResponse::withOk('Nhis Accreditation Setting Found', new NhisAccreditationSettingResource($record));
+        } else {
+            return ApiResponse::withNotFound('No Record Found');
+        }
     }
 
     public function update(NhisAccreditationSettingRequest $request)

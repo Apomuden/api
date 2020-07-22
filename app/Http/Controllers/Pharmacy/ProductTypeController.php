@@ -18,38 +18,40 @@ class ProductTypeController extends Controller
 
     public function __construct(ProductType $ProductType)
     {
-        $this->repository= new RepositoryEloquent($ProductType);
+        $this->repository = new RepositoryEloquent($ProductType);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Product Types list',new ProductTypeCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Product Types list', new ProductTypeCollection($this->repository->all('name')));
     }
 
-    public function show($ProductType){
-        $ProductType=$this->repository->show($ProductType);
-        return $ProductType?
-            ApiResponse::withOk('Product Type Found',new ProductTypeResource($ProductType))
+    public function show($ProductType)
+    {
+        $ProductType = $this->repository->show($ProductType);
+        return $ProductType ?
+            ApiResponse::withOk('Product Type Found', new ProductTypeResource($ProductType))
             : ApiResponse::withNotFound('Product Type Not Found');
     }
 
-    public function store(ProductTypeRequest $ProductTypeRequest){
-        try{
-            $requestData=$ProductTypeRequest->all();
-            $ProductType=$this->repository->store($requestData);
-            return ApiResponse::withOk('Product Type created',new ProductTypeResource($ProductType->refresh()));
-        }
-        catch(Exception $e){
+    public function store(ProductTypeRequest $ProductTypeRequest)
+    {
+        try {
+            $requestData = $ProductTypeRequest->all();
+            $ProductType = $this->repository->store($requestData);
+            return ApiResponse::withOk('Product Type created', new ProductTypeResource($ProductType->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(ProductTypeRequest $ProductTypeRequest,$ProductType){
-        try{
-            $ProductType=$this->repository->update($ProductTypeRequest->all(),$ProductType);
-            return ApiResponse::withOk('Product Type updated',new ProductTypeResource($ProductType));
-        }
-        catch(Exception $e){
+    public function update(ProductTypeRequest $ProductTypeRequest, $ProductType)
+    {
+        try {
+            $ProductType = $this->repository->update($ProductTypeRequest->all(), $ProductType);
+            return ApiResponse::withOk('Product Type updated', new ProductTypeResource($ProductType));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

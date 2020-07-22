@@ -54,23 +54,31 @@ class ConsultationQuestionResponsesRequest extends ApiFormRequest
 
             if (isset($data['consultant_id'])) {
                 $consultant = User::find($data['consultant_id']);
-                if (isset($consultant) && !in_array($consultant->role->name, ['Doctor', 'Physician', 'Dev']))
+                if (isset($consultant) && !in_array($consultant->role->name, ['Doctor', 'Physician', 'Dev'])) {
                     $validator->errors()->add('consultant_id', 'the id provided is not of a consultant');
-                else if (!isset($consultant))
+                } elseif (!isset($consultant)) {
                     $validator->errors()->add('consultant_id', 'the id provided is not valid');
+                }
             }
             // skip rest of validation cos single updates don't have responses field
-            if ($this->isUpdate) return;
+            if ($this->isUpdate) {
+                return;
+            }
 
-            if (!isset($data['responses']) || !isset($data['consultation_id'])) return;
+            if (!isset($data['responses']) || !isset($data['consultation_id'])) {
+                return;
+            }
             foreach ($data['responses'] as $response) {
                 $response = (array)$response;
-                if (!isset($response['consultation_question_id'])) continue;
+                if (!isset($response['consultation_question_id'])) {
+                    continue;
+                }
                 $res = ConsultationQuestionResponse::where(['consultation_id' => $data['consultation_id'],
                     'consultation_question_id' => $response['consultation_question_id']])->first();
 
-                if (isset($res->response) && $res->response)
+                if (isset($res->response) && $res->response) {
                     $validator->errors()->add('response', "{$res->consultation_question->question} has already been responded in this consultation");
+                }
             }
         });
     }

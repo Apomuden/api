@@ -13,12 +13,12 @@ class FolderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'folder_no'=>$this->folder_no,
-            'folder_type'=>$this->folder_type,
-            'status'=>$this->status,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
+            'id' => $this->id,
+            'folder_no' => $this->folder_no,
+            'folder_type' => $this->folder_type,
+            'status' => $this->status,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

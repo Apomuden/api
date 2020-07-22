@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ObsBirthPlace extends AuditableModel
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
-    protected $guarded = [];
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
 
+    protected $guarded = [];
 }

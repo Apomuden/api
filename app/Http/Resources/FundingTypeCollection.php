@@ -15,6 +15,5 @@ class FundingTypeCollection extends ResourceCollection
     public function toArray($request)
     {
         return  FundingTypeResource::collection($this->collection);
-
     }
 }

@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class NhisGdrgServiceTariff extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function hospital_service()
@@ -46,18 +49,19 @@ class NhisGdrgServiceTariff extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->mdc_code=$model->major_diagnostic_category->mdc_code;
-            $model->hospital_service_id=$model->major_diagnostic_category->hospital_service_id;
-            $model->patient_status=$model->patient_status??$model->major_diagnostic_category->patient_status;
-            $model->gender=$model->gender??$model->major_diagnostic_category->gender;
-            $model->age_group_id=$model->age_group_id??$model->major_diagnostic_category->age_group_id;
-            if($model->age_group->age_name=='ALL')
-            $model->tariff_type='CHILD,ADULT';
-            else
-            $model->tariff_type= $model->age_group->age_name;
+            $model->mdc_code = $model->major_diagnostic_category->mdc_code;
+            $model->hospital_service_id = $model->major_diagnostic_category->hospital_service_id;
+            $model->patient_status = $model->patient_status ?? $model->major_diagnostic_category->patient_status;
+            $model->gender = $model->gender ?? $model->major_diagnostic_category->gender;
+            $model->age_group_id = $model->age_group_id ?? $model->major_diagnostic_category->age_group_id;
+            if ($model->age_group->age_name == 'ALL') {
+                $model->tariff_type = 'CHILD,ADULT';
+            } else {
+                $model->tariff_type = $model->age_group->age_name;
+            }
         });
 
-        static::created(function($model){
+        static::created(function ($model) {
             foreach (request('nhis_provider_levels') as $level) {
                 $payload = [
                     'nhis_gdrg_service_tariff_id' => $model->id,
@@ -72,22 +76,22 @@ class NhisGdrgServiceTariff extends AuditableModel
             }
         });
 
-        static::updating(function($model){
-             if($model->isDirty('major_diagnostic_category_id')){
+        static::updating(function ($model) {
+            if ($model->isDirty('major_diagnostic_category_id')) {
                 $model->mdc_code = $model->major_diagnostic_category->mdc_code;
                 $model->hospital_service_id = $model->major_diagnostic_category->hospital_service_id;
                 $model->patient_status = $model->major_diagnostic_category->patient_status;
-                $model->gender =$model->major_diagnostic_category->gender;
+                $model->gender = $model->major_diagnostic_category->gender;
                 // $model->age_group_id =$model->major_diagnostic_category->age_group_id;
-             }
+            }
 
-             if($model->isDirty('age_group_id'))
-               {
-                if ($model->age_group->age_name == 'ALL')
-                $model->tariff_type = 'CHILD,ADULT';
-                else
-                $model->tariff_type = $model->age_group->age_name;
-               }
+            if ($model->isDirty('age_group_id')) {
+                if ($model->age_group->age_name == 'ALL') {
+                    $model->tariff_type = 'CHILD,ADULT';
+                } else {
+                    $model->tariff_type = $model->age_group->age_name;
+                }
+            }
 
             foreach (request('nhis_provider_levels') as $level) {
                 $payload = [

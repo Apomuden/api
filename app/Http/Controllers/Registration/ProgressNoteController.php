@@ -23,7 +23,7 @@ class ProgressNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Progress notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Progress notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class ProgressNoteController extends Controller
      */
     public function store(ProgressNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Progress note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Progress note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class ProgressNoteController extends Controller
      */
     public function update(ProgressNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Progress note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Progress note updated', new GeneralNoteResource($record));
     }
 
     /**

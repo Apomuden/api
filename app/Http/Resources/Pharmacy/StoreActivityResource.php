@@ -15,19 +15,19 @@ class StoreActivityResource extends JsonResource
      */
     public function toArray($request)
     {
-        $store = $this->store??null;
+        $store = $this->store ?? null;
         return [
-            'id'=>$this->id,
-            'store_id'=>$store->id??null,
-            'store_name'=>$store->name??null,
-            'purchasing_from_suppliers'=>$this->purchasing_from_suppliers??null,
-            'receiving_from_suppliers'=>$this->receiving_from_suppliers??null,
-            'issuing_requested_product'=>$this->issuing_requested_product??null,
-            'requesting_products_from_stores'=>$this->requesting_products_from_stores??null,
-            'receiving_issued_products'=>$this->receiving_issued_products??null,
-            'direct_engagement_with_patient'=>$this->direct_engagement_with_patient??null,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at)??null,
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)??null
+            'id' => $this->id,
+            'store_id' => $store->id ?? null,
+            'store_name' => $store->name ?? null,
+            'purchasing_from_suppliers' => $this->purchasing_from_suppliers ?? null,
+            'receiving_from_suppliers' => $this->receiving_from_suppliers ?? null,
+            'issuing_requested_product' => $this->issuing_requested_product ?? null,
+            'requesting_products_from_stores' => $this->requesting_products_from_stores ?? null,
+            'receiving_issued_products' => $this->receiving_issued_products ?? null,
+            'direct_engagement_with_patient' => $this->direct_engagement_with_patient ?? null,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at) ?? null,
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at) ?? null
         ];
     }
 }

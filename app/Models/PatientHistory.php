@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Log;
 
 class PatientHistory extends AuditableModel
 {
-    use FindByTrait, SortableTrait, SoftDeletes;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()

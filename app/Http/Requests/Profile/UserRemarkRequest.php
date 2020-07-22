@@ -24,12 +24,12 @@ class UserRemarkRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('remark')??null;
+        $id = $this->route('remark') ?? null;
         return [
-            'type'=>'bail|'.($id?'sometimes':'required').'|in:RECOMMENDATION,COMPLAINT,COMPLIMENT',
-            'remarks'=>'bail|'.($id?'sometimes':'required').'|string',
-            'user_id'=>'bail|'.($id?'sometimes':'required').'|uuid|exists:users,id',
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:RECOMMENDATION,COMPLAINT,COMPLIMENT',
+            'remarks' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',
+            'user_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|uuid|exists:users,id',
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

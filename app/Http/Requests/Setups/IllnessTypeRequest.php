@@ -24,10 +24,10 @@ class IllnessTypeRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('illnesstype')??null;
+        $id = $this->route('illnesstype') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('illness_types','name',$id),
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('illness_types', 'name', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

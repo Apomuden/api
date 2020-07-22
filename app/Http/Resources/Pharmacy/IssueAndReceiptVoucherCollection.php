@@ -17,6 +17,5 @@ class IssueAndReceiptVoucherCollection extends PaginatedCollectionHelper
     public function toArray($request, $coll = null)
     {
         return parent::toArray($request, IssueAndReceiptVoucherResource::collection($this->collection));
-
     }
 }

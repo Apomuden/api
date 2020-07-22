@@ -36,8 +36,8 @@ class PatientHistoryController extends Controller
      */
     public function store(PatientHistoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Patient history created',new PatientHistoryResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Patient history created', new PatientHistoryResource($record));
     }
 
     /**
@@ -48,8 +48,8 @@ class PatientHistoryController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->show($id);
-        return ApiResponse::withOk('Patient history found',new PatientHistoryResource($record));
+        $record = $this->repository->show($id);
+        return ApiResponse::withOk('Patient history found', new PatientHistoryResource($record));
     }
 
     /**
@@ -61,8 +61,8 @@ class PatientHistoryController extends Controller
      */
     public function update(PatientHistoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
-        return ApiResponse::withOk('patient history updated',new PatientHistoryResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('patient history updated', new PatientHistoryResource($record));
     }
 
     /**

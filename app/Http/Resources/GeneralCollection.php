@@ -15,6 +15,5 @@ class GeneralCollection extends ResourceCollection
     public function toArray($request)
     {
         return  GeneralResource::collection($this->collection);
-
     }
 }

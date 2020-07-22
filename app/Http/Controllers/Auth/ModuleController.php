@@ -16,15 +16,17 @@ class ModuleController extends Controller
     protected $repository;
     public function __construct(Module $module)
     {
-        $this->repository= new RepositoryEloquent($module);
+        $this->repository = new RepositoryEloquent($module);
     }
-    function index(){
-        return ApiResponse::withOk('Module list',new GeneralCollection($this->repository->all('name')));
+    function index()
+    {
+        return ApiResponse::withOk('Module list', new GeneralCollection($this->repository->all('name')));
     }
-    function show($module){
-        $module=$this->repository->show($module);//pass the country
-        return $module?
-        ApiResponse::withOk('Module Found',new GeneralResource($module))
+    function show($module)
+    {
+        $module = $this->repository->show($module);//pass the country
+        return $module ?
+        ApiResponse::withOk('Module Found', new GeneralResource($module))
         : ApiResponse::withNotFound('Module Not Found');
     }
 }

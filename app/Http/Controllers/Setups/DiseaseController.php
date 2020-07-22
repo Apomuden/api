@@ -29,9 +29,9 @@ class DiseaseController extends Controller
     }
     public function page()
     {
-        $records = $this->repository->paginate(null,'name');
+        $records = $this->repository->paginate(null, 'name');
 
-        return ApiResponse::withPaginate(new DiseasePaginatedCollection($records,'Disease paginated list'));
+        return ApiResponse::withPaginate(new DiseasePaginatedCollection($records, 'Disease paginated list'));
     }
 
     /**
@@ -42,8 +42,8 @@ class DiseaseController extends Controller
      */
     public function store(DiseaseRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Disease created',new DiseaseResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Disease created', new DiseaseResource($record->refresh()));
     }
 
     /**
@@ -67,7 +67,7 @@ class DiseaseController extends Controller
      */
     public function update(DiseaseRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Disease updated', new DiseaseResource($record));
     }
 

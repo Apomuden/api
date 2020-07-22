@@ -38,8 +38,8 @@ class ServiceOrderController extends Controller
      */
     public function store(ServiceOrderRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Service Order',new ServiceOrderResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Service Order', new ServiceOrderResource($record->refresh()));
     }
 
     /**
@@ -50,7 +50,7 @@ class ServiceOrderController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->findOrFail($id);
+        $record = $this->repository->findOrFail($id);
         return ApiResponse::withOk('Service Order found', new ServiceOrderResource($record));
     }
 
@@ -63,7 +63,7 @@ class ServiceOrderController extends Controller
      */
     public function update(ServiceOrderRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Service Order updated', new ServiceOrderResource($record));
     }
 

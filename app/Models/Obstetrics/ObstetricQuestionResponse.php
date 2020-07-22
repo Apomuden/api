@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\Auth;
  */
 class ObstetricQuestionResponse extends AuditableModel
 {
-    use ActiveTrait,FindByTrait,SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()

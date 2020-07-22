@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Auth;
 
 class LabSampleType extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 }

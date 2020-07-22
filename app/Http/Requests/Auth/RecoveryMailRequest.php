@@ -25,7 +25,7 @@ class RecoveryMailRequest extends ApiFormRequest
     public function rules()
     {
         return [
-            'email'=>'bail|required|email|exists:users,email'
+            'email' => 'bail|required|email|exists:users,email'
         ];
     }
 }

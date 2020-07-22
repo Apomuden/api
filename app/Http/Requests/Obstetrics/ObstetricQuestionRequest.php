@@ -26,11 +26,11 @@ class ObstetricQuestionRequest extends ApiFormRequest
         $id = $this->route('question') ?? null;
 
         return [
-            'order' => 'bail|'. ($id ? 'sometimes' : 'required'),
-            'question' => 'bail|'. ($id ? 'sometimes' : 'required'),
-            'status' => 'bail|'. ($id ? 'sometimes' : 'required'),
-            'step' => 'bail|'. ($id ? 'sometimes' : 'required'),
-            'value_type' => 'bail|'. ($id ? 'sometimes' : 'required'),
+            'order' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'question' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'step' => 'bail|' . ($id ? 'sometimes' : 'required'),
+            'value_type' => 'bail|' . ($id ? 'sometimes' : 'required'),
         ];
     }
 }

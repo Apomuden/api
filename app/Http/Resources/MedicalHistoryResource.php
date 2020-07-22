@@ -14,15 +14,15 @@ class MedicalHistoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $medical_history_category=$this->medical_history_category;
+        $medical_history_category = $this->medical_history_category;
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'medical_history_category_id'=> $medical_history_category->id??null,
-            'medical_history_category_name'=> $medical_history_category->name??null,
-            'status'=>$this->status,
-            'created_at'=>(string) $this->created_at,
-            'updated_at'=>(string) $this->updated_at
+            'id' => $this->id,
+            'name' => $this->name,
+            'medical_history_category_id' => $medical_history_category->id ?? null,
+            'medical_history_category_name' => $medical_history_category->name ?? null,
+            'status' => $this->status,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at
         ];
     }
 }

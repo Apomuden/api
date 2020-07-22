@@ -13,32 +13,26 @@ trait FindByTrait
 {
     private function getComparator($value)
     {
-        $paramObj = new stdClass;
+        $paramObj = new stdClass();
         if (ApiRequest::startsWith(trim($value), '<=')) {
             $paramObj->comparator = '<=';
             $paramObj->value = str_replace('<=', '', trim($value));
-        }
-        else if (ApiRequest::startsWith(trim($value), '<')) {
+        } elseif (ApiRequest::startsWith(trim($value), '<')) {
             $paramObj->comparator = '<';
             $paramObj->value = str_replace('<', '', trim($value));
-        }
-        else if (ApiRequest::startsWith(trim($value), '>=')) {
+        } elseif (ApiRequest::startsWith(trim($value), '>=')) {
             $paramObj->comparator = '>=';
             $paramObj->value = str_replace('>=', '', trim($value));
-        }
-        else if (ApiRequest::startsWith(trim($value), '>')) {
+        } elseif (ApiRequest::startsWith(trim($value), '>')) {
             $paramObj->comparator = '>';
             $paramObj->value = str_replace('>', '', trim($value));
-        }
-        else if (ApiRequest::startsWith(trim($value), '!')) {
+        } elseif (ApiRequest::startsWith(trim($value), '!')) {
             $paramObj->comparator = '!=';
             $paramObj->value = str_replace('!', '', trim($value));
-        }
-        else if (ApiRequest::startsWith(trim($value), '=')) {
+        } elseif (ApiRequest::startsWith(trim($value), '=')) {
             $paramObj->comparator = '=';
             $paramObj->value = str_replace('=', '', trim($value));
-        }
-        else {
+        } else {
             $paramObj->comparator = 'like';
             $paramObj->value = "%{$value}%";
         }
@@ -47,9 +41,8 @@ trait FindByTrait
     public function scopeFindBy($query, array $params)
     {
 
-        if(isset($params['role']))
-        {
-            $params['role_id']=Role::where('name', $params['role'])->first()->id??null;
+        if (isset($params['role'])) {
+            $params['role_id'] = Role::where('name', $params['role'])->first()->id ?? null;
             unset($params['role']);
         }
         $dateFrom = $params['dateFrom'] ?? null;
@@ -61,11 +54,13 @@ trait FindByTrait
 
         unset($params['zlimit']);
 
-        if ($dateFrom)
+        if ($dateFrom) {
             $query = $query->whereDate('created_at', '>=', date('Y-m-d', strtotime($dateFrom)));
+        }
 
-        if ($dateTo)
+        if ($dateTo) {
             $query = $query->whereDate('created_at', '<=', date('Y-m-d', strtotime($dateTo)));
+        }
 
         unset($params['sortBy'], $params['order']);
 
@@ -80,10 +75,11 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($first_value);
 
-            if(in_array($first_key,['started_at', 'ended_at','dob'])|| ApiRequest::endsWith($first_key,'date'))
-            $query=$query->whereDate($first_key, $paramObj->comparator, $paramObj->value);
-            else
-            $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
+            if (in_array($first_key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($first_key, 'date')) {
+                $query = $query->whereDate($first_key, $paramObj->comparator, $paramObj->value);
+            } else {
+                $query = $query->Where($first_key, $paramObj->comparator, $paramObj->value);
+            }
             unset($params[0][$first_key], $params[$first_key]);
         }
 
@@ -93,17 +89,18 @@ trait FindByTrait
 
             $paramObj = $this->getComparator($value);
 
-            if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')){
-                 if($paramObj->comparator=='=' || ApiRequest::startsWith($paramObj->comparator,'>') || ApiRequest::startsWith($paramObj->comparator, '<'))
+            if (in_array($key, ['started_at', 'ended_at','dob']) || ApiRequest::endsWith($key, 'date')) {
+                if ($paramObj->comparator == '=' || ApiRequest::startsWith($paramObj->comparator, '>') || ApiRequest::startsWith($paramObj->comparator, '<')) {
                     $query = $query->whereDate($key, $paramObj->comparator, $paramObj->value);
-                 else
+                } else {
                     $query = $query->orWhereDate($key, $paramObj->comparator, $paramObj->value);
-            }
-            else{
-                 if($paramObj->comparator == '=')
-                   $query = $query->where($key, $paramObj->comparator, $paramObj->value);
-                 else
-                   $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
+                }
+            } else {
+                if ($paramObj->comparator == '=') {
+                    $query = $query->where($key, $paramObj->comparator, $paramObj->value);
+                } else {
+                    $query = $query->orWhere($key, $paramObj->comparator, $paramObj->value);
+                }
             }
         }
         return $query;

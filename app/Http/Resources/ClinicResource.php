@@ -17,15 +17,15 @@ class ClinicResource extends JsonResource
     {
         if (isset($this->id)) {
             $age_group = $this->age_group;
-            $clinic_type=$this->clinic_type;
+            $clinic_type = $this->clinic_type;
 
             return [
                 'id' => $this->id,
                 'name' => $this->name,
-                'age_group_name' => $age_group->name??null,
-                'age_group_id' => $age_group->id??null,
-                'clinic_type_name'=> $clinic_type->name??null,
-                'clinic_type_id'=> $clinic_type->id??null,
+                'age_group_name' => $age_group->name ?? null,
+                'age_group_id' => $age_group->id ?? null,
+                'clinic_type_name' => $clinic_type->name ?? null,
+                'clinic_type_id' => $clinic_type->id ?? null,
                 'gender' => $this->gender,
                 'status' => $this->status,
                 'patient_status' => $this->patient_status,
@@ -34,6 +34,6 @@ class ClinicResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

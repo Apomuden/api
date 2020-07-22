@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Country extends AuditableModel
 {
-    use ActiveTrait, FindByTrait;
+    use ActiveTrait;
+    use FindByTrait;
+
     protected $guarded = [];
 
     public function regions()

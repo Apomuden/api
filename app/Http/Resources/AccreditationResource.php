@@ -18,15 +18,15 @@ class AccreditationResource extends JsonResource
     {
 
         return [
-            'id'=>$this->id,
-            'reg_body'=>$this->reg_body,
-            'reg_no'=>$this->reg_no,
-            'tin'=>$this->tin,
-            'reg_date'=>DateHelper::toDisplayDate($this->reg_date),
-            'expiry_date'=>DateHelper::toDisplayDate($this->expiry_date),
-            'status'=>$this->status,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at),
+            'id' => $this->id,
+            'reg_body' => $this->reg_body,
+            'reg_no' => $this->reg_no,
+            'tin' => $this->tin,
+            'reg_date' => DateHelper::toDisplayDate($this->reg_date),
+            'expiry_date' => DateHelper::toDisplayDate($this->expiry_date),
+            'status' => $this->status,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
         ];
     }
 }

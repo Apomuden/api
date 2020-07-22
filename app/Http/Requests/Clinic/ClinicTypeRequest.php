@@ -15,7 +15,7 @@ class ClinicTypeRequest extends ApiFormRequest
      *
      * @return bool
      */
-    public function authorize() : bool
+    public function authorize(): bool
     {
         return true;
     }
@@ -25,14 +25,14 @@ class ClinicTypeRequest extends ApiFormRequest
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         $id = $this->route('clinictype') ?? null;
 
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('clinic_types','name',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE',
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('clinic_types', 'name', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE',
         ];
     }
 }

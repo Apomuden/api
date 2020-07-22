@@ -29,7 +29,7 @@ class LabServiceParameterRequest extends ApiFormRequest
     public function rules()
     {
         return [
-            'parameters'=>'bail|array',
+            'parameters' => 'bail|array',
             'parameters.*.id' => 'bail|required|distinct|exists:lab_parameters,id',
             'parameters.*.order' => 'bail|required|distinct|integer|numeric|min:1'
         ];
@@ -39,24 +39,24 @@ class LabServiceParameterRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             //$all = $this->all();
             $investigation_service = Service::find(request('service_id'))->hospital_service ?? null;
-            if(!in_array(ucwords($investigation_service->name??null),['Investigation', 'Investigations']))
+            if (!in_array(ucwords($investigation_service->name ?? null), ['Investigation', 'Investigations'])) {
                 $validator->errors()->add("service_id", "Selected service_id is not a valid investigation service!");
+            }
         });
     }
     public function all($keys = null)
     {
         $data = parent::all($keys);
 
-        $all=[];
+        $all = [];
 
-            foreach ($data['parameters'] as $parameter){
-                if (Request::isMethod('post')){
-                    $all[$parameter['id']] = ['order' => $parameter['order'], 'created_at' => now(), 'updated_at' => now()];
-                }
-                else{
-                    $all[$parameter['id']]= $parameter['id'];
-                }
+        foreach ($data['parameters'] as $parameter) {
+            if (Request::isMethod('post')) {
+                $all[$parameter['id']] = ['order' => $parameter['order'], 'created_at' => now(), 'updated_at' => now()];
+            } else {
+                $all[$parameter['id']] = $parameter['id'];
             }
+        }
            $data['parameters'] = $all;
 
         return $data;

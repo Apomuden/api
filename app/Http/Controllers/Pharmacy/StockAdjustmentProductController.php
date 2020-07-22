@@ -17,38 +17,40 @@ class StockAdjustmentProductController extends Controller
 
     public function __construct(StockAdjustmentProduct $StockAdjustmentProduct)
     {
-        $this->repository= new RepositoryEloquent($StockAdjustmentProduct);
+        $this->repository = new RepositoryEloquent($StockAdjustmentProduct);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Stock Adjustment Products list',new StockAdjustmentProductCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Stock Adjustment Products list', new StockAdjustmentProductCollection($this->repository->all('name')));
     }
 
-    public function show($StockAdjustmentProduct){
-        $StockAdjustmentProduct=$this->repository->show($StockAdjustmentProduct);
-        return $StockAdjustmentProduct?
-            ApiResponse::withOk('Stock Adjustment Product Found',new StockAdjustmentProductResource($StockAdjustmentProduct))
+    public function show($StockAdjustmentProduct)
+    {
+        $StockAdjustmentProduct = $this->repository->show($StockAdjustmentProduct);
+        return $StockAdjustmentProduct ?
+            ApiResponse::withOk('Stock Adjustment Product Found', new StockAdjustmentProductResource($StockAdjustmentProduct))
             : ApiResponse::withNotFound('Stock Adjustment Product Not Found');
     }
 
-    public function store(StockAdjustmentProductRequest $StockAdjustmentProductRequest){
-        try{
-            $requestData=$StockAdjustmentProductRequest->all();
-            $StockAdjustmentProduct=$this->repository->store($requestData);
-            return ApiResponse::withOk('Stock Adjustment Product created',new StockAdjustmentProductResource($StockAdjustmentProduct->refresh()));
-        }
-        catch(Exception $e){
+    public function store(StockAdjustmentProductRequest $StockAdjustmentProductRequest)
+    {
+        try {
+            $requestData = $StockAdjustmentProductRequest->all();
+            $StockAdjustmentProduct = $this->repository->store($requestData);
+            return ApiResponse::withOk('Stock Adjustment Product created', new StockAdjustmentProductResource($StockAdjustmentProduct->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(StockAdjustmentProductRequest $StockAdjustmentProductRequest,$StockAdjustmentProduct){
-        try{
-            $StockAdjustmentProduct=$this->repository->update($StockAdjustmentProductRequest->all(),$StockAdjustmentProduct);
-            return ApiResponse::withOk('Stock Adjustment Product updated',new StockAdjustmentProductResource($StockAdjustmentProduct));
-        }
-        catch(Exception $e){
+    public function update(StockAdjustmentProductRequest $StockAdjustmentProductRequest, $StockAdjustmentProduct)
+    {
+        try {
+            $StockAdjustmentProduct = $this->repository->update($StockAdjustmentProductRequest->all(), $StockAdjustmentProduct);
+            return ApiResponse::withOk('Stock Adjustment Product updated', new StockAdjustmentProductResource($StockAdjustmentProduct));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

@@ -11,14 +11,16 @@ use Illuminate\Support\Facades\Auth;
 
 class Investigation extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()
     {
         parent::boot();
         static::creating(function ($model) {
-            $consultationEloquent = new RepositoryEloquent(new Consultation);
+            $consultationEloquent = new RepositoryEloquent(new Consultation());
             $consultation = $consultationEloquent->find($model->consultation_id);
 
             $model->clinic_type_id = $consultation->clinic_type_id ?? null;
@@ -49,7 +51,7 @@ class Investigation extends AuditableModel
             $model->gender = $model->gender ?? $patient->gender;
             $model->patient_status = $model->patient_status ?? $consultation->patient_status;
 
-            $serviceEloquent = new RepositoryEloquent(new Service);
+            $serviceEloquent = new RepositoryEloquent(new Service());
             $service = $serviceEloquent->findOrFail($model->service_id);
 
             $model->hospital_service_id = $service->hospital_service_id;
@@ -72,8 +74,9 @@ class Investigation extends AuditableModel
                     $model->billing_sponsor_id = null;
                     $model->sponsorship_type_id = $patient->funding_type->sponsorship_type_id;
                     $model->prepaid_total = $service->prepaid_amount;
-                } else
+                } else {
                     $model->postpaid_total = $service->postpaid_amount;
+                }
             }
 
             $model->consultation_date = $model->consultation_date ?? ($consultation->started_at ?? Carbon::today());
@@ -123,7 +126,7 @@ class Investigation extends AuditableModel
         static::updating(function ($model) {
             $original = $model->getOriginal();
 
-            $consultationEloquent = new RepositoryEloquent(new Consultation);
+            $consultationEloquent = new RepositoryEloquent(new Consultation());
             $consultation = $consultationEloquent->find($model->consultation_id ?? $original->id);
 
             $model->clinic_type_id = $consultation->clinic_type_id ?? null;
@@ -138,8 +141,9 @@ class Investigation extends AuditableModel
                 $patient->funding_type = FundingType::where('name', $patient->sponsorship_type->name ?? null)->first() ?? $patient->funding_type;
             }
 
-            if ($model->funding_type_id)
+            if ($model->funding_type_id) {
                 $patient->funding_type = FundingType::findOrFail($model->funding_type_id);
+            }
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
@@ -149,7 +153,7 @@ class Investigation extends AuditableModel
             $model->patient_status = $model->patient_status ?? $original->patient_status;
 
             if ($model->service_id) {
-                $serviceEloquent = new RepositoryEloquent(new Service);
+                $serviceEloquent = new RepositoryEloquent(new Service());
                 $service = $serviceEloquent->findOrFail($model->service_id);
 
                 $model->hospital_service_id = $service->hospital_service_id;
@@ -166,8 +170,9 @@ class Investigation extends AuditableModel
                     $model->billing_sponsor_id = null;
                     $model->sponsorship_type_id = $patient->funding_type->sponsorship_type_id;
                     $model->prepaid_total = $service->prepaid_amount;
-                } else
+                } else {
                     $model->postpaid_total = $service->postpaid_amount;
+                }
             }
 
             if ($model->postpaid_total) {
@@ -180,8 +185,9 @@ class Investigation extends AuditableModel
 
             $model->cancelled_date = $model->canceller_id ? ($model->cancelled_date ?? Carbon::today()) : null;
 
-            if ($model->cancelled_date)
+            if ($model->cancelled_date) {
                 $model->canceller_id = $model->canceller_id ?? Auth::guard('api')->user()->id;
+            }
         });
     }
 

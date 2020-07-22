@@ -1,4 +1,5 @@
 <?php
+
 //This is Request is for the current logged in user
 namespace App\Http\Requests\Registrations;
 
@@ -21,21 +22,21 @@ class PatientRequest extends ApiFormRequest
         $reg_status = \request()->input('reg_status') ?? null;
         $id_type = null;
         if ($id_type_id) {
-            $repository = new  RepositoryEloquent(new IdType);
+            $repository = new  RepositoryEloquent(new IdType());
             $id_type = $repository->find($id_type_id);
         }
 
-        $data= [
+        $data = [
             'title_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:titles,id',
             'old_folder_no' => 'bail|sometimes|nullable',
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
-            'folder_id' => 'bail|' . (($id||$reg_status== 'WALK-IN') ? 'sometimes' : 'required') . '|integer|exists:folders,id',
+            'folder_id' => 'bail|' . (($id || $reg_status == 'WALK-IN') ? 'sometimes' : 'required') . '|integer|exists:folders,id',
             'ssnit_no' => 'bail|sometimes|nullable',
             'tin' => 'bail|sometimes|nullable',
             'surname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|min:2',
             'middlename' => 'bail|sometimes|nullable|string',
             'firstname' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|min:2',
-            'dob' => 'bail|'. ($id ? 'sometimes' : 'required').'|date',
+            'dob' => 'bail|' . ($id ? 'sometimes' : 'required') . '|date',
             'gender' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:MALE,FEMALE,BIGENDER',
             'origin_country_id' => 'bail|sometimes|nullable|integer|exists:countries,id',
             'origin_region_id' => 'bail|sometimes|nullable|integer|exists:regions,id',
@@ -50,7 +51,7 @@ class PatientRequest extends ApiFormRequest
             'second_language_id' => 'bail|sometimes|nullable|integer|exists:languages,id',
             'official_language_id' => 'bail|sometimes|nullable|integer|exists:languages,id',
             'id_type_id' => 'bail|sometimes|nullable|integer|in:' . ($id_type->id ?? null),
-            'id_no' => 'bail|' . ($id_type_id ? 'required' : 'sometimes|nullable') . '|'.$this->softUnique('patients','id_no',$id),
+            'id_no' => 'bail|' . ($id_type_id ? 'required' : 'sometimes|nullable') . '|' . $this->softUnique('patients', 'id_no', $id),
             'id_expiry_date' => 'bail|' . ($id_type_id && ($id_type && $id_type->expires) ? 'required' : 'sometimes|nullable') . '|date',
             'religion_id' => 'bail|sometimes|nullable|integer|exists:religions,id',
             'educational_level_id' => 'bail|sometimes|nullable|integer|exists:educational_levels,id',
@@ -64,7 +65,6 @@ class PatientRequest extends ApiFormRequest
             'reg_status' => 'bail|sometimes|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'status' => 'bail|sometimes|string|in:ACTIVE,INACTIVE,SUSPENDED,BLACKLISTED'
         ];
-
         return $data;
     }
 }

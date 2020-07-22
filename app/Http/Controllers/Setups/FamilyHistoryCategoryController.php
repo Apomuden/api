@@ -23,8 +23,8 @@ class FamilyHistoryCategoryController extends Controller
      */
     public function index()
     {
-        $records=$this->repository->all('name');
-        return ApiResponse::withOk('Family history categories list',GeneralResource::collection($records));
+        $records = $this->repository->all('name');
+        return ApiResponse::withOk('Family history categories list', GeneralResource::collection($records));
     }
 
     /**
@@ -35,8 +35,8 @@ class FamilyHistoryCategoryController extends Controller
      */
     public function store(FamilyHistoryCategoryRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Family history category created',new GeneralResource($record));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Family history category created', new GeneralResource($record));
     }
 
     /**
@@ -48,7 +48,7 @@ class FamilyHistoryCategoryController extends Controller
     public function show($id)
     {
         $record = $this->repository->show($id);
-        return ApiResponse::withOk('Family history category found',new GeneralResource($record));
+        return ApiResponse::withOk('Family history category found', new GeneralResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class FamilyHistoryCategoryController extends Controller
      */
     public function update(FamilyHistoryCategoryRequest $request, $id)
     {
-        $record=$this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Family history category updated', new GeneralResource($record));
     }
 

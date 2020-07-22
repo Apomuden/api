@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class ConsultationQuestionResponse extends AuditableModel
 {
-    use FindByTrait, SoftDeletes;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function consultation_question()

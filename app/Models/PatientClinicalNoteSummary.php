@@ -10,7 +10,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PatientClinicalNoteSummary extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function age_class()
@@ -40,37 +44,39 @@ class PatientClinicalNoteSummary extends AuditableModel
         return $this->belongsTo(User::class);
     }
 
-    static function updateSummary($model){
-        $payload=[
-              'age'=>$model->age,
-              'age_group_id'=>$model->age_group_id,
-              'age_class_id'=>$model->age_class_id,
-            'age_category_id'=>$model->age_category_id,
-            'gender'=>$model->gender,
-            'patient_status'=>$model->patient_status,
-            'funding_type_id'=>$model->funding_type_id,
-            'sponsorship_type_id'=>$model->sponsorship_type_id,
-            'billing_sponsor_id'=>$model->billing_sponsor_id,
-            'sponsorship_policy_id'=>$model->sponsorship_policy_id,
-            'user_id'=>$model->user_id,
+    static function updateSummary($model)
+    {
+        $payload = [
+              'age' => $model->age,
+              'age_group_id' => $model->age_group_id,
+              'age_class_id' => $model->age_class_id,
+            'age_category_id' => $model->age_category_id,
+            'gender' => $model->gender,
+            'patient_status' => $model->patient_status,
+            'funding_type_id' => $model->funding_type_id,
+            'sponsorship_type_id' => $model->sponsorship_type_id,
+            'billing_sponsor_id' => $model->billing_sponsor_id,
+            'sponsorship_policy_id' => $model->sponsorship_policy_id,
+            'user_id' => $model->user_id,
         ];
-        if($model instanceof TreatmentPlanNote)
-        $payload['treatment_plan']=$model->notes;
-        else if($model instanceof UrgentCareNote)
-        $payload['urgent_care_note'] = $model->notes;
-        else if($model instanceof ProgressNote)
-        $payload['progress_note'] = $model->notes;
-        else if($model instanceof AdmissionNote)
-        $payload['admission_note'] = $model->notes;
-        else if($model instanceof ProcedureNote)
-        $payload['procedure_note'] = $model->notes;
-        else if($model instanceof DeliveryNote)
-        $payload['delivery_note'] = $model->notes;
-        else if($model instanceof NursingNote)
-        $payload['nursing_note'] = $model->notes;
-        else if($model instanceof PhysicianNote)
-        $payload['physician_note'] = $model->notes;
+        if ($model instanceof TreatmentPlanNote) {
+            $payload['treatment_plan'] = $model->notes;
+        } elseif ($model instanceof UrgentCareNote) {
+            $payload['urgent_care_note'] = $model->notes;
+        } elseif ($model instanceof ProgressNote) {
+            $payload['progress_note'] = $model->notes;
+        } elseif ($model instanceof AdmissionNote) {
+            $payload['admission_note'] = $model->notes;
+        } elseif ($model instanceof ProcedureNote) {
+            $payload['procedure_note'] = $model->notes;
+        } elseif ($model instanceof DeliveryNote) {
+            $payload['delivery_note'] = $model->notes;
+        } elseif ($model instanceof NursingNote) {
+            $payload['nursing_note'] = $model->notes;
+        } elseif ($model instanceof PhysicianNote) {
+            $payload['physician_note'] = $model->notes;
+        }
 
-        self::updateOrCreate(['patient_id'=>$model->patient_id],$payload);
+        self::updateOrCreate(['patient_id' => $model->patient_id], $payload);
     }
 }

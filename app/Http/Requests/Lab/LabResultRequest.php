@@ -36,13 +36,13 @@ class LabResultRequest extends ApiFormRequest
 
 
         return [
-             'investigation_id'=>'bail|'.($this->id?'sometimes':'required').'|exists:investigations,id',
-             'lab_parameter_id'=>['bail', ($this->id ? 'sometimes' : 'required'), 'exists:lab_parameters,id'],
-             'test_value'=>'bail|'. ($this->id ? 'sometimes' : 'required'),
-             'technician_id'=>['bail','sometimes','nullable'],
-             'test_date'=>'bail|sometimes|nullable|date',
-            'patient_status'=>'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
-             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
+             'investigation_id' => 'bail|' . ($this->id ? 'sometimes' : 'required') . '|exists:investigations,id',
+             'lab_parameter_id' => ['bail', ($this->id ? 'sometimes' : 'required'), 'exists:lab_parameters,id'],
+             'test_value' => 'bail|' . ($this->id ? 'sometimes' : 'required'),
+             'technician_id' => ['bail','sometimes','nullable'],
+             'test_date' => 'bail|sometimes|nullable|date',
+            'patient_status' => 'bail|string|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
+             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE,CANCELLED'
         ];
     }
     public function withValidator($validator)
@@ -51,22 +51,25 @@ class LabResultRequest extends ApiFormRequest
             $all = $this->all();
 
             if (isset($all['lab_parameter_id']) && isset($all['investigation_id'])) {
-                $lab_parameter=Investigation::find($all['investigation_id'])->service->lab_parameters()->where('lab_parameter_id', $all['lab_parameter_id'])->first();
+                $lab_parameter = Investigation::find($all['investigation_id'])->service->lab_parameters()->where('lab_parameter_id', $all['lab_parameter_id'])->first();
 
-                if (!$lab_parameter)
+                if (!$lab_parameter) {
                     $validator->errors()->add("lab_parameter_id", "Selected lab_parameter_id does not belong to the specified investigation's lab service!");
+                }
             }
 
-            if(!$this->id){
-                $labResult = LabTestResult::where(['investigation_id'=> $all['investigation_id'], 'lab_parameter_id'=> $all['lab_parameter_id']])->first();
+            if (!$this->id) {
+                $labResult = LabTestResult::where(['investigation_id' => $all['investigation_id'], 'lab_parameter_id' => $all['lab_parameter_id']])->first();
 
-                if(isset($labResult->test_value) && $labResult->test_value)
+                if (isset($labResult->test_value) && $labResult->test_value) {
                     $validator->errors()->add("test_value", "Test value  for {$labResult->lab_parameter_name} for investigation_id: {$labResult->investigation_id} already exists!");
+                }
             }
 
 
-            if(isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name,['Lab Technician', 'Lab Technologist', 'Biomedical Scientist', 'Dev']))
+            if (isset($all['technician_id']) && !in_array(User::find($all['technician_id'])->role->name, ['Lab Technician', 'Lab Technologist', 'Biomedical Scientist', 'Dev'])) {
                 $validator->errors()->add("technician_id", "Selected technician_id must be a Lab Technician,Lab Technologist or Biomedical Scientist!");
+            }
         });
     }
 

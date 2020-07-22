@@ -11,7 +11,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PatientHistoriesSummary extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public static function boot()

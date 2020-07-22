@@ -14,15 +14,15 @@ class SurgicalHistoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $surgical_history_category=$this->surgical_history_category;
+        $surgical_history_category = $this->surgical_history_category;
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'surgical_history_category_id'=> $surgical_history_category->id,
-            'surgical_history_category_name'=>$surgical_history_category->name,
-            'status'=>$this->status,
-            'created_at'=>(string) $this->created_at,
-            'updated_at'=>(string) $this->updated_at
+            'id' => $this->id,
+            'name' => $this->name,
+            'surgical_history_category_id' => $surgical_history_category->id,
+            'surgical_history_category_name' => $surgical_history_category->name,
+            'status' => $this->status,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at
         ];
     }
 }

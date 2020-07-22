@@ -16,6 +16,5 @@ class ServiceSubCategoryCollection extends ResourceCollection
     public function toArray($request)
     {
         return  ServiceSubcategoryResource::collection($this->collection);
-
     }
 }

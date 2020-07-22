@@ -26,17 +26,15 @@ class DiagnosisMultipleRequest extends ApiFormRequest
     {
         $id = $this->route('diagnosis') ?? null;
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required') . '|exists:consultations,id',
             'diagnoses' => 'bail|required|array',
             "diagnoses.*.disease_id" => 'bail|integer|distinct|' . ($id ? 'sometimes' : 'required') . '|exists:diseases,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
-            'diagnoses.*.diagnosis_type'=> 'bail|string|'. ($id ? 'sometimes' : 'required').'|in:CONFIRM,PROVISIONAL,ADDITIONAL',
-            'diagnoses.*.diagnosis_status'=> 'bail|'. ($id ? 'sometimes' : 'required').'|in:NEW,OLD',
-            'diagnoses.*.remarks'=> 'bail|sometimes|nullable',
+            'diagnoses.*.diagnosis_type' => 'bail|string|' . ($id ? 'sometimes' : 'required') . '|in:CONFIRM,PROVISIONAL,ADDITIONAL',
+            'diagnoses.*.diagnosis_status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:NEW,OLD',
+            'diagnoses.*.remarks' => 'bail|sometimes|nullable',
             'consultant_id' => ['bail', 'sometimes', 'nullable', Rule::exists('users', 'id')],
         ];
     }
-
-
 }

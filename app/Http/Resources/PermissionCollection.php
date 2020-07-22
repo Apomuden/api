@@ -7,15 +7,15 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class PermissionCollection extends ResourceCollection
 {
-   use PaginationTrait;
+    use PaginationTrait;
 
    //pagination and resource must be defined to allow pagination
     public $pagination,$message,$resource;
 
-    public function __construct($resource,$message)
+    public function __construct($resource, $message)
     {
-        $this->resource=$resource;
-        $this->message=$message;
+        $this->resource = $resource;
+        $this->message = $message;
         $this->paginateLinks();
         //$resource = $resource->getCollection();
 
@@ -23,17 +23,17 @@ class PermissionCollection extends ResourceCollection
     }
     public function toArray($request)
     {
-        $data= [
-            'errorCode'=>'000',
-            'taggedAs'=>count($this->collection)?$this->message:'No records found',
-            'dataCount'=>count($this->collection),
-            'data'=>PermissionResource::collection($this->collection),
+        $data = [
+            'errorCode' => '000',
+            'taggedAs' => count($this->collection) ? $this->message : 'No records found',
+            'dataCount' => count($this->collection),
+            'data' => PermissionResource::collection($this->collection),
         ];
 
-        if($this->pagination)
-        $data['pagination']=$this->pagination;
+        if ($this->pagination) {
+            $data['pagination'] = $this->pagination;
+        }
 
         return $data;
     }
-
 }

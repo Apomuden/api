@@ -19,44 +19,45 @@ class IDTypeController extends Controller
 
     public function __construct(IdType $idType)
     {
-        $this->repository= new RepositoryEloquent($idType);
+        $this->repository = new RepositoryEloquent($idType);
     }
 
-    function index(){
+    function index()
+    {
 
-        return ApiResponse::withOk('Id Type list',new IDTypeCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Id Type list', new IDTypeCollection($this->repository->all('name')));
     }
 
-    function show($idType){
-        $idType=$this->repository->show($idType);//pass the country
-        return $idType?
-        ApiResponse::withOk('Id Type Found',new IDTypeResource($idType))
+    function show($idType)
+    {
+        $idType = $this->repository->show($idType);//pass the country
+        return $idType ?
+        ApiResponse::withOk('Id Type Found', new IDTypeResource($idType))
         : ApiResponse::withNotFound('ID Type Not Found');
     }
 
-   function store(IDTypeRequest $idTypeRequest){
-       try{
-           $requestData=$idTypeRequest->all();
+    function store(IDTypeRequest $idTypeRequest)
+    {
+        try {
+            $requestData = $idTypeRequest->all();
 
-           $idType=$this->repository->store($requestData);
-        return ApiResponse::withOk('Id Type created',new IDTypeResource($idType->refresh()));
-       }
-       catch(Exception $e){
-         return ApiResponse::withException($e);
-       }
-   }
+            $idType = $this->repository->store($requestData);
+            return ApiResponse::withOk('Id Type created', new IDTypeResource($idType->refresh()));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
 
-   function update(IDTypeRequest $iDTypeRequest,$idType){
-       try{
-        $idType=$this->repository->update($iDTypeRequest->all(),$idType);
+    function update(IDTypeRequest $iDTypeRequest, $idType)
+    {
+        try {
+            $idType = $this->repository->update($iDTypeRequest->all(), $idType);
 
-        return ApiResponse::withOk('Id Type updated',new IDTypeResource($idType));
-
-      }
-       catch(Exception $e){
-        return ApiResponse::withException($e);
-       }
-   }
+            return ApiResponse::withOk('Id Type updated', new IDTypeResource($idType));
+        } catch (Exception $e) {
+            return ApiResponse::withException($e);
+        }
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

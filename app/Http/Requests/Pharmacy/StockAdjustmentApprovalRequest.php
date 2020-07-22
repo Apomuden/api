@@ -23,19 +23,19 @@ class StockAdjustmentApprovalRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id = $this->route('approval')??null;
+        $id = $this->route('approval') ?? null;
         return [
-            'stock_adjustment_id'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustments,id',
-            'adjustment_type'=>'bail|sometimes|in:OPERATIONAL,OPENING',
-            'store_id'=>'bail|'.($id?'sometimes':'required').'|exists:stores,id',
-            'reference_number'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustments,reference_number',
-            'status'=>'bail|sometimes|in:PENDING,APPROVED,CANCELLED,SUSPENDED',
-            'approval_date'=>'bail|sometimes|date',
-            'products'=>'bail|required|array',
-            'products.*.id'=>'bail|'.($id?'sometimes':'required').'|exists:stock_adjustment_products,id',
-            'products.*.product_id'=>'bail|'.($id?'sometimes':'required').'|exists:products,id',
-            'products.*.approved_quantity' =>'bail|'.($id?'sometimes':'required').'|numeric|min:0',
-            'products.*.adjustment_type' =>'bail|required|in:INCREASE,DECREASE',
+            'stock_adjustment_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:stock_adjustments,id',
+            'adjustment_type' => 'bail|sometimes|in:OPERATIONAL,OPENING',
+            'store_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:stores,id',
+            'reference_number' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:stock_adjustments,reference_number',
+            'status' => 'bail|sometimes|in:PENDING,APPROVED,CANCELLED,SUSPENDED',
+            'approval_date' => 'bail|sometimes|date',
+            'products' => 'bail|required|array',
+            'products.*.id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:stock_adjustment_products,id',
+            'products.*.product_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:products,id',
+            'products.*.approved_quantity' => 'bail|' . ($id ? 'sometimes' : 'required') . '|numeric|min:0',
+            'products.*.adjustment_type' => 'bail|required|in:INCREASE,DECREASE',
         ];
     }
 }

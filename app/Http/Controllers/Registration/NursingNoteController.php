@@ -23,7 +23,7 @@ class NursingNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Nursing notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Nursing notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class NursingNoteController extends Controller
      */
     public function store(NursingNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Nursing note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Nursing note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class NursingNoteController extends Controller
      */
     public function update(NursingNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Nursing note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Nursing note updated', new GeneralNoteResource($record));
     }
 
     /**

@@ -11,7 +11,7 @@ use  Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class Handler extends ExceptionHandler
 {
-   protected $errorCode='500';
+    protected $errorCode = '500';
     /**
      * A list of the exception types that are not reported.
      *

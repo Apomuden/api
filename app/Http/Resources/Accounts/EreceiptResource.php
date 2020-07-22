@@ -16,46 +16,46 @@ class EreceiptResource extends JsonResource
     public function toArray($request)
     {
         $receipt_items = [];
-        $service_orders = $this->service_order??[];
-        $deposits = $this->deposit??[];
+        $service_orders = $this->service_order ?? [];
+        $deposits = $this->deposit ?? [];
         foreach ($service_orders as $service_order) {
-            $receipt_items[]= [
-                'id'=>$service_order->pivot->id,
-                'description'=>$service_order->service->description??null,
-                'item_fee'=>$service_order->service_fee??null,
-                'item_quantity'=>$service_order->service_quantity??null,
-                'item_total_amt'=>$service_order->service_total_amt??null,
-                'prepaid'=>boolval($service_order->prepaid)?'YES':'NO',
-                'insured'=>boolval($service_order->insured)?'YES':'NO',
-                'item_bill'=>(!$service_order->prepaid && $service_order->insured) ? 0.00:$service_order->service_total_amt,
+            $receipt_items[] = [
+                'id' => $service_order->pivot->id,
+                'description' => $service_order->service->description ?? null,
+                'item_fee' => $service_order->service_fee ?? null,
+                'item_quantity' => $service_order->service_quantity ?? null,
+                'item_total_amt' => $service_order->service_total_amt ?? null,
+                'prepaid' => boolval($service_order->prepaid) ? 'YES' : 'NO',
+                'insured' => boolval($service_order->insured) ? 'YES' : 'NO',
+                'item_bill' => (!$service_order->prepaid && $service_order->insured) ? 0.00 : $service_order->service_total_amt,
                 //'item_paid'=>boolval($service_order->pivot->paid??null)
             ];
         }
         foreach ($deposits as $deposit) {
-            $receipt_items[]= [
-                'item_id'=>$deposit->pivot->id??null,
-                'description'=>'Deposit'??null,
-                'item_fee'=>null,
-                'item_quantity'=>null,
-                'item_total_amt'=>$deposit->deposit_amount??null,
+            $receipt_items[] = [
+                'item_id' => $deposit->pivot->id ?? null,
+                'description' => 'Deposit' ?? null,
+                'item_fee' => null,
+                'item_quantity' => null,
+                'item_total_amt' => $deposit->deposit_amount ?? null,
                 //'prepaid'=>boolval($service_order->prepaid),
                 //'insured'=>boolval($service_order->insured),
-                'item_bill'=>$deposit->deposit_amount??null,
+                'item_bill' => $deposit->deposit_amount ?? null,
                 //'paid'=>$deposit->pivot->paid?'YES':'NO'
             ];
         }
         return [
-            'id'=>$this->id,
-            'patient_id'=>$this->patient_id,
-            'patient_status'=>$this->patient_status,
-            'receipt_items'=>$receipt_items,
-            'previous_bill'=>$this->previous_bill,
-            'total_bill'=>$this->total_bill,
-            'amount_paid'=>$this->amount_paid,
-            'balance'=>$this->balance,
-            'receipt_number'=>$this->receipt_number,
-            'created_at'=>DateHelper::toDisplayDateTime($this->created_at),
-            'updated_at'=>DateHelper::toDisplayDateTime($this->updated_at)
+            'id' => $this->id,
+            'patient_id' => $this->patient_id,
+            'patient_status' => $this->patient_status,
+            'receipt_items' => $receipt_items,
+            'previous_bill' => $this->previous_bill,
+            'total_bill' => $this->total_bill,
+            'amount_paid' => $this->amount_paid,
+            'balance' => $this->balance,
+            'receipt_number' => $this->receipt_number,
+            'created_at' => DateHelper::toDisplayDateTime($this->created_at),
+            'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];
     }
 }

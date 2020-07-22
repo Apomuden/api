@@ -30,18 +30,18 @@ class InvestigationRequest extends ApiFormRequest
     {
         $id = $this->route('investigation') ?? null;
 
-        $repository = new RepositoryEloquent(new HospitalService);
+        $repository = new RepositoryEloquent(new HospitalService());
 
         $investigation_service = $repository
             ->findWhere(['name' => 'Investigation'])
             ->orWhere('name', 'Investigations')->first();
 
-        $repository = new RepositoryEloquent(new Role);
+        $repository = new RepositoryEloquent(new Role());
         $roles = $repository->findWhere(['name' => 'Doctor'])
             ->orWhere('name', 'DEV')->get();
-        $roleIds=[];
-        foreach($roles as $role){
-            $roleIds[]=$role->id;
+        $roleIds = [];
+        foreach ($roles as $role) {
+            $roleIds[] = $role->id;
         }
 
       /*   $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
@@ -58,14 +58,14 @@ class InvestigationRequest extends ApiFormRequest
         } */
 
         return [
-            "consultation_id" => 'bail|integer|' . ($id|| request('patient_status') == 'WALK-IN' ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id || request('patient_status') == 'WALK-IN' ? 'sometimes' : 'required') . '|exists:consultations,id',
             'patient_id' => 'bail|' . ($id || request('patient_status') != 'WALK-IN' ? 'sometimes' : 'required') . '|exists:patients,id',
 
             'funding_type_id' => 'bail|sometimes|nullable|exists:funding_types,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT,WALK-IN',
             'consultation_date' => 'bail|sometimes|date',
             'cancelled_date' => 'bail|sometimes|date',
-            'order_type'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',
+            'order_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:INTERNAL,EXTERNAL',
             'funding_type_id' => 'bail|sometimes|integer|exists:funding_types,id',
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
@@ -81,14 +81,14 @@ class InvestigationRequest extends ApiFormRequest
             'consultant_id' => [
                 'bail', 'sometimes', 'nullable',
                 Rule::exists('users', 'id')->where(function ($query) use ($roleIds) {
-                    $query->whereIn('role_id',$roleIds);
+                    $query->whereIn('role_id', $roleIds);
                 })
             ],
             'canceller_id' => [
                 'bail', 'sometimes', 'nullable',
                 'exists:users,id'
             ],
-            'status'=> 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED,SAMPLE-TAKEN,RESULTS-TAKEN'
+            'status' => 'bail|in:IN-QUEUE,ACTIVE,APPROVED,CANCELLED,SAMPLE-TAKEN,RESULTS-TAKEN'
         ];
     }
 
@@ -100,8 +100,9 @@ class InvestigationRequest extends ApiFormRequest
             if (isset($all['billing_sponsor_id'])) {
                 $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
 
-                if (!$patient_sponsor)
+                if (!$patient_sponsor) {
                     $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is not a valid sponsor of the patient!");
+                }
             }
         });
     }

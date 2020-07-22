@@ -20,9 +20,14 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Support\Facades\Cache;
 use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable implements JWTSubject,Auditable
+class User extends Authenticatable implements JWTSubject, Auditable
 {
-    use Notifiable, ActiveTrait, SortableTrait, FindByTrait, SoftDeletes,\OwenIt\Auditing\Auditable;
+    use Notifiable;
+    use ActiveTrait;
+    use SortableTrait;
+    use FindByTrait;
+    use SoftDeletes;
+    use \OwenIt\Auditing\Auditable;
 
     protected $guarded = [];
 
@@ -61,7 +66,7 @@ class User extends Authenticatable implements JWTSubject,Auditable
         parent::boot();
         static::creating(function ($model) {
             $model->id = Str::uuid();
-            $model->clinician_code=sprintf("%05d", ($model->max('clinician_code')??0) + 1);
+            $model->clinician_code = sprintf("%05d", ($model->max('clinician_code') ?? 0) + 1);
             $model->password = Security::getNewPasswordHash($model->password, $model->id);
 
             $model->dob = DateHelper::toDBDate($model->dob);
@@ -79,15 +84,17 @@ class User extends Authenticatable implements JWTSubject,Auditable
         });
 
         static::updating(function ($model) {
-            if(!$model->getOriginal('clinician_code'))
-            $model->clinician_code =sprintf("%05d", ($model->max('clinician_code') ?? 0) + 1);
+            if (!$model->getOriginal('clinician_code')) {
+                $model->clinician_code = sprintf("%05d", ($model->max('clinician_code') ?? 0) + 1);
+            }
 
             $model->dob = DateHelper::toDBDate($model->dob);
 
             $original_password = $model->getOriginal('password');
 
-            if (isset($model->password) && $original_password != $model->password)
+            if (isset($model->password) && $original_password != $model->password) {
                 $model->password = Security::getNewPasswordHash($model->password, $model->id);
+            }
 
 
             $model->signature = FileResolver::base64ToFile($model->signature, $model->username, 'users' . DIRECTORY_SEPARATOR . 'signatures') ?? null;
@@ -226,7 +233,6 @@ class User extends Authenticatable implements JWTSubject,Auditable
             $module = (object) $module;
             $components = Module::with('components')->where('id', $module->id)->first()->components;
             foreach ($components as $component) {
-
                 if (isset($module->all)) {
                     $payload[$component->id] = [
                         'all' => $module->all ?? false,
@@ -240,22 +246,28 @@ class User extends Authenticatable implements JWTSubject,Auditable
                 }
 
                 $payload[$component->id]['module_id'] = $module->id;
-                if (isset($module->add))
+                if (isset($module->add)) {
                     $payload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
-                if (isset($module->view))
+                }
+                if (isset($module->view)) {
                     $payload[$component->id]['view'] = $module->all ? $module->all : ($module->view ?? false);
+                }
 
-                if (isset($module->edit))
+                if (isset($module->edit)) {
                     $payload[$component->id]['edit'] = $module->all ? $module->all : ($module->edit ?? false);
+                }
 
-                if (isset($module->update))
+                if (isset($module->update)) {
                     $payload[$component->id]['update'] = $module->all ? $module->all : ($module->update ?? false);
+                }
 
-                if (isset($module->delete))
+                if (isset($module->delete)) {
                     $payload[$component->id]['delete'] = $module->all ? $module->all : ($module->delete ?? false);
+                }
 
-                if (isset($module->print))
+                if (isset($module->print)) {
                     $payload[$component->id]['print'] = $module->all ? $module->all : ($module->print ?? false);
+                }
             }
         }
         $this->components()->sync($payload, $detach);
@@ -268,8 +280,9 @@ class User extends Authenticatable implements JWTSubject,Auditable
         foreach ($components as $component) {
             $component = (object) $component;
             $dbcomponent = ComponentModule::where('component_id', $component->id)->first();
-            if (!$dbcomponent)
+            if (!$dbcomponent) {
                 continue;
+            }
 
             if (isset($component->all)) {
                 $payload[$component->id] = [
@@ -285,22 +298,28 @@ class User extends Authenticatable implements JWTSubject,Auditable
 
             $payload[$component->id]['module_id'] = $dbcomponent->module_id;
 
-            if (isset($component->add))
+            if (isset($component->add)) {
                 $payload[$component->id]['add'] = $component->all ? $component->all : ($component->add ?? false);
-            if (isset($component->view))
+            }
+            if (isset($component->view)) {
                 $payload[$component->id]['view'] = $component->all ? $component->all : ($component->view ?? false);
+            }
 
-            if (isset($component->edit))
+            if (isset($component->edit)) {
                 $payload[$component->id]['edit'] = $component->all ? $component->all : ($component->edit ?? false);
+            }
 
-            if (isset($component->update))
+            if (isset($component->update)) {
                 $payload[$component->id]['update'] = $component->all ? $component->all : ($component->update ?? false);
+            }
 
-            if (isset($component->delete))
+            if (isset($component->delete)) {
                 $payload[$component->id]['delete'] = $component->all ? $component->all : ($component->delete ?? false);
+            }
 
-            if (isset($component->print))
+            if (isset($component->print)) {
                 $payload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
+            }
         }
         $this->components()->sync($payload, $detach);
         $this->deleteCache();
@@ -308,7 +327,7 @@ class User extends Authenticatable implements JWTSubject,Auditable
 
     public function detachComponents($components)
     {
-        foreach ($components as  $component) {
+        foreach ($components as $component) {
             ComponentUser::where('component_id', $component)
                 ->where('user_id', $this->id)
                 ->delete();

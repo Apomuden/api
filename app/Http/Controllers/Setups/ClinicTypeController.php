@@ -35,8 +35,8 @@ class ClinicTypeController extends Controller
      */
     public function store(ClinicTypeRequest $request)
     {
-       $record=$this->repository->store($request->all());
-       return ApiResponse::withOk('Clinic Type created',new ClinicTypeResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Clinic Type created', new ClinicTypeResource($record->refresh()));
     }
 
     /**
@@ -47,8 +47,8 @@ class ClinicTypeController extends Controller
      */
     public function show($id)
     {
-        $record=$this->repository->show($id);
-        return ApiResponse::withOk('Found Clinic Type',new ClinicTypeResource($record));
+        $record = $this->repository->show($id);
+        return ApiResponse::withOk('Found Clinic Type', new ClinicTypeResource($record));
     }
 
     /**
@@ -60,7 +60,7 @@ class ClinicTypeController extends Controller
      */
     public function update(ClinicTypeRequest $request, $id)
     {
-        $record = $this->repository->update($request->all(),$id);
+        $record = $this->repository->update($request->all(), $id);
         return ApiResponse::withOk('Found Clinic Type', new ClinicTypeResource($record));
     }
 

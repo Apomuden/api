@@ -1,34 +1,41 @@
 <?php
+
 namespace App\Http\Helpers;
+
 use Illuminate\Http\Request;
 
+class ApiRequest
+{
 
-class ApiRequest{
-    static function asArray(Request $request){
-       return $request->json()->all()?$request->json()->all():$request->all();
+
+    static function asArray(Request $request)
+    {
+        return $request->json()->all() ? $request->json()->all() : $request->all();
     }
 
-    static function asObject(Request $request){
-       return (object) self::asArray($request);
-     }
+    static function asObject(Request $request)
+    {
+        return (object) self::asArray($request);
+    }
 
-     static function sanitize_string($string){
-            $string = strip_tags($string);
-            $string = addslashes($string);
-            return filter_var($string, FILTER_SANITIZE_STRING);
-     }
-     static function startsWith($string, $start)
-     {
+    static function sanitize_string($string)
+    {
+           $string = strip_tags($string);
+        $string = addslashes($string);
+        return filter_var($string, FILTER_SANITIZE_STRING);
+    }
+    static function startsWith($string, $start)
+    {
         $string = strtolower($string) ?? null;
         $start = strtolower($start) ?? null;
         return strrpos($string, $start, -strlen($string)) !== false;
-     }
+    }
 
-     static function endsWith($string, $end)
+    static function endsWith($string, $end)
     {
-        $string=strtolower($string)??null;
-        $end=strtolower($end)??null;
+        $string = strtolower($string) ?? null;
+        $end = strtolower($end) ?? null;
         return ($offset = strlen($string) - strlen($end)) >= 0
-            && strpos($string, $end, $offset) !== false;
+           && strpos($string, $end, $offset) !== false;
     }
 }

@@ -15,6 +15,5 @@ class CompanyCollection extends ResourceCollection
     public function toArray($request)
     {
         return  CompanyResource::collection($this->collection);
-
     }
 }

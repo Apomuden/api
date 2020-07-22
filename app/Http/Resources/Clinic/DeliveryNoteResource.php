@@ -19,15 +19,15 @@ class DeliveryNoteResource extends JsonResource
         $folder = $patient->activefolder ?? null;
 
         $user = $this->user;
-        $funding_type = $this->funding_type??null;
+        $funding_type = $this->funding_type ?? null;
 
-        $sponsorship_type = $this->sponsorship_type??null;
-        $billing_sponsor = $this->billing_sponsor??null;
-        $sponsorship_policy = $this->sponsorship_policy??null;
-        $clinic_type = $this->clinic_type??null;
-        $clinic = $this->clinic??null;
-        $consultant = $this->consultant??null;
-        $canceller = $this->canceller??null;
+        $sponsorship_type = $this->sponsorship_type ?? null;
+        $billing_sponsor = $this->billing_sponsor ?? null;
+        $sponsorship_policy = $this->sponsorship_policy ?? null;
+        $clinic_type = $this->clinic_type ?? null;
+        $clinic = $this->clinic ?? null;
+        $consultant = $this->consultant ?? null;
+        $canceller = $this->canceller ?? null;
 
         return [
             'id' => $this->id,
@@ -80,8 +80,8 @@ class DeliveryNoteResource extends JsonResource
             'canceller_id' => $canceller->id ?? null,
 
             'cancelled_date' => $this->cancelled_date ? (string) $this->cancelled_date : null,
-            'notes'=>$this->notes,
-            'delivery_date'=>$this->delivery_date? DateHelper::toDisplayDateTime($this->delivery_date):null,
+            'notes' => $this->notes,
+            'delivery_date' => $this->delivery_date ? DateHelper::toDisplayDateTime($this->delivery_date) : null,
             'status' => $this->status,
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),

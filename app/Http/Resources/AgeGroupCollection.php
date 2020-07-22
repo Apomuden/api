@@ -15,6 +15,5 @@ class AgeGroupCollection extends ResourceCollection
     public function toArray($request)
     {
         return  AgeGroupResource::collection($this->collection);
-
     }
 }

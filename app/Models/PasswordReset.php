@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PasswordReset extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+
     protected $guarded = [];
 }

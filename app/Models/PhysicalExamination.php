@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Auth;
 
 class PhysicalExamination extends AuditableModel
 {
-    use FindByTrait, SortableTrait, SoftDeletes;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
 
     protected $guarded = [];
 

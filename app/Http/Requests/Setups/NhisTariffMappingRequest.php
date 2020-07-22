@@ -1,24 +1,27 @@
 <?php
 
 namespace App\Http\Requests\Setups;
+
 use App\Http\Requests\ApiFormRequest;
 use App\Models\NhisGdrgServiceTariff;
 use Illuminate\Validation\Rule;
 
 class NhisTariffMappingRequest extends ApiFormRequest
 {
-   public function authorize(){
-       return true;
-   }
-   public function rules(){
-       $id=$this->route('nhistariffmapping')??null;
+    public function authorize()
+    {
+        return true;
+    }
+    public function rules()
+    {
+        $id = $this->route('nhistariffmapping') ?? null;
         return [
             'services' => 'bail|required|array',
-            'services.*.id' => 'bail|'.($id?'sometimes':'required'). '|int|distinct|exists:services,id',
-            'services.*.nhis_child_tariff_id'=>['bail','nullable', Rule::exists('nhis_gdrg_service_tariffs', 'id')->whereNull('deleted_at')->whereNot('tariff_type', 'ADULT')],
-            'services.*.nhis_adult_tariff_id'=> ['bail','nullable', Rule::exists('nhis_gdrg_service_tariffs', 'id')->whereNull('deleted_at')->whereNot('tariff_type', 'CHILD')]
+            'services.*.id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|int|distinct|exists:services,id',
+            'services.*.nhis_child_tariff_id' => ['bail','nullable', Rule::exists('nhis_gdrg_service_tariffs', 'id')->whereNull('deleted_at')->whereNot('tariff_type', 'ADULT')],
+            'services.*.nhis_adult_tariff_id' => ['bail','nullable', Rule::exists('nhis_gdrg_service_tariffs', 'id')->whereNull('deleted_at')->whereNot('tariff_type', 'CHILD')]
         ];
-   }
+    }
     /* public function withValidator($validator)
     {
         $validator->after(function ($validator) {

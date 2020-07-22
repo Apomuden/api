@@ -23,10 +23,10 @@ class MedicineHistoryCategoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('medicinehistorycategory')??null;
+        $id = $this->route('medicinehistorycategory') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('medicine_history_categories','name',$id),
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUnique('medicine_history_categories', 'name', $id),
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

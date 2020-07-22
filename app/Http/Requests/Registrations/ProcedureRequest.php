@@ -29,13 +29,13 @@ class ProcedureRequest extends ApiFormRequest
     {
         $id = $this->route('procudure') ?? null;
 
-        $repository = new RepositoryEloquent(new HospitalService);
+        $repository = new RepositoryEloquent(new HospitalService());
 
         $procedure_service = $repository
             ->findWhere(['name' => 'Procudure'])
             ->orWhere('name', 'Surgery')->first();
 
-        $repository = new RepositoryEloquent(new Role);
+        $repository = new RepositoryEloquent(new Role());
         $role = $repository->findWhere(['name' => 'Doctor'])->orWhere('name', 'DEV')->first();
 
       /*   $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
@@ -52,12 +52,12 @@ class ProcedureRequest extends ApiFormRequest
         } */
 
         return [
-            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required').'|exists:consultations,id',
+            "consultation_id" => 'bail|integer|' . ($id ? 'sometimes' : 'required') . '|exists:consultations,id',
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
             'patient_status' => 'bail|sometimes|in:IN-PATIENT,OUT-PATIENT',
             'consultation_date' => 'bail|sometimes|date',
             'cancelled_date' => 'bail|sometimes|date',
-            'order_type'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:INTERNAL,EXTERNAL',
+            'order_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:INTERNAL,EXTERNAL',
             'funding_type_id' => 'bail|sometimes|integer|exists:funding_types,id',
             'user_id' => 'bail|sometimes|nullable|integer|exists:users, id',
             'age' => 'bail|sometimes|integer|min:0',
@@ -87,13 +87,13 @@ class ProcedureRequest extends ApiFormRequest
         $validator->after(function ($validator) {
             $all = $this->all();
 
-                if (isset($all['billing_sponsor_id'])) {
-                    $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
+            if (isset($all['billing_sponsor_id'])) {
+                $patient_sponsor = $this->consultation->patient->patient_sponsors()->active()->where('billing_sponsor_id', $all['billing_sponsor_id'])->first() ?? null;
 
-                    if (!$patient_sponsor)
-                        $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
+                if (!$patient_sponsor) {
+                    $validator->errors()->add("billing_sponsor_id", "Selected billing_sponsor_id is a valid sponsor of the patient!");
                 }
-
+            }
         });
     }
 
@@ -102,5 +102,4 @@ class ProcedureRequest extends ApiFormRequest
         $data = parent::all($keys);
         return $data;
     }
-
 }

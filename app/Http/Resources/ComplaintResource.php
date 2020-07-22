@@ -14,15 +14,15 @@ class ComplaintResource extends JsonResource
      */
     public function toArray($request)
     {
-        $complaint_type=$this->complaint_type;
+        $complaint_type = $this->complaint_type;
         return [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'complaint_type_id'=>$complaint_type->id??null,
-            'complaint_type_name'=>$complaint_type->name??null,
-            'status'=>$this->status,
-            'created_at'=>(string) $this->created_at,
-            'updated_at'=>(string) $this->updated_at
+            'id' => $this->id,
+            'name' => $this->name,
+            'complaint_type_id' => $complaint_type->id ?? null,
+            'complaint_type_name' => $complaint_type->name ?? null,
+            'status' => $this->status,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at
         ];
     }
 }

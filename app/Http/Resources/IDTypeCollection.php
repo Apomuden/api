@@ -15,6 +15,5 @@ class IDTypeCollection extends ResourceCollection
     public function toArray($request)
     {
         return  IDTypeResource::collection($this->collection);
-
     }
 }

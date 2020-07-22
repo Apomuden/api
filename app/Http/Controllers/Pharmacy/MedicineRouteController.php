@@ -18,38 +18,40 @@ class MedicineRouteController extends Controller
 
     public function __construct(MedicineRoute $MedicineRoute)
     {
-        $this->repository= new RepositoryEloquent($MedicineRoute);
+        $this->repository = new RepositoryEloquent($MedicineRoute);
     }
 
-    public function index(){
+    public function index()
+    {
 
-        return ApiResponse::withOk('Medicine Routes list',new MedicineRouteCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Medicine Routes list', new MedicineRouteCollection($this->repository->all('name')));
     }
 
-    public function show($MedicineRoute){
-        $MedicineRoute=$this->repository->show($MedicineRoute);
-        return $MedicineRoute?
-            ApiResponse::withOk('Medicine Route Found',new MedicineRouteResource($MedicineRoute))
+    public function show($MedicineRoute)
+    {
+        $MedicineRoute = $this->repository->show($MedicineRoute);
+        return $MedicineRoute ?
+            ApiResponse::withOk('Medicine Route Found', new MedicineRouteResource($MedicineRoute))
             : ApiResponse::withNotFound('Medicine Route Not Found');
     }
 
-    public function store(MedicineRouteRequest $MedicineRouteRequest){
-        try{
-            $requestData=$MedicineRouteRequest->all();
-            $MedicineRoute=$this->repository->store($requestData);
-            return ApiResponse::withOk('Medicine Route created',new MedicineRouteResource($MedicineRoute->refresh()));
-        }
-        catch(Exception $e){
+    public function store(MedicineRouteRequest $MedicineRouteRequest)
+    {
+        try {
+            $requestData = $MedicineRouteRequest->all();
+            $MedicineRoute = $this->repository->store($requestData);
+            return ApiResponse::withOk('Medicine Route created', new MedicineRouteResource($MedicineRoute->refresh()));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }
 
-    public function update(MedicineRouteRequest $MedicineRouteRequest,$MedicineRoute){
-        try{
-            $MedicineRoute=$this->repository->update($MedicineRouteRequest->all(),$MedicineRoute);
-            return ApiResponse::withOk('Medicine Route updated',new MedicineRouteResource($MedicineRoute));
-        }
-        catch(Exception $e){
+    public function update(MedicineRouteRequest $MedicineRouteRequest, $MedicineRoute)
+    {
+        try {
+            $MedicineRoute = $this->repository->update($MedicineRouteRequest->all(), $MedicineRoute);
+            return ApiResponse::withOk('Medicine Route updated', new MedicineRouteResource($MedicineRoute));
+        } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
     }

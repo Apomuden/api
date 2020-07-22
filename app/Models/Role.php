@@ -12,7 +12,10 @@ use Illuminate\Support\Facades\Log;
 
 class Role extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
 
     public function components()
@@ -72,7 +75,6 @@ class Role extends AuditableModel
             $dbModule = Module::with('components')->where('id', $module->id)->first();
             $components = $dbModule->components;
             foreach ($components as $component) {
-
                 if (isset($module->all)) {
                     $syncPayload[$component->id] = [
                         'all' => $module->all ?? false,
@@ -86,40 +88,53 @@ class Role extends AuditableModel
                 }
 
                 $syncPayload[$component->id]['module_id'] = $module->id;
-                if (isset($module->add))
+                if (isset($module->add)) {
                     $syncPayload[$component->id]['add'] = $module->all ? $module->all : ($module->add ?? false);
-                if (isset($module->view))
+                }
+                if (isset($module->view)) {
                     $syncPayload[$component->id]['view'] = $module->all ? $module->all : ($module->view ?? false);
+                }
 
-                if (isset($module->edit))
+                if (isset($module->edit)) {
                     $syncPayload[$component->id]['edit'] = $module->all ? $module->all : ($module->edit ?? false);
+                }
 
-                if (isset($module->update))
+                if (isset($module->update)) {
                     $syncPayload[$component->id]['update'] = $module->all ? $module->all : ($module->update ?? false);
+                }
 
-                if (isset($module->delete))
+                if (isset($module->delete)) {
                     $syncPayload[$component->id]['delete'] = $module->all ? $module->all : ($module->delete ?? false);
+                }
 
-                if (isset($module->print))
+                if (isset($module->print)) {
                     $syncPayload[$component->id]['print'] = $module->all ? $module->all : ($module->print ?? false);
+                }
 
 
 
                 $componentPayload['id'] = $component->id;
-                if (isset($module->all))
+                if (isset($module->all)) {
                     $componentPayload['all'] =  ($module->all ?? false);
-                if (isset($module->add))
+                }
+                if (isset($module->add)) {
                     $componentPayload['add'] = $module->all ? $module->all : ($module->add ?? false);
-                if (isset($module->view))
+                }
+                if (isset($module->view)) {
                     $componentPayload['view'] = $module->all ? $module->all : ($module->view ?? false);
-                if (isset($module->edit))
+                }
+                if (isset($module->edit)) {
                     $componentPayload['edit'] = $module->all ? $module->all : ($module->edit ?? false);
-                if (isset($module->update))
+                }
+                if (isset($module->update)) {
                     $componentPayload['update'] = $module->all ? $module->all : ($module->update ?? false);
-                if (isset($component->delete))
+                }
+                if (isset($component->delete)) {
                     $componentPayload['delete'] = $module->all ? $module->all : ($module->delete ?? false);
-                if (isset($module->print))
+                }
+                if (isset($module->print)) {
                     $componentPayload['print'] = $module->all ? $module->all : ($module->print ?? false);
+                }
 
                 $payload[] = $componentPayload;
             }
@@ -136,8 +151,9 @@ class Role extends AuditableModel
         foreach ($components as $component) {
             $component = (object) $component;
             $dbcomponent = ComponentModule::where('component_id', $component->id)->first();
-            if (!$dbcomponent)
+            if (!$dbcomponent) {
                 continue;
+            }
 
             if (isset($component->all)) {
                 $syncPayload[$component->id] = [
@@ -153,35 +169,48 @@ class Role extends AuditableModel
 
             $syncPayload[$component->id]['module_id'] = $dbcomponent->module_id;
 
-            if (isset($component->add))
+            if (isset($component->add)) {
                 $syncPayload[$component->id]['add'] = $component->all ? $component->all : ($component->add ?? false);
-            if (isset($component->view))
+            }
+            if (isset($component->view)) {
                 $syncPayload[$component->id]['view'] = $component->all ? $component->all : ($component->view ?? false);
-            if (isset($component->edit))
+            }
+            if (isset($component->edit)) {
                 $syncPayload[$component->id]['edit'] = $component->all ? $component->all : ($component->edit ?? false);
-            if (isset($component->update))
+            }
+            if (isset($component->update)) {
                 $syncPayload[$component->id]['update'] = $component->all ? $component->all : ($component->update ?? false);
-            if (isset($component->delete))
+            }
+            if (isset($component->delete)) {
                 $syncPayload[$component->id]['delete'] = $component->all ? $component->all : ($component->delete ?? false);
-            if (isset($component->print))
+            }
+            if (isset($component->print)) {
                 $syncPayload[$component->id]['print'] = $component->all ? $component->all : ($component->print ?? false);
+            }
 
 
             $componentPayload['id'] = $component->id;
-            if (isset($component->all))
+            if (isset($component->all)) {
                 $componentPayload['all'] =  ($component->all ?? false);
-            if (isset($component->add))
+            }
+            if (isset($component->add)) {
                 $componentPayload['add'] = $component->all ? $component->all : ($component->add ?? false);
-            if (isset($component->edit))
+            }
+            if (isset($component->edit)) {
                 $componentPayload['edit'] = $component->all ? $component->all : ($component->edit ?? false);
-            if (isset($component->view))
+            }
+            if (isset($component->view)) {
                 $componentPayload['view'] = $component->all ? $component->all : ($component->view ?? false);
-            if (isset($component->update))
+            }
+            if (isset($component->update)) {
                 $componentPayload['update'] = $component->all ? $component->all : ($component->update ?? false);
-            if (isset($component->delete))
+            }
+            if (isset($component->delete)) {
                 $componentPayload['delete'] = $component->all ? $component->all : ($component->delete ?? false);
-            if (isset($component->print))
+            }
+            if (isset($component->print)) {
                 $componentPayload['print'] = $component->all ? $component->all : ($component->print ?? false);
+            }
 
             $payload[] = $componentPayload;
         }

@@ -24,11 +24,11 @@ class AllergyHistoryRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('allergyhistory')??null;
+        $id = $this->route('allergyhistory') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('allergy_histories', 'name,allergy_history_category_id',$id),
-            'allergy_history_category_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exists:allergy_history_categories,id',
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUniqueWith('allergy_histories', 'name,allergy_history_category_id', $id),
+            'allergy_history_category_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:allergy_history_categories,id',
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

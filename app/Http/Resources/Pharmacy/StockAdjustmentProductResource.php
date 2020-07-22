@@ -16,12 +16,12 @@ class StockAdjustmentProductResource extends JsonResource
     public function toArray($request)
     {
         if (isset($this->id)) {
-            $product = $this->product??null;
+            $product = $this->product ?? null;
             return [
                 'id' => $this->id,
-                'product_id' => $product->id??null,
-                'brand_name' => $product->brand_name??null,
-                'generic_name' => $product->generic_name??null,
+                'product_id' => $product->id ?? null,
+                'brand_name' => $product->brand_name ?? null,
+                'generic_name' => $product->generic_name ?? null,
                 'batch_number' => $this->batch_number,
                 'expiry_date' => $this->expiry_date,
                 'unit_of_measurement' => $this->unit_of_measurement,
@@ -39,6 +39,6 @@ class StockAdjustmentProductResource extends JsonResource
             ];
         }
 
-        return NULL;
+        return null;
     }
 }

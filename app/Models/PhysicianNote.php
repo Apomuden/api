@@ -14,7 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class PhysicianNote extends AuditableModel
 {
-    use ActiveTrait, FindByTrait, SortableTrait, SoftDeletes;
+    use ActiveTrait;
+    use FindByTrait;
+    use SortableTrait;
+    use SoftDeletes;
+
     protected $guarded = [];
     public function age_class()
     {
@@ -77,7 +81,7 @@ class PhysicianNote extends AuditableModel
                 $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
                 //age class and group
-                $repository = new RepositoryEloquent(new AgeClassification);
+                $repository = new RepositoryEloquent(new AgeClassification());
                 $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
                 $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
@@ -113,7 +117,7 @@ class PhysicianNote extends AuditableModel
                 $model->age_group_id = $consultation->age_group_id;
                 $model->consultation_date = $consultation->start_date;
                 $model->age = $consultation->age;
-            } else if ($model->isDirty('patient_id')) {
+            } elseif ($model->isDirty('patient_id')) {
                 $patient = $model->patient;
                 $model->gender = $patient->gender;
                 $patient_sponsor = $patient->patient_sponsors()->orderBy('priority', 'asc')->first();
@@ -123,7 +127,7 @@ class PhysicianNote extends AuditableModel
                 $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
                 //age class and group
-                $repository = new RepositoryEloquent(new AgeClassification);
+                $repository = new RepositoryEloquent(new AgeClassification());
                 $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
 
                 $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);

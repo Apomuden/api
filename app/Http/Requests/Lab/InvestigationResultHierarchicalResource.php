@@ -53,7 +53,7 @@ class InvestigationResultHierarchicalResource extends JsonResource
             'age' => $this->age ?? null,
             'patient_status' => $this->patient_status ?? null,
 
-            'order_type'=>$this->order_type,
+            'order_type' => $this->order_type,
 
             'clinic_type_name' => $clinic_type->name ?? null,
             'clinic_type_id' => $clinic_type->id ?? null,
@@ -76,8 +76,8 @@ class InvestigationResultHierarchicalResource extends JsonResource
             'user_name' => $user->fullname,
             'user_id' => $user->id,
 
-            'prepaid_total' => round($this->prepaid_total,2) ?? 0.00,
-            'postpaid_total' => round($this->postpaid_total,2) ?? 0.00,
+            'prepaid_total' => round($this->prepaid_total, 2) ?? 0.00,
+            'postpaid_total' => round($this->postpaid_total, 2) ?? 0.00,
 
             'funding_type_name' => $funding_type->name ?? null,
             'funding_type_id' => $funding_type->id ?? null,
@@ -103,7 +103,7 @@ class InvestigationResultHierarchicalResource extends JsonResource
             'consultation_date' => DateHelper::toDisplayDateTime($this->consultation_date),
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-            'results'=>labTestResultSimpleResource::collection($this->lab_test_results)
+            'results' => labTestResultSimpleResource::collection($this->lab_test_results)
         ];
     }
 }

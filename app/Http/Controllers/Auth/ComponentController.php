@@ -18,22 +18,26 @@ class ComponentController extends Controller
 
     public function __construct(Component $component)
     {
-        $this->repository= new RepositoryEloquent($component,true);
+        $this->repository = new RepositoryEloquent($component, true);
     }
-    function index(){
-        $components=$this->repository->paginate(10,'name');
-        return ApiResponse::withPaginate(new ComponentCollection($components,'Components list'));    }
-    function show($component){
-        $component=$this->repository->show($component);//pass the country
-        return $component?
-        ApiResponse::withOk('Component Found',new GeneralResource($component))
+    function index()
+    {
+        $components = $this->repository->paginate(10, 'name');
+        return ApiResponse::withPaginate(new ComponentCollection($components, 'Components list'));
+    }
+    function show($component)
+    {
+        $component = $this->repository->show($component);//pass the country
+        return $component ?
+        ApiResponse::withOk('Component Found', new GeneralResource($component))
         : ApiResponse::withNotFound('Component Not Found');
     }
 
-    function showByModule($module){
-        $this->repository->setModel(new Module);
+    function showByModule($module)
+    {
+        $this->repository->setModel(new Module());
 
-        $components=$this->repository->getInstanceWith(['components'=>function($query){
+        $components = $this->repository->getInstanceWith(['components' => function ($query) {
             $query->active()->orderBy('name')->sortBy('name')->paginate(10);
         }])->find($module)->components;
 

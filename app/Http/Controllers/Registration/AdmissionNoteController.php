@@ -23,7 +23,7 @@ class AdmissionNoteController extends Controller
      */
     public function index()
     {
-        return ApiResponse::withOk('Admission notes list',GeneralNoteResource::collection($this->repository->all('created_at')));
+        return ApiResponse::withOk('Admission notes list', GeneralNoteResource::collection($this->repository->all('created_at')));
     }
 
     /**
@@ -34,8 +34,8 @@ class AdmissionNoteController extends Controller
      */
     public function store(AdmissionNoteRequest $request)
     {
-        $record=$this->repository->store($request->all());
-        return ApiResponse::withOk('Admission note created',new GeneralNoteResource($record->refresh()));
+        $record = $this->repository->store($request->all());
+        return ApiResponse::withOk('Admission note created', new GeneralNoteResource($record->refresh()));
     }
 
     /**
@@ -58,8 +58,8 @@ class AdmissionNoteController extends Controller
      */
     public function update(AdmissionNoteRequest $request, $id)
     {
-       $record=$this->repository->update($request->all(),$id);
-       return ApiResponse::withOk('Admission note updated', new GeneralNoteResource($record));
+        $record = $this->repository->update($request->all(), $id);
+        return ApiResponse::withOk('Admission note updated', new GeneralNoteResource($record));
     }
 
     /**

@@ -15,21 +15,22 @@ class LabParameterResource extends JsonResource
      */
     public function toArray($request)
     {
-        $pivot=$this->pivot??null;
-        $data= [
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'description'=>$this->description??null,
-            'value_type'=>$this->value_type,
-            'unit'=>$this->unit
+        $pivot = $this->pivot ?? null;
+        $data = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description ?? null,
+            'value_type' => $this->value_type,
+            'unit' => $this->unit
         ];
 
-        if($pivot)
-        $data['order']=$pivot->order;
+        if ($pivot) {
+            $data['order'] = $pivot->order;
+        }
 
-        $data=$data+[
+        $data = $data + [
             'status' => $this->status,
-            'created_at' => DateHelper::toDisplayDateTime($pivot->created_at??$this->created_at),
+            'created_at' => DateHelper::toDisplayDateTime($pivot->created_at ?? $this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($pivot->updated_at ?? $this->updated_at),
         ];
 

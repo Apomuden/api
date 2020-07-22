@@ -24,11 +24,11 @@ class ComplaintRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('complaint')??null;
+        $id = $this->route('complaint') ?? null;
         return [
-            'name'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUniqueWith('complaints', 'name,complaint_type_id',$id),
-            'complaint_type_id'=> 'bail|'.($id ? 'sometimes' : 'required').'|exists:complaint_types,id',
-            'status'=>'bail|'. ($id ? 'sometimes' : 'required').'|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|' . $this->softUniqueWith('complaints', 'name,complaint_type_id', $id),
+            'complaint_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:complaint_types,id',
+            'status' => 'bail|' . ($id ? 'sometimes' : 'required') . '|in:ACTIVE,INACTIVE'
         ];
     }
 }

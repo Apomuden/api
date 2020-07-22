@@ -23,11 +23,11 @@ class MedicineRouteRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('medicineroute')??null;
+        $id = $this->route('medicineroute') ?? null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('medicine_routes','name',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('medicine_routes', 'name', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }

@@ -18,30 +18,32 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserRegisterationController extends Controller
 {
-   protected $repository;
-   public function __construct(User $user)
-   {
-      $this->repository=new RepositoryEloquent($user);
-   }
-   function index(){
-        $this->repository->useActiveTrait=false;
-        $users=$this->repository->paginate(10,'username');
-        return ApiResponse::withPaginate(new ProfilePaginatedCollection($users,'List of users'));
-   }
-   function show($profile=null)
-   {
-      $profile=$this->repository->find($profile);
-      return ApiResponse::withOk('Profile found',new ProfileWithIDResource($profile));
-   }
-   function store(ProfileRequest $request)
-   {
-       $profile=$this->repository->store($request->all());
-       return ApiResponse::withOk('Profile created',new ProfileWithIDResource($profile->refresh()));
-   }
-   function update(ProfileRequest $request,$profile){
-        $profile=$this->repository->update($request->all(),$profile);
-        return ApiResponse::withOk('Profile updated',new ProfileWithIDResource($profile->refresh()));
-   }
+    protected $repository;
+    public function __construct(User $user)
+    {
+        $this->repository = new RepositoryEloquent($user);
+    }
+    function index()
+    {
+        $this->repository->useActiveTrait = false;
+        $users = $this->repository->paginate(10, 'username');
+        return ApiResponse::withPaginate(new ProfilePaginatedCollection($users, 'List of users'));
+    }
+    function show($profile = null)
+    {
+        $profile = $this->repository->find($profile);
+        return ApiResponse::withOk('Profile found', new ProfileWithIDResource($profile));
+    }
+    function store(ProfileRequest $request)
+    {
+        $profile = $this->repository->store($request->all());
+        return ApiResponse::withOk('Profile created', new ProfileWithIDResource($profile->refresh()));
+    }
+    function update(ProfileRequest $request, $profile)
+    {
+        $profile = $this->repository->update($request->all(), $profile);
+        return ApiResponse::withOk('Profile updated', new ProfileWithIDResource($profile->refresh()));
+    }
     public function destroy($id)
     {
         $this->repository->delete($id);

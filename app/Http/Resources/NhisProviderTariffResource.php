@@ -15,8 +15,8 @@ class NhisProviderTariffResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'nhis_provider_level_id'=>$this->nhis_provider_level_id,
-            'tariff'=>$this->tariff
+            'nhis_provider_level_id' => $this->nhis_provider_level_id,
+            'tariff' => $this->tariff
         ];
     }
 }

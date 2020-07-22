@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
@@ -18,50 +19,53 @@ class PermissionController extends Controller
 
     public function __construct(Component $component)
     {
-        $this->repository= new RepositoryEloquent($component,true,['module']);
+        $this->repository = new RepositoryEloquent($component, true, ['module']);
     }
-   function showByRole($role){
-     $components=$this->repository->getModel()->whereHas('roles', function ($q2) use ($role) {
+    function showByRole($role)
+    {
+        $components = $this->repository->getModel()->whereHas('roles', function ($q2) use ($role) {
             $q2->where('roles.id', $role);
         })->orderBy('name')->get();
 
-     return ApiResponse::withOk('Available Components',new ComponentPermissionsCollection($components));
-   }
+        return ApiResponse::withOk('Available Components', new ComponentPermissionsCollection($components));
+    }
     function showHierarchy()
     {
         //DB::enableQueryLog();
         $modules = Module::active()->sortBy('name')->paginate(10);
-        $records= new ModulePermissionsCollection($modules, "Components hierachy");
+        $records = new ModulePermissionsCollection($modules, "Components hierachy");
 
         return  ApiResponse::withPaginate($records);
     }
-   function showHierarchyByRole($role){
-       //DB::enableQueryLog();
-       $modules=Module::active()->whereHas('roles', function ($q2) use ($role) {
+    function showHierarchyByRole($role)
+    {
+        //DB::enableQueryLog();
+        $modules = Module::active()->whereHas('roles', function ($q2) use ($role) {
             $q2->where('roles.id', $role);
         })->sortBy('name')->paginate(10);
 
-       return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules,"Components hierachy"));
-   }
+        return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
+    }
    //get User Component Permissions
-   function showPermissionHierarchy($user){
+    function showPermissionHierarchy($user)
+    {
         $modules = Module::active()->whereHas('users', function ($q2) use ($user) {
             $q2->where('users.id', $user);
         })->sortBy('name')->paginate(10);
 
-    return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
-   }
+        return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
+    }
 
     //get User Component Permissions
-   function showPermissions($user){
+    function showPermissions($user)
+    {
 
-     $this->repository=new RepositoryEloquent(new User);
+        $this->repository = new RepositoryEloquent(new User());
 
-     $user=$this->repository->findOrFail($user);
+        $user = $this->repository->findOrFail($user);
 
-     $components=$user->components()->active()->sortBy('name')->get();
+        $components = $user->components()->active()->sortBy('name')->get();
 
-     return ApiResponse::withOk('Available Components',ComponentPermissionsResource::collection($components));
-   }
-
+        return ApiResponse::withOk('Available Components', ComponentPermissionsResource::collection($components));
+    }
 }

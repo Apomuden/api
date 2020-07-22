@@ -23,11 +23,11 @@ class ProductFormUnitRequest extends ApiFormRequest
      */
     public function rules()
     {
-        $id=$this->route('productformunit')??null;
+        $id = $this->route('productformunit') ?? null;
 
         return [
-            'name' => 'bail|'.($id?'sometimes':'required').'|string|'.$this->softUnique('product_form_units','name',$id),
-            'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
+            'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('product_form_units', 'name', $id),
+            'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
 }
