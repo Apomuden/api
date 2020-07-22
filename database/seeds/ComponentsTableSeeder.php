@@ -56,14 +56,6 @@ class ComponentsTableSeeder extends Seeder
             ['name' => 'Sample Types', 'tag' => 'config.lab.sample.type', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Lab Service Sample-Type Map', 'tag' => 'config.lab.service.sample.type.map', 'created_at' => now(), 'updated_at' => now()],
 
-            //Stores
-            ['name' => 'Product Type and Category', 'tag' => 'config.store.product.type.category', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Product Form and Unit', 'tag' => 'config.store.product.form.unit', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Products', 'tag' => 'config.store.product', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Medicine Route', 'tag' => 'config.store.medicine.route', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Store Users', 'tag' => 'config.store.users', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Stores', 'tag' => 'config.store.store', 'created_at' => now(), 'updated_at' => now()],
-
             //EINSU & CORP.
             ['name' => 'NHIS Provider Level', 'tag' => 'config.einsu.nhis.provider.level', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'NHIS MDC', 'tag' => 'config.einsu.nhis.mdc', 'created_at' => now(), 'updated_at' => now()],
@@ -171,9 +163,24 @@ class ComponentsTableSeeder extends Seeder
             ['name' => 'Patient Ascond', 'tag' => 'account.patient.abscond', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Patient Refund', 'tag' => 'account.patient.refund', 'created_at' => now(), 'updated_at' => now()],
 
+
+            //Stores Setup
+            ['name' => 'Product Type and Category', 'tag' => 'config.store.product.type.category', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product Form and Unit', 'tag' => 'config.store.product.form.unit', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Products', 'tag' => 'config.store.product', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Medicine Route', 'tag' => 'config.store.medicine.route', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Store Users', 'tag' => 'config.store.users', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Stores', 'tag' => 'config.store.store', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Store Activity', 'tag' => 'config.store.activity', 'created_at' => now(), 'updated_at' => now()],
+
             //==Stores Management
-            ['name' => 'Stock Adjustment', 'tag' => 'account.stock.adjustment', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Requisition', 'tag' => 'account.requisition', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Stock Adjustment', 'tag' => 'store.stock.adjustment', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Stock Adjustment Approval', 'tag' => 'store.stock.adjustment.approval', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Requisition Approval', 'tag' => 'store.requisition.approval', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Issue and Receipt Voucher', 'tag' => 'store.issue.receipt.voucher', 'created_at' => now(), 'updated_at' => now()],
+
+            //==Pharmacy Management
+            ['name' => 'Prescription', 'tag' => 'pharmacy.prescription', 'created_at' => now(), 'updated_at' => now()],
         );
 
         Component::insert($components);

@@ -39,7 +39,8 @@ class ModuleTableSeeder extends Seeder
         ['id'=>19,'name'=>'Obstetric Management', 'parent_tag' => null,'tag'=> 'obstetric','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
         ['id'=>20,'name'=>'Laboratory Management', 'parent_tag' => null,'tag'=>'lab','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
         ['id'=>21,'name'=>'Account Management', 'parent_tag' => null,'tag'=>'account','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
-        ['id'=>22,'name'=>'Sores Management', 'parent_tag' => null,'tag'=>'stores','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
+        ['id'=>22,'name'=>'Stores Management', 'parent_tag' => null,'tag'=>'store','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
+        ['id'=>22,'name'=>'Pharmacy Management', 'parent_tag' => null,'tag'=>'pharmacy','status'=>'ACTIVE','created_at'=>now(),'updated_at'=>now()],
       );
 
       Module::insert($modules);
