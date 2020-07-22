@@ -139,7 +139,7 @@ class ServiceOrder extends AuditableModel
             $model->service_category_id = $service->service_category_id;
             $model->service_subcategory_id = $service->service_subcategory_id;
             $model->service_total_amt = ($model->service_fee ?? 0) * ($model->service_quantity ?? 0);
-            $model->service_date = $model->service_date ? Carbon::parse($model->service_date) : null;
+            $model->service_date = $model->service_date ? Carbon::parse($model->service_date) : Carbon::now();
             $user = Auth::guard('api')->user();
             $model->user_id = $user->id;
 
