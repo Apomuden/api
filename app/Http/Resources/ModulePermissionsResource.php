@@ -68,7 +68,7 @@ class ModulePermissionsResource extends JsonResource
                 'parent_tag' => $this->parent_tag ?? null,
                 'status' => $this->status,
                 //'submodules'=>$parentSubmodules,
-                ($this->tag != 'config' ? 'components' : 'submodules') => $components,
+                'components' => $components,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];

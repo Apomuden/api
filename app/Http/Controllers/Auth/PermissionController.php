@@ -40,10 +40,14 @@ class PermissionController extends Controller
     function showHierarchyByRole($role)
     {
         //DB::enableQueryLog();
-        $modules = Module::active()->whereHas('roles', function ($q2) use ($role) {
-            $q2->where('roles.id', $role);
-        })->sortBy('name')->paginate(10);
-
+        // $modules = Module::active()->whereHas('roles', function ($q2) use ($role) {
+        //     $q2->where('roles.id', $role);
+        // })->sortBy('name')->paginate(10);
+        $modules = Module::active()->with(['components'=>function($q1) use($role){
+                    $q1->whereHas('roles',function($q2) use ($role){
+                          $q2->where('roles.id', $role);
+                    });
+        }])->sortBy('name')->paginate(10);
         return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
     }
    //get User Component Permissions
