@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Pharmacy\RequisitionProductRequest; //TODO: Make Sure to change to the correct Request namespace
 use App\Http\Resources\Pharmacy\RequisitionProductCollection; //TODO: Make Sure to change to the correct Collection namespace
 use App\Http\Resources\Pharmacy\RequisitionProductResource; //TODO: Make Sure to change to the correct Resource namespace
+use App\Models\Requisition;
 use App\Models\RequisitionProduct; //TODO: Make Sure to change to the correct Model namespace
 use App\Repositories\RepositoryEloquent;
 use Exception;
@@ -21,10 +22,15 @@ class RequisitionProductController extends Controller
         $this->repository = new RepositoryEloquent($RequisitionProduct);
     }
 
-    public function index()
+    public function index($requisitionId=null)
     {
-
-        return ApiResponse::withOk('RequisitionProducts list', new RequisitionProductCollection($this->repository->all('name')));
+        $query = $this->repository->all('name');
+        if ($requisitionId) {
+            $refNumber = Requisition::query()->find($requisitionId);
+            $refNumber = $refNumber ? $refNumber->reference_number : null;
+            $query = $query->where(['reference_number'=>$refNumber]);
+        }
+        return ApiResponse::withOk('RequisitionProducts list', new RequisitionProductCollection($query));
     }
 
     public function show($RequisitionProduct)

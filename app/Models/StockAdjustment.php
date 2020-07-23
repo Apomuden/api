@@ -24,7 +24,7 @@ class StockAdjustment extends AuditableModel
 
         static::creating(function ($model) {
             $model->reference_number = $model->reference_number ?? ReferenceNumberGeneratorTrait::generate($model->getModel());
-            $model->adjusted_by = Auth::id();
+            $model->requested_by = $model->requested_by ?? Auth::id();
         });
     }
 
