@@ -49,7 +49,8 @@ class ServiceRequest extends ApiFormRequest
 
             if (!$id && !$service_category_id && ! $service_subcategory_id) {
                 $validator->errors()->add('service_category', 'Service category id or Service Sub category id is required!');
-            } else {
+            }
+            /* else {
                 $repository = new RepositoryEloquent(new Service());
                 $where = [
                     'service_category_id' => $service_category_id,
@@ -72,7 +73,7 @@ class ServiceRequest extends ApiFormRequest
                 ) {
                     $validator->errors()->add('service', 'Service already exists!');
                 }
-            }
+            } */
         });
     }
 

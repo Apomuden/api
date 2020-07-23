@@ -15,6 +15,7 @@ class BankRequest extends ApiFormRequest
         $id = $this->route('bank') ?? null;
         return [
             'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('banks', 'name', $id),
+            'priority' => 'bail|sometimes|integer|gt:-1',
             'sort_code' => 'bail|sometimes|' . $this->softUnique('banks', 'sort_code', $id),
             'email' => 'bail|sometimes|email',
             'phone' => 'bail|sometimes|numeric',
