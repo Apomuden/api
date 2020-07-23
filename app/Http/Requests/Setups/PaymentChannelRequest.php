@@ -17,6 +17,7 @@ class PaymentChannelRequest extends ApiFormRequest
 
         return [
             'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('payment_channels', 'name', $id),
+            'priority' => 'bail|sometimes|integer|gt:-1',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }

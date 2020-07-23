@@ -28,7 +28,7 @@ class BankController extends Controller
     function index()
     {
 
-        return ApiResponse::withOk('Banks list', new BankCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Banks list', BankResource::collection($this->repository->all('name')));
     }
 
     function show($bank)
