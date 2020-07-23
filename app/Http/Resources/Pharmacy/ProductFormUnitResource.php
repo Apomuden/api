@@ -18,6 +18,7 @@ class ProductFormUnitResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'unit_type' => $this->unit_type,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
