@@ -27,6 +27,7 @@ class ProductFormUnitRequest extends ApiFormRequest
 
         return [
             'name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUnique('product_form_units', 'name', $id),
+            'unit_type' => 'bail|sometimes|in:BASE,VOLUME',
             'status' => 'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }
