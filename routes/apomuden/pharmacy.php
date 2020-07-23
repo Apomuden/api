@@ -52,11 +52,19 @@ Route::apiResource('issueandreceiptvouchers','Pharmacy\IssueAndReceiptVoucherCon
 ]);
 
 
-Route::post('stockadjustments/approvals','Pharmacy\StockAdjustmentController@approve',[
+Route::post('stockadjustments/approvals',[
+    'uses' => 'Pharmacy\StockAdjustmentController@approve',
     'module'=>'store',
     'component'=> 'store.stock.adjustment.approval'
 ]);
-Route::get('stockadjustments/approvals','Pharmacy\StockAdjustmentController@getApprovals',[
+
+Route::get('stockadjustments/approvals',[
+    'uses' => 'Pharmacy\StockAdjustmentController@getApprovals',
+    'module'=>'store',
+    'component'=> 'store.stock.adjustment.approval'
+]);
+
+Route::apiResource('stockadjustments/{stockadjustment_id}/products','Pharmacy\StockAdjustmentProductController',[
     'module'=>'store',
     'component'=> 'store.stock.adjustment.approval'
 ]);
@@ -66,11 +74,19 @@ Route::apiResource('stockadjustments','Pharmacy\StockAdjustmentController',[
     'component'=> 'store.stock.adjustment'
 ]);
 
-Route::post('requisitions/approvals','Pharmacy\RequisitionController@approve',[
+Route::post('requisitions/approvals',[
+    'uses'=> 'Pharmacy\RequisitionController@approve',
+    'as'=>'store.requisition.approve',
     'module'=>'store',
     'component'=> 'store.requisition.approval'
 ]);
-Route::get('requisitions/approvals','Pharmacy\RequisitionController@getApprovals',[
+Route::get('requisitions/approvals',[
+    'uses'=> 'Pharmacy\RequisitionController@getApprovals',
+    'as'=>'store.requisition.approvals',
+    'module'=>'store',
+    'component'=> 'store.requisition.approval'
+]);
+Route::apiResource('requisitions/{requisition_id}/products', 'Pharmacy\RequisitionController',[
     'module'=>'store',
     'component'=> 'store.requisition.approval'
 ]);

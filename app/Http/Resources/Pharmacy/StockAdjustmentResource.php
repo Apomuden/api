@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources\Pharmacy;
 
+use App\Http\Controllers\Pharmacy\StockAdjustmentProductController;
 use App\Http\Helpers\DateHelper;
+use App\Models\StockAdjustmentProduct;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class StockAdjustmentResource extends JsonResource
@@ -30,10 +32,8 @@ class StockAdjustmentResource extends JsonResource
                 'approved_by' => $this->approved_by,
                 'adjustment_date' => $this->adjustment_date,
                 'approval_date' => $this->approval_date,
-                new StockAdjustmentCollection($stock_adjustment_product),
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
-                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at),
-
+                'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
         }
 

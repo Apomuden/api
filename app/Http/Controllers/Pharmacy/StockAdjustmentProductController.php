@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Requests\Pharmacy\StockAdjustmentProductRequest;
 use App\Http\Resources\Pharmacy\StockAdjustmentProductCollection;
 use App\Http\Resources\Pharmacy\StockAdjustmentProductResource;
+use App\Models\StockAdjustment;
 use App\Models\StockAdjustmentProduct;
 use App\Repositories\RepositoryEloquent;
 use Exception;
@@ -20,10 +21,15 @@ class StockAdjustmentProductController extends Controller
         $this->repository = new RepositoryEloquent($StockAdjustmentProduct);
     }
 
-    public function index()
+    public function index($stockAdjustmentId=null)
     {
-
-        return ApiResponse::withOk('Stock Adjustment Products list', new StockAdjustmentProductCollection($this->repository->all('name')));
+        $query = $this->repository->all('name');
+        if ($stockAdjustmentId) {
+            $refNumber = StockAdjustment::query()->find($stockAdjustmentId);
+            $refNumber = $refNumber ? $refNumber->reference_number : null;
+            $query = $query->where('reference_number',$refNumber);
+        }
+        return ApiResponse::withOk('Stock Adjustment Products list', new StockAdjustmentProductCollection($query));
     }
 
     public function show($StockAdjustmentProduct)

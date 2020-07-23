@@ -24,15 +24,15 @@ class StoreController extends Controller
     public function index()
     {
 
-        return ApiResponse::withOk('Product Forms list', new StoreCollection($this->repository->all('name')));
+        return ApiResponse::withOk('Stores list', new StoreCollection($this->repository->all('name')));
     }
 
     public function show($Store)
     {
         $Store = $this->repository->show($Store);
         return $Store ?
-            ApiResponse::withOk('Product Form Found', new StoreResource($Store))
-            : ApiResponse::withNotFound('Product Form Not Found');
+            ApiResponse::withOk('Store Found', new StoreResource($Store))
+            : ApiResponse::withNotFound('Store Not Found');
     }
 
     public function store(StoreRequest $StoreRequest)
@@ -40,7 +40,7 @@ class StoreController extends Controller
         try {
             $requestData = $StoreRequest->all();
             $Store = $this->repository->store($requestData);
-            return ApiResponse::withOk('Product Form created', new StoreResource($Store->refresh()));
+            return ApiResponse::withOk('Store created', new StoreResource($Store->refresh()));
         } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
@@ -50,7 +50,7 @@ class StoreController extends Controller
     {
         try {
             $Store = $this->repository->update($StoreRequest->all(), $Store);
-            return ApiResponse::withOk('Product Form updated', new StoreResource($Store));
+            return ApiResponse::withOk('Store updated', new StoreResource($Store));
         } catch (Exception $e) {
             return ApiResponse::withException($e);
         }
@@ -58,6 +58,6 @@ class StoreController extends Controller
     public function destroy($id)
     {
         $this->repository->delete($id);
-        return ApiResponse::withOk('Product Form deleted successfully');
+        return ApiResponse::withOk('Store deleted successfully');
     }
 }

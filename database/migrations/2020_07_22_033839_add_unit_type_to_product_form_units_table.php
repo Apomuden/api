@@ -28,7 +28,9 @@ class AddUnitTypeToProductFormUnitsTable extends Migration
     public function down()
     {
         Schema::table('product_form_units', function (Blueprint $table) {
-            //
+            $table->dropIndex(['name','unit_type','deleted_at']);
+            $table->index(['name','deleted_at']);
+            $table->dropColumn('unit_type');
         });
     }
 }
