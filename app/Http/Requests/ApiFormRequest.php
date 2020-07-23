@@ -42,17 +42,22 @@ abstract class ApiFormRequest extends LaravelFormRequest
     }
     protected function softExists($table, $field)
     {
-       
+
         return "exists:$table,$field,deleted_at,NULL";
     }
     protected function softUnique($table, $field, $id)
     {
+        $id= trim($id);
+        if(!$id)
+        $id=NULL;
         return "unique:{$table},{$field},{$id},id,deleted_at,NULL";
     }
     protected function softUniqueWith($table, $fields, $id)
     {
+        $id = trim($id);
+        if (!$id)
+            $id = NULL;
         $fields = trim($fields, ",") . ',deleted_at';
-        Log::alert('Unique_with', ["unique_with:{$table},{$fields}" . ($id ? ',' . $id : '')]);
         return "unique_with:{$table},{$fields}" . ($id ? ',' . $id : '');
     }
     protected function websiteRegEx()

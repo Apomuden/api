@@ -44,7 +44,6 @@ class ServiceController extends Controller
         $status=request('status');
         $patient_status=request('patient_status');
 
-
         if($patient_id)
         {
             $patient= (new RepositoryEloquent(new Patient))->find($patient_id);
