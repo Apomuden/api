@@ -7,6 +7,7 @@ use App\Http\Traits\Eloquent\FindByTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Ereceipt extends AuditableModel
 {
@@ -22,11 +23,28 @@ class Ereceipt extends AuditableModel
         static::creating(function ($model) {
             $model->amount_paid = $model->amount_paid ?? $model->total_bill ?? 0;
             $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
+
+        //    if(!$model->payment_channel_id)
+        //     $model->payment_channel_id= PaymentChannel::wherePriority(0)->first()->id??null;
+
+        //     if(!$model->cheque_no && in_array(ucwords($model->payment_channel->name),['Bank Interface','Banking Interface','Bank Deposit'])){
+        //         if(!$model->bank_id)
+        //             $model->bank_id = Bank::wherePriority(0)->first()->id??null;
+        //     }
         });
 
         static::updating(function ($model) {
             $model->amount_paid = (($model->amount_paid ?? $model->getOriginal('amount_paid')) ?? $model->total_bill) ?? 0;
             $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
+
+
+            // if ($model->isDirty('payment_channel_id') && !$model->payment_channel_id)
+            // $model->payment_channel_id = PaymentChannel::wherePriority(0)->first()->id ?? null;
+
+            // if ($model->isDirty('payment_channel_id') && !$model->cheque_no && in_array(ucwords($model->payment_channel->name), ['Bank Interface', 'Banking Interface', 'Bank Deposit'])) {
+            //     if (!$model->bank_id)
+            //         $model->bank_id = Bank::wherePriority(0)->first()->id ?? null;
+            // }
         });
     }
 
@@ -73,5 +91,15 @@ class Ereceipt extends AuditableModel
     public function deposit()
     {
         return $this->morphedByMany(Deposit::class, 'receipt_item')->withPivot(['paid', 'id']);
+    }
+
+    public function payment_channel()
+    {
+        return $this->belongsTo(PaymentChannel::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
     }
 }

@@ -54,6 +54,15 @@ class EreceiptResource extends JsonResource
             'amount_paid' => $this->amount_paid,
             'balance' => $this->balance,
             'receipt_number' => $this->receipt_number,
+            'payment_channel_id' => $this->payment_channel_id??null,
+            'payment_channel_name' => $this->payment_channel->name??null,
+            'payee_transaction_id' => $this->payee_transaction_id??null,
+            'payee_account_no' => $this->payee_account_no ?? null,
+            'api_internal_ref' => $this->api_internal_ref ?? null,
+            'cheque_no' => $this->cheque_no ?? null,
+            'bank_id' => $this->bank_id ?? null,
+            'bank_name' => $this->bank->name ?? null,
+
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];

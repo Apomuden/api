@@ -14,10 +14,10 @@ class AddPriorityFieldToPaymentChannelsAndBanksTable extends Migration
     public function up()
     {
         Schema::table('payment_channels', function (Blueprint $table) {
-            $table->mediumInteger('priority')->unsigned()->after('name')->index()->nullable();
+            $table->mediumInteger('priority')->unsigned()->after('name')->index()->default(1);
         });
         Schema::table('banks', function (Blueprint $table) {
-            $table->mediumInteger('priority')->unsigned()->after('name')->index()->nullable();
+            $table->mediumInteger('priority')->unsigned()->after('name')->index()->default(1);
         });
     }
 
