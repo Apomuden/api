@@ -100,7 +100,7 @@ use Illuminate\Support\Facades\Route;
         'module' => 'security',
         'component' => 'security.module'
         ]);
-        
+
         Route::get('modules/{module}/submodules', 'Auth\ModuleController@getSubmodules',[
         //'only'=>['index','show','update','delete'],
         'module' => 'security',
@@ -205,20 +205,20 @@ use Illuminate\Support\Facades\Route;
             Route::get('{profile}/components',[
                 'uses'=>'Auth\PermissionController@showPermissions',
                 'as'=>'profiles.components.view',
-                'module' => 'security',
-                'component' => 'security.components'
+                //'module' => 'security',
+                //'component' => 'security.components'
             ]);
             Route::get('{profile}/components/hierarchy',[
                 'uses'=>'Auth\PermissionController@showPermissionHierarchy',
                 'as'=>'profiles.components.hierarchy.view',
-                'module' => 'security',
-                'component' => 'security.components'
+                //'module' => 'security',
+                //'component' => 'security.components'
             ]);
             Route::get('{profile}/permissions/paginated',[
                 'uses'=>'Auth\PermissionController@showPermissionsPaginated',
                 'as'=>'profiles.components.paginated.view',
-                'module' => 'security',
-                'component' => 'security.component'
+                //'module' => 'security',
+                //'component' => 'security.component'
             ]);
 
         });

@@ -36,6 +36,12 @@ class RepositoryEloquent implements IRepository
         $key = $this->cache_prefix . '->all';
         $searchParams = \request()->query();
 
+        $sortByParam=null;$sortOrderParam=null;
+        if(isset($searchParams['sortBy']))
+        $sortByParam= $searchParams['sortBy'];
+
+        if(isset($searchParams['order']))
+        $sortOrderParam= $searchParams['order'];
 
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
@@ -66,10 +72,16 @@ class RepositoryEloquent implements IRepository
             }
         }
 
-        if ($sortOrder == 'DESC') {
+        if (strtoupper($sortOrder) == 'DESC') {
             $all = $all && $sortBy ? $all->sortByDesc($sortBy) : $all;
         } else {
             $all = $all && $sortBy ? $all->sortBy($sortBy) : $all;
+        }
+
+        if (strtoupper($sortOrderParam) == 'DESC') {
+            $all = $all && $sortByParam ? $all->sortByDesc($sortByParam) : $all;
+        } else {
+            $all = $all && $sortByParam ? $all->sortBy($sortByParam) : $all;
         }
 
         return $this->cache($key, $all);
@@ -87,6 +99,14 @@ class RepositoryEloquent implements IRepository
         $order = $urlOrder ?? $order;
 
         $searchParams = \request()->query();
+
+        $sortByParam = null;
+        $sortOrderParam = $order;
+        if (isset($searchParams['sortBy']))
+        $sortByParam = $searchParams['sortBy'];
+
+        if (isset($searchParams['order']))
+        $sortOrderParam = $searchParams['order'];
 
         unset($searchParams['sortBy']);
         unset($searchParams['order']);
@@ -118,6 +138,8 @@ class RepositoryEloquent implements IRepository
         }
 
         $all = $all && $sortBy ? $all->orderBy($sortBy, $order) : $all;
+
+        $all = $all && $sortByParam ? $all->orderBy($sortByParam, $sortOrderParam) : $all;
 
         $all = ($this->useFindBy && $searchParams) ? $all->findBy($searchParams) : $all;
 

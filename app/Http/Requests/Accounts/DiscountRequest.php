@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests\Accounts;
 
+use App\Http\Requests\ApiFormRequest;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Illuminate\Foundation\Http\FormRequest;
 
-class DiscountRequest extends FormRequest
+class DiscountRequest extends ApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
