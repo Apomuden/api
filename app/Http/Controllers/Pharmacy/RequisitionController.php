@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pharmacy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Helpers\DateHelper;
 use App\Http\Requests\Pharmacy\RequisitionApprovalRequest;
 use App\Http\Requests\Pharmacy\RequisitionRequest; //TODO: Make Sure to change to the correct Request namespace
 use App\Http\Resources\Pharmacy\RequisitionCollection; //TODO: Make Sure to change to the correct Collection namespace
@@ -11,6 +12,7 @@ use App\Http\Resources\Pharmacy\RequisitionResource; //TODO: Make Sure to change
 use App\Models\Requisition; //TODO: Make Sure to change to the correct Model namespace
 use App\Models\RequisitionProduct;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +79,7 @@ class RequisitionController extends Controller
         unset($RequisitionRequest['requisition_id']);
 
         $RequisitionRequest['approved_by'] = Auth::id();
+        $RequisitionRequest['approval_date'] = $RequisitionRequest['approval_date']??DateHelper::toDBDateTime(Carbon::now());
 
         $products = $RequisitionRequest['products'] ?? null;
         unset($RequisitionRequest['products']);
@@ -86,10 +89,9 @@ class RequisitionController extends Controller
             $productsRepo = new RepositoryEloquent(new RequisitionProduct());
             $Requisition = $this->repository->update($RequisitionRequest->all(), $Requisition);
             foreach ($products as $product) {
-                $product['reference_number'] = $Requisition->reference_number ?? $Requisition['reference_number'] ?? null;
                 $requisition_product_id = $product['id'];
                 unset($product['id']);
-                $productsRepo->update($products, $requisition_product_id);
+                $productsRepo->update($product, $requisition_product_id);
             }
             DB::commit();
             return ApiResponse::withOk('Requisition Approved Successfully', new RequisitionResource($Requisition));

@@ -24,12 +24,12 @@ class CreateStocksTable extends Migration
             $table->unsignedBigInteger('original_quantity')->default(0);
             $table->unsignedBigInteger('quantity_remaining')->default(0);
             $table->decimal('unit_cost', 20, 2)->default(0.00);
-            $table->mediumText('adjustment_reason')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('restrict');
             $table->foreign('store_id')->references('id')->on('stores')->onDelete('restrict');
+            $table->unique(['product_id','store_id','deleted_at']);
         });
     }
 
