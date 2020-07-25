@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pharmacy;
 
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
+use App\Http\Helpers\DateHelper;
 use App\Http\Requests\Pharmacy\StockAdjustmentApprovalRequest;
 use App\Http\Requests\Pharmacy\StockAdjustmentRequest;
 use App\Http\Resources\Pharmacy\StockAdjustmentCollection;
@@ -11,6 +12,7 @@ use App\Http\Resources\Pharmacy\StockAdjustmentResource;
 use App\Models\StockAdjustment;
 use App\Models\StockAdjustmentProduct;
 use App\Repositories\RepositoryEloquent;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,6 +77,7 @@ class StockAdjustmentController extends Controller
         unset($StockAdjustmentRequest['stock_adjustment_id']);
 
         $StockAdjustmentRequest['approved_by'] = Auth::id();
+        $StockAdjustmentRequest['approval_date'] = $StockAdjustmentRequest['approval_date']??DateHelper::toDBDateTime(Carbon::now());
 
         $products = $StockAdjustmentRequest['products'] ?? null;
         unset($StockAdjustmentRequest['products']);
@@ -86,7 +89,7 @@ class StockAdjustmentController extends Controller
             foreach ($products as $product) {
                 $stock_adjustment_product_id = $product['id'];
                 unset($product['id']);
-                $productsRepo->update($products, $stock_adjustment_product_id);
+                $productsRepo->update($product, $stock_adjustment_product_id);
             }
             DB::commit();
             return ApiResponse::withOk('Stock Adjustment Approved Successfully', new StockAdjustmentResource($StockAdjustment));
