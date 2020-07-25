@@ -97,6 +97,7 @@ class ServiceController extends Controller
         $patient_id = request('patient_id');
         $service_id = request('service_id');
         $billing_sponsor_id = request('billing_sponsor_id');
+        $hasPostPaid= $PatientActiveNhis=null;
 
         $fee = 0;
         $patient = Patient::find($patient_id);
@@ -119,10 +120,10 @@ class ServiceController extends Controller
 
                 if ($age > 12) {
                     $fee = $service->nhis_adult_tariff->nhis_provider_level_tariffs()
-                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? 0.00;
+                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? $service->postpaid_amount;
                 } else {
                     $fee = $service->nhis_child_tariff->nhis_provider_level_tariffs()
-                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? 0.00;
+                        ->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? $service->postpaid_amount;
                 }
             } elseif ($billing_sponsor_id) {
                 $hasPostPaid = $patient->patient_sponsors()
@@ -133,6 +134,7 @@ class ServiceController extends Controller
                     $fee = $service->postpaid_amount;
                 }
             }
+          if(!$hasPostPaid && !$PatientActiveNhis)
             $fee = $service->prepaid_amount;
         }
         return ApiResponse::withOk('Service Fee', floatVal($fee));
