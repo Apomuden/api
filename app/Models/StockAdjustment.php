@@ -30,12 +30,12 @@ class StockAdjustment extends AuditableModel
 
     public function user_approved()
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(User::class, 'approved_by')->select('id','surname','middlename','firstname','staff_id');
     }
 
     public function user_requested()
     {
-        return $this->belongsTo(User::class, 'requested_by');
+        return $this->belongsTo(User::class, 'requested_by')->select('id','surname','middlename','firstname','staff_id');
     }
 
     public function store()

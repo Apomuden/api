@@ -26,14 +26,15 @@ class StockAdjustmentProductResource extends JsonResource
                 'expiry_date' => $this->expiry_date,
                 'unit_of_measurement' => $this->unit_of_measurement,
                 'quantity_at_hand' => $this->quantity_at_hand,
-                'adjusted_quantity' => $this->adjusted_quantity,
-                'approved_quantity' => $this->approved_quantity,
+                'adjusted_quantity' => $this->adjusted_quantity ? (int)$this->adjusted_quantity : null,
+                'approved_quantity' => $this->approved_quantity ? (int)$this->approved_quantity : null,
                 'unit_cost' => $this->unit_cost,
                 'expected_value' => $this->expected_value,
                 'approved_expected_value' => $this->approved_expected_value,
                 'reference_number' => $this->reference_number,
                 'adjustment_reason' => $this->adjustment_reason,
                 'adjustment_type' => $this->adjustment_type,
+                'status' => $this->status,
                 'created_at' => DateHelper::toDisplayDateTime($this->created_at),
                 'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
             ];
