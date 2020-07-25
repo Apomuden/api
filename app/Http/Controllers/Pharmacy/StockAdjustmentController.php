@@ -84,7 +84,6 @@ class StockAdjustmentController extends Controller
             $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct());
             $StockAdjustment = $this->repository->update($StockAdjustmentRequest->all(), $StockAdjustment);
             foreach ($products as $product) {
-                $product['reference_number'] = $StockAdjustment->reference_number ?? $StockAdjustment['reference_number'] ?? null;
                 $stock_adjustment_product_id = $product['id'];
                 unset($product['id']);
                 $productsRepo->update($products, $stock_adjustment_product_id);
