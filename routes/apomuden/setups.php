@@ -224,7 +224,6 @@ Route::apiResource('billingsponsors', 'Setups\BillingSponsorController', [
     'component' => 'config.other.medical.sponsor'
 ]);
 
-
 Route::apiResource('companies', 'Setups\CompanyController', [
     //'only'=>['index','show','store','update'],
     'module' => 'config.other',
@@ -459,4 +458,10 @@ Route::apiResource('nhisgdrgservicetariffs', 'Setups\NhisGdrgServiceTariffContro
 Route::apiResource('nhisgdrgservicecoverage', 'Setups\NhisGdrgServiceCoverageController',[
     'module' => 'config.einsu',
     'component' => 'config.einsu.nhis.tariff'
+]);
+
+//Service Rules
+Route::apiResource('servicerules', 'Setups\ServiceRuleController',[
+    'module'=>'facility',
+    'component'=>'facility.free.servicerules'
 ]);

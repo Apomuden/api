@@ -33,16 +33,25 @@ class Consultation extends AuditableModel
             $model->user_id = $user->id;
 
             //get patient details
-            $repository = new RepositoryEloquent(new Patient());
-            $patient = $repository->find($model->patient_id);
+            //$repository = new RepositoryEloquent(new Patient());
+            //$patient = $repository->find($model->patient_id);
+            $patient = $model->patient;
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
             //Nhis Pricinng
-            $PatientActiveNhis = $patient->patient_sponsors()->whereHas('billing_sponsor', function ($q1) {
-                 $q1->whereHas('sponsorship_type', function ($q2) {
-                      $q2->whereName('Government Insurance');
-                 });
-            })->where('expiry_date', '>=', today())->first();
+            $PatientActiveNhis = null;
+            if(strtolower(request('sponsorship_type')) != 'patient'){
+                $PatientActiveNhis = $patient->patient_sponsors();
+                if (isset($model->billing_sponsor_id))
+                    $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
+
+                $PatientActiveNhis = $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
+                    $q1->whereHas('sponsorship_type', function ($q2) {
+                        $q2->whereName('Government Insurance');
+                    });
+                })->where('expiry_date', '>=', today())->first();
+            }
+
 
             if ($PatientActiveNhis) {
                 $nhisSettings = NhisAccreditationSetting::first();
@@ -125,16 +134,26 @@ class Consultation extends AuditableModel
         static::updating(function ($model) {
             //if($model->isDirty('consultation_service_id')){
                 //get patient details
-                $repository = new RepositoryEloquent(new Patient());
-                $patient = $repository->find($model->patient_id);
+                //$repository = new RepositoryEloquent(new Patient());
+                //$patient = $repository->find($model->patient_id);
+                $patient = $model->patient;
                 $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
-                //Nhis Pricinng
 
-                $PatientActiveNhis = $patient->patient_sponsors()->whereHas('billing_sponsor', function ($q1) {
-                    $q1->whereHas('sponsorship_type', function ($q2) {
-                        $q2->whereName('Government Insurance');
-                    });
-                })->where('expiry_date', '>=', today())->first();
+                //Nhis Pricinng
+                $PatientActiveNhis=null;
+                if($model->isDirty('billing_sponsor_id') && strtolower(request('sponsorship_type')) != 'patient'){
+                    $PatientActiveNhis = $patient->patient_sponsors();
+
+                    if(isset($model->billing_sponsor_id))
+                    $PatientActiveNhis= $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
+
+                    $PatientActiveNhis= $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
+                        $q1->whereHas('sponsorship_type', function ($q2) {
+                            $q2->whereName('Government Insurance');
+                        });
+                    })->where('expiry_date', '>=', today())->first();
+                }
+
 
             if ($PatientActiveNhis) {
                 $nhisSettings = NhisAccreditationSetting::first();
@@ -267,5 +286,10 @@ class Consultation extends AuditableModel
     public function obstetric_question_responses()
     {
         return $this->hasMany(ObstetricQuestionResponse::class);
+    }
+
+    public function discharge_reason()
+    {
+        return $this->belongsTo(DischargeReason::class);
     }
 }

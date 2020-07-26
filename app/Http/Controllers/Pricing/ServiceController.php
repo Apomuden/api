@@ -11,6 +11,7 @@ use App\Http\Requests\Pricing\ServiceRequest;
 use App\Http\Resources\Lab\LabParameterResource;
 use App\Http\Resources\Lab\LabSampleTypeResource;
 use App\Http\Resources\ServiceCollection;
+use App\Http\Resources\ServicePaginatedCollection;
 use App\Http\Resources\ServiceResource;
 use App\Models\Clinic;
 use App\Models\ClinicService;
@@ -31,8 +32,12 @@ class ServiceController extends Controller
     public function index()
     {
         $services = $this->repository->all('description');
-
         return ApiResponse::withOk('Service List', new ServiceCollection($services));
+    }
+    public function page()
+    {
+        $services = $this->repository->paginate(null,'description');
+        return ApiResponse::withPaginate(new ServicePaginatedCollection($services,'Service Paginated List'));
     }
 
     //getting services by patient age and gender
@@ -107,9 +112,11 @@ class ServiceController extends Controller
                 ->where('billing_sponsor_id', $billing_sponsor_id)
                 ->whereHas('billing_sponsor', function ($q1) {
                     $q1->whereHas('sponsorship_type', function ($q2) {
-                        $q2->whereName('Government Insurance');
+                       $q2->whereName('GOVERNMENT INSURANCE');
                     });
-                })->where('expiry_date', '>=', today())->first();
+                })
+                ->where('expiry_date', '>=', today())
+                ->first();
 
             $service = Service::find($service_id);
 
@@ -129,6 +136,7 @@ class ServiceController extends Controller
                 $hasPostPaid = $patient->patient_sponsors()
                     ->where('status', 'ACTIVE')
                     ->where('billing_sponsor_id', $billing_sponsor_id)->first();
+
 
                 if ($hasPostPaid) {
                     $fee = $service->postpaid_amount;

@@ -131,6 +131,7 @@ class ServiceOrder extends AuditableModel
             $patient = $patientEloquent->findOrFail($model->patient_id);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
+
             $model->gender = $model->gender ?? $patient->gender;
             $serviceEloquent = new RepositoryEloquent(new Service());
             $service = $serviceEloquent->findOrFail($model->service_id);
@@ -163,6 +164,35 @@ class ServiceOrder extends AuditableModel
             })->orderBy('priority', 'asc')->first();
 
             $model->sponsorship_policy_id = $model->sponsorship_policy_id ?? ($policy->sponsorship_policy_id ?? null);
+
+            //$patient = $model->patient;
+            //$model->age = $model->age ?? Carbon::parse($patient->dob)->age;
+
+            //Nhis Pricinng
+            if($model->service_orderable_type!= 'App\Models\Consultation' && strtolower(request('sponsorship_type'))!='patient'){
+                $PatientActiveNhis = $patient->patient_sponsors();
+
+                if (isset($model->billing_sponsor_id))
+                    $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
+
+                $PatientActiveNhis = $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
+                    $q1->whereHas('sponsorship_type', function ($q2) {
+                        $q2->whereName('Government Insurance');
+                    });
+                })->where('expiry_date', '>=', today())->first();
+
+                if ($PatientActiveNhis) {
+                    $nhisSettings = NhisAccreditationSetting::first();
+                    if ($model->age > 12) {
+                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    } else {
+                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    }
+                }
+
+                $model->service_total_amt = $model->service_fee * $model->service_quantity;
+            }
+
         });
 
         static::updating(function ($model) {
@@ -202,6 +232,32 @@ class ServiceOrder extends AuditableModel
             $sponsor = $sponsorEloquent->find($model->billing_sponsor_id) ?? ($original->billing_sponsor ?? null);
             $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? ($original->sponsorship_type_id) ?? null;
             $model->cancelled_date = $model->canceller_id ? Carbon::today() : ($original->cancelled_date ?? null);
+
+
+            //Nhis Pricinng
+            if($model->service_orderable_type != 'App\Models\Consultation' && $model->isDirty('billing_sponsor_id')&& strtolower(request('sponsorship_type')) != 'patient'){
+                $PatientActiveNhis = $patient->patient_sponsors();
+
+                if (isset($model->billing_sponsor_id))
+                    $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
+
+                $PatientActiveNhis = $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
+                    $q1->whereHas('sponsorship_type', function ($q2) {
+                        $q2->whereName('Government Insurance');
+                    });
+                })->where('expiry_date', '>=', today())->first();
+
+                if ($PatientActiveNhis) {
+                    $nhisSettings = NhisAccreditationSetting::first();
+                    if ($model->age > 12) {
+                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    } else {
+                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    }
+                }
+
+                $model->service_total_amt = $model->service_fee * $model->service_quantity;
+            }
         });
     }
 }

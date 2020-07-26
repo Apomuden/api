@@ -32,10 +32,16 @@ class PatientVital extends AuditableModel
         parent::boot();
         static::creating(function ($model) {
             $model->bmi = self::calculateAndReturnBMI($model);
+
+            if(!$model->attendance_date)
+            $model->attendance_date=now()->format('Y-m-d H:i:s');
         });
 
         static::updating(function ($model) {
             $model->bmi = self::calculateAndReturnBMI($model);
+
+            if($model->isDirty('attendance_date') && !$model->attendance_date)
+            $model->attendance_date = now()->format('Y-m-d H:i:s');
         });
     }
 

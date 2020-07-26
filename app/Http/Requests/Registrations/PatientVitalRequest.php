@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests\Registrations;
 
+use App\Http\Helpers\Security;
 use App\Http\Requests\ApiFormRequest;
+use App\Models\Consultation;
+use App\Models\ServiceOrder;
+use Carbon\Carbon;
 
 class PatientVitalRequest extends ApiFormRequest
 {
@@ -39,6 +43,27 @@ class PatientVitalRequest extends ApiFormRequest
             'random_blood_sugar' => 'bail|sometimes|nullable|numeric',
             'comment' => 'bail|sometimes|nullable|string',
             'status' => 'bail|sometimes|in:IN-QUEUE,ACTIVE,INACTIVE',
+            'attendance_date' => 'bail|sometimes|nullable|date',
         ];
+    }
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            $all = $this->all();
+
+            //$rule = Security::getServiceRule('Enforce Consultation Payment Before Vitals');
+
+            //$validator->errors()->add('bank_id', 'bank id is required!');
+
+
+        });
+    }
+
+    public function all($keys = null)
+    {
+        $data = parent::all($keys);
+
+        return $data;
     }
 }
