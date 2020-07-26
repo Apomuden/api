@@ -31,6 +31,7 @@ class ComponentsTableSeeder extends Seeder
             ['name'=>'Payment Channel','tag'=> 'facility.funding.channel','created_at'=>now(),'updated_at'=>now()],
             ['name'=>'Payment Style','tag'=> 'facility.funding.style','created_at'=>now(),'updated_at'=>now()],
             ['name'=>'Allow Installment Type','tag'=> 'facility.funding.installment','created_at'=>now(),'updated_at'=>now()],
+            ['name'=>'Service Rules','tag'=> 'facility.free.servicerules','created_at'=>now(),'updated_at'=>now()],
 
             //==System Configurations
             //Records

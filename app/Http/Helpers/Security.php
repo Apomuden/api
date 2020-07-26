@@ -7,6 +7,7 @@ use App\Models\ComponentRole;
 use App\Models\Module;
 use App\Repositories\RepositoryEloquent;
 use App\Models\ComponentUser;
+use App\Models\ServiceRule;
 use Illuminate\Support\Facades\Hash;
 
 class Security
@@ -54,5 +55,22 @@ class Security
             ->where('component_id', $component_id)
             ->select(['all','add', 'view', 'edit', 'update', 'delete', 'print'])
             ->first();
+    }
+
+    static function getServiceRule(string $rule,$patient_status=null){
+       $rule=ServiceRule::whereName($rule);
+
+       if($patient_status)
+       $rule=$rule->findby(['patient_status'=>'='.$patient_status]);
+
+       return $rule->first();
+    }
+    static function getServiceRules(array $rules, $patient_status = null){
+       $rules=ServiceRule::whereIn('name',$rules);
+
+        if ($patient_status)
+        $rules = $rules->findby(['patient_status' => '=' . $patient_status]);
+
+        return $rules->get();
     }
 }

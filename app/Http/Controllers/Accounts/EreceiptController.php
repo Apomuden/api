@@ -15,18 +15,14 @@ use Illuminate\Http\Request;
 class EreceiptController extends Controller
 {
     protected $repository;
-
     public function __construct(Ereceipt $Ereceipt)
     {
         $this->repository = new RepositoryEloquent($Ereceipt);
     }
-
     public function index()
     {
-
         return ApiResponse::withOk('E-receipts list', new EreceiptCollection($this->repository->all('name')));
     }
-
     public function show($Ereceipt)
     {
         $Ereceipt = $this->repository->show($Ereceipt);
@@ -47,7 +43,6 @@ class EreceiptController extends Controller
             return ApiResponse::withException($e);
         }*/
     }
-
     public function update(EreceiptRequest $EreceiptRequest, $Ereceipt)
     {
         try {
