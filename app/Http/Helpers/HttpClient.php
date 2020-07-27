@@ -38,7 +38,7 @@ class HttpClient
         $response = curl_exec($curl);
         $err = curl_error($curl);
         curl_close($curl);
-        //\Log::notice('Payload::'.$payload);
+//\Log::notice('Payload::'.$payload);
 
         if ($err) {
             Log::error($err);
