@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class ComponentUser extends AuditableModel
 {
     public $table = "component_user";
+
+    // public function components()
+    // {
+    //     return $this->belongsToMany(Component::class);
+    // }
 }

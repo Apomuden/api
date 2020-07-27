@@ -208,12 +208,19 @@ use Illuminate\Support\Facades\Route;
                 //'module' => 'security',
                 //'component' => 'security.components'
             ]);
+        Route::get('{profile}/components/hierarchy/all', [
+            'uses' => 'Auth\PermissionController@showPermission',
+            'as' => 'profiles.components.hierarchy.view',
+            //'module' => 'security',
+            //'component' => 'security.components'
+        ]);
             Route::get('{profile}/components/hierarchy',[
                 'uses'=>'Auth\PermissionController@showPermissionHierarchy',
                 'as'=>'profiles.components.hierarchy.view',
                 //'module' => 'security',
                 //'component' => 'security.components'
             ]);
+
             Route::get('{profile}/permissions/paginated',[
                 'uses'=>'Auth\PermissionController@showPermissionsPaginated',
                 'as'=>'profiles.components.paginated.view',
