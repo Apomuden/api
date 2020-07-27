@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Helpers;
+use Illuminate\Support\Facades\Log;
 
 use Exception;
 
@@ -40,10 +41,10 @@ class HttpClient
 //\Log::notice('Payload::'.$payload);
 
         if ($err) {
-            \Log::error($err);
+            Log::error($err);
             return (object)['errorCode' => '111','message' => 'Request Error','data' => null];
         } else {
-            \Log::info('SMS Response::' . $response);
+            Log::info('SMS Response::' . $response);
             return json_decode($response);
         }
     }
@@ -72,10 +73,10 @@ class HttpClient
         $err = curl_error($curl);
         curl_close($curl);
         if ($err) {
-            \Log::error($err);
+            Log::error($err);
             return (object)['errorCode' => '111','message' => 'Request Error','data' => null];
         } else {
-            \Log::info($response);
+            Log::info($response);
             return json_decode($response);
         }
     }
