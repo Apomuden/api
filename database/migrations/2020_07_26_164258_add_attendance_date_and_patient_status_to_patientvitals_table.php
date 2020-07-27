@@ -13,7 +13,7 @@ class AddAttendanceDateAndPatientStatusToPatientvitalsTable extends Migration
      */
     public function up()
     {
-        Schema::table('patientvitals', function (Blueprint $table) {
+        Schema::table('patient_vitals', function (Blueprint $table) {
             //$table->enum('patient_status', ['IN-PATIENT', 'OUT-PATIENT'])->default('OUT-PATIENT')->nullable()->index()->after('patient_id');
             $table->dateTime('attendance_date')->nullable()->index()->after('patient_id');
         });
@@ -26,7 +26,7 @@ class AddAttendanceDateAndPatientStatusToPatientvitalsTable extends Migration
      */
     public function down()
     {
-        Schema::table('patientvitals', function (Blueprint $table) {
+        Schema::table('patient_vitals', function (Blueprint $table) {
             //$table->dropIndex(['patient_status']);
             //$table->dropColumn('patient_status');
             $table->dropIndex(['attendance_date']);
