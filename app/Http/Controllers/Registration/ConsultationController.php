@@ -98,7 +98,7 @@ class ConsultationController extends Controller
             unset($clinic_type_id);
         }
 
-        $hasAPendingRequest = Consultation::where(['patient_id' => $request['patient_id'], 'status' => 'IN-QUEUE'])->whereDate('attendance_date',Carbon::parse($request['attendance_date']) ?? today())->count();
+        $hasAPendingRequest = Consultation::where(['patient_id' => $request['patient_id'], 'status' => 'IN-QUEUE'])->whereDate(DB::raw('DATE(attendance_date)'), Carbon::parse($request['attendance_date'])->format('Y-m-d') ?? today()->format('Y-m-d'))->count();
 
         if ($hasAPendingRequest) {
             return ApiResponse::withValidationError(['patient_id' => 'Patient Already has a pending request with the same attendance date']);
