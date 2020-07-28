@@ -31,7 +31,6 @@ class Consultation extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            try{
                 $user = Auth::guard('api')->user();
                 $model->user_id = $user->id;
 
@@ -72,13 +71,10 @@ class Consultation extends AuditableModel
                 $model->attendance_date = $model->attendance_date ?? Carbon::now();
                 $model->age_class_id = $age_category->age_classification_id;
                 $model->age_category_id = $age_category->id;
-            }
 
-            catch(Exception $e){
-                Log::alert('Consultation Exception',[$e->getMessage()]);
-            }
         });
         static::created(function ($model) {
+            try {
             //create an attendance
             $model->service_id = $model->consultation_service_id ?? null;
 
@@ -118,6 +114,7 @@ class Consultation extends AuditableModel
                 'billing_sponsor_id'
             ]));
 
+
             unset($model->service_fee);
             unset($model->service_quantity);
             unset($model->billing_sponsor_id);
@@ -130,9 +127,13 @@ class Consultation extends AuditableModel
 
             unset($model->consultant_id);
 
-            if (!DateHelper::hasAttendedToday($model->patient_id, $model->clinic_id, $model->service_id)) {
-                unset($model->pregnant);
-                Attendance::create($model->toArray());
+                if (!DateHelper::hasAttendedToday($model->patient_id, $model->clinic_id, $model->service_id)) {
+                    unset($model->pregnant,$model->patient);
+                    Attendance::create($model->toArray());
+
+                }
+            } catch (Exception $e) {
+                Log::alert('Consultation Model',[$e->getMessage()]);
             }
         });
 
