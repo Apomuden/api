@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Http\Resources\ComponentPermissionsCollection;
 use App\Http\Resources\ComponentPermissionsResource;
 use App\Http\Resources\ModulePermissionsCollection;
+use App\Http\Resources\ModulePermissionsResource;
 use App\Models\Component;
 use App\Models\Module;
 use App\Models\User;
@@ -91,6 +92,16 @@ class PermissionController extends Controller
         })->sortBy('name')->paginate(10);
 
         return  ApiResponse::withPaginate(new ModulePermissionsCollection($modules, "Components hierachy"));
+    }
+    function showPermission($user)
+    {
+        $modules = Module::active()
+        ->select('modules.*')
+        ->leftJoin('component_user','modules.id','=', 'component_user.module_id')
+        ->where('component_user.user_id',$user)->distinct()
+        ->get();
+
+        return  ApiResponse::withOk('User Modules Hierarchy',ModulePermissionsResource::collection($modules));
     }
 
     //get User Component Permissions
