@@ -32,7 +32,7 @@ class AmasamanMigration{
         $this->token=auth('api')->login($this->user);
     }
     function getPatients(){
-      return DB::select('select * from patients_old  order by folder_num');
+      return DB::select('select * from patients_old where patient_id is null order by folder_num');
     }
     function createPatient($patient){
 
@@ -67,7 +67,7 @@ class AmasamanMigration{
             'surname'=> trim($patient['last_name']),
             'firstname'=> trim($patient['first_name']),
             'dob'=> trim($patient['dob']),
-            'active_cell'=> trim($patient['contact'])
+            //'active_cell'=> trim($patient['contact'])
         ])->first();
 
         if(!$patientCreated){
@@ -88,7 +88,7 @@ class AmasamanMigration{
             if ($Newpatient) {
                 $patient_id = $Newpatient->id;
                 PatientNextOfKin::create([
-                    'name' => preg_replace("/[^A-Za-z0-9 ]/", "", trim($patient['nextofking'])),
+                    'name' =>strlen(trim($patient['nextofking']))>255?(Str::startsWith('KWAME', trim($patient['nextofking']))?'KWAME':substr(trim($patient['nextofking']),0,255)):trim($patient['nextofking']),
                     'phone' => is_numeric(trim($patient['nokcontact'])) ? intval(trim($patient['nokcontact'])): null,
                     'patient_id' => $patient_id,
                     'relation_id' => Relationship::whereName(trim($patient['relationship']))->firstOrCreate(['name' => strtoupper($patient['relationship'])])->id,
@@ -103,8 +103,6 @@ class AmasamanMigration{
                 return true;
             }
         }
-
-
     }
 
     static function run(){

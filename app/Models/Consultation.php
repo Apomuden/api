@@ -12,9 +12,11 @@ use App\Http\Traits\Eloquent\SortableTrait;
 use App\Models\Obstetrics\ObstetricQuestionResponse;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class Consultation extends AuditableModel
 {
@@ -29,48 +31,52 @@ class Consultation extends AuditableModel
     {
         parent::boot();
         static::creating(function ($model) {
-            $user = Auth::guard('api')->user();
-            $model->user_id = $user->id;
+            try{
+                $user = Auth::guard('api')->user();
+                $model->user_id = $user->id;
 
-            //get patient details
-            //$repository = new RepositoryEloquent(new Patient());
-            //$patient = $repository->find($model->patient_id);
-            $patient = $model->patient;
-            $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
+                //get patient details
+                //$repository = new RepositoryEloquent(new Patient());
+                //$patient = $repository->find($model->patient_id);
+                $patient = $model->patient;
+                $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
 
-            //Nhis Pricinng
-            $PatientActiveNhis = null;
-            if(strtolower(request('sponsorship_type')) != 'patient'){
-                $PatientActiveNhis = $patient->patient_sponsors();
-                if (isset($model->billing_sponsor_id))
-                    $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
+                //Nhis Pricinng
+                $PatientActiveNhis = null;
+                if (strtolower(request('sponsorship_type')) != 'patient') {
+                    $PatientActiveNhis = $patient->patient_sponsors();
+                    if (isset($model->billing_sponsor_id))
+                        $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
 
-                $PatientActiveNhis = $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
-                    $q1->whereHas('sponsorship_type', function ($q2) {
-                        $q2->whereName('Government Insurance');
-                    });
-                })->where('expiry_date', '>=', today())->first();
-            }
-
-
-            if ($PatientActiveNhis) {
-                $nhisSettings = NhisAccreditationSetting::first();
-                if ($model->age > 12) {
-                    $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
-                } else {
-                    $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    $PatientActiveNhis = $PatientActiveNhis->whereHas('billing_sponsor', function ($q1) {
+                        $q1->whereHas('sponsorship_type', function ($q2) {
+                            $q2->whereName('Government Insurance');
+                        });
+                    })->where('expiry_date', '>=', today())->first();
                 }
+                if ($PatientActiveNhis) {
+                    $nhisSettings = NhisAccreditationSetting::first();
+                    if ($model->age > 12) {
+                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    } else {
+                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    }
+                }
+
+                //age class and group
+                $repository = new RepositoryEloquent(new AgeClassification());
+                $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
+
+                $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
+                $model->age_group_id = $age_category->age_group_id ?? null;
+                $model->attendance_date = $model->attendance_date ?? Carbon::now();
+                $model->age_class_id = $age_category->age_classification_id;
+                $model->age_category_id = $age_category->id;
             }
 
-            //age class and group
-            $repository = new RepositoryEloquent(new AgeClassification());
-            $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
-
-            $age_category = DateHelper::getAgeCategory($age_class->id ?? null, $model->age ? DateHelper::getDOB($model->age) : $patient->dob);
-            $model->age_group_id = $age_category->age_group_id ?? null;
-            $model->attendance_date = $model->attendance_date ?? Carbon::now();
-            $model->age_class_id = $age_category->age_classification_id;
-            $model->age_category_id = $age_category->id;
+            catch(Exception $e){
+                Log::alert('Consultation Exception',[$e->getMessage()]);
+            }
         });
         static::created(function ($model) {
             //create an attendance
@@ -86,7 +92,6 @@ class Consultation extends AuditableModel
             unset($model->user_id);
             unset($model->started_at);
             unset($model->status);
-
 
             $model->sponsor_id = $model->billing_sponsor_id;
             $model->services_orders()->create($model->only([
