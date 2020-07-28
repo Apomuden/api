@@ -41,14 +41,20 @@ Route::apiResource('stores','Pharmacy\StoreController',[
 
 Route::apiResource('storeactivities','Pharmacy\StoreActivityController',[
     //'only'=>['index','show','store','update'],
-    'module'=>null,
+    'module'=>'config.store',
     'component'=>'config.store.activity'
+]);
+
+Route::apiResource('storeusers','Pharmacy\StoreUserController',[
+    //'only'=>['index','show','store','update'],
+    'module'=> 'config.store',
+    'component'=> 'config.store.users'
 ]);
 
 Route::apiResource('issueandreceiptvouchers','Pharmacy\IssueAndReceiptVoucherController',[
     //'only'=>['index','show','store','update'],
     'module'=> 'config.store',
-    'component'=> 'config.store.users'
+    'component'=> 'store.issue.receipt.voucher'
 ]);
 
 
