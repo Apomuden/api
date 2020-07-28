@@ -19,6 +19,7 @@ class StoreResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'store_activity_id' => $store_activity->id ?? null,
             'purchasing_from_suppliers' => $store_activity->purchasing_from_suppliers ?? null,
             'receiving_from_suppliers' => $store_activity->receiving_from_suppliers ?? null,
             'issuing_requested_product' => $store_activity->issuing_requested_product ?? null,
