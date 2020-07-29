@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Http\Traits\Eloquent\ActiveTrait;
 use App\Http\Traits\Eloquent\FindByTrait;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,9 @@ class Ereceipt extends AuditableModel
             $model->amount_paid = $model->amount_paid ?? $model->total_bill ?? 0;
             $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
 
+            if ($model->status == 'FULL-PAYMENT')
+            $model->receipt_number = self::generateReceiptNumber();
+
         //    if(!$model->payment_channel_id)
         //     $model->payment_channel_id= PaymentChannel::wherePriority(0)->first()->id??null;
 
@@ -33,12 +37,20 @@ class Ereceipt extends AuditableModel
         //     }
         });
 
-        static::updating(function ($model) {
-            $model->amount_paid = (($model->amount_paid ?? $model->getOriginal('amount_paid')) ?? $model->total_bill) ?? 0;
-            $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
+        static::created(function($model){
+            if ($model->status == 'FULL-PAYMENT')
+                $model->service_order()->update(['paid' => true]);
 
-            if($model->getOriginal('status')!= 'FULL-PAYMENT' && $model->status== 'FULL-PAYMENT')
-            $model->receipt_number=self::generateReceiptNumber();
+            if ($model->patient_status)
+            $model->patient->update(['reg_status' => $model->patient_status]);
+        });
+
+        static::updating(function ($model) {
+                $model->amount_paid = (($model->amount_paid ?? $model->getOriginal('amount_paid')) ?? $model->total_bill) ?? 0;
+                $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
+
+                if ($model->getOriginal('status') != 'FULL-PAYMENT' && $model->status == 'FULL-PAYMENT')
+                    $model->receipt_number = self::generateReceiptNumber();
 
             // if ($model->isDirty('payment_channel_id') && !$model->payment_channel_id)
             // $model->payment_channel_id = PaymentChannel::wherePriority(0)->first()->id ?? null;
@@ -47,7 +59,19 @@ class Ereceipt extends AuditableModel
             //     if (!$model->bank_id)
             //         $model->bank_id = Bank::wherePriority(0)->first()->id ?? null;
             // }
+
         });
+
+        static::updated(function($model){
+                if($model->getOriginal('status') != $model->status && $model->status == 'FULL-PAYMENT')
+                  $model->service_order()->update(['paid' => true]);
+                else if($model->getOriginal('status')!=$model->status)
+                $model->service_order()->update(['paid' => false]);
+
+            if ($model->isDirty('patient_status'))
+            $model->patient->update(['reg_status' => $model->patient_status]);
+        });
+
     }
 
     public static function getLastReceipt($columns = '')
@@ -119,5 +143,10 @@ class Ereceipt extends AuditableModel
     public function bank()
     {
         return $this->belongsTo(Bank::class);
+    }
+
+    public function ereceipt_items()
+    {
+        return $this->hasMany(EreceiptItem::class);
     }
 }

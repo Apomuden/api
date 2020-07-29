@@ -8,6 +8,7 @@ use App\Http\Requests\Registrations\PatientVitalRequest;
 use App\Http\Resources\Registrations\PatientVitalCollection;
 use App\Http\Resources\Registrations\PatientVitalResource;
 use App\Models\PatientVital;
+use App\Models\ServiceRule;
 use App\Repositories\RepositoryEloquent;
 use Exception;
 use Illuminate\Http\Request;
@@ -59,14 +60,10 @@ class PatientVitalController extends Controller
 
     public function store(PatientVitalRequest $patientVitalRequest)
     {
-        //try{
+        
             $requestData = $patientVitalRequest->all();
             $patientVital = $this->repository->store($requestData);
             return ApiResponse::withOk('Patient Vitals created', new PatientVitalResource($patientVital->refresh()));
-        /* }
-        catch(Exception $e){
-            return ApiResponse::withException($e);
-        } */
     }
 
     public function update(PatientVitalRequest $patientVitalRequest, $patientVital)

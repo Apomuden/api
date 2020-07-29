@@ -8,6 +8,7 @@ use App\Models\Consultation;
 use App\Models\HospitalService;
 use App\Models\Patient;
 use App\Models\Role;
+use App\Models\ServiceRule;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
@@ -129,8 +130,20 @@ class ConsultationRequest extends ApiFormRequest
             } else {
                 $repository = new RepositoryEloquent(new AgeClassification());
                 $age_class = $repository->findWhere(['name' => 'GHS STATEMENT OF OUTPATIENT'])->orWhere('name', 'GHS REPORTS')->first();
-                if (!$age_class) {
+                if (!$age_class)
                     $validator->errors()->add('dob', "An age class with name 'GHS STATEMENT OF OUTPATIENT' or 'GHS REPORTS' must be setup!");
+
+                $rule = ServiceRule::whereName('Submit Patient Vital Signs Before Consultation')->first();
+
+                $patient = Patient::find(request('patient_id'));
+
+                if($rule && $patient && in_array($patient->patient_status, explode(',', $rule->patient_status))){
+                    $patient_vital_taken = $patient->patient_vitals();
+
+                    $patient_vital_taken = $patient_vital_taken->whereDate('attendance_date', request('attendance_date') ? Carbon::parse(request('attendance_date')) : today())->count();
+
+                    if(!$patient_vital_taken)
+                        $validator->errors()->add('patient_id', 'Oops vital signs must be submitted before consultation!');
                 }
             }
         });

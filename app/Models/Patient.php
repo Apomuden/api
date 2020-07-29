@@ -73,20 +73,26 @@ class Patient extends AuditableModel
 
         static::updating(function ($model) {
             try {
+                if($model->isDirty('dob'))
                 $model->dob = DateHelper::toDBDate($model->dob);
 
+                if ($model->isDirty('id_expiry_date'))
                 $model->id_expiry_date = DateHelper::toDBDate($model->id_expiry_date);
 
+                if ($model->isDirty('photo'))
                 $model->photo = FileResolver::base64ToFile($model->photo, str_replace('/', '-', $model->patient_id), 'patients' . DIRECTORY_SEPARATOR . 'photos') ?? null;
 
                 //Passing the Billing References
-                $repository = new RepositoryEloquent(new FundingType());
-                $funding_type = $repository->find($model->funding_type_id);
-                $model->billing_system_id = $funding_type->billing_system_id;
-                $model->billing_cycle_id = $funding_type->billing_cycle_id;
-                $model->payment_style_id = $funding_type->payment_style_id;
-                $model->payment_channel_id = $funding_type->payment_channel_id;
-                $model->sponsorship_type_id = $funding_type->sponsorship_type_id;
+                if($model->isDirty('funding_type_id')){
+                    $repository = new RepositoryEloquent(new FundingType());
+                    $funding_type = $repository->find($model->funding_type_id);
+                    $model->billing_system_id = $funding_type->billing_system_id;
+                    $model->billing_cycle_id = $funding_type->billing_cycle_id;
+                    $model->payment_style_id = $funding_type->payment_style_id;
+                    $model->payment_channel_id = $funding_type->payment_channel_id;
+                    $model->sponsorship_type_id = $funding_type->sponsorship_type_id;
+                }
+
 
                 $original = $model->getOriginal();
                 if (isset($model->folder_id) && $original['folder_id'] != $model->folder_id) {
@@ -293,5 +299,18 @@ class Patient extends AuditableModel
     public function clinic_note_summary()
     {
         return $this->hasOne(PatientClinicalNoteSummary::class);
+    }
+
+    public function ereceipts()
+    {
+        return $this->hasMany(Ereceipt::class);
+    }
+
+    public function getPatientStatusAttribute(){
+        return $this->reg_status;
+    }
+    public function patient_vitals()
+    {
+        return $this->hasMany(PatientVital::class);
     }
 }
