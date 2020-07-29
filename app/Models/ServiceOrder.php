@@ -192,7 +192,8 @@ class ServiceOrder extends AuditableModel
 
                 $model->service_total_amt = $model->service_fee * $model->service_quantity;
             }
-
+            if ($model->patient_status)
+            $model->patient->update(['reg_status' => $model->patient_status]);
         });
 
         static::updating(function ($model) {
@@ -235,7 +236,7 @@ class ServiceOrder extends AuditableModel
 
 
             //Nhis Pricinng
-            if($model->service_orderable_type != 'App\Models\Consultation' && $model->isDirty('billing_sponsor_id')&& strtolower(request('sponsorship_type')) != 'patient'){
+            if($model->service_orderable_type != 'App\Models\Consultation' && $model->isDirty('billing_sponsor_id') && strtolower(request('sponsorship_type')) != 'patient'){
                 $PatientActiveNhis = $patient->patient_sponsors();
 
                 if (isset($model->billing_sponsor_id))
@@ -258,6 +259,9 @@ class ServiceOrder extends AuditableModel
 
                 $model->service_total_amt = $model->service_fee * $model->service_quantity;
             }
+
+            if ($model->isDirty('patient_status'))
+            $model->patient->update(['reg_status' => $model->patient_status]);
         });
     }
 }
