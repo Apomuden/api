@@ -37,6 +37,8 @@ class Ereceipt extends AuditableModel
             $model->amount_paid = (($model->amount_paid ?? $model->getOriginal('amount_paid')) ?? $model->total_bill) ?? 0;
             $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
 
+            if($model->getOriginal('status')!= 'FULL-PAYMENT' && $model->status== 'FULL-PAYMENT')
+            $model->receipt_number=self::generateReceiptNumber();
 
             // if ($model->isDirty('payment_channel_id') && !$model->payment_channel_id)
             // $model->payment_channel_id = PaymentChannel::wherePriority(0)->first()->id ?? null;
@@ -53,13 +55,20 @@ class Ereceipt extends AuditableModel
         return Ereceipt::all($columns)->last() ?? null;
     }
 
-    public static function generateReceiptNumber(): string
+    public static function generateReceiptNumber($type='RECEIPT'): string
     {
-        $prefix = strtoupper(date('M'));
+        if($type== 'RECEIPT')
+          $prefix='REP';
+        else if($type == 'DEPOSIT')
+          $prefix='DEP';
+        else if($type == 'INVOICE')
+          $prefix='INV';
+
+        $prefix =$prefix. strtoupper(date('m'));
         $midNumber = '00001';
         $postfix = strtoupper(date('y'));
         $receiptNumber = $prefix . '/' . $midNumber . '/' . $postfix;
-        $previousReceiptNumber = self::getLastReceipt('receipt_number')->receipt_number ?? null;
+        $previousReceiptNumber = self::getLastReceipt($type== 'INVOICE'?'invoice_number': 'receipt_number')->{($type=='INVOICE'? 'invoice_number': 'receipt_number')} ?? null;
         $previousReceiptNumberArray = $previousReceiptNumber ? explode('/', $previousReceiptNumber) : null;
         if ($previousReceiptNumber) {
             if ($previousReceiptNumberArray[0] == $prefix && $previousReceiptNumberArray[2] == $postfix) {
@@ -73,14 +82,23 @@ class Ereceipt extends AuditableModel
         return $receiptNumber;
     }
 
-    public static function createReceipt($model): array
+
+    public static function createReceipt($model,$type='RECEIPT'): array
     {
-        $model['receipt_number'] = self::generateReceiptNumber();
+        $response = ['ereceipt_id' => null, 'invoice_number' => null, 'receipt_number' => null];
+
+        $field= ($type == 'INVOICE' ? 'invoice_number' : 'receipt_number');
+        $model[$field] = self::generateInvoiceNumber($type);
+
+        $response[$field]= $model[$field];
+
         $model['user_id'] = Auth::id();
         //dd($model);
         $ereceipt_id = (self::query()->create($model))->id;
+        $response['ereceipt_id'] = $ereceipt_id;
+
         //dd($ereceipt_id);
-        return ['ereceipt_id' => $ereceipt_id, 'receipt_number' => $model['receipt_number']];
+        return $response;
     }
 
     public function service_order()

@@ -53,6 +53,7 @@ class EreceiptResource extends JsonResource
             'total_bill' => $this->total_bill,
             'amount_paid' => $this->amount_paid,
             'balance' => $this->balance,
+            'invoice_number' => $this->invoice_number,
             'receipt_number' => $this->receipt_number,
             'payment_channel_id' => $this->payment_channel_id??null,
             'payment_channel_name' => $this->payment_channel->name??null,
