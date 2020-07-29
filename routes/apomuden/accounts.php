@@ -33,3 +33,4 @@ Route::apiResource('refunds','Accounts\RefundController',[
 
 Route::get('transactions/patients/{patient_id}/quickdetails','Accounts\TransactionController@quickDetails');
 Route::post('transactions/ereceipt','Accounts\TransactionController@createReceipt');
+Route::post('transactions/einvoice', 'Accounts\TransactionController@createInvoice');

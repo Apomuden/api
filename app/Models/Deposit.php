@@ -21,7 +21,7 @@ class Deposit extends AuditableModel
         parent::boot();
         static::creating(function ($model) {
             $receipt = $model->only(['patient_id', 'patient_status']);
-            $receipt = Ereceipt::createReceipt($receipt);
+            $receipt = Ereceipt::createReceipt($receipt,'DEPOSIT');
             //dd($receipt);
             $model->receipt_number = $receipt['receipt_number'] ?? null;
             unset($receipt);
