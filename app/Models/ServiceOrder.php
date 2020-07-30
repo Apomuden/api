@@ -192,8 +192,8 @@ class ServiceOrder extends AuditableModel
 
                 $model->service_total_amt = $model->service_fee * $model->service_quantity;
             }
-            if ($model->patient_status)
-            $model->patient->update(['reg_status' => $model->patient_status]);
+            //if ($model->patient_status)
+            //$model->patient->update(['reg_status' => $model->patient_status]);
         });
 
         static::updating(function ($model) {
@@ -260,8 +260,8 @@ class ServiceOrder extends AuditableModel
                 $model->service_total_amt = $model->service_fee * $model->service_quantity;
             }
 
-            if ($model->isDirty('patient_status'))
-            $model->patient->update(['reg_status' => $model->patient_status]);
+            //if ($model->isDirty('patient_status'))
+            //$model->patient->update(['reg_status' => $model->patient_status]);
         });
     }
 }

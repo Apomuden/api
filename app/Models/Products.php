@@ -44,6 +44,23 @@ class Products extends AuditableModel
     {
         return $this->belongsTo(AgeGroup::class);
     }
+    // public static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($model) {
+
+    //     });
+
+    //     static::updating(function ($model) {
+    //     });
+    // }
+
+
+    public function nhis_medicine()
+    {
+        return $this->belongsTo(NhisMedicine::class);
+    }
+
 
     public function product_generic_name()
     {

@@ -112,6 +112,7 @@ class PatientResource extends JsonResource
 
             'photo' => $this->photo ? \route('file.url', ['patients-photos',$this->photo]) : null,
             'mortality' => $this->mortality,
+            'patient_status' => $this->patient_status,
             'reg_status' => $this->reg_status,
             'status' => $this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),

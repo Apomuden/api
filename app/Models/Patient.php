@@ -307,10 +307,14 @@ class Patient extends AuditableModel
     }
 
     public function getPatientStatusAttribute(){
-        return $this->reg_status;
+        return $this->service_orders()->orderBy('service_date','desc')->first('patient_status')->patient_status??$this->reg_status;
     }
     public function patient_vitals()
     {
         return $this->hasMany(PatientVital::class);
+    }
+    public function service_orders()
+    {
+        return $this->hasMany(ServiceOrder::class);
     }
 }
