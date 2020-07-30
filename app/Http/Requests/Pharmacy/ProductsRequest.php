@@ -43,7 +43,7 @@ class ProductsRequest extends ApiFormRequest
             'gender' => 'bail|sometimes|in:MALE,FEMALE,BOTH',
             'nhis_cover' => 'bail|sometimes|in:YES,NO',
             'nhis_code' => ['bail','sometimes|nullable',$this->softExists('nhis_medicines','code')],
-            'nhis_medicine_id'=>['bail|', Rule::requiredIf(function () {
+            'nhis_medicine_id'=>['bail', Rule::requiredIf(function () {
                 return request('nhis_cover') != null;
             }),$this->softExists('nhis_medicines','id')],
             'expires' => 'bail|sometimes|in:YES,NO',
