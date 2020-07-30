@@ -41,8 +41,8 @@ class Ereceipt extends AuditableModel
             if ($model->status == 'FULL-PAYMENT')
                 $model->service_order()->update(['paid' => true]);
 
-            if ($model->patient_status)
-            $model->patient->update(['reg_status' => $model->patient_status]);
+            //if ($model->patient_status)
+            //$model->patient->update(['reg_status' => $model->patient_status]);
         });
 
         static::updating(function ($model) {
@@ -68,8 +68,8 @@ class Ereceipt extends AuditableModel
                 else if($model->getOriginal('status')!=$model->status)
                 $model->service_order()->update(['paid' => false]);
 
-            if ($model->isDirty('patient_status'))
-            $model->patient->update(['reg_status' => $model->patient_status]);
+            //if ($model->isDirty('patient_status'))
+            //$model->patient->update(['reg_status' => $model->patient_status]);
         });
 
     }
