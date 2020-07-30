@@ -21,10 +21,12 @@ class ProductsResource extends JsonResource
         $product_form_unit = $this->product_form_unit ?? null;
         $medicine_route = $this->medicine_route ?? null;
         $age_group = $this->age_group ?? null;
+        $product_generic_name = $this->product_generic_name ?? null;
         return [
             'id' => $this->id,
             'brand_name' => $this->brand_name,
-            'generic_name' => $this->generic_name,
+            'generic_name' => $product_generic_name->name ?? null,
+            'generic_name_id' => $product_generic_name->id ?? null,
             'product_type_name' => $product_type->name ?? null,
             'product_type_id' => $product_type->id ?? null,
             'product_form_name' => $product_form->name ?? null,

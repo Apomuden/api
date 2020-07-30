@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::apiResource('products/genericnames','Pharmacy\ProductGenericNameController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'config.store',
+    'component'=> 'config.store.product'
+]);
 Route::apiResource('products','Pharmacy\ProductsController',[
     //'only'=>['index','show','store','update'],
     'module'=>'config.store',
