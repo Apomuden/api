@@ -44,4 +44,9 @@ class Products extends AuditableModel
     {
         return $this->belongsTo(AgeGroup::class);
     }
+
+    public function product_generic_name()
+    {
+        return $this->belongsTo(ProductGenericName::class);
+    }
 }

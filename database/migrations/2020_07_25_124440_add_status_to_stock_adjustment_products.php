@@ -26,7 +26,7 @@ class AddStatusToStockAdjustmentProducts extends Migration
     public function down()
     {
         Schema::table('stock_adjustment_products', function (Blueprint $table) {
-            //
+            $table->dropColumn('status');
         });
     }
 }
