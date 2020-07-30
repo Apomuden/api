@@ -13,7 +13,7 @@ class AlterGenericNameForProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_generic_names', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('generic_name');
             $table->unsignedBigInteger('generic_name_id')->nullable();
         });
@@ -26,7 +26,7 @@ class AlterGenericNameForProductsTable extends Migration
      */
     public function down()
     {
-        Schema::create('product_generic_names', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('generic_name_id');
             $table->string('generic_name');
         });
