@@ -554,8 +554,7 @@ class ProductGenericNameTableSeeder extends Seeder
             ProductGenericName::query()->firstOrCreate([
                 'name' => trim($record),
                 'status' => 'ACTIVE',
-                'created_at' => '2020-07-30 16:19:00',
-                'deleted_at' => '2020-07-30 16:19:00'
+                'created_at' => '2020-07-30 16:19:00'
             ]);
         }
         Schema::enableForeignKeyConstraints();
