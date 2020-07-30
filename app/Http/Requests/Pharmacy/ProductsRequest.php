@@ -29,7 +29,7 @@ class ProductsRequest extends ApiFormRequest
         $id = $this->route('product') ?? null;
         return [
             'brand_name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string|' . $this->softUniqueWith('products', 'brand_name,generic_name', $id),
-            'generic_name' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',
+            'generic_name_id' => 'bail|sometimes|nullable|exists:product_generic_names,id',
             'product_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:product_types,id',
             'product_form_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:product_forms,id',
             'product_form_unit_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|exists:product_form_units,id',

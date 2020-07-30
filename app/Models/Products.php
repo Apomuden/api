@@ -61,4 +61,9 @@ class Products extends AuditableModel
         return $this->belongsTo(NhisMedicine::class);
     }
 
+
+    public function product_generic_name()
+    {
+        return $this->belongsTo(ProductGenericName::class);
+    }
 }

@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductFormsTableSeeder::class);
         $this->call(ProductFormUnitsTableSeeder::class);
         $this->call(MedicineRouteTableSeeder::class);
+        $this->call(ProductGenericNameTableSeeder::class);
 //        $this->call(ConsultationQuestionsTableSeeder::class);
 //        $this->call(ConsultationQuestionOptionsTableSeeder::class);
 //        $this->call(ConsultationQuestionResponsesTableSeeder::class);
