@@ -12,6 +12,7 @@ use App\Models\ServiceRule;
 use App\Models\SponsorshipType;
 use App\Repositories\RepositoryEloquent;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class ConsultationRequest extends ApiFormRequest
@@ -41,9 +42,9 @@ class ConsultationRequest extends ApiFormRequest
         $status = request('status') ?? null;
 
         if ($patient_id) {
-            $patient = (new RepositoryEloquent(new Patient()))->find($patient_id);
+            $patient = (new RepositoryEloquent(new Patient()))->find($patient_id)??null;
         } elseif ($id) {
-            $patient = (new RepositoryEloquent(new Consultation()))->find($id)->patient;
+            $patient = (new RepositoryEloquent(new Consultation()))->find($id)->patient??null;
         }
 
         $sponsorship_type = (request()->input('sponsorship_type')) ?? null;
@@ -62,9 +63,10 @@ class ConsultationRequest extends ApiFormRequest
         $consultation_service = $repository
             ->findWhere(['name' => 'Consultation'])
             ->orWhere('name', 'Consultation service')->first();
-        $repository = new RepositoryEloquent(new Role());
-        // $role = $repository->findWhere(['name' => 'Doctor'])
-        //     ->orWhere('name', 'DEV')->first();
+
+        //$repository = new RepositoryEloquent(new Role());
+
+        $role_ids = Role::select(DB::raw('group_concat(id) as role_ids'))->whereIn('name',['Dev','Doctor'])->first()->role_ids;
 
         return [
             'consultation_given' => 'bail|sometimes|nullable|string',
@@ -83,11 +85,7 @@ class ConsultationRequest extends ApiFormRequest
             ],
             'consultant_id' => [
                 'bail', 'sometimes', 'nullable',
-                Rule::exists('users', 'id')->where(function ($query) {
-                    $query->whereHas('role',function($q1){
-                          $q1->whereIn('name',['Dev','Doctor']);
-                    });
-                })
+                Rule::exists('users', 'id')->whereIn('role_id',explode(',',$role_ids))
             ],
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
             'sponsorship_type' => 'bail|' . ($id ? 'sometimes' : 'required') . '|string',

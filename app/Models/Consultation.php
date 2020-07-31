@@ -172,12 +172,17 @@ class Consultation extends AuditableModel
             //}
         });
         static::updated(function ($model) {
+
             //update service order
+            $model->service_id = $model->consultation_service_id ?? null;
+
+            if($model->funding_type)
+            $model->prepaid=strtoupper($model->funding_type->name)==strtoupper('Cash/Prepaid');
+
             $model->services_orders()->whereServiceId($model->consultation_service_id)->update($model->only([
                 'patient_id',
                 'clinic_id',
                 'age',
-                'gender',
                 'patient_status',
                 'service_id',
                 'service_fee',
@@ -189,10 +194,10 @@ class Consultation extends AuditableModel
                 //'paid_service_price',
                 //'paid_service_quantity',
                 'funding_type_id',
-                'billing_system_id',
-                'billing_cycle_id',
-                'payment_style_id',
-                'payment_channel_id',
+                //'billing_system_id',
+                //'billing_cycle_id',
+                //'payment_style_id',
+                //'payment_channel_id',
                 //'insured',
                 'billing_sponsor_id'
             ]));
