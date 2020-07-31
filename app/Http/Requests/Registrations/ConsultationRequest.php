@@ -63,8 +63,8 @@ class ConsultationRequest extends ApiFormRequest
             ->findWhere(['name' => 'Consultation'])
             ->orWhere('name', 'Consultation service')->first();
         $repository = new RepositoryEloquent(new Role());
-        $role = $repository->findWhere(['name' => 'Doctor'])
-            ->orWhere('name', 'DEV')->first();
+        // $role = $repository->findWhere(['name' => 'Doctor'])
+        //     ->orWhere('name', 'DEV')->first();
 
         return [
             'consultation_given' => 'bail|sometimes|nullable|string',
@@ -83,8 +83,10 @@ class ConsultationRequest extends ApiFormRequest
             ],
             'consultant_id' => [
                 'bail', 'sometimes', 'nullable',
-                Rule::exists('users', 'id')->where(function ($query) use ($role) {
-                    $query->where(['role_id' => $role->id ?? null]);
+                Rule::exists('users', 'id')->where(function ($query) {
+                    $query->whereHas('role',function($q1){
+                          $q1->whereIn('name',['Dev','Doctor']);
+                    });
                 })
             ],
             'funding_type_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:funding_types,id',
