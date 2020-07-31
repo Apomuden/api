@@ -14,7 +14,7 @@ class Transaction
         $total_deposit_amount = $this->deposit($patient_id);
         $total_discount_amount = $this->discount($patient_id);
         $abscond_amount = $this->abscond($patient_id);
-        $services = $this->service_order($patient_id,['prepaid',true]);
+        $services = $this->service_order($patient_id,['prepaid'=>true]);
         $reflect = new ReflectionClass($services[0] ?? $services);
         $reflect = $reflect->getShortName();
         //dd($services);

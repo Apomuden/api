@@ -207,9 +207,16 @@ class ServiceOrder extends AuditableModel
             $patient = $patientEloquent->find($model->patient_id) ?? ($original->patient ?? null);
 
             $model->age = $model->age ?? Carbon::parse($patient->dob)->age;
-            $model->gender = $model->gender ?? $patient->gender;
-            $serviceEloquent = new RepositoryEloquent(new Service());
-            $service = $serviceEloquent->find($model->service_id) ?? ($original->service ?? null);
+
+            if($model->isDirty('gender'))
+            $model->gender = $model->gender;
+
+            if($model->isDirty('service_id')){
+                $serviceEloquent = new RepositoryEloquent(new Service());
+                $service = $serviceEloquent->find($model->service_id) ?? ($original->service ?? null);
+            }
+            else
+                $service = $original->service;
 
             $model->hospital_service_id = $service->hospital_service_id;
             $model->service_category_id = $service->service_category_id;
@@ -221,9 +228,14 @@ class ServiceOrder extends AuditableModel
             //$user = Auth::guard('api')->user();
             //$model->user_id = $user->id;
 
+
             $model->prepaid = ($model->prepaid ?? ($original->prepaid ?? null)) ?? $patient->funding_type->name == 'Cash/Prepaid';
+
+
             $model->paid_service_total_amt = ($model->paid_service_price ?? ($original->paid_service_price) ?? null) * ($model->paid_service_quantity ?? ($original->paid_service_quantity) ?? null);
             $model->funding_type_id = $model->funding_type_id ?? $patient->funding_type_id;
+
+
             $model->billing_system_id = $model->billing_system_id ?? $patient->billing_system_id;
             $model->billing_cycle_id = $model->billing_cycle_id ?? $patient->billing_cycle_id;
             $model->payment_style_id = $model->payment_style_id ?? $patient->payment_style_id;
