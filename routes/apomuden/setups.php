@@ -463,7 +463,6 @@ Route::apiResource('nhismedicines', 'Setups\NhisMedicineController',[
     'module' => 'config.einsu',
     'component' => 'config.einsu.nhis.tariff'
 ]);
-
 //Service Rules
 Route::apiResource('servicerules', 'Setups\ServiceRuleController',[
     'module'=>'facility',
