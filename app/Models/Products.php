@@ -66,4 +66,9 @@ class Products extends AuditableModel
     {
         return $this->belongsTo(ProductGenericName::class);
     }
+
+    public function product_prices()
+    {
+        return $this->hasMany(ProductPrice::class);
+    }
 }

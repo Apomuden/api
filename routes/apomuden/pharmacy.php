@@ -7,6 +7,11 @@ Route::apiResource('products/genericnames','Pharmacy\ProductGenericNameControlle
     'module'=>'config.store',
     'component'=> 'config.store.product'
 ]);
+Route::apiResource('productprices','Pharmacy\ProductPriceController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'config.store',
+    'component'=> 'config.store.product.prices'
+]);
 Route::apiResource('products','Pharmacy\ProductsController',[
     //'only'=>['index','show','store','update'],
     'module'=>'config.store',

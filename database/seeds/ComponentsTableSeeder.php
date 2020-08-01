@@ -14,8 +14,8 @@ class ComponentsTableSeeder extends Seeder
      */
     public function run()
     {
-        Schema::disableForeignKeyConstraints();
-        DB::statement('truncate table components');
+        //Schema::disableForeignKeyConstraints();
+        //DB::statement('truncate table components');
         $components = array(
             ['name'=>'Main Dashboard','tag'=>'dashboard.main','created_at'=>now(),'updated_at'=>now()],
 
@@ -169,6 +169,7 @@ class ComponentsTableSeeder extends Seeder
             ['name' => 'Product Type and Category', 'tag' => 'config.store.product.type.category', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Product Form and Unit', 'tag' => 'config.store.product.form.unit', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Products', 'tag' => 'config.store.product', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product Prices', 'tag' => 'config.store.product.prices', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Medicine Route', 'tag' => 'config.store.medicine.route', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Store Users', 'tag' => 'config.store.users', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Stores', 'tag' => 'config.store.store', 'created_at' => now(), 'updated_at' => now()],
@@ -184,7 +185,8 @@ class ComponentsTableSeeder extends Seeder
             ['name' => 'Prescription', 'tag' => 'pharmacy.prescription', 'created_at' => now(), 'updated_at' => now()],
         );
 
-        Component::insert($components);
-        Schema::enableForeignKeyConstraints();
+        foreach($components as $component)
+        Component::firstOrCreate(['tag'=>$component['tag']],$component);
+        //Schema::enableForeignKeyConstraints();
     }
 }

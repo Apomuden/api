@@ -51,15 +51,24 @@ class Consultation extends AuditableModel
                         $q1->whereHas('sponsorship_type', function ($q2) {
                             $q2->whereName('Government Insurance');
                         });
-                    })->where('expiry_date', '>=', today())->first();
+                    })
+                    //->where('expiry_date', '>=', today())
+                    ->first();
                 }
                 if ($PatientActiveNhis) {
-                    $nhisSettings = NhisAccreditationSetting::first();
-                    if ($model->age > 12) {
-                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
-                    } else {
-                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    if(Carbon::parse($PatientActiveNhis->expiry_date)>=today()){
+                        $nhisSettings = NhisAccreditationSetting::first();
+                        if ($model->age > 12) {
+                            $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                        } else {
+                            $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                        }
                     }
+                    else{
+                         $model->funding_type_id = FundingType::whereName('CASH/PREPAID')->first('id')->id ?? null;
+                         $model->billing_sponsor_id=null;
+                    }
+
                 }
 
                 //age class and group
@@ -157,22 +166,28 @@ class Consultation extends AuditableModel
                         $q1->whereHas('sponsorship_type', function ($q2) {
                             $q2->whereName('Government Insurance');
                         });
-                    })->where('expiry_date', '>=', today())->first();
+                    })
+                    //->where('expiry_date', '>=', today())
+                    ->first();
                 }
 
 
             if ($PatientActiveNhis) {
-                $nhisSettings = NhisAccreditationSetting::first();
-                if ($model->age > 12) {
-                    $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
-                } else {
-                    $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
-                }
+                if (Carbon::parse($PatientActiveNhis->expiry_date) >= today()) {
+                    $nhisSettings = NhisAccreditationSetting::first();
+                    if ($model->age > 12) {
+                        $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    } else {
+                        $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                    }
+               }else{
+                    $model->funding_type_id = FundingType::whereName('CASH/PREPAID')->first('id')->id ?? null;
+                    $model->billing_sponsor_id = null;
+               }
             }
             //}
         });
         static::updated(function ($model) {
-
             //update service order
             $model->service_id = $model->consultation_service_id ?? null;
 

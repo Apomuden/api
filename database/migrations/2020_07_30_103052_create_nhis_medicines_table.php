@@ -18,6 +18,7 @@ class CreateNhisMedicinesTable extends Migration
             $table->string('code')->index();
             $table->string('name')->index()->comment('this is where we indicate the name of the medicine');
             $table->string('pricing_unit');
+            $table->unsignedDecimal('price',20,2)->default(0.00);
             $table->string('prescribing_level')->nullable()->comment('this where we indicate accredited levels that can prescribe specific');
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
             $table->timestamps();
