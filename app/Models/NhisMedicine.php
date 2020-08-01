@@ -27,8 +27,19 @@ class NhisMedicine extends AuditableModel
         static::updated(function ($model) {
             //updating existing products with nhis_medicine_id
             if($model->isDirty('code'))
-            Products::whereNhisMedicineId($model->id)
+                Products::whereNhisMedicineId($model->id)
                 ->update(['nhis_code' => $model->code]);
+
+
+            if($model->isDirty('price')){
+                  //affected product
+                $product=$model->products()->where('nhis_code', $model->code)->first();
+                if($product){
+                   $lastPrice=$product->product_prices()->orderBy('created_at', 'desc')->first();
+                   if($lastPrice)
+                   $lastPrice->nhis_amount=$model->price;
+                }
+            }
         });
     }
 

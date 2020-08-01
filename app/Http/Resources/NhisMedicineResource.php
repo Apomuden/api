@@ -20,6 +20,7 @@ class NhisMedicineResource extends JsonResource
             'code'=>$this->code,
             'name'=>$this->name,
             'pricing_unit'=>$this->pricing_unit,
+            'price'=>floatval($this->price??0.00),
             'prescribing_level'=>$this->prescribing_level,
             'status'=>$this->status,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),

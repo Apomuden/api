@@ -29,6 +29,7 @@ class NhisMedicineRequest extends ApiFormRequest
             'code'=>'bail|'.($id?'sometimes':'required').'|'.$this->softUnique('nhis_medicines','code',$id),
             'name'=>'bail|'. ($id ? 'sometimes' : 'required').'|'. $this->softUnique('nhis_medicines', 'name', $id),
             'pricing_unit'=> 'bail|' . ($id ? 'sometimes' : 'required'),
+            'price'=> 'bail|' . ($id ? 'sometimes' : 'required').'|numeric|min:0',
             'status'=>'bail|sometimes|in:ACTIVE,INACTIVE'
         ];
     }

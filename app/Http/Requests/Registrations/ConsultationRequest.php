@@ -145,6 +145,18 @@ class ConsultationRequest extends ApiFormRequest
                     if(!$patient_vital_taken)
                         $validator->errors()->add('patient_id', 'Oops vital signs must be submitted before consultation!');
                 }
+
+                if($patient && strtoupper(request('sponsorship_type')) != 'GOVERNMENT INSURANCE'){
+                    $PatientActiveNhis = $patient->patient_sponsors()->where('status', 'ACTIVE')
+                     ->whereHas('billing_sponsor', function ($q1) {
+                            $q1->whereHas('sponsorship_type', function ($q2) {
+                                $q2->whereName('GOVERNMENT INSURANCE');
+                            });
+                       })->first();
+
+                  if($PatientActiveNhis && Carbon::parse($PatientActiveNhis->expiry_date)<today())
+                        $validator->errors()->add('sponsorship_type', 'Oops selected patient\'s Gevernment insurance expired on '. Carbon::parse($PatientActiveNhis->expiry_date)->format('Y-m-d').',please renew policy or resubmit with sponsorship type \'Patient\' !');
+                }
             }
         });
     }

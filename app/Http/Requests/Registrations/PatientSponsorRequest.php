@@ -51,7 +51,7 @@ class PatientSponsorRequest extends ApiFormRequest
         return [
             'patient_id' => 'bail|' . ($id ? 'sometimes' : 'required') . '|integer|exists:patients,id',
             'sponsorship_policy_id' => 'bail|sometimes|nullable|integer|exists:sponsorship_policies,id',
-            'billing_sponsor_id' => 'bail|' . ($id ? 'sometimes|nullable' : 'required') . '|integer|exists:billing_sponsors,id',
+            'billing_sponsor_id' => 'bail|' . ($id ? 'sometimes|nullable' : 'required') . '|integer|exists:billing_sponsors,id|'.$this->softUniqueWith('patient_sponsors', 'patient_id,billing_sponsor_id',$id),
 
             'company_id' => 'bail|sometimes|nullable|exists:companies,id',
 

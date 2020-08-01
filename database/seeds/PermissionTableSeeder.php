@@ -21,9 +21,9 @@ class PermissionTableSeeder extends Seeder
     {
         // iterate though all routes
         DB::beginTransaction();
-        DB::statement('truncate table component_module');
-        DB::statement('truncate table component_user');
-        DB::statement('truncate table component_role');
+        //DB::statement('truncate table component_module');
+        //DB::statement('truncate table component_user');
+        //DB::statement('truncate table component_role');
         $routes = Route::getRoutes()->getRoutes();
         foreach ($routes as $key => $route) {
             $action = $route->getAction();
@@ -74,11 +74,8 @@ class PermissionTableSeeder extends Seeder
         }
 
         //Syn Admin Role
-        $adminRole = Role::where('name', 'Dev')->first();
-        if (!$adminRole)
-            $adminRole = Role::create(['name' => 'Dev']);
-
-
+        $adminRole = Role::where('name', 'Dev')->firstOrCreate(['name' => 'Dev']);
+       
         //Sync Role to components
         $synPayload = [];
         $components = ComponentModule::all();
