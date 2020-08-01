@@ -146,7 +146,7 @@ class ConsultationRequest extends ApiFormRequest
                         $validator->errors()->add('patient_id', 'Oops vital signs must be submitted before consultation!');
                 }
 
-                if($patient && strtoupper(request('sponsorship_type')) != 'GOVERNMENT INSURANCE'){
+                if($patient && strtoupper(request('sponsorship_type')) == 'GOVERNMENT INSURANCE'){
                     $PatientActiveNhis = $patient->patient_sponsors()->where('status', 'ACTIVE')
                      ->whereHas('billing_sponsor', function ($q1) {
                             $q1->whereHas('sponsorship_type', function ($q2) {
@@ -156,6 +156,21 @@ class ConsultationRequest extends ApiFormRequest
 
                   if($PatientActiveNhis && Carbon::parse($PatientActiveNhis->expiry_date)<today())
                         $validator->errors()->add('sponsorship_type', 'Oops selected patient\'s Gevernment insurance expired on '. Carbon::parse($PatientActiveNhis->expiry_date)->format('Y-m-d').',please renew policy or resubmit with sponsorship type \'Patient\' !');
+                }
+
+                else if(strtoupper(request('sponsorship_type')) != 'PATIENT' && (request('billing_sponsor_id')|| request('patient_sponsor_id'))){
+                    $hasSponsorship = $patient->patient_sponsors()->where('status', 'ACTIVE');
+
+                    if(request('billing_sponsor_id'))
+                    $hasSponsorship= $hasSponsorship->where('billing_sponsor_id',request('billing_sponsor_id'));
+
+                    if(request('patient_sponsor_id'))
+                    $hasSponsorship = $hasSponsorship->whereId(request('patient_sponsor_id'));
+
+                    $hasSponsorship= $hasSponsorship->first();
+
+                    if ($hasSponsorship && Carbon::parse($hasSponsorship->expiry_date) < today())
+                        $validator->errors()->add(request('billing_sponsor_id')? 'billing_sponsor_id': 'patient_sponsor_id', 'Oops selected patient\'s insurance expired on ' . Carbon::parse($PatientActiveNhis->expiry_date)->format('Y-m-d') . ',please renew policy or resubmit with sponsorship type \'Patient\' !');
                 }
             }
         });

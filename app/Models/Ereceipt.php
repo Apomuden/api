@@ -112,14 +112,16 @@ class Ereceipt extends AuditableModel
         $response = ['ereceipt_id' => null, 'invoice_number' => null, 'receipt_number' => null];
 
         $field= ($type == 'INVOICE' ? 'invoice_number' : 'receipt_number');
-        $model[$field] = self::generateInvoiceNumber($type);
+        $model[$field] = self::generateReceiptNumber($type);
 
         $response[$field]= $model[$field];
 
         $model['user_id'] = Auth::id();
         //dd($model);
-        $ereceipt_id = (self::query()->create($model))->id;
+        $ereceipt=self::query()->create($model);
+        $ereceipt_id = $ereceipt->id;
         $response['ereceipt_id'] = $ereceipt_id;
+
 
         //dd($ereceipt_id);
         return $response;
@@ -127,7 +129,7 @@ class Ereceipt extends AuditableModel
 
     public function service_order()
     {
-        return $this->morphedByMany(ServiceOrder::class, 'receipt_item');
+        return $this->morphedByMany(ServiceOrder::class, 'receipt_item')->withPivot(['paid', 'id']);
     }
 
     public function deposit()
