@@ -148,8 +148,9 @@ class ServiceOrder extends AuditableModel
 
 
             //Nhis Pricinng
+            $PatientActiveNhis=null;
             if ($model->service_orderable_type != 'App\Models\Consultation' && strtolower(request('sponsorship_type')) != 'patient') {
-                $PatientActiveNhis = $patient->patient_sponsors();
+                $PatientActiveNhis = $patient->patient_sponsors()->where('status','active');
 
                 if (isset($model->billing_sponsor_id))
                     $PatientActiveNhis = $PatientActiveNhis->where('billing_sponsor_id', $model->billing_sponsor_id);
@@ -166,9 +167,9 @@ class ServiceOrder extends AuditableModel
                     if(Carbon::parse($PatientActiveNhis->expiry_date)>=today()){
                         $nhisSettings = NhisAccreditationSetting::first();
                         if ($model->age > 12) {
-                            $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                            $model->service_fee = $model->service->nhis_adult_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->prepaid_amount);
                         } else {
-                            $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->postpaid_amount);
+                            $model->service_fee = $model->service->nhis_child_tariff->nhis_provider_level_tariffs()->where('nhis_provider_level_id', $nhisSettings->nhis_provider_level_id)->first()->tariff ?? ($model->service_fee ?? $model->service->prepaid_amount);
                         }
                     }
                     else{
@@ -177,7 +178,17 @@ class ServiceOrder extends AuditableModel
                     }
 
                 }
+            }
+            if(!$PatientActiveNhis){
+                $hasSponsorship=$patient->patient_sponsors()->where('status', 'active')
+                ->where('billing_sponsor_id',$model->billing_sponsor_id)
+                ->whereDate('expiry_date','>=',today())->first();
 
+                if(!$hasSponsorship){
+                    $model->funding_type_id = FundingType::whereName('CASH/PREPAID')->first('id')->id ?? null;
+                    $model->prepaid = true;
+                    $model->service_fee = $model->service->prepaid_amount;
+                }
             }
 
             $model->service_total_amt = $model->service_fee * $model->service_quantity;
@@ -192,8 +203,10 @@ class ServiceOrder extends AuditableModel
             $model->payment_style_id = $model->payment_style_id ?? $model->funding_type->payment_style_id;
             $model->payment_channel_id = $model->payment_channel_id ?? $model->funding_type->payment_channel_id;
 
-            if($model->prepaid)
-                $model->sponsorship_type_id=SponsorshipType::whereName('Patient')->first('id')->id??null;
+            if($model->prepaid){
+                $model->sponsorship_type_id = SponsorshipType::whereName('Patient')->first('id')->id ?? null;
+                $model->billing_sponsor_id=null;
+            }
             else{
                 $sponsorEloquent = new RepositoryEloquent(new BillingSponsor());
                 $sponsor = $sponsorEloquent->find($model->billing_sponsor_id);
@@ -253,6 +266,7 @@ class ServiceOrder extends AuditableModel
 
 
             //Nhis Pricinng
+            $PatientActiveNhis=null;
             if ($model->service_orderable_type != 'App\Models\Consultation' && $model->isDirty('billing_sponsor_id') && strtolower(request('sponsorship_type')) != 'patient') {
                 $PatientActiveNhis = $patient->patient_sponsors();
 
@@ -282,8 +296,20 @@ class ServiceOrder extends AuditableModel
                         $model->prepaid = true;
                    }
                 }
-
             }
+
+            if (!$PatientActiveNhis) {
+                $hasSponsorship = $patient->patient_sponsors()->where('status', 'active')
+                ->where('billing_sponsor_id', $model->billing_sponsor_id)
+                    ->whereDate('expiry_date', '>=', today())->first();
+
+                if(!$hasSponsorship) {
+                    $model->funding_type_id = FundingType::whereName('CASH/PREPAID')->first('id')->id ?? null;
+                    $model->prepaid = true;
+                    $model->service_fee = $model->service->prepaid_amount;
+                }
+            }
+
             if($model->isDirty('service_fee')|| $model->isDirty('service_quantity'))
             $model->service_total_amt = ($model->service_fee??0) * ($model->service_quantity??0);
 
@@ -297,16 +323,33 @@ class ServiceOrder extends AuditableModel
             $model->payment_style_id = $model->payment_style_id ?? $model->funding_type->payment_style_id;
             $model->payment_channel_id = $model->payment_channel_id ?? $model->funding_type->payment_channel_id;
 
-            if ($model->prepaid)
+            if ($model->prepaid){
                 $model->sponsorship_type_id = SponsorshipType::whereName('Patient')->first('id')->id ?? null;
+                $model->billing_sponsor_id=null;
+            }
             else if($model->isDirty('billing_sponsor_id')){
                 $sponsorEloquent = new RepositoryEloquent(new BillingSponsor());
                 $sponsor = $sponsorEloquent->find($model->billing_sponsor_id);
                 $model->sponsorship_type_id = $sponsor->sponsorship_type_id ?? null;
             }
             $model->cancelled_date = $model->canceller_id ? Carbon::today() : ($original->cancelled_date ?? null);
-            //if ($model->isDirty('patient_status'))
-            //$model->patient->update(['reg_status' => $model->patient_status]);
+
+            if ($model->isDirty('prepaid')){
+                if(!$model->prepaid){
+                    $policy = $patient->patient_sponsors()->whereHas('sponsorship_policy', function ($query) {
+                        $query->where('status', 'ACTIVE');
+                    })->orderBy('priority', 'asc')->first();
+                    $model->sponsorship_policy_id = $model->sponsorship_policy_id ?? ($policy->sponsorship_policy_id ?? null);
+                }
+                else
+                    $model->sponsorship_policy_id=null;
+            }
         });
+    }
+
+
+    public function setPrepaidAttribute($value){
+           $this->attributes['prepaid']=$value;
+           $this->attributes['insured']= !$this->prepaid;
     }
 }

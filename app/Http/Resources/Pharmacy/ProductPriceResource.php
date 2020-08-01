@@ -31,6 +31,7 @@ class ProductPriceResource extends JsonResource
             'prepaid_amount'=> floatval($this->prepaid_amount),
             'postpaid_amount'=> floatval($this->postpaid_amount),
             'nhis_amount'=> floatval($this->nhis_amount),
+            
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];

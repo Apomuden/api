@@ -81,7 +81,6 @@ class TransactionController extends Controller
     {
         $receiptItems = $transactionRequest['services'] ?? null;
 
-        try {
             DB::beginTransaction();
             if ($receiptItems) {
                 $receipt = $transactionRequest->only(['patient_id', 'patient_status', 'amount_paid', 'outstanding_bill', 'total_bill']);
@@ -94,7 +93,7 @@ class TransactionController extends Controller
                     $item_id = $itemDetails[1] ?? null;
 
                     $repo = $item_type::query()->find($item_id);
-                    
+
                     if(isset($item['status']) && $item['status'])
                     $repo->update(['status' => ($item['status'] ?? 'FULL-PAYMENT')]);
                     //dd(get_class($repo));
@@ -117,12 +116,9 @@ class TransactionController extends Controller
 
                 $repo = new RepositoryEloquent(new Ereceipt());
                 $repo = $repo->show($receipt['ereceipt_id'] ?? null);
-                return ApiResponse::withOk('Patient E-Receipt Created', new EreceiptResource($repo));
+                return ApiResponse::withOk('Patient E-Invoice Created', new EreceiptResource($repo));
             }
-        } catch (\Exception $exception) {
-            //DB::rollBack();
-            dd($exception);
-        }
+
     }
 
 }
