@@ -31,22 +31,21 @@ class EreceiptRequest extends ApiFormRequest
     {
         $id=$this->route('ereceipt')??null;
         return [
-            'payment_channel_id'=>['bail',Rule::requiredIf(function(){
-                return request('cheque_no') || request('bank_id') || request('payee_transaction_id');
+            'payment_channel_id'=>['bail',Rule::requiredIf(function() use ($id){
+                return $id && request('cheque_no') || request('bank_id') || request('payee_transaction_id');
             })],
-            'cheque_no' => ['bail',Rule::requiredIf(function(){
-                return isset($this->payment_channel) && ucwords($this->payment_channel->name)=='Cheque';
+            'cheque_no' => ['bail',Rule::requiredIf(function() use($id){
+                return $id && isset($this->payment_channel) && ucwords($this->payment_channel->name)=='Cheque';
             }),$this->softUnique('ereceipts', 'cheque_no', $id)],
             'bank_id'=>['bail',Rule::requiredIf(function() use($id){
                 return $id && trim(request('cheque_no')) && request('cheque_no') != null;
-            }),$this->softExists('banks','id')],
+            }),Rule::exists('banks','id')->where('priority',0)->whereNull('deleted_at')],
             'payee_transaction_id'=>['bail',Rule::requiredIf(function() use($id){
-                return $id && isset($this->payment_channel) && in_array($this->payment_channel->name, ['MTN Mobile Money', 'AirtelTigo Money', 'Vodafone Cash', 'G-Money']);
+                return $id && isset($this->payment_channel) && in_array(ucwords($this->payment_channel->name), ['MTN Mobile Money', 'AirtelTigo Money', 'Vodafone Cash', 'G-Money', 'Bank Interface', 'Banking Interface', 'Bank Deposit']);
             }),$this->softUnique('ereceipts', 'payee_transaction_id', $id)],
             'payee_account_no'=>['bail',Rule::requiredIf(function() use($id){
-                return $id && trim(request('cheque_no')) && request('cheque_no')!=null|| isset($this->payment_channel) && in_array($this->payment_channel->name,['MTN Mobile Money', 'Cheque','CHEQUE', 'AirtelTigo Money', 'Vodafone Cash', 'G-Money']);
-            })],
-
+                return $id && trim(request('cheque_no')) && request('cheque_no')!=null|| isset($this->payment_channel) && in_array(ucwords($this->payment_channel->name),['MTN Mobile Money', 'Cheque','CHEQUE', 'AirtelTigo Money', 'Vodafone Cash', 'G-Money']);
+            })]
         ];
     }
     public function withValidator($validator)

@@ -73,4 +73,9 @@ class Deposit extends AuditableModel
     {
         return $this->belongsTo(PaymentChannel::class);
     }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class);
+    }
 }
