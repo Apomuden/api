@@ -45,6 +45,11 @@ class NhisGdrgServiceTariff extends AuditableModel
         return $this->hasMany(NhisProviderLevelTariff::class);
     }
 
+    public function nhis_services()
+    {
+        return $this->morphToMany(EpisodeServiceAndProduct::class, 'serviceable');
+    }
+
     public static function boot()
     {
         parent::boot();

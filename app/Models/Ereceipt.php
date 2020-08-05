@@ -49,7 +49,7 @@ class Ereceipt extends AuditableModel
                 $model->amount_paid = (($model->amount_paid ?? $model->getOriginal('amount_paid')) ?? $model->total_bill) ?? 0;
                 $model->balance = ($model->total_bill ?? 0.00) - $model->amount_paid;
 
-                if ($model->getOriginal('status') != 'FULL-PAYMENT' && $model->status == 'FULL-PAYMENT')
+                if (!$model->receipt_number && $model->status == 'FULL-PAYMENT')
                     $model->receipt_number = self::generateReceiptNumber();
 
             // if ($model->isDirty('payment_channel_id') && !$model->payment_channel_id)

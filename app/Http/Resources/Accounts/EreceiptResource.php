@@ -63,7 +63,7 @@ class EreceiptResource extends JsonResource
             'cheque_no' => $this->cheque_no ?? null,
             'bank_id' => $this->bank_id ?? null,
             'bank_name' => $this->bank->name ?? null,
-
+            'status'=>$this->status??null,
             'created_at' => DateHelper::toDisplayDateTime($this->created_at),
             'updated_at' => DateHelper::toDisplayDateTime($this->updated_at)
         ];

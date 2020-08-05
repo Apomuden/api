@@ -47,4 +47,10 @@ class NhisMedicine extends AuditableModel
     {
         return $this->hasMany(Products::class);
     }
+
+
+    public function nhis_medicines()
+    {
+        return $this->morphToMany(EpisodeServiceAndProduct::class, 'serviceable');
+    }
 }
