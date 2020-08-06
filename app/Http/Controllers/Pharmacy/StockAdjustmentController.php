@@ -9,6 +9,7 @@ use App\Http\Requests\Pharmacy\StockAdjustmentApprovalRequest;
 use App\Http\Requests\Pharmacy\StockAdjustmentRequest;
 use App\Http\Resources\Pharmacy\StockAdjustmentCollection;
 use App\Http\Resources\Pharmacy\StockAdjustmentResource;
+use App\Models\Stock;
 use App\Models\StockAdjustment;
 use App\Models\StockAdjustmentProduct;
 use App\Repositories\RepositoryEloquent;
@@ -86,10 +87,28 @@ class StockAdjustmentController extends Controller
         try {
             $productsRepo = new RepositoryEloquent(new StockAdjustmentProduct());
             $StockAdjustment = $this->repository->update($StockAdjustmentRequest->all(), $StockAdjustment);
+            $stock = null;
+            $store_id = null;
+            $stock_adjustment_product_id = null;
             foreach ($products as $product) {
                 $stock_adjustment_product_id = $product['id'];
                 unset($product['id']);
                 $productsRepo->update($product, $stock_adjustment_product_id);
+                $store_id = $StockAdjustment['store_id']??($StockAdjustment->store_id??null);
+                $stock = Stock::query()->firstWhere(['product_id'=>$products['product_id'], 'store_id'=>$store_id]);
+                if ($stock->count()) {
+                    $stock->original_quantity += $products['approved_quantity'];
+                    $stock->quantity_remaining += $products['approved_quantity'];
+                    $stock->update();
+                } else {
+                    Stock::query()->firstOrCreate([
+                        'product_id' => $products['product_id'],
+                        'store_id' => $products['store_id'],
+                        'opening_stock_quantity' => $products['approved_quantity'],
+                        'original_quantity' => $products['approved_quantity'],
+                        'quantity_remaining' => $products['approved_quantity']
+                    ]);
+                }
             }
             DB::commit();
             return ApiResponse::withOk('Stock Adjustment Approved Successfully', new StockAdjustmentResource($StockAdjustment));
