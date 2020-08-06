@@ -111,6 +111,11 @@ Route::apiResource('requisitions','Pharmacy\RequisitionController',[
     'module'=>'store',
     'component'=> 'store.requisition'
 ]);
+Route::apiResource('stocks','Pharmacy\StockController',[
+    //'only'=>['index','show','store','update'],
+    'module'=>'store',
+    'component'=> 'store.stock'
+]);
 
 /*
 Route::apiResource('prescriptions','Pharmacy\PrescriptionController',[
